@@ -1,17 +1,31 @@
-import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import {Platform} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Test3 from '../pages/test3';
-import Test1 from '../pages/test1';
-import Test2 from '../pages/test2';
-import {Platform} from 'react-native';
+
+import Home from '../pages/home';
+import Hospital from '../pages/hospital';
+import Contents from '../pages/contents';
+import Community from '../pages/community';
+import MyPage from '../pages/mypage';
+
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
+// 네비게이션 라우트 맵핑
+type RootStackParamList = {
+  Home: undefined;
+  Hospital: undefined;
+  Contents: undefined;
+  Commuity: undefined;
+  MyPage: undefined;
+  tab: undefined;
+};
+
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const TabNavigator = () => {
   return (
@@ -37,8 +51,8 @@ const TabNavigator = () => {
         },
       }}>
       <Tab.Screen
-        name="Test1"
-        component={Test1}
+        name="Home"
+        component={Home}
         options={{
           tabBarLabel: '시설 정보',
           headerShown: false,
@@ -49,8 +63,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Test2"
-        component={Test1}
+        name="Contents"
+        component={Contents}
         options={{
           tabBarLabel: '콘텐츠',
           headerShown: false,
@@ -61,8 +75,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Test3"
-        component={Test1}
+        name="Commuity"
+        component={Community}
         options={{
           tabBarLabel: '커뮤니티',
           headerShown: false,
@@ -73,8 +87,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Test4"
-        component={Test2}
+        name="MyPage"
+        component={MyPage}
         options={{
           tabBarLabel: '내 계정',
           headerShown: false,
@@ -92,10 +106,10 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false, presentation: 'modal'}}
-        initialRouteName="Test1">
+        screenOptions={{headerShown: false}}
+        initialRouteName="tab">
         <Stack.Screen name="tab" component={TabNavigator} />
-        <Stack.Screen name="test3" component={Test3} />
+        <Stack.Screen name="Hospital" component={Hospital} />
       </Stack.Navigator>
     </NavigationContainer>
   );

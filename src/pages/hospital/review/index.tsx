@@ -2,7 +2,7 @@ import {Box} from 'native-base';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const Test2 = () => {
+const HospitalReview = () => {
   return (
     <SafeAreaView>
       <Box
@@ -14,10 +14,10 @@ const Test2 = () => {
           color: 'warmGray.50',
           letterSpacing: 'lg',
         }}>
-        Hello TEST2
+        Hospital Review Page
       </Box>
     </SafeAreaView>
   );
 };
 
-export default Test2;
+export default HospitalReview;
