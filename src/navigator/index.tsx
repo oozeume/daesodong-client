@@ -1,14 +1,31 @@
-import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import {Platform} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Test3 from '../pages/test3';
-import Test1 from '../pages/test1';
-import Test2 from '../pages/test2';
-import {Platform} from 'react-native';
+
+import Home from '../pages/home';
+import Hospital from '../pages/hospital';
+import Contents from '../pages/contents';
+import Community from '../pages/community';
+import MyPage from '../pages/mypage';
+
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+
+// 네비게이션 라우트 맵핑
+type RootStackParamList = {
+  Home: undefined;
+  Hospital: undefined;
+  Contents: undefined;
+  Commuity: undefined;
+  MyPage: undefined;
+  tab: undefined;
+};
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const TabNavigator = () => {
   return (
@@ -16,38 +33,69 @@ const TabNavigator = () => {
       screenOptions={{
         tabBarLabelPosition: 'below-icon',
         tabBarStyle: {
-          backgroundColor: '#28282c',
-          height: 49,
+          backgroundColor: '#FFFFFF',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          height: 98,
         },
         tabBarAllowFontScaling: false,
-        tabBarActiveTintColor: '#40c4ff',
-        tabBarInactiveTintColor: '#fff',
+        tabBarActiveTintColor: '#FF6B00',
+        tabBarInactiveTintColor: '#E1E2E4',
 
         tabBarLabelStyle: {
-          fontWeight: '700',
-          fontSize: 15,
+          fontStyle: 'normal',
+          fontWeight: '500',
+          fontSize: 10,
           marginBottom: Platform.OS === 'android' ? 14 : 0,
-          lineHeight: Platform.OS === 'android' ? 20 : 20,
+          lineHeight: Platform.OS === 'android' ? 14 : 14,
         },
-
-        tabBarIconStyle: {display: 'none'},
       }}>
       <Tab.Screen
-        name="Test1"
-        component={Test1}
+        name="Home"
+        component={Home}
         options={{
-          tabBarLabel: 'Test1',
+          tabBarLabel: '시설 정보',
           headerShown: false,
           unmountOnBlur: true,
+          tabBarIcon: ({color}) => (
+            <FeatherIcon name={'map-pin'} color={color} size={24} />
+          ),
         }}
       />
       <Tab.Screen
-        name="Test2"
-        component={Test2}
+        name="Contents"
+        component={Contents}
         options={{
-          tabBarLabel: 'Test2',
+          tabBarLabel: '콘텐츠',
           headerShown: false,
           unmountOnBlur: true,
+          tabBarIcon: ({color}) => (
+            <FontAwesome5Icon name={'book'} color={color} size={24} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Commuity"
+        component={Community}
+        options={{
+          tabBarLabel: '커뮤니티',
+          headerShown: false,
+          unmountOnBlur: true,
+          tabBarIcon: ({color}) => (
+            <FontAwesomeIcon name={'comments'} color={color} size={24} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="MyPage"
+        component={MyPage}
+        options={{
+          tabBarLabel: '내 계정',
+          headerShown: false,
+          unmountOnBlur: true,
+          tabBarIcon: ({color}) => (
+            <FontAwesomeIcon name={'user'} color={color} size={24} />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -58,10 +106,10 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false, presentation: 'modal'}}
-        initialRouteName="Test1">
+        screenOptions={{headerShown: false}}
+        initialRouteName="tab">
         <Stack.Screen name="tab" component={TabNavigator} />
-        <Stack.Screen name="test3" component={Test3} />
+        <Stack.Screen name="Hospital" component={Hospital} />
       </Stack.Navigator>
     </NavigationContainer>
   );
