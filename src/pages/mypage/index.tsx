@@ -2,7 +2,7 @@ import {Box} from 'native-base';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const Test1 = () => {
+const MyPage = () => {
   return (
     <SafeAreaView>
       <Box
@@ -14,10 +14,10 @@ const Test1 = () => {
           color: 'warmGray.50',
           letterSpacing: 'lg',
         }}>
-        Hello TEST1
+        MyPage
       </Box>
     </SafeAreaView>
   );
 };
 
-export default Test1;
+export default MyPage;
