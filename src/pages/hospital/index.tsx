@@ -5,7 +5,7 @@ import {Center, HStack, Text, View} from 'native-base';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ParamListBase} from '@react-navigation/native';
 
-import HospitalDetail from './detail';
+import HospitalInfo from './info';
 import HospitalReview from './review';
 import ShareIcon from 'react-native-vector-icons/EvilIcons';
 import LeftArrowIcon from 'react-native-vector-icons/Feather';
@@ -62,7 +62,9 @@ const Hospital = ({navigation}: HospitalProps) => {
           </Center>
         </HStack>
         {/* 병원 상세 컨텐츠 */}
-        {selectedTab === 'Info' ? <HospitalDetail /> : <HospitalReview />}
+        <View style={styles.tabContentsWrapper}>
+          {selectedTab === 'Info' ? <HospitalInfo /> : <HospitalReview />}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -89,6 +91,10 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomWidth: 2,
     borderBottomColor: '#000',
+  },
+  tabContentsWrapper: {
+    width: '100%',
+    height: '100%',
   },
 });
 
