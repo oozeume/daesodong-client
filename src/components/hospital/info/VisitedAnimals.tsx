@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import {Box, HStack, Pressable, Text, VStack} from 'native-base';
+import {Box, Center, HStack, Pressable, Text, VStack} from 'native-base';
 
 import styles from './styles';
 
-import MateriallConsIcon from 'react-native-vector-icons/MaterialIcons';
 import VisitedAnimalsAccordion from './VisitedAnimalsAccordion';
+
+import UpIcon from '../../../assets/icon/up.svg';
+import DownIcon from '../../../assets/icon/down.svg';
 
 // 타입 및 데이터
 export type VisitedAnimalsType = {animalType: string; visitsNumber: number};
@@ -42,12 +44,11 @@ const RecordVisitedAccordion = () => {
           <Text style={[styles.text, styles.hilightText]}>
             {totalVisitsNumber}마리의 친구들이 방문했어요
           </Text>
-          <Pressable onPress={handleOpen}>
-            <MateriallConsIcon
-              name={`keyboard-arrow-${isOpen ? 'up' : 'down'}`}
-              size={22}
-            />
-          </Pressable>
+          <Center>
+            <Pressable onPress={handleOpen}>
+              {isOpen ? <UpIcon /> : <DownIcon />}
+            </Pressable>
+          </Center>
         </HStack>
         {/* 아코디언 박스 */}
         {isOpen && <VisitedAnimalsAccordion visitedAnimals={TMP_DATA} />}
