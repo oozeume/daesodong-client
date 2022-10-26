@@ -61,6 +61,20 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     paddingHorizontal: 16,
   },
+  hospitalInfoWrapper: {
+    width: 337,
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F6F7F7',
+  },
+  phoneNumber: {
+    fontSize: 13,
+    color: '#0094FF',
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#0094FF',
+  },
 });
 
 export default styles;

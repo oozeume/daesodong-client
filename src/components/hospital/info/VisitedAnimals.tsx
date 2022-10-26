@@ -38,22 +38,20 @@ const RecordVisitedAccordion = () => {
   const handleOpen = () => setIsOpen(prev => !prev);
 
   return (
-    <Box style={[styles.visitHistoryBox]}>
-      <VStack>
-        <HStack space={2} justifyContent="center">
-          <Text style={[styles.text, styles.hilightText]}>
-            {totalVisitsNumber}마리의 친구들이 방문했어요
-          </Text>
-          <Center>
-            <Pressable onPress={handleOpen}>
-              {isOpen ? <UpIcon /> : <DownIcon />}
-            </Pressable>
-          </Center>
-        </HStack>
-        {/* 아코디언 박스 */}
-        {isOpen && <VisitedAnimalsAccordion visitedAnimals={TMP_DATA} />}
-      </VStack>
-    </Box>
+    <Pressable onPress={handleOpen}>
+      <Box style={[styles.visitHistoryBox]}>
+        <VStack>
+          <HStack space={2} justifyContent="center">
+            <Text style={[styles.text, styles.hilightText]}>
+              {totalVisitsNumber}마리의 친구들이 방문했어요
+            </Text>
+            <Center>{isOpen ? <UpIcon /> : <DownIcon />}</Center>
+          </HStack>
+          {/* 아코디언 박스 */}
+          {isOpen && <VisitedAnimalsAccordion visitedAnimals={TMP_DATA} />}
+        </VStack>
+      </Box>
+    </Pressable>
   );
 };
 
