@@ -1,0 +1,5 @@
+{
+  "replaceAttrValues": {
+    "#ECECEE": "{props.fill}"
+  }
+}

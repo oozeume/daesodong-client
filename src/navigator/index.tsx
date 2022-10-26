@@ -13,15 +13,27 @@ import MyPage from '../pages/mypage';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import HospitalReviewRegister from '~/pages/hospital/review/register';
+import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
+
+export type RootTabParmList = {
+  Home: undefined;
+  Contents: undefined;
+  Commuity: undefined;
+  HospitalReviewRegister: undefined;
+  MyPage: undefined;
+};
 
 // 네비게이션 라우트 맵핑
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   Hospital: undefined;
   Contents: undefined;
   Commuity: undefined;
-  MyPage: undefined;
   tab: undefined;
+
+  HospitalReviewRegister: undefined;
+  HospitalReviewRegisterPrecaution: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -87,8 +99,10 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="MyPage"
-        component={MyPage}
+        // name="MyPage"
+        // component={MyPage}
+        name="HospitalReviewRegister"
+        component={HospitalReviewRegister}
         options={{
           tabBarLabel: '내 계정',
           headerShown: false,
@@ -110,6 +124,10 @@ const AppNavigator = () => {
         initialRouteName="tab">
         <Stack.Screen name="tab" component={TabNavigator} />
         <Stack.Screen name="Hospital" component={Hospital} />
+        <Stack.Screen
+          name="HospitalReviewRegisterPrecaution"
+          component={HospitalReviewRegisterPrecaution}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

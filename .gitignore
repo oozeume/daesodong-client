@@ -67,3 +67,4 @@ buck-out/
 .env.dev  
 .env.stage
 .env.production 
+.vscode/settings.json
