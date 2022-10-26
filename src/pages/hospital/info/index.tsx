@@ -104,7 +104,7 @@ const HospitalInfo = () => {
           <IconView iconName="call_fill" />
           <Pressable
             onPress={() => {
-              Linking.openURL(`tel:01075958738`);
+              Linking.openURL('tel:02-305-4242');
             }}>
             <Text style={[styles.phoneNumber, {width: 299, textAlign: 'left'}]}>
               02-305-4242
