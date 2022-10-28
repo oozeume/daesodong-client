@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import {Button, ScrollView, Stack, Text} from 'native-base';
+import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 import React from 'react';
 import ReviewItem from './review-item';
 import StarRate from './star-rate';
+import CheckIcon from '../../assets/icons/check.svg';
 
-function ReviewPage(props) {
+function ReviewPage() {
   return (
     <ScrollView>
       <Stack
         space={'12px'}
         py={'20px'}
         px={'18px'}
-        backgroundColor={'white'}
         borderBottomColor={'grayScale.20'}
         borderBottomWidth={1}>
         <StarRate />
@@ -26,11 +26,23 @@ function ReviewPage(props) {
           <Text color={'fussOrange.0'}>리뷰쓰기</Text>
         </Button>
       </Stack>
+      <HStack
+        backgroundColor={'white'}
+        h={'44px'}
+        justifyContent={'flex-end'}
+        alignItems={'flex-end'}
+        pb={'4px'}
+        px={'18px'}>
+        <HStack space={'8px'}>
+          <CheckIcon />
+          <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
+        </HStack>
+      </HStack>
 
-      <Stack space={'8px'} backgroundColor={'grayScale.10'} py={'8px'}>
-        {_.range(0, 6).map(i => (
+      <Stack space={'8px'} backgroundColor={'grayScale.10'}>
+        {_.range(0, 6).map((i, index) => (
           <React.Fragment key={i.toString()}>
-            <ReviewItem />
+            <ReviewItem invisibleBorderTop={index === 0} />
           </React.Fragment>
         ))}
       </Stack>

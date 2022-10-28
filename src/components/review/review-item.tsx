@@ -1,10 +1,29 @@
 import _ from 'lodash';
-import {Avatar, Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
+import {
+  Box,
+  Divider,
+  Flex,
+  HStack,
+  Image,
+  Pressable,
+  Stack,
+  Text,
+} from 'native-base';
 import React from 'react';
-import HeartFillICon from '../../assets/icons/heart_fill';
-import StarFillIcon from '../../assets/icons/star_fill';
+import HeartFillIcon from '../../assets/icons/heart_fill.svg';
+import StarFillIcon from '../../assets/icons/star_fill.svg';
+import KebabMenuIcon from '../../assets/icons/kebabMenu.svg';
+import AvatarIcon from '../../assets/icons/avartar.svg';
+import ImageModal from './image-modal';
 
-function ReviewItem(props) {
+interface Props {
+  invisibleBorderTop?: boolean;
+}
+
+function ReviewItem({invisibleBorderTop}: Props) {
+  const [onKebabClick, setKebabClick] = React.useState(false);
+  const [modalOpen, setModalOpen] = React.useState(false);
+
   return (
     <Box
       backgroundColor={'white'}
@@ -13,43 +32,79 @@ function ReviewItem(props) {
       borderTopColor={'grayScale.20'}
       borderBottomColor={'grayScale.20'}
       borderBottomWidth={1}
-      borderTopWidth={1}>
-      <HStack space={'12px'} mb={'16px'}>
-        <Avatar w={'44px'} h={'44px'} />
-        <Stack>
-          <HStack alignItems={'center'} space={'4px'}>
-            <Text>닉네임</Text>
-            <Flex
-              justifyContent={'center'}
-              alignItems={'center'}
-              w={'41px'}
-              h={'18px'}
-              backgroundColor={'positive.-40'}
-              borderRadius={'4px'}>
-              <Text color={'positive.0'} fontSize={'11px'}>
-                재방문
+      borderTopWidth={invisibleBorderTop ? 0 : 1}
+      position={'relative'}>
+      <HStack
+        space={'12px'}
+        mb={'16px'}
+        alignItems={'center'}
+        justifyContent={'space-between'}>
+        <HStack space={'12px'}>
+          <AvatarIcon />
+          <Stack>
+            <HStack alignItems={'center'} space={'4px'}>
+              <Text>닉네임</Text>
+              <Flex
+                justifyContent={'center'}
+                alignItems={'center'}
+                w={'41px'}
+                h={'18px'}
+                backgroundColor={'positive.-40'}
+                borderRadius={'4px'}>
+                <Text color={'positive.0'} fontSize={'11px'}>
+                  재방문
+                </Text>
+              </Flex>
+            </HStack>
+            <HStack space={'6px'}>
+              <Text color={'grayScale.60'} fontSize={'13px'}>
+                동물
               </Text>
-            </Flex>
-          </HStack>
-          <HStack space={'6px'}>
-            <Text color={'grayScale.60'} fontSize={'13px'}>
-              동물
-            </Text>
-            <Text color={'grayScale.60'} fontSize={'13px'}>
-              |
-            </Text>
-            <Text color={'grayScale.60'} fontSize={'13px'}>
-              나이
-            </Text>
-            <Text color={'grayScale.60'} fontSize={'13px'}>
-              |
-            </Text>
-            <Text color={'grayScale.60'} fontSize={'13px'}>
-              성별
-            </Text>
-          </HStack>
-        </Stack>
+              <Text color={'grayScale.60'} fontSize={'13px'}>
+                |
+              </Text>
+              <Text color={'grayScale.60'} fontSize={'13px'}>
+                나이
+              </Text>
+              <Text color={'grayScale.60'} fontSize={'13px'}>
+                |
+              </Text>
+              <Text color={'grayScale.60'} fontSize={'13px'}>
+                성별
+              </Text>
+            </HStack>
+          </Stack>
+        </HStack>
+        <Box
+          onTouchStart={() => {
+            if (onKebabClick) {
+              setKebabClick(false);
+            } else {
+              setKebabClick(true);
+            }
+          }}>
+          <KebabMenuIcon />
+        </Box>
       </HStack>
+
+      {onKebabClick && (
+        <Stack
+          position={'absolute'}
+          right={'18px'}
+          top={16}
+          zIndex={1}
+          borderRadius={'8px'}
+          w={'57px'}
+          h={'92px'}
+          space={'20px'}
+          borderColor={'black'}
+          backgroundColor={'white'}
+          p={'16px'}
+          shadow={'1'}>
+          <Text>수정</Text>
+          <Text>삭제</Text>
+        </Stack>
+      )}
 
       <Box
         w={'100%'}
@@ -131,13 +186,52 @@ function ReviewItem(props) {
       </Box>
 
       <HStack space={'8px'} pb={'4px'}>
-        <HeartFillICon />
+        <HeartFillIcon />
         <Text>재방문 의사 있어요</Text>
       </HStack>
       <Text>
         지나고 그러나 그리워 다 같이 봅니다. 잔디가 나는 위에 무엇인지 아무
         듯합니다. 피어나듯이 불러 당신은 내 말 위에도 부끄러운 했던 계십니다.
       </Text>
+
+      <HStack w={'100%'} pt={'16px'} justifyContent={'space-between'}>
+        <Pressable onPress={() => setModalOpen(true)}>
+          <Image
+            w={'108px'}
+            h={'108px'}
+            alt={'image'}
+            backgroundColor={'grayScale.10'}
+          />
+        </Pressable>
+        <Image
+          w={'108px'}
+          h={'108px'}
+          alt={'image'}
+          backgroundColor={'grayScale.10'}
+        />
+
+        <Image
+          w={'108px'}
+          h={'108px'}
+          alt={'image'}
+          backgroundColor={'grayScale.30'}
+        />
+
+        <Box
+          right={'6px'}
+          top={'16px'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          w={'108px'}
+          h={'108px'}
+          background={'rgba(26, 30, 39, 0.6)'}
+          position={'absolute'}>
+          <Text fontSize={'14px'} color={'white'}>
+            +00
+          </Text>
+        </Box>
+      </HStack>
+
       <HStack space={'4px'} pt={'20px'} py={'20px'}>
         {_.range(0, 5).map(i => (
           <Flex
@@ -159,9 +253,11 @@ function ReviewItem(props) {
         py={'20px'}
         borderTopWidth={'1'}
         borderTopColor={'#F6F7F7'}>
-        <HeartFillICon color={'#E1E2E4'} />
+        <HeartFillIcon fill={'#E1E2E4'} stroke={'#E1E2E4'} />
         <Text color={'grayScale.60'}>23마리의 친구가 고마워했어요!</Text>
       </HStack>
+
+      <ImageModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </Box>
   );
 }
