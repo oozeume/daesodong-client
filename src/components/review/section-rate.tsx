@@ -1,6 +1,6 @@
 import {Box, HStack, Text} from 'native-base';
 import React, {FunctionComponent} from 'react';
-import StarFillIcon from '../../assets/icons/star_fill';
+import StarFillIcon from '../../assets/icons/star_fill.svg';
 
 const SectionRate: FunctionComponent<{title: string; rate: number}> = ({
   title,
