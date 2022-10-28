@@ -11,6 +11,11 @@ import {
 
 import styles from './styles';
 
+/**
+ * 병원 시설 방문 기록 체크 및 확인 할 수 있는 컴포넌트
+ * @TODO API 연동 후 이벤트 핸들링 수정
+ */
+
 const RecordVisitedExperience = () => {
   const toast = useToast();
   const toastIdRef = useRef();

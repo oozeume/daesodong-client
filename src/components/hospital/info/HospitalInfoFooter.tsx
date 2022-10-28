@@ -1,10 +1,14 @@
-import {Button, HStack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {Linking} from 'react-native';
+import {Button, HStack, Text} from 'native-base';
 
 import BookMarkFillIcon from '../../../assets/icon/bookmark_fill.svg';
 import BookMarkUnFillIcon from '../../../assets/icon/bookmark_unfill.svg';
 
+/**
+ * 병원 시설 정보 탭 하단 푸터 컴포넌트
+ * @TODO 백엔드 연동 후 북마크 및 전화하기 기능 수정
+ */
 const HospitalInfoFooter = () => {
   const [isBookMark, setIsBookMark] = useState(false);
   const [bookMarkNumber, setBookMarkNumber] = useState(99);

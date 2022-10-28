@@ -7,12 +7,17 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import HospitalInfo from './info';
 import HospitalReview from './review';
+import HospitalInfoFooter from '../../components/hospital/info/HospitalInfoFooter';
+
 import ShareIcon from 'react-native-vector-icons/EvilIcons';
 import LeftArrowIcon from 'react-native-vector-icons/Feather';
-import HospitalInfoFooter from '../../components/hospital/info/HospitalInfoFooter';
 
 type TabType = 'Info' | 'Review';
 type HospitalProps = NativeStackScreenProps<ParamListBase, 'Hospital'>;
+
+/**
+ * 병원 시설 정보, 후기 페이지
+ */
 
 const Hospital = ({navigation}: HospitalProps) => {
   const [selectedTab, setSelectedTab] = useState<TabType>('Info');

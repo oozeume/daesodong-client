@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import {Box, Center, HStack, Pressable, Text, VStack} from 'native-base';
 
-import styles from './styles';
-
 import VisitedAnimalsAccordion from './VisitedAnimalsAccordion';
 
+import styles from './styles';
 import UpIcon from '../../../assets/icon/up.svg';
 import DownIcon from '../../../assets/icon/down.svg';
 
@@ -24,6 +23,12 @@ const TMP_DATA: VisitedAnimalsType[] = [
   {animalType: '햄스터', visitsNumber: 12},
 ];
 //
+
+/**
+ * 병원 시설에 방문한 동물의 수를 보여주는 컴포넌트
+ * @ 상세정보 확인을 위해 아코디언(접고, 펼치기) 기능이 있음
+ * @TODO API 연동 후 이벤트 핸들링 및 타입 및 데이터 변경
+ */
 
 const RecordVisitedAccordion = () => {
   const [isOpen, setIsOpen] = useState(false);

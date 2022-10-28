@@ -18,6 +18,11 @@ type IconViewProps = {
   iconName: IconNameType;
 };
 
+/**
+ * 아이콘 이름을 통해 아이콘을 반환하는 컴포넌트
+ * @param {string} iconName 아이콘 이름
+ */
+
 const IconView = ({iconName}: IconViewProps) => {
   const getIcon = (name: IconNameType) => {
     switch (name) {

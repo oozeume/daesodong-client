@@ -9,6 +9,12 @@ type HospitalOpeningHoursProps = {
   openingHours: OpeningHoursType;
 };
 
+/**
+ * 영업 시간 가로 배치를 위한 컴포넌트
+ * @param {OpeningHoursType} openingHour 임시 타입으로 영업 요일, 총 영업 시간, 휴게 시간
+ * @TODO API 연동 후 타입 및 데이터 변경
+ */
+
 const HospitalOpeningHours = ({openingHours}: HospitalOpeningHoursProps) => {
   return (
     <HStack space={2}>
