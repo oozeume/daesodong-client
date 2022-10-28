@@ -1,11 +1,11 @@
 import {Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
 import React from 'react';
 import {theme} from '../../../App';
-import StarFillIcon from '../../assets/icons/star_fill';
-import StarHalfIcon from '../../assets/icons/star_half';
+import StarFillIcon from '../../assets/icons/star_fill.svg';
+import StarHalfIcon from '../../assets/icons/star_half.svg';
 import SectionRate from './section-rate';
 
-function StarRate(props) {
+function StarRate() {
   return (
     <Box>
       <Flex
