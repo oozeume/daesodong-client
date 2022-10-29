@@ -1,8 +1,7 @@
 import {ScrollView, Text, VStack} from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {StackProps} from '~/../types/navigator';
-import Header from '~/components/hospital/review/register/header';
+import Header from '~/components/hospital/review/register/Header';
 import {CloseButton} from '~/components/hospital/review/register/button';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -15,16 +14,17 @@ const HospitalReviewRegisterPrecaution = ({
   const onBack = () => {
     navigation.goBack();
   };
+
   return (
     <SafeAreaView>
-      <ScrollView style={styles.containerScrollView}>
+      <ScrollView backgroundColor={'#fff'}>
         <Header
           title="후기 작성"
           rightButton={<CloseButton onPress={onBack} />}
         />
 
-        <VStack style={styles.textView}>
-          <Text style={styles.text}>
+        <VStack padding="18px" marginTop="20px">
+          <Text fontSize="15px" color="#5D626D">
             제1조 (목적) 본 약관은 대소동(이하 "회사"라 함)이 제공하는 대소동
             서비스의 이용과 관련하여, 회사와 회원과의 권리, 의무 및 책임사항,
             기타 필요한 사항을 규정함을 목적으로 합니다. 제2조 (용어의 정의) ①
@@ -85,19 +85,5 @@ const HospitalReviewRegisterPrecaution = ({
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  containerScrollView: {
-    backgroundColor: '#FFF',
-  },
-  textView: {
-    padding: 18,
-    marginTop: 20,
-  },
-  text: {
-    fontSize: 15,
-    color: '#5D626D',
-  },
-});
 
 export default HospitalReviewRegisterPrecaution;

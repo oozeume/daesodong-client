@@ -4,17 +4,25 @@ import {StyleSheet, ViewStyle} from 'react-native';
 import StarRatingIcon from '~/assets/icons/star_rating.svg';
 
 interface Props {
-  txt: string;
+  text: string;
   lineStyle?: ViewStyle;
 }
-function StarReviewLine({txt, lineStyle}: Props) {
+function StarReviewLine({text, lineStyle}: Props) {
   const [starRating, setStartRating] = useState(0);
 
   return (
-    <HStack style={[styles.line, lineStyle]}>
+    <HStack
+      justifyContent="space-between"
+      alignItems="center"
+      marginBottom="21px"
+      style={lineStyle}>
       <HStack>
-        <Text style={styles.titleText}>{txt}</Text>
-        <Text style={styles.scoreText}>{starRating}</Text>
+        <Text fontSize="15px" marginRight="6px">
+          {text}
+        </Text>
+        <Text fontSize="15px" color="#FF6B00">
+          {starRating}
+        </Text>
       </HStack>
 
       <HStack>
@@ -49,19 +57,6 @@ function StarReviewLine({txt, lineStyle}: Props) {
 }
 
 const styles = StyleSheet.create({
-  line: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 21,
-  },
-  titleText: {
-    fontSize: 15,
-    marginRight: 6,
-  },
-  scoreText: {
-    fontSize: 15,
-    color: '#FF6B00',
-  },
   uncheckedStarRatingIcon: {
     marginRight: 6,
   },

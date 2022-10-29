@@ -40,37 +40,64 @@ function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
 
   return (
     <Center>
-      <Pressable style={styles.openButton} onPress={onOpen}>
-        <HStack style={styles.openButtonInnerView}>
-          <Text style={styles.openButtonText}>
+      <Pressable
+        borderColor="#E1E2E4"
+        borderBottomWidth={1}
+        flexDirection="row"
+        backgroundColor="#fff"
+        onPress={onOpen}>
+        <HStack
+          width="100%"
+          paddingBottom="15px"
+          justifyContent="space-between"
+          alignItems="center">
+          <Text fontSize={15} color="#383E4A">
             {itemList ? itemList[selectedIndex]?.txt : ''}
           </Text>
 
-          <DownIcon style={styles.openButtonIcon} />
+          <DownIcon style={styles.downIcon} />
         </HStack>
       </Pressable>
 
       <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
         <Actionsheet.Content>
-          <Center style={styles.header}>
+          <Center
+            alignItems="center"
+            width="100%"
+            height="26px"
+            margin="24px 0px 36px">
             <BackButton
               onPress={onClose}
               buttonStyle={styles.headerBackButton}
             />
-            <Text style={styles.headerText}>{headerText || ''}</Text>
+            <Text fontSize="18px" color="#383E4A" lineHeight="24px">
+              {headerText || ''}
+            </Text>
           </Center>
 
-          <ScrollView style={styles.itemListScrollView}>
+          <ScrollView width={'100%'}>
             {itemList?.map((val, i) => (
               <Actionsheet.Item key={i} onPress={() => onClickItem(i)}>
-                <HStack style={styles.itemView}>
-                  <Center style={styles.itemIcon}>
+                <HStack alignItems="center">
+                  <Center
+                    width="22px"
+                    height="22px"
+                    marginRight="10px"
+                    borderWidth={2}
+                    borderColor="#E1E2E4"
+                    borderRadius={22}>
                     {selectedIndex === i && (
-                      <Box style={styles.selectedItemIcon}></Box>
+                      <Box
+                        width="14px"
+                        height="14px"
+                        borderRadius={14}
+                        backgroundColor="#bbb"></Box>
                     )}
                   </Center>
 
-                  <Text style={styles.itemTxt}>{val.txt}</Text>
+                  <Text color="#7F838C" fontSize="16px" marginBottom="1.2px">
+                    {val.txt}
+                  </Text>
                 </HStack>
               </Actionsheet.Item>
             ))}
@@ -82,70 +109,14 @@ function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
 }
 
 const styles = StyleSheet.create({
-  openButton: {
-    borderColor: '#E1E2E4',
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-  },
-  openButtonInnerView: {
-    width: '100%',
-    paddingBottom: 15,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  openButtonIcon: {
-    left: 1,
-  },
-  openButtonText: {
-    color: '#383E4A',
-    fontSize: 15,
-  },
-
-  header: {
-    alignItems: 'center',
-    width: '100%',
-    height: 26,
-    marginTop: 24,
-    marginBottom: 36,
-  },
   headerBackButton: {
     width: 16,
     height: 16,
     left: '2%',
   },
-  headerText: {
-    fontSize: 18,
-    color: '#383E4A',
-    lineHeight: 24,
-  },
 
-  itemListScrollView: {
-    width: '100%',
-  },
-  itemIcon: {
-    width: 22,
-    height: 22,
-    marginRight: 10,
-    borderWidth: 2,
-    borderRadius: 22,
-    borderColor: '#E1E2E4',
-  },
-  selectedItemIcon: {
-    width: 14,
-    height: 14,
-    borderRadius: 14,
-    backgroundColor: '#bbbbbb',
-  },
-  itemView: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    display: 'flex',
-  },
-  itemTxt: {
-    color: '#7F838C',
-    fontSize: 16,
-    marginBottom: 1.2,
+  downIcon: {
+    left: 1,
   },
 });
 

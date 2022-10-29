@@ -7,7 +7,7 @@ import {
   TextInput,
   ViewStyle,
 } from 'react-native';
-import Label from '../label';
+import Label from './label';
 
 interface Props {
   placeholder: string;
@@ -22,6 +22,13 @@ interface Props {
 
 /**
  *@description 병원 리뷰 등록 폼 인풋
+ *@param {string} topLabel - 인풋 상단 라벨
+ *@param {string} bottomLabel - 인풋 하단 라벨
+ *@param {boolean} isTextarea - textarea tag 사용 여부 / false면 input 태그 사용
+ *@param {ViewStyle} inputBoxStyle - 최상단 컨테이너 스타일
+ *@param {ViewStyle} inputStyle - input 스타일
+ *@param {KeyboardTypeOptions} keyboardType - keyboard 입력 타입
+ *@param {string} rightLabel - 인풋 하단 라벨
  */
 function FormInput({
   placeholder,
@@ -34,7 +41,7 @@ function FormInput({
   rightLabel,
 }: Props) {
   return (
-    <Box style={[styles.inputBox, inputBoxStyle]}>
+    <Box marginBottom="36px" style={inputBoxStyle}>
       <Label text={topLabel} />
 
       {isTextarea ? (
@@ -43,13 +50,20 @@ function FormInput({
           h="160px"
           padding={'16px 14px'}
           fontSize="15px"
+          lineHeight="22px"
           placeholder={placeholder}
           style={inputStyle}
           autoCompleteType
           placeholderTextColor={'#C6C8CD'}
         />
       ) : (
-        <HStack style={styles.inputView}>
+        <HStack
+          alignItems="center"
+          justifyContent="space-between"
+          borderBottomColor="#E1E2E4"
+          borderBottomWidth={1}
+          paddingY="15px"
+          marginBottom="8px">
           <TextInput
             placeholder={placeholder}
             style={[styles.input, inputStyle]}
@@ -66,27 +80,16 @@ function FormInput({
 }
 
 const styles = StyleSheet.create({
-  inputBox: {
-    marginBottom: 36,
-  },
-  inputView: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomColor: '#E1E2E4',
-    borderBottomWidth: 1,
-    paddingVertical: 15,
-    marginBottom: 8,
-  },
   input: {
     paddingVertical: 0,
     paddingLeft: 0,
     fontSize: 15,
   },
-  bottomLabel: {
-    color: '#9ea1a8',
-  },
   rightLabel: {
     fontSize: 15,
+  },
+  bottomLabel: {
+    color: '#9ea1a8',
   },
 });
 

@@ -1,20 +1,17 @@
 import {Text} from 'native-base';
 import React from 'react';
-import {StyleProp, StyleSheet, TextStyle} from 'react-native';
+import {StyleProp, TextStyle} from 'react-native';
 
-interface props {
+interface Props {
   text: string;
   style?: StyleProp<TextStyle>;
 }
-function Label({text, style}: props) {
-  return <Text style={[styles.label, style]}>{text}</Text>;
+function Label({text, style}: Props) {
+  return (
+    <Text fontSize="13px" color="#5D626D" style={style}>
+      {text}
+    </Text>
+  );
 }
-
-const styles = StyleSheet.create({
-  label: {
-    fontSize: 13,
-    color: '#5D626D;',
-  },
-});
 
 export default Label;
