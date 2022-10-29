@@ -20,13 +20,24 @@ interface Props {
   selectedIndex: number;
 }
 
+/**
+ *@description 셀렉터, 하단에 드롭박스 띄우는 컴포넌트
+ *@param {string} headerText - 셀렉터 컨텐트 헤더 텍스트
+ *@param {Array<{value: any; txt: string}>} itemList - 셀렉터 컨텐트 목록itemList
+ *@param onSelect - 셀렉터 선택 이벤트 핸들러
+ *@param {number} selectedIndex - 선택된 아이템 index state
+ */
 function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
 
+  /**
+   *@description 아이템 클릭 이벤트 핸들러
+   */
   const onClickItem = (index: number) => {
     onSelect(index);
     onClose();
   };
+
   return (
     <Center>
       <Pressable style={styles.openButton} onPress={onOpen}>

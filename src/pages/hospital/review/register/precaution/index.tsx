@@ -5,6 +5,9 @@ import {StackProps} from '~/../types/navigator';
 import Header from '~/components/hospital/review/register/header';
 import {CloseButton} from '~/components/hospital/review/register/button';
 
+/**
+ *@description 병원 리뷰 후기 작성 안내 사항 페이지
+ */
 const HospitalReviewRegisterPrecaution = ({
   navigation,
 }: StackProps<'HospitalReviewRegisterPrecaution'>) => {

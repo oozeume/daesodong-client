@@ -24,6 +24,9 @@ interface DateList {
   txt: string;
 }
 
+/**
+ *@description 병원 리뷰 등록 페이지
+ */
 const HospitalReviewRegister = ({
   navigation,
 }: StackProps<'HospitalReviewRegister'>) => {
@@ -36,6 +39,7 @@ const HospitalReviewRegister = ({
     date: dayjs().date() - 1,
   });
 
+  // 후기 작성 시, 주의사항 페이지 이동 함수
   const onMovePrecaution = () => {
     navigation.navigate('HospitalReviewRegisterPrecaution');
   };

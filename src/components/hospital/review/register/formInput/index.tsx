@@ -19,6 +19,10 @@ interface Props {
   keyboardType?: KeyboardTypeOptions;
   rightLabel?: string;
 }
+
+/**
+ *@description 병원 리뷰 등록 폼 인풋
+ */
 export default function FormInput({
   placeholder,
   topLabel,

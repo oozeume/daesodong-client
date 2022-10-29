@@ -7,6 +7,11 @@ interface Props {
   rightButton?: JSX.Element;
   leftButton?: JSX.Element;
 }
+/**
+ *@description 페이지 헤더
+ *@param {JSX.Element} rightButton - 헤더 기준 좌쪽 위치 버튼
+ *@param {JSX.Element} leftButton - 헤더 기준 우쪽 위치 버튼
+ */
 export default function Header({title, rightButton, leftButton}: Props) {
   return (
     <HStack style={styles.container}>

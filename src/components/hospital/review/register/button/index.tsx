@@ -12,6 +12,13 @@ interface IconButtonProps {
   iconStyle?: StyleProp<ViewStyle>;
   onPress?: (event: GestureResponderEvent) => void;
 }
+
+/**
+ *@description 뒤로가기 버튼
+ *@param {ViewStyle} buttonStyle - 버튼 추가 스타일
+ *@param {ViewStyle} iconStyle - 아이콘 추가 스타일
+ *@param {() => void)} onPress - 클릭 이벤트 함수
+ */
 const BackButton = ({buttonStyle, iconStyle, onPress}: IconButtonProps) => {
   return (
     <Button onPress={onPress} style={[styles.backButton, buttonStyle]}>
@@ -20,6 +27,12 @@ const BackButton = ({buttonStyle, iconStyle, onPress}: IconButtonProps) => {
   );
 };
 
+/**
+ *@description 페이지 닫기 버튼
+ *@param {ViewStyle} buttonStyle - 버튼 추가 스타일
+ *@param {ViewStyle} iconStyle - 아이콘 추가 스타일
+ *@param {() => void)} onPress - 클릭 이벤트 함수
+ */
 const CloseButton = ({buttonStyle, iconStyle, onPress}: IconButtonProps) => {
   return (
     <Button onPress={onPress} style={[styles.closeButton, buttonStyle]}>
@@ -28,6 +41,9 @@ const CloseButton = ({buttonStyle, iconStyle, onPress}: IconButtonProps) => {
   );
 };
 
+/**
+ *@description 후기 작성 주의 사항 안내 버튼
+ */
 const ReviewPrecautionButton = ({onPress}: {onPress: () => void}) => {
   return (
     <Pressable style={styles.reviewPrecautionButton} onPress={onPress}>
@@ -46,6 +62,13 @@ interface RevisitCheckButtonProps<T> extends CheckedButtonProps<T> {
   checkValue: number;
 }
 
+/**
+ *@description 이 병원을 다시 방문하시겠습니까? 체크 버튼
+ *@param {string} text - 버튼 텍스트
+ *@param {number} checkValue - 체크 여부 숫자 해당 prop과 isChecked과 일치하면 체크, 불일치 미체크
+ *@param {string} isChecked - 체크 여부 state
+ *@param {string} setCheck - 체크 state 변경 이벤트 함수
+ */
 const RevisitCheckButton = ({
   text,
   checkValue,
@@ -66,6 +89,9 @@ const RevisitCheckButton = ({
   );
 };
 
+/**
+ *@description 이 병원을 여러번 방문할지 여부에 대한 버튼
+ */
 const MoreVisitCheckButton = ({
   isChecked,
   setCheck,
@@ -89,6 +115,9 @@ const MoreVisitCheckButton = ({
   );
 };
 
+/**
+ *@description 리뷰 등록 함수
+ */
 const ReviewRegisterButton = () => {
   return (
     <Button style={styles.reviewRegisterButton}>
@@ -98,18 +127,21 @@ const ReviewRegisterButton = () => {
 };
 
 const styles = StyleSheet.create({
+  // 뒤로가기 버튼
   backButton: {
     position: 'absolute',
     left: 8,
     backgroundColor: '#ffffff00',
   },
 
+  // 닫기 버튼
   closeButton: {
     position: 'absolute',
     right: 8,
     backgroundColor: '#ffffff00',
   },
 
+  // 후기 작성시 주의사항 버튼
   reviewPrecautionButton: {
     paddingVertical: 0,
     width: 150,
@@ -123,6 +155,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 
+  // 이 병원을 다시 방문하시겠습니까 버튼
   revisitCheckButton: {
     width: '48.5%',
     height: 50,
@@ -142,6 +175,7 @@ const styles = StyleSheet.create({
     color: '#FF6B00',
   },
 
+  // 이 병원을 여러 번 방문하셨습니까? 버튼
   moreVisitCheckButton: {
     marginBottom: 24,
   },
@@ -156,6 +190,7 @@ const styles = StyleSheet.create({
     color: '#7F838C',
   },
 
+  // 리뷰 등록 버튼
   reviewRegisterButton: {
     marginBottom: 40,
     borderRadius: 8,
