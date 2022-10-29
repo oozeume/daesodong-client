@@ -1,5 +1,6 @@
-import {Text} from 'native-base';
 import React from 'react';
+import {Text} from 'native-base';
+
 import styles from '../hospital/info/styles';
 
 type TextAlignType =
@@ -34,7 +35,7 @@ const TextEllipsis = ({
   return (
     <Text
       numberOfLines={numberOfLines}
-      style={[styles.text, {width: width, textAlign: textAlign}]}>
+      style={[styles.text, {width, textAlign}]}>
       {text}
     </Text>
   );
