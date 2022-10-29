@@ -51,7 +51,17 @@ const RecordVisitedExperience = () => {
 
   return (
     <>
-      {!visited ? (
+      {visited ? (
+        <Box
+          style={[
+            styles.visitHistoryBox,
+            {height: 52, backgroundColor: '#FFF5EF'},
+          ]}>
+          <Center>
+            <Text color={'#FF6B00'}>봉삼이와 함께 방문한 병원이에요</Text>
+          </Center>
+        </Box>
+      ) : (
         <Box
           style={[
             styles.visitHistoryBox,
@@ -65,16 +75,6 @@ const RecordVisitedExperience = () => {
             <Button style={styles.visitButton} onPress={showToast}>
               <Text color={'#FF6B00'}>방문한 경험이 있어요</Text>
             </Button>
-          </Center>
-        </Box>
-      ) : (
-        <Box
-          style={[
-            styles.visitHistoryBox,
-            {height: 52, backgroundColor: '#FFF5EF'},
-          ]}>
-          <Center>
-            <Text color={'#FF6B00'}>봉삼이와 함께 방문한 병원이에요</Text>
           </Center>
         </Box>
       )}

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Linking, Pressable} from 'react-native';
 import {
+  AspectRatio,
   Box,
   Center,
   Divider,
@@ -66,13 +67,14 @@ const HospitalInfo = () => {
             activeDotColor="#FF6B00"
             loop={false}>
             {IMAGE_LIST.map(image => (
-              <Image
-                key={image.uri}
-                source={{uri: image.uri}}
-                width={375}
-                height={250}
-                alt=""
-              />
+              <AspectRatio key={image.uri} ratio={375 / 250}>
+                <Image
+                  source={{uri: image.uri}}
+                  width={375}
+                  height={250}
+                  alt=""
+                />
+              </AspectRatio>
             ))}
           </Swiper>
         </Center>

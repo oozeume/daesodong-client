@@ -1,7 +1,7 @@
 import React from 'react';
 import {Center, Flex, Text} from 'native-base';
 
-import {VisitedAnimalsType} from './VisitedAnimals';
+import {VisitedAnimalsType} from '~/../types/hospital';
 
 import styles from './styles';
 

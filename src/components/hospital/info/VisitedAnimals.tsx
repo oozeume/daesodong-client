@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Box, Center, HStack, Pressable, Text, VStack} from 'native-base';
 
+import {VisitedAnimalsType} from '~/../types/hospital';
 import VisitedAnimalsAccordion from './VisitedAnimalsAccordion';
 
 import styles from './styles';
@@ -8,8 +9,6 @@ import UpIcon from '../../../assets/icon/up.svg';
 import DownIcon from '../../../assets/icon/down.svg';
 
 // 타입 및 데이터
-export type VisitedAnimalsType = {animalType: string; visitsNumber: number};
-
 const TMP_DATA: VisitedAnimalsType[] = [
   {animalType: '햄스터', visitsNumber: 12},
   {animalType: '햄스터', visitsNumber: 12},
