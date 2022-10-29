@@ -5,9 +5,9 @@ import {VisitedAnimalsType} from '~/../types/hospital';
 
 import styles from './styles';
 
-type VisitedAnimalsAccordionProps = {
+interface Props {
   visitedAnimals: VisitedAnimalsType[];
-};
+}
 
 /**
  * 병원 시설에 방문한 동물의 종에 따라 몇마리가 방문했는지 보여주는 컴포넌트
@@ -15,9 +15,7 @@ type VisitedAnimalsAccordionProps = {
  * @TODO API 연동 후 타입 및 데이터 변경
  */
 
-const VisitedAnimalsAccordion = ({
-  visitedAnimals,
-}: VisitedAnimalsAccordionProps) => {
+function VisitedAnimalsAccordion({visitedAnimals}: Props) {
   return (
     <Center>
       <Flex style={styles.innerBoxWrapper}>
@@ -30,6 +28,6 @@ const VisitedAnimalsAccordion = ({
       </Flex>
     </Center>
   );
-};
+}
 
 export default VisitedAnimalsAccordion;

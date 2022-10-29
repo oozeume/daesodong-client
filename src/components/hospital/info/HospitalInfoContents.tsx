@@ -3,9 +3,9 @@ import {Center, HStack} from 'native-base';
 
 import IconView, {IconNameType} from './IconView';
 
-type HospitalInfoContentsType = {
+interface Props {
   iconName: IconNameType;
-};
+}
 
 /**
  * 병원 시설 정보 내용을 가로 배치하기 위한 컴포넌트
@@ -13,10 +13,10 @@ type HospitalInfoContentsType = {
  * @param children 표시될 컨텐츠 Element
  */
 
-const HospitalInfoContents = ({
+function HospitalInfoContents({
   iconName,
   children,
-}: React.PropsWithChildren<HospitalInfoContentsType>) => {
+}: React.PropsWithChildren<Props>) {
   return (
     <Center>
       <HStack
@@ -29,6 +29,6 @@ const HospitalInfoContents = ({
       </HStack>
     </Center>
   );
-};
+}
 
 export default HospitalInfoContents;

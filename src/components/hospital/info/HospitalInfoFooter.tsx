@@ -9,7 +9,8 @@ import BookMarkUnFillIcon from '../../../assets/icon/bookmark_unfill.svg';
  * 병원 시설 정보 탭 하단 푸터 컴포넌트
  * @TODO 백엔드 연동 후 북마크 및 전화하기 기능 수정
  */
-const HospitalInfoFooter = () => {
+
+function HospitalInfoFooter() {
   const [isBookMark, setIsBookMark] = useState(false);
   const [bookMarkNumber, setBookMarkNumber] = useState(99);
 
@@ -50,6 +51,6 @@ const HospitalInfoFooter = () => {
       </Button>
     </HStack>
   );
-};
+}
 
 export default HospitalInfoFooter;

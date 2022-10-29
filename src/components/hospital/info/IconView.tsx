@@ -14,16 +14,16 @@ export type IconNameType =
   | 'clock_fill'
   | 'location_fill';
 
-type IconViewProps = {
+interface Props {
   iconName: IconNameType;
-};
+}
 
 /**
  * 아이콘 이름을 통해 아이콘을 반환하는 컴포넌트
  * @param {string} iconName 아이콘 이름
  */
 
-const IconView = ({iconName}: IconViewProps) => {
+function IconView({iconName}: Props) {
   const getIcon = (name: IconNameType) => {
     switch (name) {
       case 'chat_fill':
@@ -42,6 +42,6 @@ const IconView = ({iconName}: IconViewProps) => {
   };
 
   return <View style={{marginRight: 20}}>{getIcon(iconName)}</View>;
-};
+}
 
 export default IconView;

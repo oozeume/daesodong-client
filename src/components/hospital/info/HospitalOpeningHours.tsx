@@ -5,9 +5,9 @@ import {OpeningHoursType} from '../../../pages/hospital/info';
 
 import styles from './styles';
 
-type HospitalOpeningHoursProps = {
+interface Props {
   openingHours: OpeningHoursType;
-};
+}
 
 /**
  * 영업 시간 가로 배치를 위한 컴포넌트
@@ -15,7 +15,7 @@ type HospitalOpeningHoursProps = {
  * @TODO API 연동 후 타입 및 데이터 변경
  */
 
-const HospitalOpeningHours = ({openingHours}: HospitalOpeningHoursProps) => {
+function HospitalOpeningHours({openingHours}: Props) {
   return (
     <HStack space={2}>
       <Text
@@ -34,6 +34,6 @@ const HospitalOpeningHours = ({openingHours}: HospitalOpeningHoursProps) => {
       </VStack>
     </HStack>
   );
-};
+}
 
 export default HospitalOpeningHours;

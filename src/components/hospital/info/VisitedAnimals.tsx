@@ -29,7 +29,7 @@ const TMP_DATA: VisitedAnimalsType[] = [
  * @TODO API 연동 후 이벤트 핸들링 및 타입 및 데이터 변경
  */
 
-const RecordVisitedAccordion = () => {
+function RecordVisitedAccordion() {
   const [isOpen, setIsOpen] = useState(false);
 
   // 총 방문 동물 숫자 카운팅
@@ -57,6 +57,6 @@ const RecordVisitedAccordion = () => {
       </Box>
     </Pressable>
   );
-};
+}
 
 export default RecordVisitedAccordion;

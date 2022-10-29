@@ -51,7 +51,7 @@ const hospitalGreetings = `어울림 동물병원 대표원장 김용석입니�
  * 병원 시설 정보 탭
  */
 
-const HospitalInfo = () => {
+function HospitalInfo() {
   const [textOpen, setTextOpen] = useState(false);
 
   const handleTextOpen = () => setTextOpen(prev => !prev);
@@ -167,6 +167,6 @@ const HospitalInfo = () => {
       </ScrollView>
     </VStack>
   );
-};
+}
 
 export default HospitalInfo;
