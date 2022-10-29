@@ -23,7 +23,7 @@ interface Props {
 /**
  *@description 병원 리뷰 등록 폼 인풋
  */
-export default function FormInput({
+function FormInput({
   placeholder,
   topLabel,
   bottomLabel,
@@ -89,3 +89,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
+
+export default FormInput;

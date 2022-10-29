@@ -3,7 +3,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import AddImageIcon from '~/assets/icons/add_image.svg';
 
-export default function ImageUploader() {
+function ImageUploader() {
   return (
     <Button variant="unstyled" style={styles.addImageButton}>
       <AddImageIcon />
@@ -18,3 +18,5 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
 });
+
+export default ImageUploader;

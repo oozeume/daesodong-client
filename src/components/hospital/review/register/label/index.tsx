@@ -6,7 +6,7 @@ interface props {
   text: string;
   style?: StyleProp<TextStyle>;
 }
-export default function Label({text, style}: props) {
+function Label({text, style}: props) {
   return <Text style={[styles.label, style]}>{text}</Text>;
 }
 
@@ -16,3 +16,5 @@ const styles = StyleSheet.create({
     color: '#5D626D;',
   },
 });
+
+export default Label;

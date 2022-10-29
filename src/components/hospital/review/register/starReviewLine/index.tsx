@@ -1,5 +1,5 @@
 import {HStack, Text} from 'native-base';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, ViewStyle} from 'react-native';
 import StarRatingIcon from '~/assets/icons/star_rating.svg';
 
@@ -7,7 +7,7 @@ interface Props {
   txt: string;
   lineStyle?: ViewStyle;
 }
-export default function StarReviewLine({txt, lineStyle}: Props) {
+function StarReviewLine({txt, lineStyle}: Props) {
   const [starRating, setStartRating] = useState(0);
 
   return (
@@ -69,3 +69,5 @@ const styles = StyleSheet.create({
     marginRight: 0,
   },
 });
+
+export default StarReviewLine;

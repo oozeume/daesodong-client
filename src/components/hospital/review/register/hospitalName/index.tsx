@@ -6,7 +6,7 @@ import IconHome from '~/assets/icons/home.svg';
 interface Props {
   text: string;
 }
-export default function HospitalName({text}: Props) {
+function HospitalName({text}: Props) {
   return (
     <HStack style={styles.view}>
       <IconHome style={styles.icon} />
@@ -31,3 +31,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default HospitalName;

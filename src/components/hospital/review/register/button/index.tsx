@@ -1,4 +1,4 @@
-import {Button, HStack, Pressable, Text} from 'native-base';
+import {Button, Center, HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 import {GestureResponderEvent, StyleProp, StyleSheet} from 'react-native';
 import CircleCheckIcon from '~/assets/icons/circle_check.svg';
@@ -52,12 +52,13 @@ const ReviewPrecautionButton = ({onPress}: {onPress: () => void}) => {
   );
 };
 
-interface CheckedButtonProps<T> {
+interface CheckedButtonProps<T extends number | boolean> {
   isChecked: T;
   setCheck: (isChecked: T) => void;
 }
 
-interface RevisitCheckButtonProps<T> extends CheckedButtonProps<T> {
+interface RevisitCheckButtonProps<T extends number | boolean>
+  extends CheckedButtonProps<T> {
   text: string;
   checkValue: number;
 }
@@ -80,12 +81,14 @@ const RevisitCheckButton = ({
   const checkedTextStyle =
     isChecked === checkValue ? styles.revisitCheckedText : undefined;
   return (
-    <Button
+    <Pressable
       style={[styles.revisitCheckButton, checkedButtonStyle]}
       variant="outline"
       onPress={() => setCheck(isChecked === checkValue ? 0 : checkValue)}>
-      <Text style={[styles.revisitCheckText, checkedTextStyle]}>{text}</Text>
-    </Button>
+      <Center style={styles.innerCenter}>
+        <Text style={[styles.revisitCheckText, checkedTextStyle]}>{text}</Text>
+      </Center>
+    </Pressable>
   );
 };
 
@@ -127,6 +130,10 @@ const ReviewRegisterButton = () => {
 };
 
 const styles = StyleSheet.create({
+  innerCenter: {
+    height: '100%',
+  },
+
   // 뒤로가기 버튼
   backButton: {
     position: 'absolute',
@@ -161,6 +168,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 8,
     borderColor: '#E1E2E4',
+    borderWidth: 1,
   },
   revisitCheckedButton: {
     width: '48.5%',

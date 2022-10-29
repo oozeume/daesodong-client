@@ -12,7 +12,7 @@ interface Props {
  *@param {JSX.Element} rightButton - 헤더 기준 좌쪽 위치 버튼
  *@param {JSX.Element} leftButton - 헤더 기준 우쪽 위치 버튼
  */
-export default function Header({title, rightButton, leftButton}: Props) {
+function Header({title, rightButton, leftButton}: Props) {
   return (
     <HStack style={styles.container}>
       {leftButton}
@@ -39,3 +39,5 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
+
+export default Header;
