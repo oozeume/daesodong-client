@@ -11,10 +11,10 @@ import {
 } from 'native-base';
 import React from 'react';
 import HeartFillIcon from '../../assets/icons/heart_fill.svg';
-import StarFillIcon from '../../assets/icons/star_fill.svg';
 import KebabMenuIcon from '../../assets/icons/kebabMenu.svg';
 import AvatarIcon from '../../assets/icons/avartar.svg';
 import ImageModal from './image-modal';
+import StarRate from './StarRate';
 
 interface Props {
   invisibleBorderTop?: boolean;
@@ -138,49 +138,13 @@ function ReviewItem({invisibleBorderTop}: Props) {
 
         <HStack bg={'red'} space={'13px'} pt={'18px'}>
           <Stack space={'8px'} w={'143px'}>
-            <HStack alignItems={'center'}>
-              <Text w={'34px'} color={'grayScale.60'} fontSize={'13px'}>
-                진료
-              </Text>
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-            </HStack>
-            <HStack alignItems={'center'}>
-              <Text w={'34px'} color={'grayScale.60'} fontSize={'13px'}>
-                시설
-              </Text>
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-            </HStack>
+            <StarRate title={'진료'} />
+            <StarRate title={'시설'} />
           </Stack>
 
           <Stack space={'8px'} w={'143px'}>
-            <HStack alignItems={'center'}>
-              <Text w={'34px'} fontSize={'13px'} color={'grayScale.60'}>
-                비용
-              </Text>
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-            </HStack>
-            <HStack alignItems={'center'}>
-              <Text w={'34px'} fontSize={'13px'} color={'grayScale.60'}>
-                친절
-              </Text>
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-              <StarFillIcon color={'#FFCC16'} />
-            </HStack>
+            <StarRate title={'비용'} />
+            <StarRate title={'친절'} />
           </Stack>
         </HStack>
       </Box>
