@@ -9,8 +9,8 @@ import HospitalInfo from './info';
 import HospitalReview from './review';
 import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 
-import ShareIcon from 'react-native-vector-icons/EvilIcons';
-import LeftArrowIcon from 'react-native-vector-icons/Feather';
+import BackIcon from '../../assets/icon/back_icon.svg';
+import ShareIcon from '../../assets/icon/share_line_icon.svg';
 
 type TabType = 'Info' | 'Review';
 type Props = NativeStackScreenProps<ParamListBase, 'Hospital'>;
@@ -33,7 +33,7 @@ function Hospital({navigation}: Props) {
         <HStack space={3} height={'7%'} justifyContent="center">
           <Center h="60" w="30">
             <Pressable onPress={() => navigation.goBack()}>
-              <LeftArrowIcon name={'arrow-left'} size={33} />
+              <BackIcon />
             </Pressable>
           </Center>
           <Center h="60" w="250">
@@ -47,7 +47,7 @@ function Hospital({navigation}: Props) {
           </Center>
           <Center h="60" w="30">
             <Pressable>
-              <ShareIcon name={'share-google'} size={33} />
+              <ShareIcon />
             </Pressable>
           </Center>
         </HStack>

@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {Linking} from 'react-native';
 import {Button, HStack, Text} from 'native-base';
 
-import BookMarkFillIcon from '../../../assets/icon/bookmark_fill.svg';
-import BookMarkUnFillIcon from '../../../assets/icon/bookmark_unfill.svg';
+import BookMarkFillIcon from '../../../assets/icon/bookmark_icon.svg';
 
 /**
  * 병원 시설 정보 탭 하단 푸터 컴포넌트
@@ -30,7 +29,7 @@ function HospitalInfoFooter() {
         borderRadius={8}
         style={{marginTop: 12}}
         onPress={handleBookMark}>
-        {isBookMark ? <BookMarkFillIcon /> : <BookMarkUnFillIcon />}
+        <BookMarkFillIcon fill={isBookMark ? '#FF6B00' : '#ECECEE'} />
 
         <Text fontSize={10} textAlign={'center'}>
           {bookMarkNumber}

@@ -22,15 +22,15 @@ function IconView({iconName}: Props) {
   const getIcon = (name: IconNameType) => {
     switch (name) {
       case 'chat_fill':
-        return <ChatFillIcon />;
+        return <ChatFillIcon fill={'#ECECEE'} />;
       case 'call_fill':
-        return <CallFillIcon />;
+        return <CallFillIcon fill={'#ECECEE'} />;
       case 'info_fill':
-        return <InfoFillIcon />;
+        return <InfoFillIcon fill={'#ECECEE'} />;
       case 'clock_fill':
-        return <ClockFillIcon />;
+        return <ClockFillIcon fill={'#ECECEE'} />;
       case 'location_fill':
-        return <LocationFillIcon />;
+        return <LocationFillIcon fill={'#ECECEE'} />;
       default:
         return null;
     }
