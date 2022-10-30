@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Divider,
-  Flex,
-  HStack,
-  Image,
-  Pressable,
-  Stack,
-  Text,
-} from 'native-base';
+import {Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
 
 import _ from 'lodash';
 
