@@ -1,8 +1,6 @@
 import React from 'react';
 import {Text} from 'native-base';
 
-import styles from '../hospital/info/styles';
-
 type TextAlignType =
   | 'center'
   | 'auto'
@@ -26,19 +24,23 @@ type TextEllipsisProps = {
  * @param {number} numberOfLines 텍스트가 표시될 줄(세로) 길이, 펼치기 할 경우 0
  */
 
-const TextEllipsis = ({
+function TextEllipsis({
   text,
   width,
   textAlign,
   numberOfLines,
-}: TextEllipsisProps) => {
+}: TextEllipsisProps) {
   return (
     <Text
+      fontSize={14}
+      fontWeight={'400'}
+      color={'#5D626D'}
+      textAlign={'center'}
       numberOfLines={numberOfLines}
-      style={[styles.text, {width, textAlign}]}>
+      style={{width, textAlign}}>
       {text}
     </Text>
   );
-};
+}
 
 export default TextEllipsis;

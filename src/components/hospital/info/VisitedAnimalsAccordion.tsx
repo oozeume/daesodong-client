@@ -3,8 +3,6 @@ import {Center, Flex, Text} from 'native-base';
 
 import {VisitedAnimalsType} from '~/../types/hospital';
 
-import styles from './styles';
-
 interface Props {
   visitedAnimals: VisitedAnimalsType[];
 }
@@ -18,11 +16,38 @@ interface Props {
 function VisitedAnimalsAccordion({visitedAnimals}: Props) {
   return (
     <Center>
-      <Flex style={styles.innerBoxWrapper}>
+      <Flex
+        w={307}
+        mt={'12px'}
+        flexDirection={'row'}
+        flexWrap={'wrap'}
+        justifyContent={'space-between'}>
         {visitedAnimals.map((data, index) => (
-          <Flex key={`${data.animalType} + ${index}`} style={styles.innerBox}>
-            <Text style={styles.text}>{data.animalType}</Text>
-            <Text style={styles.text}>{data.visitsNumber}</Text>
+          <Flex
+            key={`${data.animalType} + ${index}`}
+            w={'149.5px'}
+            h={'40px'}
+            px={'16px'}
+            py={'11px'}
+            mt={'8px'}
+            borderRadius={8}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            backgroundColor={'#FFFFFF'}>
+            <Text
+              fontSize={14}
+              fontWeight={'400'}
+              color={'#5D626D'}
+              textAlign={'center'}>
+              {data.animalType}
+            </Text>
+            <Text
+              fontSize={14}
+              fontWeight={'400'}
+              color={'#5D626D'}
+              textAlign={'center'}>
+              {data.visitsNumber}
+            </Text>
           </Flex>
         ))}
       </Flex>

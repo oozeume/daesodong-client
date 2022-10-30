@@ -1,7 +1,8 @@
 import React from 'react';
 import {Center, HStack} from 'native-base';
 
-import IconView, {IconNameType} from './IconView';
+import {IconNameType} from '~/../types/hospital';
+import IconView from './IconView';
 
 interface Props {
   iconName: IconNameType;

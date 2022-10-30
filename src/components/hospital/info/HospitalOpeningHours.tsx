@@ -3,8 +3,6 @@ import {HStack, Text, VStack} from 'native-base';
 
 import {OpeningHoursType} from '../../../pages/hospital/info';
 
-import styles from './styles';
-
 interface Props {
   openingHours: OpeningHoursType;
 }
@@ -19,15 +17,27 @@ function HospitalOpeningHours({openingHours}: Props) {
   return (
     <HStack space={2}>
       <Text
-        style={[styles.text, {width: 40, marginRight: 20, textAlign: 'left'}]}>
+        fontSize={14}
+        color={'#5D626D'}
+        fontWeight={'400'}
+        textAlign={'left'}
+        style={{width: 40, marginRight: 20}}>
         {openingHours.date}
       </Text>
       <VStack space={1} width={239}>
-        <Text style={[styles.text, {textAlign: 'left'}]}>
+        <Text
+          fontSize={14}
+          color={'#5D626D'}
+          fontWeight={'400'}
+          textAlign={'left'}>
           {openingHours.totalHour}
         </Text>
         {openingHours.break && (
-          <Text style={[styles.text, {textAlign: 'left'}]}>
+          <Text
+            fontSize={14}
+            color={'#5D626D'}
+            fontWeight={'400'}
+            textAlign={'left'}>
             {openingHours.break} 휴게시간
           </Text>
         )}

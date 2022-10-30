@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet} from 'react-native';
+import {Pressable} from 'react-native';
 import {Center, HStack, Text, View} from 'native-base';
 import {ParamListBase} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -7,19 +7,19 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import HospitalInfo from './info';
 import HospitalReview from './review';
-import HospitalInfoFooter from '../../components/hospital/info/HospitalInfoFooter';
+import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 
 import ShareIcon from 'react-native-vector-icons/EvilIcons';
 import LeftArrowIcon from 'react-native-vector-icons/Feather';
 
 type TabType = 'Info' | 'Review';
-type HospitalProps = NativeStackScreenProps<ParamListBase, 'Hospital'>;
+type Props = NativeStackScreenProps<ParamListBase, 'Hospital'>;
 
 /**
  * 병원 시설 정보, 후기 페이지
  */
 
-const Hospital = ({navigation}: HospitalProps) => {
+function Hospital({navigation}: Props) {
   const [selectedTab, setSelectedTab] = useState<TabType>('Info');
 
   const onClickTab = (type: TabType) => {
@@ -28,7 +28,7 @@ const Hospital = ({navigation}: HospitalProps) => {
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
+      <View w={'100%'} backgroundColor={'#FFFFFF'}>
         {/* 병원 상세 타이틀바 */}
         <HStack space={3} height={'7%'} justifyContent="center">
           <Center h="60" w="30">
@@ -37,7 +37,13 @@ const Hospital = ({navigation}: HospitalProps) => {
             </Pressable>
           </Center>
           <Center h="60" w="250">
-            <Text style={styles.titleText}>병원 이름</Text>
+            <Text
+              fontSize={18}
+              fontWeight={'500'}
+              lineHeight={'26px'}
+              textAlign={'center'}>
+              병원 이름
+            </Text>
           </Center>
           <Center h="60" w="30">
             <Pressable>
@@ -50,16 +56,40 @@ const Hospital = ({navigation}: HospitalProps) => {
         <HStack space={2} height={'7%'} justifyContent="center" paddingX={18}>
           <Center h="52" w="169.5">
             <Pressable
-              style={[selectedTab === 'Info' && styles.tabHilight]}
+              style={[
+                selectedTab === 'Info' && {
+                  width: '100%',
+                  borderBottomWidth: 2,
+                  borderBottomColor: '#000000',
+                },
+              ]}
               onPress={() => onClickTab('Info')}>
-              <Text style={styles.tabText}>시설 정보</Text>
+              <Text
+                fontSize={16}
+                fontWeight={'500'}
+                lineHeight={'52px'}
+                textAlign={'center'}>
+                시설 정보
+              </Text>
             </Pressable>
           </Center>
           <Center h="52" w="169.5">
             <Pressable
-              style={[selectedTab === 'Review' && styles.tabHilight]}
+              style={[
+                selectedTab === 'Review' && {
+                  width: '100%',
+                  borderBottomWidth: 2,
+                  borderBottomColor: '#000000',
+                },
+              ]}
               onPress={() => onClickTab('Review')}>
-              <Text style={styles.tabText}>후기(00)</Text>
+              <Text
+                fontSize={16}
+                fontWeight={'500'}
+                lineHeight={'52px'}
+                textAlign={'center'}>
+                후기(00)
+              </Text>
             </Pressable>
           </Center>
         </HStack>
@@ -68,7 +98,7 @@ const Hospital = ({navigation}: HospitalProps) => {
         <HStack
           height={'74%'}
           mt={0.5}
-          style={[selectedTab !== 'Info' && styles.reviewHeight]}>
+          style={[selectedTab !== 'Info' && {height: '86%'}]}>
           {selectedTab === 'Info' ? <HospitalInfo /> : <HospitalReview />}
         </HStack>
 
@@ -77,33 +107,6 @@ const Hospital = ({navigation}: HospitalProps) => {
       </View>
     </SafeAreaView>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    backgroundColor: '#FFFFFF',
-  },
-  titleText: {
-    fontSize: 18,
-    fontWeight: '500',
-    lineHeight: 26,
-    textAlign: 'center',
-  },
-  reviewHeight: {
-    height: '86%',
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: '500',
-    lineHeight: 52,
-    textAlign: 'center',
-  },
-  tabHilight: {
-    width: '100%',
-    borderBottomWidth: 2,
-    borderBottomColor: '#000',
-  },
-});
+}
 
 export default Hospital;

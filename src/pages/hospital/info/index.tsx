@@ -19,7 +19,6 @@ import HospitalInfoContents from '../../../components/hospital/info/HospitalInfo
 import HospitalOpeningHours from '../../../components/hospital/info/HospitalOpeningHours';
 import RecordVisitedExperience from '../../../components/hospital/info/RecordVisitedExperience';
 
-import styles from '../../../components/hospital/info/styles';
 import ArrowDownIcon from '../../../assets/icon/_down.svg';
 
 // 임시 타입 생성 및 mock data
@@ -135,7 +134,14 @@ function HospitalInfo() {
             onPress={() => {
               Linking.openURL('tel:02-305-4242');
             }}>
-            <Text style={[styles.phoneNumber, {width: 299, textAlign: 'left'}]}>
+            <Text
+              w={299}
+              fontSize={13}
+              textAlign={'left'}
+              color={'#0094FF'}
+              textDecoration={'solid'}
+              textDecorationLine={'underline'}
+              textDecorationColor={'#0094FF'}>
               02-305-4242
             </Text>
           </Pressable>
@@ -143,7 +149,12 @@ function HospitalInfo() {
 
         {/* 병원 정보 */}
         <HospitalInfoContents iconName="info_fill">
-          <Text style={[styles.text, {width: 299, textAlign: 'left'}]}>
+          <Text
+            w={299}
+            fontSize={14}
+            fontWeight={'400'}
+            color={'#5D626D'}
+            textAlign={'left'}>
             첫 방문 시 예약이 불가합니다.
           </Text>
         </HospitalInfoContents>
@@ -152,16 +163,15 @@ function HospitalInfo() {
         {/* Box위치에 지도 API 추가 예정 */}
         <HospitalInfoContents iconName="location_fill">
           <VStack>
-            <Text style={[styles.text, {width: 299, textAlign: 'left'}]}>
+            <Text
+              w={299}
+              fontSize={14}
+              fontWeight={'400'}
+              color={'#5D626D'}
+              textAlign={'left'}>
               서울 서대문구 남가좌동 385 DMC 파크뷰자이 104동 1층 102A호
             </Text>
-            <Box
-              width={299}
-              height={200}
-              background={'#F6F7F7'}
-              marginTop={12}
-              style={{marginTop: 12}}
-            />
+            <Box w={299} h={200} mt={'12px'} background={'#F6F7F7'} />
           </VStack>
         </HospitalInfoContents>
       </ScrollView>

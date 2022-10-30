@@ -4,7 +4,6 @@ import {Box, Center, HStack, Pressable, Text, VStack} from 'native-base';
 import {VisitedAnimalsType} from '~/../types/hospital';
 import VisitedAnimalsAccordion from './VisitedAnimalsAccordion';
 
-import styles from './styles';
 import UpIcon from '../../../assets/icon/up.svg';
 import DownIcon from '../../../assets/icon/down.svg';
 
@@ -43,10 +42,20 @@ function RecordVisitedAccordion() {
 
   return (
     <Pressable onPress={handleOpen}>
-      <Box style={[styles.visitHistoryBox]}>
+      <Box
+        w={339}
+        px={'12px'}
+        py={'16px'}
+        mt={'12px'}
+        borderRadius={8}
+        backgroundColor={'#F6F7F7'}>
         <VStack>
           <HStack space={2} justifyContent="center">
-            <Text style={[styles.text, styles.hilightText]}>
+            <Text
+              fontSize={14}
+              fontWeight={'500'}
+              color={'#383E4A'}
+              textAlign={'center'}>
               {totalVisitsNumber}마리의 친구들이 방문했어요
             </Text>
             <Center>{isOpen ? <UpIcon /> : <DownIcon />}</Center>
