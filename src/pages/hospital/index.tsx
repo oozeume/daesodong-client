@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#FFFFFF',
+    height: '100%',
   },
   titleText: {
     fontSize: 18,
