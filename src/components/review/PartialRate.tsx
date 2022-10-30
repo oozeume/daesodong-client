@@ -1,15 +1,16 @@
 import {Box, HStack, Text} from 'native-base';
-import React, {FunctionComponent} from 'react';
+import React from 'react';
 import StarFillIcon from '../../assets/icons/star_fill.svg';
 
-const SectionRate: FunctionComponent<{title: string; rate: number}> = ({
-  title,
-  rate,
-}) => {
+interface Props {
+  title: string;
+  rate: number;
+}
+
+function PartialRate({title, rate}: Props) {
   return (
     <HStack justifyContent={'center'} space={'10px'} alignItems={'center'}>
       <Text color={'grayScale.50'}>{title}</Text>
-
       <Box
         w={'104px'}
         h={'4px'}
@@ -26,6 +27,6 @@ const SectionRate: FunctionComponent<{title: string; rate: number}> = ({
       <Text color={'#9EA1A8'}>{rate}</Text>
     </HStack>
   );
-};
+}
 
-export default SectionRate;
+export default PartialRate;

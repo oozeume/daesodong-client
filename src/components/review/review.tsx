@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 import React from 'react';
 import ReviewItem from './review-item';
-import StarRate from './star-rate';
+import HospitalReviewAllRate from './HospitalReviewRate';
 import CheckIcon from '../../assets/icons/check.svg';
 
 function ReviewPage() {
@@ -14,7 +14,7 @@ function ReviewPage() {
         px={'18px'}
         borderBottomColor={'grayScale.20'}
         borderBottomWidth={1}>
-        <StarRate />
+        <HospitalReviewAllRate />
         <Button
           w={'100%'}
           h={'44px'}

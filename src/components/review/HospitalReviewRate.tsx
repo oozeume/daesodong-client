@@ -2,9 +2,9 @@ import {Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
 import React from 'react';
 import StarFillIcon from '../../assets/icons/star_fill.svg';
 import StarHalfIcon from '../../assets/icons/star_half.svg';
-import SectionRate from './section-rate';
+import PartialRate from './PartialRate';
 
-function StarRate() {
+function HospitalReviewAllRate() {
   return (
     <Box>
       <Flex
@@ -42,10 +42,10 @@ function StarRate() {
           </Stack>
           <Divider orientation="vertical" bg={'grayScale.10'} />
           <Stack>
-            <SectionRate title={'진료'} rate={4.7} />
-            <SectionRate title={'비용'} rate={4.7} />
-            <SectionRate title={'시설'} rate={4.7} />
-            <SectionRate title={'친절'} rate={4.7} />
+            <PartialRate title={'진료'} rate={4.7} />
+            <PartialRate title={'비용'} rate={4.7} />
+            <PartialRate title={'시설'} rate={4.7} />
+            <PartialRate title={'친절'} rate={4.7} />
           </Stack>
         </HStack>
       </Flex>
@@ -53,4 +53,4 @@ function StarRate() {
   );
 }
 
-export default StarRate;
+export default HospitalReviewAllRate;
