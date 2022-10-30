@@ -23,11 +23,11 @@ function HospitalReviewAllRate() {
               4.8
             </Text>
             <HStack mt={'1.5px'}>
-              <StarFillIcon fill={'#FF6B00'} stroke={'#FF6B00'} />
-              <StarFillIcon fill={'#FF6B00'} stroke={'#FF6B00'} />
-              <StarFillIcon fill={'#FF6B00'} stroke={'#FF6B00'} />
-              <StarFillIcon fill={'#FF6B00'} stroke={'#FF6B00'} />
-              <StarHalfIcon fill={'#FF6B00'} stroke={'#FF6B00'} />
+              <StarFillIcon fill={'#FF6B00'} />
+              <StarFillIcon fill={'#FF6B00'} />
+              <StarFillIcon fill={'#FF6B00'} />
+              <StarFillIcon fill={'#FF6B00'} />
+              <StarHalfIcon fill={'#FF6B00'} />
             </HStack>
             <Flex
               mt={'8.5px'}
