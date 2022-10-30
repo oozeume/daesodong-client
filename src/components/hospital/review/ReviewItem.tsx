@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import React from 'react';
 import {
   Box,
   Divider,
@@ -9,12 +9,14 @@ import {
   Stack,
   Text,
 } from 'native-base';
-import React from 'react';
-import HeartFillIcon from '../../../assets/icons/heart_fill.svg';
-import KebabMenuIcon from '../../../assets/icons/kebabMenu.svg';
-import AvatarIcon from '../../../assets/icons/avartar.svg';
-import ImageModal from './ImageModal';
+
+import _ from 'lodash';
+
 import StarRate from './StarRate';
+import ImageModal from './ImageModal';
+import AvatarIcon from '~/assets/icons/avartar.svg';
+import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
+import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 
 interface Props {
   invisibleBorderTop?: boolean;

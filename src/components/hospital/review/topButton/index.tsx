@@ -1,6 +1,7 @@
-import {Pressable, Text} from 'native-base';
 import React from 'react';
-import TopIcon from '../../assets/icons/top.svg';
+import {Pressable, Text} from 'native-base';
+
+import TopIcon from '~/assets/icons/top.svg';
 
 function TopButton() {
   return (

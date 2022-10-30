@@ -1,6 +1,6 @@
-import {Box, HStack, Text} from 'native-base';
 import React from 'react';
-import StarFillIcon from '../../../assets/icons/star_fill.svg';
+import {Box, HStack, Text} from 'native-base';
+import StarFillIcon from '~/assets/icons/star_fill.svg';
 
 interface Props {
   title: string;

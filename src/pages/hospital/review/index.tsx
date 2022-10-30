@@ -1,9 +1,11 @@
-import _ from 'lodash';
-import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 import React from 'react';
+import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
+
+import _ from 'lodash';
+
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import ReviewItem from '~/components/hospital/review/ReviewItem';
-import CheckIcon from '../../../assets/icons/check.svg';
+import CheckIcon from '~/assets/icons/check.svg';
 
 const HospitalReview = () => {
   return (
