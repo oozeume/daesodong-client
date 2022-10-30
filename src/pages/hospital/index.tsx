@@ -1,95 +1,112 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet} from 'react-native';
+import {Pressable} from 'react-native';
 import {Center, HStack, Text, View} from 'native-base';
-
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ParamListBase} from '@react-navigation/native';
-
-import HospitalDetail from './detail';
-import HospitalReview from './review';
-import ShareIcon from 'react-native-vector-icons/EvilIcons';
-import LeftArrowIcon from 'react-native-vector-icons/Feather';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+import HospitalInfo from './info';
+import HospitalReview from './review';
+import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
+
+import BackIcon from '../../assets/icon/back_icon.svg';
+import ShareIcon from '../../assets/icon/share_line_icon.svg';
 
 type TabType = 'Info' | 'Review';
-type HospitalProps = NativeStackScreenProps<ParamListBase, 'Hospital'>;
+type Props = NativeStackScreenProps<ParamListBase, 'Hospital'>;
 
-const Hospital = ({navigation}: HospitalProps) => {
+/**
+ * 병원 시설 정보, 후기 페이지
+ */
+
+function Hospital({navigation}: Props) {
   const [selectedTab, setSelectedTab] = useState<TabType>('Info');
 
   const onClickTab = (type: TabType) => {
-    if (type === 'Info') {
-      setSelectedTab('Info');
-    } else {
-      setSelectedTab('Review');
-    }
+    setSelectedTab(type === 'Info' ? 'Info' : 'Review');
   };
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
+      <View w={'100%'} backgroundColor={'#FFFFFF'}>
         {/* 병원 상세 타이틀바 */}
-        <HStack space={3} justifyContent="center">
+        <HStack space={3} height={'7%'} justifyContent="center">
           <Center h="60" w="30">
             <Pressable onPress={() => navigation.goBack()}>
-              <LeftArrowIcon name={'arrow-left'} size={33} />
+              <BackIcon />
             </Pressable>
           </Center>
           <Center h="60" w="250">
-            <Text style={styles.titleText}>병원 이름</Text>
+            <Text
+              fontSize={18}
+              fontWeight={'500'}
+              lineHeight={'26px'}
+              textAlign={'center'}>
+              병원 이름
+            </Text>
           </Center>
           <Center h="60" w="30">
             <Pressable>
-              <ShareIcon name={'share-google'} size={33} />
+              <ShareIcon />
             </Pressable>
           </Center>
         </HStack>
+
         {/* 병원 상세 탭 */}
-        <HStack space={2} justifyContent="center" paddingX={18}>
+        <HStack space={2} height={'7%'} justifyContent="center" paddingX={18}>
           <Center h="52" w="169.5">
             <Pressable
-              style={[selectedTab === 'Info' && styles.tabHilight]}
+              style={[
+                selectedTab === 'Info' && {
+                  width: '100%',
+                  borderBottomWidth: 2,
+                  borderBottomColor: '#000000',
+                },
+              ]}
               onPress={() => onClickTab('Info')}>
-              <Text style={styles.tabText}>시설 정보</Text>
+              <Text
+                fontSize={16}
+                fontWeight={'500'}
+                lineHeight={'52px'}
+                textAlign={'center'}>
+                시설 정보
+              </Text>
             </Pressable>
           </Center>
           <Center h="52" w="169.5">
             <Pressable
-              style={[selectedTab === 'Review' && styles.tabHilight]}
+              style={[
+                selectedTab === 'Review' && {
+                  width: '100%',
+                  borderBottomWidth: 2,
+                  borderBottomColor: '#000000',
+                },
+              ]}
               onPress={() => onClickTab('Review')}>
-              <Text style={styles.tabText}>후기(00)</Text>
+              <Text
+                fontSize={16}
+                fontWeight={'500'}
+                lineHeight={'52px'}
+                textAlign={'center'}>
+                후기(00)
+              </Text>
             </Pressable>
           </Center>
         </HStack>
+
         {/* 병원 상세 컨텐츠 */}
-        {selectedTab === 'Info' ? <HospitalDetail /> : <HospitalReview />}
+        <HStack
+          height={'74%'}
+          mt={0.5}
+          style={[selectedTab !== 'Info' && {height: '86%'}]}>
+          {selectedTab === 'Info' ? <HospitalInfo /> : <HospitalReview />}
+        </HStack>
+
+        {/* 병원 시설 정보 푸터 버튼 바 */}
+        {selectedTab === 'Info' && <HospitalInfoFooter />}
       </View>
     </SafeAreaView>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    backgroundColor: '#FFFFFF',
-  },
-  titleText: {
-    fontSize: 18,
-    fontWeight: '500',
-    lineHeight: 26,
-    textAlign: 'center',
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: '500',
-    lineHeight: 52,
-    textAlign: 'center',
-  },
-  tabHilight: {
-    width: '100%',
-    borderBottomWidth: 2,
-    borderBottomColor: '#000',
-  },
-});
+}
 
 export default Hospital;
