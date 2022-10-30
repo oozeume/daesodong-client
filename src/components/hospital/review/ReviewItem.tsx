@@ -10,10 +10,10 @@ import {
   Text,
 } from 'native-base';
 import React from 'react';
-import HeartFillIcon from '../../assets/icons/heart_fill.svg';
-import KebabMenuIcon from '../../assets/icons/kebabMenu.svg';
-import AvatarIcon from '../../assets/icons/avartar.svg';
-import ImageModal from './image-modal';
+import HeartFillIcon from '../../../assets/icons/heart_fill.svg';
+import KebabMenuIcon from '../../../assets/icons/kebabMenu.svg';
+import AvatarIcon from '../../../assets/icons/avartar.svg';
+import ImageModal from './ImageModal';
 import StarRate from './StarRate';
 
 interface Props {

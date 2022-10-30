@@ -1,8 +1,8 @@
 import {AspectRatio, Box, HStack, Modal, Text} from 'native-base';
 import React from 'react';
 import {Pressable} from 'react-native';
-import PaginationButtonLeftIcon from '../../assets/icons/pagination_btn_left.svg';
-import PaginationButtonRightIcon from '../../assets/icons/pagination_btn_right.svg';
+import PaginationButtonLeftIcon from '../../../assets/icons/pagination_btn_left.svg';
+import PaginationButtonRightIcon from '../../../assets/icons/pagination_btn_right.svg';
 
 interface Props {
   isOpen: boolean;

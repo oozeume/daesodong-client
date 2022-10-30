@@ -1,7 +1,7 @@
 import {Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
 import React from 'react';
-import StarFillIcon from '../../assets/icons/star_fill.svg';
-import StarHalfIcon from '../../assets/icons/star_half.svg';
+import StarFillIcon from '../../../assets/icons/star_fill.svg';
+import StarHalfIcon from '../../../assets/icons/star_half.svg';
 import PartialRate from './PartialRate';
 
 function HospitalReviewAllRate() {
