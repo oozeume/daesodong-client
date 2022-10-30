@@ -1,4 +1,4 @@
-import {Box, FormControl, HStack, ScrollView, VStack} from 'native-base';
+import {Box, FormControl, HStack, ScrollView, Text, VStack} from 'native-base';
 
 import React, {useEffect, useState} from 'react';
 import FormInput from '~/components/hospital/review/register/FormInput';
@@ -15,10 +15,11 @@ import HospitalName from '~/components/hospital/review/register/HospitalName';
 import DateSelector from '~/components/hospital/review/register/selector';
 import dayjs from 'dayjs';
 import Header from '~/components/hospital/review/register/Header';
-import {StackProps} from '~/../types/navigator';
+import {NavigationHookProp} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {VISIT_REVIEW_TEXT} from '~/constants/hospital/review/register';
 import Label from '~/components/hospital/review/register/label';
+import {useNavigation} from '@react-navigation/native';
 
 // 셀렉터 state 타입
 interface DateList {
@@ -29,9 +30,9 @@ interface DateList {
 /**
  *@description 병원 리뷰 등록 페이지
  */
-const HospitalReviewRegister = ({
-  navigation,
-}: StackProps<'HospitalReviewRegister'>) => {
+function HospitalReviewRegister() {
+  const navigation = useNavigation<NavigationHookProp>();
+
   // 다시 방문하는지 여부 state
   const [isRevisit, setIsRevisit] = useState(0);
 
@@ -50,6 +51,10 @@ const HospitalReviewRegister = ({
   // 후기 작성 시, 주의사항 페이지 이동 함수
   const onMovePrecaution = () => {
     navigation.navigate('HospitalReviewRegisterPrecaution');
+  };
+
+  const onMoveBack = () => {
+    navigation.goBack();
   };
 
   useEffect(() => {
@@ -74,7 +79,10 @@ const HospitalReviewRegister = ({
   return (
     <SafeAreaView>
       <ScrollView backgroundColor="#fff">
-        <Header title="후기 작성" leftButton={<BackButton />} />
+        <Header
+          title="후기 작성"
+          leftButton={<BackButton onPress={onMoveBack} />}
+        />
 
         <HospitalName text={'어울림동물병원'} />
 
@@ -181,6 +189,6 @@ const HospitalReviewRegister = ({
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 export default HospitalReviewRegister;

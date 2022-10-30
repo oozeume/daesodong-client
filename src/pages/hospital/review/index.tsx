@@ -4,7 +4,7 @@ import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import ReviewList from '~/components/hospital/review/ReviewList';
-import {StackProps} from '~/../types/navigator';
+import {NavigationHookProp} from '~/../types/navigator';
 import {useNavigation} from '@react-navigation/native';
 
 /**
@@ -12,6 +12,12 @@ import {useNavigation} from '@react-navigation/native';
  */
 
 const HospitalReview = () => {
+  const navigation = useNavigation<NavigationHookProp>();
+
+  const onMoveReviewRegisterPage = () => {
+    navigation.navigate('HospitalReviewRegister');
+  };
+
   return (
     <ScrollView>
       <Stack
@@ -22,6 +28,7 @@ const HospitalReview = () => {
         borderBottomWidth={1}>
         <HospitalReviewAllRate />
         <Button
+          onPress={onMoveReviewRegisterPage}
           w={'100%'}
           h={'44px'}
           borderRadius={'8px'}

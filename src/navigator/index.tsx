@@ -16,27 +16,13 @@ import CommunityIcon from '../assets/icon/nav_community_icon.svg';
 import UserIcon from '../assets/icon/nav_user_icon.svg';
 import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
 import HospitalReviewRegister from '~/pages/hospital/review/register';
-
-export type RootTabParmList = {
-  Home: undefined;
-  Contents: undefined;
-  Commuity: undefined;
-  MyPage: undefined;
-};
-
-// 네비게이션 라우트 맵핑
-export type RootStackParamList = {
-  Home: undefined;
-  Hospital: undefined;
-  Contents: undefined;
-  Commuity: undefined;
-  tab: undefined;
-  HospitalReviewRegister: undefined;
-  HospitalReviewRegisterPrecaution: undefined;
-};
+import DeveloperMenu from '~/pages/developerMenu';
+import {RouteList} from '~/../types/navigator';
+import InitialLogin from '~/pages/login';
+import SignupEmail from '~/pages/\bsignup/email';
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RouteList>();
 
 const TabNavigator = () => {
   return (
@@ -101,6 +87,17 @@ const TabNavigator = () => {
           tabBarIcon: ({color}) => <UserIcon fill={color} />,
         }}
       />
+
+      <Tab.Screen
+        name="DeveloperMenu"
+        component={DeveloperMenu}
+        options={{
+          tabBarLabel: '개발',
+          headerShown: false,
+          unmountOnBlur: true,
+          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -122,6 +119,9 @@ const AppNavigator = () => {
           name="HospitalReviewRegisterPrecaution"
           component={HospitalReviewRegisterPrecaution}
         />
+
+        <Stack.Screen name="InitialLogin" component={InitialLogin} />
+        <Stack.Screen name="SignupEmail" component={SignupEmail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

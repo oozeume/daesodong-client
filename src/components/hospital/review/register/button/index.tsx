@@ -21,14 +21,15 @@ interface IconButtonProps {
  */
 function BackButton({buttonStyle, iconStyle, onPress}: IconButtonProps) {
   return (
-    <Button
+    <Pressable
       position="absolute"
-      left="8px"
+      zIndex={1}
+      left="14px"
       backgroundColor="#ffffff00"
       onPress={onPress}
       style={buttonStyle}>
       <BackIcon style={iconStyle} />
-    </Button>
+    </Pressable>
   );
 }
 
