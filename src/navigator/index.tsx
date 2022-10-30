@@ -14,12 +14,13 @@ import LocationIcon from '../assets/icon/nav_location_icon.svg';
 import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
 import UserIcon from '../assets/icon/nav_user_icon.svg';
+import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
+import HospitalReviewRegister from '~/pages/hospital/review/register';
 
 export type RootTabParmList = {
   Home: undefined;
   Contents: undefined;
   Commuity: undefined;
-  HospitalReviewRegister: undefined;
   MyPage: undefined;
 };
 
@@ -30,7 +31,6 @@ export type RootStackParamList = {
   Contents: undefined;
   Commuity: undefined;
   tab: undefined;
-
   HospitalReviewRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
 };
@@ -92,10 +92,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        // name="MyPage"
-        // component={MyPage}
-        name="HospitalReviewRegister"
-        component={HospitalReviewRegister}
+        name="MyPage"
+        component={MyPage}
         options={{
           tabBarLabel: '내 계정',
           headerShown: false,
@@ -115,6 +113,11 @@ const AppNavigator = () => {
         initialRouteName="tab">
         <Stack.Screen name="tab" component={TabNavigator} />
         <Stack.Screen name="Hospital" component={Hospital} />
+
+        <Stack.Screen
+          name="HospitalReviewRegister"
+          component={HospitalReviewRegister}
+        />
         <Stack.Screen
           name="HospitalReviewRegisterPrecaution"
           component={HospitalReviewRegisterPrecaution}

@@ -316,5 +316,3 @@ def isNewArchitectureEnabled() {
     return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
 }
 
-// react-native-vector-icons font 파일 추가
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

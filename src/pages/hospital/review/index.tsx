@@ -4,6 +4,8 @@ import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import ReviewList from '~/components/hospital/review/ReviewList';
+import {StackProps} from '~/../types/navigator';
+import {useNavigation} from '@react-navigation/native';
 
 /**
  *@description 병원 리뷰 페이지
