@@ -1,11 +1,13 @@
 import React from 'react';
 import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 
-import _ from 'lodash';
-
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
-import ReviewItem from '~/components/hospital/review/ReviewItem';
 import CheckIcon from '~/assets/icons/check.svg';
+import ReviewList from '~/components/hospital/review/ReviewList';
+
+/**
+ *@description 병원 리뷰 페이지
+ */
 
 const HospitalReview = () => {
   return (
@@ -41,13 +43,7 @@ const HospitalReview = () => {
         </HStack>
       </HStack>
 
-      <Stack space={'8px'} backgroundColor={'grayScale.10'}>
-        {_.range(0, 6).map((i, index) => (
-          <React.Fragment key={i.toString()}>
-            <ReviewItem invisibleBorderTop={index === 0} />
-          </React.Fragment>
-        ))}
-      </Stack>
+      <ReviewList />
     </ScrollView>
   );
 };

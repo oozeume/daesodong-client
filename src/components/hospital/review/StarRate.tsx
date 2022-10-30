@@ -7,6 +7,10 @@ interface Props {
   title: string;
 }
 
+/**
+ *@description 병원 리뷰 - 부분 평점
+ */
+
 function StarRate({title}: Props) {
   return (
     <HStack alignItems={'center'}>

@@ -23,6 +23,10 @@ interface Props {
   invisibleBorderTop?: boolean;
 }
 
+/**
+ *@description 병원 리뷰
+ */
+
 function ReviewItem({invisibleBorderTop}: Props) {
   const [onKebabClick, setKebabClick] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);

@@ -5,6 +5,10 @@ import PartialRate from './PartialRate';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
 import StarHalfIcon from '~/assets/icons/star_half.svg';
 
+/**
+ *@description 병원 리뷰 평점 통계
+ */
+
 function HospitalReviewAllRate() {
   return (
     <Box>

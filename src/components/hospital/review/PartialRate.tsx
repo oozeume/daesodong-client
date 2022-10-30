@@ -8,6 +8,10 @@ interface Props {
   rate: number;
 }
 
+/**
+ *@description 병원 리뷰 평점 요약 - 부분 평점
+ */
+
 function PartialRate({title, rate}: Props) {
   return (
     <HStack justifyContent={'center'} alignItems={'center'}>
