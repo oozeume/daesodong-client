@@ -1,6 +1,6 @@
 import {Button, Center, HStack, Pressable, Text} from 'native-base';
 import React from 'react';
-import {GestureResponderEvent, StyleProp, StyleSheet} from 'react-native';
+import {GestureResponderEvent, StyleProp} from 'react-native';
 import CircleCheckIcon from '~/assets/icons/circle_check.svg';
 import CircleUncheckIcon from '~/assets/icons/circle_uncheck.svg';
 import BackIcon from '~/assets/icons/back.svg';
@@ -94,10 +94,23 @@ const RevisitCheckButton = ({
   isChecked,
   setCheck,
 }: RevisitCheckButtonProps<number>) => {
+  const revisitCheckedButton = {
+    width: '48.5%',
+    height: 50,
+    borderRadius: 8,
+    borderColor: '#FF6B00',
+  };
+
+  const revisitCheckedText = {
+    color: '#FF6B00',
+  };
+
   const checkedButtonStyle =
-    isChecked === checkValue ? styles.revisitCheckedButton : undefined;
+    isChecked === checkValue ? revisitCheckedButton : undefined;
+
   const checkedTextStyle =
-    isChecked === checkValue ? styles.revisitCheckedText : undefined;
+    isChecked === checkValue ? revisitCheckedText : undefined;
+
   return (
     <Pressable
       style={checkedButtonStyle}
@@ -124,6 +137,10 @@ function MoreVisitCheckButton({
   isChecked,
   setCheck,
 }: CheckedButtonProps<boolean>) {
+  const ICON_STYLE = {
+    marginRight: 10,
+  };
+
   return (
     <Button
       variant={'unstyled'}
@@ -131,9 +148,9 @@ function MoreVisitCheckButton({
       onPress={() => setCheck(!isChecked)}>
       <HStack alignItems="center">
         {isChecked ? (
-          <CircleCheckIcon style={styles.moreVisitCheckIcon} />
+          <CircleCheckIcon style={ICON_STYLE} />
         ) : (
-          <CircleUncheckIcon style={styles.moreVisitCheckIcon} />
+          <CircleUncheckIcon style={ICON_STYLE} />
         )}
         <Text fontSize="15px" color="#7F838C">
           이 병원을 여러번 방문했어요
@@ -161,29 +178,6 @@ function ReviewRegisterButton() {
     </Button>
   );
 }
-
-const styles = StyleSheet.create({
-  // 닫기 버튼
-  closeButton: {
-    position: 'absolute',
-    right: 8,
-    backgroundColor: '#ffffff00',
-  },
-
-  revisitCheckedButton: {
-    width: '48.5%',
-    height: 50,
-    borderRadius: 8,
-    borderColor: '#FF6B00',
-  },
-  revisitCheckedText: {
-    color: '#FF6B00',
-  },
-
-  moreVisitCheckIcon: {
-    marginRight: 10,
-  },
-});
 
 export {
   BackButton,

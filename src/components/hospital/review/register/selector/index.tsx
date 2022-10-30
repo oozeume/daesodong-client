@@ -9,7 +9,6 @@ import {
   useDisclose,
 } from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import DownIcon from '~/assets/icons/down.svg';
 import {BackButton} from '../button';
 
@@ -55,7 +54,11 @@ function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
             {itemList ? itemList[selectedIndex]?.txt : ''}
           </Text>
 
-          <DownIcon style={styles.downIcon} />
+          <DownIcon
+            style={{
+              left: 1,
+            }}
+          />
         </HStack>
       </Pressable>
 
@@ -68,7 +71,11 @@ function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
             margin="24px 0px 36px">
             <BackButton
               onPress={onClose}
-              buttonStyle={styles.headerBackButton}
+              buttonStyle={{
+                width: 16,
+                height: 16,
+                left: '2%',
+              }}
             />
             <Text fontSize="18px" color="#383E4A" lineHeight="24px">
               {headerText || ''}
@@ -107,17 +114,5 @@ function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
     </Center>
   );
 }
-
-const styles = StyleSheet.create({
-  headerBackButton: {
-    width: 16,
-    height: 16,
-    left: '2%',
-  },
-
-  downIcon: {
-    left: 1,
-  },
-});
 
 export default Selector;

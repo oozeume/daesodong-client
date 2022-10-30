@@ -1,6 +1,6 @@
 import {HStack, Text} from 'native-base';
 import React, {useState} from 'react';
-import {StyleSheet, ViewStyle} from 'react-native';
+import {ViewStyle} from 'react-native';
 import StarRatingIcon from '~/assets/icons/star_rating.svg';
 
 interface Props {
@@ -9,6 +9,10 @@ interface Props {
 }
 function StarReviewLine({text, lineStyle}: Props) {
   const [starRating, setStartRating] = useState(0);
+
+  const UNCHECKED_ICON_STYLE = {
+    marginRight: 6,
+  };
 
   return (
     <HStack
@@ -27,27 +31,29 @@ function StarReviewLine({text, lineStyle}: Props) {
 
       <HStack>
         <StarRatingIcon
-          style={styles.uncheckedStarRatingIcon}
+          style={UNCHECKED_ICON_STYLE}
           onPress={() => setStartRating(1)}
           fill={starRating > 0 ? '#FF6B00' : '#ECECEE'}
         />
         <StarRatingIcon
-          style={styles.uncheckedStarRatingIcon}
+          style={UNCHECKED_ICON_STYLE}
           onPress={() => setStartRating(2)}
           fill={starRating > 1 ? '#FF6B00' : '#ECECEE'}
         />
         <StarRatingIcon
-          style={styles.uncheckedStarRatingIcon}
+          style={UNCHECKED_ICON_STYLE}
           onPress={() => setStartRating(3)}
           fill={starRating > 2 ? '#FF6B00' : '#ECECEE'}
         />
         <StarRatingIcon
-          style={styles.uncheckedStarRatingIcon}
+          style={UNCHECKED_ICON_STYLE}
           onPress={() => setStartRating(4)}
           fill={starRating > 3 ? '#FF6B00' : '#ECECEE'}
         />
         <StarRatingIcon
-          style={styles.uncheckedStarRatingLastIcon}
+          style={{
+            marginRight: 0,
+          }}
           onPress={() => setStartRating(5)}
           fill={starRating > 4 ? '#FF6B00' : '#ECECEE'}
         />
@@ -55,14 +61,5 @@ function StarReviewLine({text, lineStyle}: Props) {
     </HStack>
   );
 }
-
-const styles = StyleSheet.create({
-  uncheckedStarRatingIcon: {
-    marginRight: 6,
-  },
-  uncheckedStarRatingLastIcon: {
-    marginRight: 0,
-  },
-});
 
 export default StarReviewLine;

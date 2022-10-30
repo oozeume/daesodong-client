@@ -3,7 +3,6 @@ import React from 'react';
 import {
   KeyboardTypeOptions,
   StyleProp,
-  StyleSheet,
   TextInput,
   ViewStyle,
 } from 'react-native';
@@ -66,31 +65,38 @@ function FormInput({
           marginBottom="8px">
           <TextInput
             placeholder={placeholder}
-            style={[styles.input, inputStyle]}
+            style={[
+              {
+                paddingVertical: 0,
+                paddingLeft: 0,
+                fontSize: 15,
+              },
+              inputStyle,
+            ]}
             keyboardType={keyboardType}
             placeholderTextColor={'#C6C8CD'}
           />
-          {rightLabel && <Label text={rightLabel} style={styles.rightLabel} />}
+          {rightLabel && (
+            <Label
+              text={rightLabel}
+              style={{
+                fontSize: 15,
+              }}
+            />
+          )}
         </HStack>
       )}
 
-      {bottomLabel && <Label style={styles.bottomLabel} text={bottomLabel} />}
+      {bottomLabel && (
+        <Label
+          style={{
+            color: '#9ea1a8',
+          }}
+          text={bottomLabel}
+        />
+      )}
     </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    paddingVertical: 0,
-    paddingLeft: 0,
-    fontSize: 15,
-  },
-  rightLabel: {
-    fontSize: 15,
-  },
-  bottomLabel: {
-    color: '#9ea1a8',
-  },
-});
 
 export default FormInput;
