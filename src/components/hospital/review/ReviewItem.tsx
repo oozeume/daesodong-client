@@ -152,7 +152,7 @@ function ReviewItem({invisibleBorderTop}: Props) {
       </Box>
 
       <HStack space={'8px'} pb={'4px'}>
-        <HeartFillIcon />
+        <HeartFillIcon fill={'#FF6B00'} />
         <Text>재방문 의사 있어요</Text>
       </HStack>
       <Text>

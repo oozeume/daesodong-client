@@ -23,7 +23,7 @@ function PartialRate({title, rate}: Props) {
           borderRadius={'100px'}
         />
       </Box>
-      <StarFillIcon color={'#C6C8CD'} />
+      <StarFillIcon fill={'#C6C8CD'} stroke={'#C6C8CD'} />
       <Text color={'#9EA1A8'}>{rate}</Text>
     </HStack>
   );

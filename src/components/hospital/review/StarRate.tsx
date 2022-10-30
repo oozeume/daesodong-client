@@ -13,11 +13,11 @@ function StarRate({title}: Props) {
       <Text w={'34px'} color={'grayScale.60'} fontSize={'13px'}>
         {title}
       </Text>
-      <StarFillIcon color={'#FFCC16'} />
-      <StarFillIcon color={'#FFCC16'} />
-      <StarFillIcon color={'#FFCC16'} />
-      <StarFillIcon color={'#FFCC16'} />
-      <StarFillIcon color={'#FFCC16'} />
+      <StarFillIcon fill={'#FFCC16'} stroke={'#FFCC16'} />
+      <StarFillIcon fill={'#FFCC16'} stroke={'#FFCC16'} />
+      <StarFillIcon fill={'#FFCC16'} stroke={'#FFCC16'} />
+      <StarFillIcon fill={'#FFCC16'} stroke={'#FFCC16'} />
+      <StarFillIcon fill={'#FFCC16'} stroke={'#FFCC16'} />
     </HStack>
   );
 }

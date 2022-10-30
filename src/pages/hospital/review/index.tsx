@@ -36,7 +36,7 @@ const HospitalReview = () => {
         pb={'4px'}
         px={'18px'}>
         <HStack space={'8px'}>
-          <CheckIcon />
+          <CheckIcon fill={'#FF6B00'} />
           <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
         </HStack>
       </HStack>
