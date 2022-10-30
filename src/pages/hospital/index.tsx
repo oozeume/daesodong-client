@@ -28,7 +28,7 @@ function Hospital({navigation}: Props) {
 
   return (
     <SafeAreaView>
-      <View w={'100%'} backgroundColor={'#FFFFFF'}>
+      <View w={'100%'} backgroundColor={'#FFFFFF'} h={'100%'}>
         {/* 병원 상세 타이틀바 */}
         <HStack space={3} height={'7%'} justifyContent="center">
           <Center h="60" w="30">
