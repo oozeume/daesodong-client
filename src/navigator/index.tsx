@@ -15,14 +15,24 @@ import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
 import UserIcon from '../assets/icon/nav_user_icon.svg';
 
+export type RootTabParmList = {
+  Home: undefined;
+  Contents: undefined;
+  Commuity: undefined;
+  HospitalReviewRegister: undefined;
+  MyPage: undefined;
+};
+
 // 네비게이션 라우트 맵핑
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   Hospital: undefined;
   Contents: undefined;
   Commuity: undefined;
-  MyPage: undefined;
   tab: undefined;
+
+  HospitalReviewRegister: undefined;
+  HospitalReviewRegisterPrecaution: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -82,8 +92,10 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="MyPage"
-        component={MyPage}
+        // name="MyPage"
+        // component={MyPage}
+        name="HospitalReviewRegister"
+        component={HospitalReviewRegister}
         options={{
           tabBarLabel: '내 계정',
           headerShown: false,
@@ -103,6 +115,10 @@ const AppNavigator = () => {
         initialRouteName="tab">
         <Stack.Screen name="tab" component={TabNavigator} />
         <Stack.Screen name="Hospital" component={Hospital} />
+        <Stack.Screen
+          name="HospitalReviewRegisterPrecaution"
+          component={HospitalReviewRegisterPrecaution}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
