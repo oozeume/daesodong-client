@@ -17,6 +17,7 @@ import ImageModal from './ImageModal';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
+import ImageContainer from './imageContainer.tsx';
 
 interface Props {
   invisibleBorderTop?: boolean;
@@ -127,7 +128,7 @@ function ReviewItem({invisibleBorderTop}: Props) {
           </HStack>
 
           <HStack space={'9px'} w={'143px'}>
-            <Text color={'grayScale.60'} w={'34px'} fontSize={'13px'}>
+            <Text color={'grayScale.60'} fontSize={'13px'}>
               진료비
             </Text>
             <Text color={'grayScale.60'} fontWeight={'500'} fontSize={'13px'}>
@@ -161,41 +162,9 @@ function ReviewItem({invisibleBorderTop}: Props) {
       </Text>
 
       <HStack w={'100%'} pt={'16px'} justifyContent={'space-between'}>
-        <Pressable onPress={() => setModalOpen(true)}>
-          <Image
-            w={'108px'}
-            h={'108px'}
-            alt={'image'}
-            backgroundColor={'grayScale.10'}
-          />
-        </Pressable>
-        <Image
-          w={'108px'}
-          h={'108px'}
-          alt={'image'}
-          backgroundColor={'grayScale.10'}
-        />
-
-        <Image
-          w={'108px'}
-          h={'108px'}
-          alt={'image'}
-          backgroundColor={'grayScale.30'}
-        />
-
-        <Box
-          right={'6px'}
-          top={'16px'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          w={'108px'}
-          h={'108px'}
-          background={'rgba(26, 30, 39, 0.6)'}
-          position={'absolute'}>
-          <Text fontSize={'14px'} color={'white'}>
-            +00
-          </Text>
-        </Box>
+        <ImageContainer onPress={() => setModalOpen(true)} />
+        <ImageContainer onPress={() => setModalOpen(true)} />
+        <ImageContainer onPress={() => setModalOpen(true)} visibleMoreImage />
       </HStack>
 
       <HStack space={'4px'} pt={'20px'} py={'20px'}>

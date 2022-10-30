@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, HStack, Text} from 'native-base';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
+import {Platform} from 'react-native';
 
 interface Props {
   title: string;
@@ -9,12 +10,15 @@ interface Props {
 
 function PartialRate({title, rate}: Props) {
   return (
-    <HStack justifyContent={'center'} space={'10px'} alignItems={'center'}>
-      <Text color={'grayScale.50'}>{title}</Text>
+    <HStack justifyContent={'center'} alignItems={'center'}>
+      <Text color={'grayScale.50'} fontSize={'12px'} pr={'10px'}>
+        {title}
+      </Text>
       <Box
-        w={'104px'}
+        w={Platform.OS === 'ios' ? '104px' : 20}
         h={'4px'}
         backgroundColor={'grayScale.20'}
+        mr={'10px'}
         borderRadius={'100px'}>
         <Box
           w={'80%'}
@@ -24,7 +28,9 @@ function PartialRate({title, rate}: Props) {
         />
       </Box>
       <StarFillIcon fill={'#C6C8CD'} stroke={'#C6C8CD'} />
-      <Text color={'#9EA1A8'}>{rate}</Text>
+      <Text pl={'10px'} color={'#9EA1A8'} fontSize={'12px'}>
+        {rate}
+      </Text>
     </HStack>
   );
 }

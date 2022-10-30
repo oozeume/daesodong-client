@@ -9,11 +9,12 @@ function HospitalReviewAllRate() {
   return (
     <Box>
       <Flex
+        w={'100%'}
         rounded="8px"
         borderColor={'grayScale.20'}
         backgroundColor={'white'}
         borderWidth="1">
-        <HStack p="4" space={'20px'} w={'100%'}>
+        <HStack py={'16px'} pl={'21px'} pr={'24px'} space={'20px'} w={'100%'}>
           <Stack alignItems="center">
             <Text
               fontSize="30px"
@@ -42,7 +43,7 @@ function HospitalReviewAllRate() {
             </Flex>
           </Stack>
           <Divider orientation="vertical" bg={'grayScale.10'} />
-          <Stack>
+          <Stack space={'3px'}>
             <PartialRate title={'진료'} rate={4.7} />
             <PartialRate title={'비용'} rate={4.7} />
             <PartialRate title={'시설'} rate={4.7} />
