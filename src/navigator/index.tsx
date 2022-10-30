@@ -10,11 +10,10 @@ import Contents from '../pages/contents';
 import Community from '../pages/community';
 import MyPage from '../pages/mypage';
 
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import HospitalReviewRegister from '~/pages/hospital/review/register';
-import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
+import LocationIcon from '../assets/icon/nav_location_icon.svg';
+import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
+import CommunityIcon from '../assets/icon/nav_community_icon.svg';
+import UserIcon from '../assets/icon/nav_user_icon.svg';
 
 export type RootTabParmList = {
   Home: undefined;
@@ -69,9 +68,7 @@ const TabNavigator = () => {
           tabBarLabel: '시설 정보',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => (
-            <FeatherIcon name={'map-pin'} color={color} size={24} />
-          ),
+          tabBarIcon: ({color}) => <LocationIcon fill={color} />,
         }}
       />
       <Tab.Screen
@@ -81,9 +78,7 @@ const TabNavigator = () => {
           tabBarLabel: '콘텐츠',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => (
-            <FontAwesome5Icon name={'book'} color={color} size={24} />
-          ),
+          tabBarIcon: ({color}) => <ContentsIcon fill={color} />,
         }}
       />
       <Tab.Screen
@@ -93,9 +88,7 @@ const TabNavigator = () => {
           tabBarLabel: '커뮤니티',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => (
-            <FontAwesomeIcon name={'comments'} color={color} size={24} />
-          ),
+          tabBarIcon: ({color}) => <CommunityIcon fill={color} />,
         }}
       />
       <Tab.Screen
@@ -107,9 +100,7 @@ const TabNavigator = () => {
           tabBarLabel: '내 계정',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => (
-            <FontAwesomeIcon name={'user'} color={color} size={24} />
-          ),
+          tabBarIcon: ({color}) => <UserIcon fill={color} />,
         }}
       />
     </Tab.Navigator>
