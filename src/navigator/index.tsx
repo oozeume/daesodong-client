@@ -19,7 +19,7 @@ import HospitalReviewRegister from '~/pages/hospital/review/register';
 import DeveloperMenu from '~/pages/developerMenu';
 import {RouteList} from '~/../types/navigator';
 import InitialLogin from '~/pages/login';
-import SignupEmail from '~/pages/\bsignup/email';
+import SignupEmail from '~/pages/signup/email';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();

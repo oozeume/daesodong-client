@@ -14,7 +14,7 @@ import type {NativeStackScreenProps} from '@react-navigation/native-stack';
  * @example param 추가시,
  * { ... Home: { id: string; }; ... }
  */
-export type RootTabParmList = {
+export type RootTabParamList = {
   Home: undefined;
   Contents: undefined;
   Commuity: undefined;
@@ -36,7 +36,7 @@ export type RootStackParamList = {
   SignupEmail: undefined;
 };
 
-export type RouteList = RootTabParmList & RootStackParamList;
+export type RouteList = RootTabParamList & RootStackParamList;
 
 /**
  * @description useNavigation 제네릭 타입
@@ -50,12 +50,12 @@ export type StackProps<T extends keyof RouteList> = NativeStackScreenProps<
   T
 >;
 
-// export type TabProps<T extends keyof RootTabParmList> = BottomTabScreenProps<
-// RootTabParmList,
+// export type TabProps<T extends keyof RootTabParamList> = BottomTabScreenProps<
+// RootTabParamList,
 //   T
 // >;
 
-// export type TabProps<T extends keyof RootTabParmList> = CompositeScreenProps<
-//   BottomTabScreenProps<RootTabParmList, T>,
+// export type TabProps<T extends keyof RootTabParamList> = CompositeScreenProps<
+//   BottomTabScreenProps<RootTabParamList, T>,
 //   StackProps<keyof RootStackParamList>
 // >;
