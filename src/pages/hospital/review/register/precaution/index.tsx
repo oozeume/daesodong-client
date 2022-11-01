@@ -1,16 +1,17 @@
 import {ScrollView, Text, VStack} from 'native-base';
 import React from 'react';
-import {StackProps} from '~/../types/navigator';
+import {NavigationHookProp, StackProps} from '~/../types/navigator';
 import Header from '~/components/hospital/review/register/Header';
 import {CloseButton} from '~/components/hospital/review/register/button';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 
 /**
  *@description 병원 리뷰 후기 작성 안내 사항 페이지
  */
-const HospitalReviewRegisterPrecaution = ({
-  navigation,
-}: StackProps<'HospitalReviewRegisterPrecaution'>) => {
+function HospitalReviewRegisterPrecaution() {
+  const navigation = useNavigation<NavigationHookProp>();
+
   const onBack = () => {
     navigation.goBack();
   };
@@ -84,6 +85,6 @@ const HospitalReviewRegisterPrecaution = ({
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 export default HospitalReviewRegisterPrecaution;
