@@ -20,6 +20,10 @@ import DeveloperMenu from '~/pages/developerMenu';
 import {RouteList} from '~/../types/navigator';
 import InitialLogin from '~/pages/login';
 import SignupEmail from '~/pages/signup/email';
+import EmailLogin from '~/pages/login/email';
+import PasswordReset from '~/pages/login/passwordReset';
+import PasswordResetChange from '~/pages/login/passwordReset/change';
+import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -87,6 +91,7 @@ const TabNavigator = () => {
           tabBarIcon: ({color}) => <CommunityIcon fill={color} />,
         }}
       />
+
       <Tab.Screen
         name="MyPage"
         component={MyPage}
@@ -121,6 +126,16 @@ const AppNavigator = () => {
 
         <Stack.Screen name="InitialLogin" component={InitialLogin} />
         <Stack.Screen name="SignupEmail" component={SignupEmail} />
+        <Stack.Screen name="EmailLogin" component={EmailLogin} />
+        <Stack.Screen name="PasswordReset" component={PasswordReset} />
+        <Stack.Screen
+          name="PasswordResetChange"
+          component={PasswordResetChange}
+        />
+        <Stack.Screen
+          name="PasswordResetSuccess"
+          component={PasswordResetSuccess}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
