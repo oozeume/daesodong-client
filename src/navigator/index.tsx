@@ -48,6 +48,16 @@ const TabNavigator = () => {
         },
       }}>
       <Tab.Screen
+        name="DeveloperMenu"
+        component={DeveloperMenu}
+        options={{
+          tabBarLabel: '개발',
+          headerShown: false,
+          unmountOnBlur: true,
+          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
+        }}
+      />
+      <Tab.Screen
         name="Home"
         component={Home}
         options={{
@@ -85,17 +95,6 @@ const TabNavigator = () => {
           headerShown: false,
           unmountOnBlur: true,
           tabBarIcon: ({color}) => <UserIcon fill={color} />,
-        }}
-      />
-
-      <Tab.Screen
-        name="DeveloperMenu"
-        component={DeveloperMenu}
-        options={{
-          tabBarLabel: '개발',
-          headerShown: false,
-          unmountOnBlur: true,
-          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
         }}
       />
     </Tab.Navigator>

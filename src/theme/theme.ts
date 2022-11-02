@@ -1,4 +1,4 @@
-import { extendTheme } from 'native-base';
+import {extendTheme} from 'native-base';
 
 export const theme = extendTheme({
   colors: {
@@ -13,6 +13,7 @@ export const theme = extendTheme({
       40: '#C6C8CD',
       50: '#9EA1A8',
       60: '#7F838C',
+      70: '#5D626D',
       90: '#1A1E27',
     },
     fussOrange: {
@@ -22,6 +23,9 @@ export const theme = extendTheme({
     },
     fussYellow: {
       10: '#FFCC16',
+    },
+    negative: {
+      0: '#F6363A',
     },
   },
 });
