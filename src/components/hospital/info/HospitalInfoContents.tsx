@@ -11,7 +11,7 @@ interface Props {
 /**
  * 병원 시설 정보 내용을 가로 배치하기 위한 컴포넌트
  * @param {IconNameType} iconName assets -> icons에 등록된 아이콘 이름
- * @param children 표시될 컨텐츠 Element
+ * @param {PropsWithChildren} children 표시될 컨텐츠 Element
  */
 
 function HospitalInfoContents({
