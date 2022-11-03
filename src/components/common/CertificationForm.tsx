@@ -2,8 +2,9 @@ import React from 'react';
 import {Flex, HStack, Text, View, VStack} from 'native-base';
 import {TextInput} from 'react-native';
 
+import {CertificationResult} from '~/../types/certification';
+
 // type InputTextType = 'TEL' | 'NUMBER' | 'TEXT';
-type CertificationResult = 'SUCCESS' | 'FAIL' | undefined;
 
 interface Props {
   placeholder?: string;
