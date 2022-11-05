@@ -6,6 +6,9 @@ export const theme = extendTheme({
       '-40': '#E5F5FF',
       0: '#0094FF',
     },
+    negative: {
+      0: '#F6363A',
+    },
     grayScale: {
       10: '#F6F7F7',
       20: '#ECECEE',
@@ -21,6 +24,8 @@ export const theme = extendTheme({
       0: '#FF6B00',
     },
     fussYellow: {
+      '-30': '#FFF6D8',
+      0: '#FFD53F',
       10: '#FFCC16',
     },
   },

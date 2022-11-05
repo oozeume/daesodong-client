@@ -19,7 +19,12 @@ import HospitalReviewRegister from '~/pages/hospital/review/register';
 import DeveloperMenu from '~/pages/developerMenu';
 import {RouteList} from '~/../types/navigator';
 import InitialLogin from '~/pages/login';
-import SignupEmail from '~/pages/signup/email';
+import ExistedUserConfirm from '~/pages/signup/email/existedUserConfirm';
+import EmailRegister from '~/pages/signup/email/emailRegister';
+import PasswordRegister from '~/pages/signup/email/passwordRegister';
+import NicknameRegister from '~/pages/signup/email/nicknameRegister';
+import PrivacyPolicy from '~/pages/signup/email/privacyPolicy';
+import TermsOfServicePolicy from '~/pages/signup/email/termsOfServicePolicy';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -121,7 +126,24 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen name="InitialLogin" component={InitialLogin} />
-        <Stack.Screen name="SignupEmail" component={SignupEmail} />
+        <Stack.Screen
+          name="SignupEmailUserCheck"
+          component={ExistedUserConfirm}
+        />
+        <Stack.Screen name="SignUpEmailRegister" component={EmailRegister} />
+        <Stack.Screen
+          name="SignupPasswordRegister"
+          component={PasswordRegister}
+        />
+        <Stack.Screen
+          name="SignupNicknameRegister"
+          component={NicknameRegister}
+        />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+        <Stack.Screen
+          name="TermsOfServicePolicy"
+          component={TermsOfServicePolicy}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
