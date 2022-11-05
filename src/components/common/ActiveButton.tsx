@@ -1,46 +1,8 @@
-import {Center, Pressable, Text} from 'native-base';
 import {ColorType} from 'native-base/lib/typescript/components/types';
 import React from 'react';
-import {ColorValue, StyleProp, TextStyle, ViewStyle} from 'react-native';
-
-interface ButtonBarProps {
-  onPress: () => void;
-  textStyle?: StyleProp<TextStyle>;
-  buttonStyle?: StyleProp<ViewStyle>;
-  text: string;
-  backgroundColor?: ColorType;
-}
-
-/**
- *@description 일반적인 넓은 버튼 형식
- *@param {()=>void} onPress - 버튼 클릭 이벤트 핸들러
- *@param {()=>void} textStyle - 버튼 텍스트 커스텀 스타일
- *@param {()=>void} buttonStyle - 버튼 커스텀 스타일
- *@param {()=>void} text - 버튼 텍스트
- *@param {()=>void} backgroundColor - 버튼 칼라
- */
-function ButtonBar({
-  onPress,
-  textStyle,
-  buttonStyle,
-  text,
-  backgroundColor,
-}: ButtonBarProps) {
-  return (
-    <Pressable
-      h="52px"
-      borderRadius="8px"
-      style={buttonStyle}
-      backgroundColor={backgroundColor}
-      onPress={onPress}>
-      <Center h="100%">
-        <Text color="grayScale.90" fontSize="16px" style={textStyle}>
-          {text}
-        </Text>
-      </Center>
-    </Pressable>
-  );
-}
+import {ColorValue} from 'react-native';
+import {ButtonBarProps} from '~/../types/common/button';
+import ButtonBar from './ButtonBar';
 
 interface ActiveButtonProps extends ButtonBarProps {
   isActive?: boolean;
@@ -64,9 +26,9 @@ interface ActiveButtonProps extends ButtonBarProps {
  */
 function ActiveButton({
   onPress,
-  textStyle,
+  nameStyle,
   buttonStyle,
-  text,
+  name,
   isActive,
   activeBackgroundColor = 'fussOrange.0',
   inactiveBackgroundColor = 'fussOrange.-30',
@@ -77,7 +39,7 @@ function ActiveButton({
 }: ActiveButtonProps) {
   return (
     <ButtonBar
-      text={text}
+      name={name}
       onPress={onPress}
       backgroundColor={
         isActive ? activeBackgroundColor : inactiveBackgroundColor
@@ -89,14 +51,14 @@ function ActiveButton({
           borderColor: isActive ? activeBorderColor : inactiveBorderColor,
         },
       ]}
-      textStyle={[
+      nameStyle={[
         {
           color: isActive ? activeTextColor : inactiveTextColor,
         },
-        textStyle,
+        nameStyle,
       ]}
     />
   );
 }
 
-export {ButtonBar, ActiveButton};
+export default ActiveButton;

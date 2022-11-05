@@ -25,8 +25,8 @@ interface Props {
   bottomLabel?: string;
   bottomLabelStyle?: StyleProp<TextStyle>;
 
-  rightNode?: JSX.Element;
-  bottomNode?: JSX.Element;
+  rightElement?: JSX.Element;
+  bottomElement?: JSX.Element;
 
   isValidate?: InputFormValidate;
   successText?: string;
@@ -51,8 +51,8 @@ interface Props {
  *@param {string} bottomLabel - 하단 라벨
  *@param {TextStyle} bottomLabelStyle - 하단 라벨 스타일
 
- *@param {JSX.Element} rightNode - 인풋 우측 컴포넌트
- *@param {JSX.Element} bottomNode - 인풋 좌측 컴포넌트
+ *@param {JSX.Element} rightElement - 인풋 우측 컴포넌트
+ *@param {JSX.Element} bottomElement - 인풋 하단 컴포넌트
 
  *@param isValidate - 폼 검증 여부
  *@param {string} successText - 폼 성공 텍스트
@@ -70,8 +70,8 @@ function FormInput({
   inputStyle,
   bottomLabelStyle,
   keyboardType,
-  rightNode,
-  bottomNode,
+  rightElement,
+  bottomElement,
   isValidate,
   successText,
   errorText,
@@ -121,11 +121,11 @@ function FormInput({
             onChangeText={onChangeText}
             value={text}
           />
-          {rightNode}
+          {rightElement}
         </HStack>
       )}
 
-      {bottomNode}
+      {bottomElement}
 
       {bottomLabel && (
         <Text

@@ -1,18 +1,19 @@
-import {Button, Text, VStack} from 'native-base';
+import {Text, VStack} from 'native-base';
 import React, {useState} from 'react';
 import {RouteList} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Dimensions, Pressable} from 'react-native';
 import Header from '~/components/hospital/review/register/Header';
 import BackIcon from '~/assets/icons/back.svg';
-import {ActiveButton, ButtonBar} from '~/components/common/button';
 import FormInput from '~/components/common/FormInput';
+import ActiveButton from '~/components/common/ActiveButton';
+import {colors} from '~/theme/theme';
+import PhoneCheckBottomModal from '~/components/login/passwordReset/phoneCheck/PhoneCheckBottomModal';
 
 /**
- *@description 패스워드 리셋 페이지
+ *@description 비밀번호 재설정 휴대폰 인증
  */
-function PasswordReset() {
+function PasswordResetPhoneCheck() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
   const onMove = (stack: keyof RouteList) => {
@@ -21,12 +22,9 @@ function PasswordReset() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [certificationNumber, setCertificationNumber] = useState('');
 
-  const {height: appHeight} = Dimensions.get('screen');
-
-  const containerPaddingTop = `${Math.floor((122 * appHeight) / 812)}px`;
-  const containerPaddingBottom = `${Math.floor((40 * appHeight) / 812)}px`;
-  console.log(email);
   return (
     <SafeAreaView>
       <VStack bg="#fff" w="100%" h="100%">
@@ -42,8 +40,12 @@ function PasswordReset() {
           px="18px"
           pb="40px">
           <VStack>
-            <Text pb="60px" fontSize="20px" color="#383E4A" textAlign="center">
-              계정 정보를 확인할게요.
+            <Text
+              pb="60px"
+              fontSize="20px"
+              color={colors.grayScale['80']}
+              textAlign="center">
+              계정 정보를 확인할게요
             </Text>
 
             <FormInput
@@ -57,59 +59,40 @@ function PasswordReset() {
             <FormInput
               placeholder={'휴대폰 번호'}
               inputContainerStyle={{marginBottom: 20}}
-              bottomLabelStyle={{
-                color: '#0094FF',
-                fontSize: 13,
-                backgroundColor: '#FFF6D8',
-              }}
               successText="인증번호가 전송되었습니다"
               isValidate="SUCCESS"
-              rightNode={
+              rightElement={
                 <ActiveButton
-                  text={'인증하기'}
+                  name={'인증하기'}
                   buttonStyle={{
                     width: 77,
                     height: 36,
                     borderRadius: 4,
                   }}
-                  activeBackgroundColor="#FFD53F"
-                  inactiveBackgroundColor="#FFF6D8"
-                  activeBorderColor="#1A1E27"
-                  inactiveBorderColor="#C6C8CD"
-                  activeTextColor="#1A1E27"
-                  inactiveTextColor="#C6C8CD"
-                  textStyle={{fontSize: 14}}
-                  onPress={() => {}}
+                  activeBackgroundColor={colors.fussYellow['0']}
+                  inactiveBackgroundColor={colors.fussYellow['-30']}
+                  activeBorderColor={colors.grayScale['90']}
+                  inactiveBorderColor={colors.grayScale['40']}
+                  activeTextColor={colors.grayScale['90']}
+                  inactiveTextColor={colors.grayScale['40']}
+                  nameStyle={{fontSize: 14}}
+                  onPress={() => setIsModalOpen(true)}
                 />
               }
               onChangeText={setPassword}
               text={password}
             />
-
-            <FormInput
-              placeholder={'인증번호 4자리'}
-              inputContainerStyle={{marginBottom: 12}}
-              isValidate="SUCCESS"
-              successText="인증번호가 일치합니다"
-              errorText="인증번호를 확인해주세요"
-              onChangeText={setEmail}
-              text={email}
-              rightNode={
-                <Text color="#F6363A" fontSize="15px">
-                  03:00
-                </Text>
-              }
-            />
           </VStack>
-
-          <ActiveButton
-            text="다음"
-            onPress={() => onMove('PasswordResetChange')}
-          />
         </VStack>
+
+        <PhoneCheckBottomModal
+          setCertificationNumber={setCertificationNumber}
+          certificationNumber={certificationNumber}
+          isModalOpen={isModalOpen}
+        />
       </VStack>
     </SafeAreaView>
   );
 }
 
-export default PasswordReset;
+export default PasswordResetPhoneCheck;

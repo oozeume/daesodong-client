@@ -35,9 +35,10 @@ export type RootStackParamList = {
   InitialLogin: undefined;
   SignupEmail: undefined;
   EmailLogin: undefined;
-  PasswordReset: undefined;
+  PasswordResetPhoneCheck: undefined;
   PasswordResetChange: undefined;
   PasswordResetSuccess: undefined;
+  PasswordResetNotFoundAuth: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;

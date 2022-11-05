@@ -21,9 +21,10 @@ import {RouteList} from '~/../types/navigator';
 import InitialLogin from '~/pages/login';
 import SignupEmail from '~/pages/signup/email';
 import EmailLogin from '~/pages/login/email';
-import PasswordReset from '~/pages/login/passwordReset';
+import PasswordResetPhoneCheck from '~/pages/login/passwordReset/phoneCheck';
 import PasswordResetChange from '~/pages/login/passwordReset/change';
 import PasswordResetSuccess from '~/pages/login/passwordReset/success';
+import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -124,10 +125,26 @@ const AppNavigator = () => {
           component={HospitalReviewRegisterPrecaution}
         />
 
-        <Stack.Screen name="InitialLogin" component={InitialLogin} />
-        <Stack.Screen name="SignupEmail" component={SignupEmail} />
-        <Stack.Screen name="EmailLogin" component={EmailLogin} />
-        <Stack.Screen name="PasswordReset" component={PasswordReset} />
+        <Stack.Screen
+          name="InitialLogin"
+          component={InitialLogin}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="SignupEmail"
+          component={SignupEmail}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="EmailLogin"
+          component={EmailLogin}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="PasswordResetPhoneCheck"
+          component={PasswordResetPhoneCheck}
+          options={{animation: 'slide_from_right'}}
+        />
         <Stack.Screen
           name="PasswordResetChange"
           component={PasswordResetChange}
@@ -135,6 +152,10 @@ const AppNavigator = () => {
         <Stack.Screen
           name="PasswordResetSuccess"
           component={PasswordResetSuccess}
+        />
+        <Stack.Screen
+          name="PasswordResetNotFoundAuth"
+          component={PasswordResetNotFoundAuth}
         />
       </Stack.Navigator>
     </NavigationContainer>
