@@ -4,6 +4,7 @@ import {Box, Center, HStack, Pressable, Text} from 'native-base';
 import CertificationForm from '~/components/common/CertificationForm';
 
 import CheckIcon from '../../../assets/icons/check.svg';
+import {Platform} from 'react-native';
 
 // 닉네임 인풋 도움말 리스트
 const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내'];
@@ -44,7 +45,10 @@ function NickNameCheck() {
       />
 
       {/* 하단 이용약관 및 개인정보 처리 방침 View */}
-      <Box w={'100%'} position={'absolute'} bottom={0}>
+      <Box
+        w={'100%'}
+        position={'absolute'}
+        bottom={Platform.OS === 'android' ? '10px' : 0}>
         <HStack space={3}>
           <Center>
             <Pressable onPress={() => setIsAgree(prev => !prev)}>
@@ -52,13 +56,16 @@ function NickNameCheck() {
             </Pressable>
           </Center>
           <HStack space={0.5}>
-            <Text fontSize={15} fontWeight={'400'} color={'#7F838C'}>
+            <Text
+              fontSize={Platform.OS === 'android' ? 13 : 15}
+              fontWeight={'400'}
+              color={'#7F838C'}>
               (필수)
             </Text>
             {/* onPress 추가 예정 */}
             <Pressable>
               <Text
-                fontSize={15}
+                fontSize={Platform.OS === 'android' ? 13 : 15}
                 fontWeight={'400'}
                 color={'#7F838C'}
                 textDecoration={'solid'}
@@ -67,13 +74,16 @@ function NickNameCheck() {
                 이용약관
               </Text>
             </Pressable>
-            <Text fontSize={15} fontWeight={'400'} color={'#7F838C'}>
+            <Text
+              fontSize={Platform.OS === 'android' ? 13 : 15}
+              fontWeight={'400'}
+              color={'#7F838C'}>
               및
             </Text>
             {/* onPress 추가 예정 */}
             <Pressable>
               <Text
-                fontSize={15}
+                fontSize={Platform.OS === 'android' ? 13 : 15}
                 fontWeight={'400'}
                 color={'#7F838C'}
                 textDecoration={'solid'}
@@ -82,7 +92,10 @@ function NickNameCheck() {
                 개인정보 처리 방침
               </Text>
             </Pressable>
-            <Text fontSize={15} fontWeight={'400'} color={'#7F838C'}>
+            <Text
+              fontSize={Platform.OS === 'android' ? 13 : 15}
+              fontWeight={'400'}
+              color={'#7F838C'}>
               에 동의합니다
             </Text>
           </HStack>

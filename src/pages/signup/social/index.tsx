@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {Keyboard, Platform, TouchableWithoutFeedback} from 'react-native';
 import {Center, HStack, Pressable, Box} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ParamListBase} from '@react-navigation/native';
@@ -22,7 +22,7 @@ const stageTwoTextList = ['닉네임을 입력해주세요'];
  *@description 소셜 회원가입 페이지
  */
 function SignupSocial({navigation}: Props) {
-  const [currentStage, setCurrentStage] = useState(1);
+  const [currentStage, setCurrentStage] = useState(2);
 
   const onPressSignup = () => {};
 
@@ -40,7 +40,7 @@ function SignupSocial({navigation}: Props) {
         {/* 상단 버튼 View */}
         <HStack
           space={3}
-          h={'8%'}
+          h={Platform.OS === 'android' ? '10%' : '8%'}
           justifyContent={'space-between'}
           paddingX={'18px'}
           backgroundColor={'#fff'}>
@@ -54,7 +54,7 @@ function SignupSocial({navigation}: Props) {
 
         {/* 스테이지별 콘텐츠 */}
         <Box
-          h={'79%'}
+          h={Platform.OS === 'android' ? '77%' : '80%'}
           position={'relative'}
           marginX={'18px'}
           backgroundColor={'#fff'}>
@@ -74,7 +74,10 @@ function SignupSocial({navigation}: Props) {
         </Box>
 
         {/* 하단 버튼 View */}
-        <Center h={'12%'} paddingX={'18px'} backgroundColor={'#FFF'}>
+        <Center
+          h={Platform.OS === 'android' ? '12%' : '12%'}
+          paddingX={'18px'}
+          backgroundColor={'#FFF'}>
           {currentStage === 2 && (
             <Button
               large
