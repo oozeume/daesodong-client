@@ -9,6 +9,7 @@ import AvoidKeyboardView from '~/components/common/AvoidKeyboardView';
 import _ from 'lodash';
 import RegisterProgress from '~/components/common/RegisterProgress';
 import {TextInput} from 'react-native';
+import CountdownTimer from '~/components/common/CountdownTimer';
 
 /**
  * @description 이메일 회원가입 페이지 - 회원여부 확인
@@ -150,9 +151,7 @@ function ExistedUserConfirm() {
                         borderRadius={0}
                         p={0}
                       />
-                      <Text h={'22px'} fontSize={'14px'} color={'negative.0'}>
-                        03:00
-                      </Text>
+                      <CountdownTimer time={180} />
                     </HStack>
 
                     <Text fontSize={'13px'} color={'positive.0'} pt={'8px'}>
