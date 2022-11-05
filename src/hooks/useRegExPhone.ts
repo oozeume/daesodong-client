@@ -20,7 +20,9 @@ function useRegExPhone(): ReturnType {
     );
   }, [phoneNumber]);
 
-  const handlePhoneNumber = (text: string) => setPhoneNumber(text);
+  const handlePhoneNumber = (text: string) => {
+    setPhoneNumber(prev => (text.length > 13 ? prev : text));
+  };
 
   return [phoneNumber, handlePhoneNumber];
 }

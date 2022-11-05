@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Platform} from 'react-native';
+import {Keyboard, Platform} from 'react-native';
 import {Box, Center, HStack, Pressable, Text} from 'native-base';
 
 import Button from '~/components/common/button';
@@ -8,21 +8,16 @@ import CertificationForm from '~/components/common/CertificationForm';
 
 import CheckIcon from '../../../assets/icons/check.svg';
 
-// 한글, 영어, 숫자만 받을 수 있는 정규식
-const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
-
-// 닉네임 인풋 도움말 리스트
-const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내'];
+const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/; // 한글, 영어, 숫자만 받을 수 있는 정규식
+const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 닉네임 인풋 도움말 리스트
 
 /**
  * 닉네임 중복 체크 컴포넌트
  */
 function NickNameCheck() {
   const [nickName, setNickName] = useState('');
-  // 이용약관 및 개인정보 처리 방침동의 여부
-  const [isAgree, setIsAgree] = useState(false);
-  // 인증 결과
-  const [result, setResult] = useState<CertificationResult>();
+  const [isAgree, setIsAgree] = useState(false); // 이용약관 및 개인정보 처리 방침동의 여부
+  const [result, setResult] = useState<CertificationResult>(); // 인증 결과
 
   const hadleNickName = (text: string) => {
     setNickName(prev =>
@@ -32,6 +27,7 @@ function NickNameCheck() {
 
   // 닉네임 중복 검사
   const checkDuplication = () => {
+    Keyboard.dismiss();
     // API 연동 시 수정 필요
     if (nickName.length < 2 || nickName.length > 11) {
       // 입력한 닉네임이 2 ~ 10자 사이가 아닐경우

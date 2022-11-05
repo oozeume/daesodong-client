@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {LegacyRef} from 'react';
 import {Flex, HStack, Text, View, VStack} from 'native-base';
 import {TextInput} from 'react-native';
 
@@ -19,6 +19,7 @@ interface Props {
   onChangeHandle: (text: string) => void;
   inputRightElement?: JSX.Element;
   autoFocus?: boolean;
+  inputRef?: LegacyRef<TextInput>;
 }
 
 /**
@@ -34,6 +35,7 @@ interface Props {
  * @param {(text: string) => void} onChangeHandle - inputValue change 핸들러
  * @param {JSX.Element} inputRightElement - 인풋창 오른쪽에 들어갈 element
  * @param {boolean} autoFocus - 텍스트창 자동으로 보이게 하는 기능 on/off
+ * @param {LegacyRef<TextInput>} inputRef - autoFocus가 작동하지 않는 경우 강제로 focus하기 위한 ref
  */
 function CertificationForm({
   inputType,
@@ -47,6 +49,7 @@ function CertificationForm({
   onChangeHandle,
   inputRightElement,
   autoFocus,
+  inputRef,
 }: Props) {
   return (
     <VStack space={1} mb={'20px'}>
@@ -64,14 +67,16 @@ function CertificationForm({
             value={inputValue}
             placeholder={placeholder}
             onChangeText={text => onChangeHandle(text)}
-            autoFocus={autoFocus}
+            autoFocus={autoFocus ? autoFocus : false}
+            scrollEnabled={false}
             keyboardType={
-              inputType === 'TEL'
+              inputType === 'NUMBER'
                 ? 'number-pad'
                 : inputType === 'EMAIL'
                 ? 'email-address'
                 : 'default'
             }
+            ref={inputRef && inputRef}
           />
         </View>
 

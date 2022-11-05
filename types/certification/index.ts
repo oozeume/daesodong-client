@@ -3,4 +3,4 @@
  */
 export type CertificationResult = 'SUCCESS' | 'FAIL' | 'WARNING' | undefined;
 
-export type CertificationFormInputType = 'TEL' | 'EMAIL' | undefined;
+export type CertificationFormInputType = 'NUMBER' | 'EMAIL' | undefined;

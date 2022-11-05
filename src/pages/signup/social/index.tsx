@@ -32,6 +32,8 @@ function SignupSocial({navigation}: Props) {
     }
   };
 
+  const moveToNextPage = () => setCurrentStage(prev => prev + 1);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={{backgroundColor: '#FFF'}}>
@@ -68,7 +70,11 @@ function SignupSocial({navigation}: Props) {
           </Center>
 
           {/* Stage 1: 휴대폰 번호 인증 | Stage 2: 닉네임 중복 체크 */}
-          {currentStage === 1 ? <PhoneCertification /> : <NickNameCheck />}
+          {currentStage === 1 ? (
+            <PhoneCertification handlePage={moveToNextPage} />
+          ) : (
+            <NickNameCheck />
+          )}
         </Box>
       </SafeAreaView>
     </TouchableWithoutFeedback>
