@@ -12,7 +12,10 @@ const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내'
  * 닉네임 중복 체크 컴포넌트
  */
 function NickNameCheck() {
+  const [nickName, setNickName] = useState('');
   const [isAgree, setIsAgree] = useState(false);
+
+  const hadleNickName = (text: string) => setNickName(text);
 
   return (
     <>
@@ -23,6 +26,8 @@ function NickNameCheck() {
         successMessage={'인증번호가 전송되었습니다'}
         errorMessage={'인증번호 전송에 실패했습니다'}
         helperTextList={helperTextList}
+        inputValue={nickName}
+        onChangeHandle={hadleNickName}
         inputRightElement={
           <Pressable
             w={'77px'}
@@ -50,6 +55,7 @@ function NickNameCheck() {
             <Text fontSize={15} fontWeight={'400'} color={'#7F838C'}>
               (필수)
             </Text>
+            {/* onPress 추가 예정 */}
             <Pressable>
               <Text
                 fontSize={15}
@@ -64,6 +70,7 @@ function NickNameCheck() {
             <Text fontSize={15} fontWeight={'400'} color={'#7F838C'}>
               및
             </Text>
+            {/* onPress 추가 예정 */}
             <Pressable>
               <Text
                 fontSize={15}
