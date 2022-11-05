@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Button from '~/components/common/button';
-import CertificationForm from '~/components/common/CertificationForm';
 import useRegExPhone from '~/hooks/useRegExPhone';
+import CertificationForm from '~/components/common/CertificationForm';
 
 /**
  * 휴대폰 인증 스테이지 컴포넌트

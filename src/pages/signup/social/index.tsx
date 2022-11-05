@@ -5,7 +5,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ParamListBase} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-import Button from '~/components/common/button';
 import StageBar from '~/components/common/stage/StageBar';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import NickNameCheck from '~/components/signup/social/NickNameCheck';
@@ -13,8 +12,9 @@ import PhoneCertification from '~/components/signup/social/PhoneCertification';
 
 import BackIcon from '../../../assets/icon/back_icon.svg';
 
-type Props = NativeStackScreenProps<ParamListBase, 'Hospital'>;
+type Props = NativeStackScreenProps<ParamListBase, 'SignupSocial'>;
 
+// 스테이지별 보여질 텍스트 리스트
 const stageOneTextList = ['회원 확인을 위해', '휴대폰 번호를 인증해주세요'];
 const stageTwoTextList = ['닉네임을 입력해주세요'];
 
@@ -22,9 +22,7 @@ const stageTwoTextList = ['닉네임을 입력해주세요'];
  *@description 소셜 회원가입 페이지
  */
 function SignupSocial({navigation}: Props) {
-  const [currentStage, setCurrentStage] = useState(2);
-
-  const onPressSignup = () => {};
+  const [currentStage, setCurrentStage] = useState(1);
 
   const onPressBack = () => {
     if (currentStage === 1) {
@@ -54,7 +52,7 @@ function SignupSocial({navigation}: Props) {
 
         {/* 스테이지별 콘텐츠 */}
         <Box
-          h={Platform.OS === 'android' ? '77%' : '80%'}
+          h={Platform.OS === 'android' ? '90%' : '92%'}
           position={'relative'}
           marginX={'18px'}
           backgroundColor={'#fff'}>
@@ -72,24 +70,6 @@ function SignupSocial({navigation}: Props) {
           {/* Stage 1: 휴대폰 번호 인증 | Stage 2: 닉네임 중복 체크 */}
           {currentStage === 1 ? <PhoneCertification /> : <NickNameCheck />}
         </Box>
-
-        {/* 하단 버튼 View */}
-        <Center
-          h={Platform.OS === 'android' ? '12%' : '12%'}
-          paddingX={'18px'}
-          backgroundColor={'#FFF'}>
-          {currentStage === 2 && (
-            <Button
-              large
-              shadow
-              text={'가입완료'}
-              btnColor={'#FF6B00'}
-              disabledColor={'#FFEADC'}
-              handlePress={onPressSignup}
-              active={true}
-            />
-          )}
-        </Center>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

@@ -2,16 +2,18 @@ import React from 'react';
 import {Flex, HStack, Text, View, VStack} from 'native-base';
 import {TextInput} from 'react-native';
 
-import {CertificationResult} from '~/../types/certification';
-
-type TextInputType = 'TEL' | 'EMAIL' | undefined;
+import {
+  CertificationFormInputType,
+  CertificationResult,
+} from '~/../types/certification';
 
 interface Props {
-  inputType?: TextInputType;
+  inputType?: CertificationFormInputType;
   placeholder?: string;
   certificationResult?: CertificationResult;
   successMessage?: string;
   errorMessage?: string;
+  warningMessage?: string;
   helperTextList?: string[];
   inputValue: string;
   onChangeHandle: (text: string) => void;
@@ -26,6 +28,7 @@ interface Props {
  * @param {CertificationResult} certificationResult - 인증 여부 (성공, 실패)
  * @param {string} successMessage - 인증 성공 메세지
  * @param {string} errorMessage - 인증 실패 메세지
+ * @param {string} warningMessage - 경고 메세지
  * @param {string[]} helperTextList - 사용자가 입력할때 도움을 주는 도움말 리스트
  * @param {string} inputValue - TextInput에 들어갈 value
  * @param {(text: string) => void} onChangeHandle - inputValue change 핸들러
@@ -38,6 +41,7 @@ function CertificationForm({
   certificationResult,
   successMessage,
   errorMessage,
+  warningMessage,
   helperTextList,
   inputValue,
   onChangeHandle,
@@ -96,7 +100,11 @@ function CertificationForm({
           color={certificationResult === 'SUCCESS' ? '#0094FF' : '#F6363A'}
           fontSize={13}
           fontWeight={'400'}>
-          {certificationResult === 'SUCCESS' ? successMessage : errorMessage}
+          {certificationResult === 'SUCCESS'
+            ? successMessage
+            : certificationResult === 'FAIL'
+            ? errorMessage
+            : warningMessage}
         </Text>
       )}
     </VStack>

@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
+import {Platform} from 'react-native';
 import {Box, Center, HStack, Pressable, Text} from 'native-base';
 
+import Button from '~/components/common/button';
+import {CertificationResult} from '~/../types/certification';
 import CertificationForm from '~/components/common/CertificationForm';
 
 import CheckIcon from '../../../assets/icons/check.svg';
-import {Platform} from 'react-native';
+
+// 한글, 영어, 숫자만 받을 수 있는 정규식
+const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
 
 // 닉네임 인풋 도움말 리스트
 const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내'];
@@ -14,41 +19,61 @@ const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내'
  */
 function NickNameCheck() {
   const [nickName, setNickName] = useState('');
+  // 이용약관 및 개인정보 처리 방침동의 여부
   const [isAgree, setIsAgree] = useState(false);
+  // 인증 결과
+  const [result, setResult] = useState<CertificationResult>();
 
-  const hadleNickName = (text: string) => setNickName(text);
+  const hadleNickName = (text: string) => {
+    setNickName(prev =>
+      text.length === 0 ? text : regex.test(text) ? text : prev,
+    );
+  };
+
+  // 닉네임 중복 검사
+  const checkDuplication = () => {
+    // API 연동 시 수정 필요
+    if (nickName.length < 2 || nickName.length > 11) {
+      // 입력한 닉네임이 2 ~ 10자 사이가 아닐경우
+      setResult('WARNING');
+    } else {
+      setResult('SUCCESS');
+    }
+  };
+
+  // 회원가입
+  const onPressSignup = () => {};
 
   return (
     <>
       {/* 닉네임 인증 폼 View */}
       <CertificationForm
         placeholder={'닉네임'}
-        certificationResult={'SUCCESS'}
-        successMessage={'인증번호가 전송되었습니다'}
-        errorMessage={'인증번호 전송에 실패했습니다'}
+        certificationResult={result}
+        successMessage={'사용 가능한 닉네임입니다'}
+        errorMessage={'사용할 수 없는 닉네임입니다'}
+        warningMessage={'2~10자 이내로 입력해 주세요'}
         helperTextList={helperTextList}
         inputValue={nickName}
         onChangeHandle={hadleNickName}
         inputRightElement={
-          <Pressable
+          <Button
             w={'77px'}
-            h={'36px'}
-            backgroundColor={'#FFD53F'}
-            borderRadius={'4px'}
-            borderWidth={'1px'}
-            borderColor={'#1A1E27'}>
-            <Text color={'#1A1E27'} textAlign={'center'} lineHeight={'36px'}>
-              중복확인
-            </Text>
-          </Pressable>
+            btnColor={'#FFD53F'}
+            disabledColor={'#FFF6D8'}
+            text={'중복확인'}
+            active={nickName.length !== 0 ? true : false}
+            handlePress={checkDuplication}
+          />
         }
       />
 
-      {/* 하단 이용약관 및 개인정보 처리 방침 View */}
+      {/* 하단 버튼 및 이용약관, 개인정보 처리방침 View */}
       <Box
         w={'100%'}
         position={'absolute'}
         bottom={Platform.OS === 'android' ? '10px' : 0}>
+        {/* 이용약관 및 개인정보 처리 방침 */}
         <HStack space={3}>
           <Center>
             <Pressable onPress={() => setIsAgree(prev => !prev)}>
@@ -100,6 +125,19 @@ function NickNameCheck() {
             </Text>
           </HStack>
         </HStack>
+
+        {/* 가입완료 버튼 */}
+        <Box h={'104px'} pt={'18px'} backgroundColor={'#FFF'}>
+          <Button
+            large
+            shadow
+            text={'가입완료'}
+            btnColor={'#FF6B00'}
+            disabledColor={'#FFEADC'}
+            handlePress={onPressSignup}
+            active={isAgree && result === 'SUCCESS' ? true : false}
+          />
+        </Box>
       </Box>
     </>
   );
