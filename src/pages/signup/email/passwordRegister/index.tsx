@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Box, Center, HStack, Pressable, Stack, Text} from 'native-base';
+import {Box, Center, Flex, HStack, Pressable, Stack, Text} from 'native-base';
 import BackIcon from '~/assets/icon/back_icon.svg';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RouteList} from '~/../types/navigator';
@@ -11,22 +11,22 @@ import {TextInput} from 'react-native';
 /**
  *@description 이메일 회원가입 - 비밀번호 입력 페이지
 
- *@param password 비밀번호
- *@param passwordConfrim 비밀번호 확인
+ *@param {string} password 비밀번호
+ *@param {string} passwordConfrim 비밀번호 확인
  */
 
 function PasswordRegister() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
-  const [password, setPassword] = useState<string>();
-  const [passwordConfrim, setPasswordConfirm] = useState<string>();
+  const [password, setPassword] = useState('');
+  const [passwordConfrim, setPasswordConfirm] = useState('');
 
   const handlePasswordChange = (text: string) => {
     setPassword(text);
   };
 
-  const handlePasswordConfirmChange = (number: any) => {
-    setPasswordConfirm(number);
+  const handlePasswordConfirmChange = (text: string) => {
+    setPasswordConfirm(text);
   };
 
   return (
@@ -44,11 +44,10 @@ function PasswordRegister() {
 
         <RegisterProgress value={75} />
 
-        <Stack
+        <Flex
           h={'100%'}
           p="18px"
           bgColor={'white'}
-          flexDir={'column'}
           justifyContent={'space-between'}>
           <AvoidKeyboardView>
             <Stack>
@@ -130,7 +129,7 @@ function PasswordRegister() {
               </Text>
             </Pressable>
           </Box>
-        </Stack>
+        </Flex>
       </Stack>
     </SafeAreaView>
   );

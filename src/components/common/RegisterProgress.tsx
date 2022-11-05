@@ -1,15 +1,15 @@
 import {Progress} from 'native-base';
 import React from 'react';
 
+interface Props {
+  value: number;
+}
+
 /**
  *@description 입력 단계시 사용하는 공통 프로그래스 바
 
  * @param {number} value 현재 단계 값(총 단계 100 기준)
  */
-
-interface Props {
-  value: number;
-}
 
 function RegisterProgress({value}: Props) {
   return (

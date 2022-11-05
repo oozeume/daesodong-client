@@ -1,5 +1,5 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Box, Center, HStack, Pressable, Stack, Text} from 'native-base';
+import {Box, Center, Flex, HStack, Pressable, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -15,10 +15,8 @@ import RegisterProgress from '~/components/common/RegisterProgress';
 function EmailRegister() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
-  const [email, setEmail] = useState<string>();
-  const onEmailChange = (text: string) => {
-    setEmail(text);
-  };
+  const [email, setEmail] = useState('');
+  const onEmailChange = (text: string) => setEmail(text);
 
   return (
     <SafeAreaView>
@@ -35,11 +33,10 @@ function EmailRegister() {
 
         <RegisterProgress value={50} />
 
-        <Stack
+        <Flex
           h={'100%'}
           p="18px"
           bgColor={'white'}
-          flexDir={'column'}
           justifyContent={'space-between'}>
           <Stack>
             <Center my={'60px'}>
@@ -84,7 +81,7 @@ function EmailRegister() {
               </Text>
             </Pressable>
           </Box>
-        </Stack>
+        </Flex>
       </Stack>
     </SafeAreaView>
   );

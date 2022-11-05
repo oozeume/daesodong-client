@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Box, Center, HStack, Pressable, Stack, Text} from 'native-base';
+import {Box, Center, Flex, HStack, Pressable, Stack, Text} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {RouteList} from '~/../types/navigator';
 import BackIcon from '~/assets/icon/back_icon.svg';
@@ -45,11 +45,10 @@ function NicknameRegister() {
 
         <RegisterProgress value={100} />
 
-        <Stack
+        <Flex
           h={'100%'}
           p="18px"
           bgColor={'white'}
-          flexDir={'column'}
           justifyContent={'space-between'}>
           <Stack>
             <Center my={'60px'}>
@@ -150,7 +149,7 @@ function NicknameRegister() {
               </Pressable>
             </Box>
           </Stack>
-        </Stack>
+        </Flex>
       </Stack>
     </SafeAreaView>
   );

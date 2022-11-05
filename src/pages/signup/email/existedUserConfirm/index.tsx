@@ -1,4 +1,4 @@
-import {Box, Center, HStack, Pressable, Stack, Text} from 'native-base';
+import {Box, Center, Flex, HStack, Pressable, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {RouteList} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -20,8 +20,8 @@ import CountdownTimer from '~/components/common/CountdownTimer';
 function ExistedUserConfirm() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
-  const [phoneNumber, SetPhoneNumber] = useState();
-  const [verifiedNumber, setVerifiedNumber] = useState();
+  const [phoneNumber, SetPhoneNumber] = useState('');
+  const [verifiedNumber, setVerifiedNumber] = useState('');
 
   const [showVerifiedNumberInput, SetShowVerifiedNumberInput] = useState(false);
 
@@ -29,11 +29,11 @@ function ExistedUserConfirm() {
     SetShowVerifiedNumberInput(true);
   };
 
-  const handlePhoneNumberChange = (number: any) => {
+  const handlePhoneNumberChange = (number: string) => {
     SetPhoneNumber(number);
   };
 
-  const handleVerifiedNumberChange = (number: any) => {
+  const handleVerifiedNumberChange = (number: string) => {
     setVerifiedNumber(number);
   };
 
@@ -54,12 +54,11 @@ function ExistedUserConfirm() {
 
         <RegisterProgress value={25} />
 
-        <Stack
+        <Flex
           h={'100%'}
           pt={'60px'}
           p="18px"
           bgColor={'#fff'}
-          flexDir={'column'}
           justifyContent={'space-between'}>
           <AvoidKeyboardView>
             <Center>
@@ -82,20 +81,16 @@ function ExistedUserConfirm() {
                     py={'8px'}
                     justifyContent={'space-between'}
                     alignItems={'center'}
+                    backgroundColor={'white'}
+                    borderWidth={0}
+                    borderRadius={0}
                     borderBottomColor={'grayScale.30'}
                     borderBottomWidth={'1px'}>
                     <TextInput
-                      w={'250px'}
-                      h={'52px'}
-                      type={'text'}
                       value={phoneNumber}
                       onChangeText={handlePhoneNumberChange}
-                      backgroundColor={'white'}
                       placeholder="휴대폰 번호"
                       keyboardType="numeric"
-                      borderWidth={0}
-                      borderRadius={0}
-                      p={0}
                     />
 
                     <Pressable
@@ -135,21 +130,16 @@ function ExistedUserConfirm() {
                       w={'100%'}
                       h={'52px'}
                       py={'8px'}
+                      backgroundColor={'white'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
                       borderBottomColor={'grayScale.30'}
                       borderBottomWidth={'1px'}>
                       <TextInput
-                        w={'250px'}
-                        h={'52px'}
-                        backgroundColor={'white'}
                         keyboardType="numeric"
                         value={verifiedNumber}
                         onChangeText={handleVerifiedNumberChange}
                         placeholder="인증번호 4자리"
-                        borderWidth={0}
-                        borderRadius={0}
-                        p={0}
                       />
                       <CountdownTimer time={180} />
                     </HStack>
@@ -182,7 +172,7 @@ function ExistedUserConfirm() {
               </Text>
             </Pressable>
           </Box>
-        </Stack>
+        </Flex>
       </Stack>
     </SafeAreaView>
   );
