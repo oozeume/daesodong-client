@@ -9,6 +9,8 @@ import {
   useToast,
 } from 'native-base';
 
+import {theme} from '~/theme/theme';
+
 /**
  * 병원 시설 방문 기록 체크 및 확인 할 수 있는 컴포넌트
  * @TODO API 연동 후 이벤트 핸들링 수정
@@ -44,7 +46,7 @@ function RecordVisitedExperience() {
               fontSize={14}
               fontWeight={'400'}
               textAlign={'center'}
-              color={'#FFFFFF'}>
+              color={theme.colors.grayScale[0]}>
               방문 기록에 우리 아이가 추가되었어요
             </Text>
             <Pressable onPress={closeToast}>
@@ -52,7 +54,7 @@ function RecordVisitedExperience() {
                 fontSize={14}
                 fontWeight={'700'}
                 textAlign={'center'}
-                color={'#FF6B00'}>
+                color={theme.colors.fussOrange[0]}>
                 취소
               </Text>
             </Pressable>
@@ -72,9 +74,11 @@ function RecordVisitedExperience() {
           mt={'12px'}
           px={'12px'}
           py={'16px'}
-          backgroundColor={'#FFF5EF'}>
+          backgroundColor={theme.colors.fussOrange['-40']}>
           <Center>
-            <Text color={'#FF6B00'}>봉삼이와 함께 방문한 병원이에요</Text>
+            <Text color={theme.colors.fussOrange[0]}>
+              봉삼이와 함께 방문한 병원이에요
+            </Text>
           </Center>
         </Box>
       ) : (
@@ -83,18 +87,18 @@ function RecordVisitedExperience() {
           px={'12px'}
           py={'20px'}
           mt={'24px'}
-          backgroundColor={'#F6F7F7'}>
+          backgroundColor={theme.colors.grayScale[10]}>
           <Text
             fontSize={14}
             fontWeight={'400'}
-            color={'#5D626D'}
+            color={theme.colors.grayScale[70]}
             textAlign={'center'}>
             이 시설을 이용한 경험이 있으신가요?
           </Text>
           <Text
             fontSize={14}
             fontWeight={'400'}
-            color={'#5D626D'}
+            color={theme.colors.grayScale[70]}
             textAlign={'center'}>
             방문 기록을 남기면 친구들에게 도움을 줄 수 있어요!
           </Text>
@@ -105,11 +109,13 @@ function RecordVisitedExperience() {
               mt={'16px'}
               borderWidth={1}
               borderRadius={8}
-              borderColor={'#FF6B00'}
-              backgroundColor={'#FFF5EF'}
+              borderColor={theme.colors.fussOrange[0]}
+              backgroundColor={theme.colors.fussOrange['-40']}
               style={{shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.15}}
               onPress={showToast}>
-              <Text color={'#FF6B00'}>방문한 경험이 있어요</Text>
+              <Text color={theme.colors.fussOrange[0]}>
+                방문한 경험이 있어요
+              </Text>
             </Button>
           </Center>
         </Box>

@@ -1,5 +1,7 @@
-import {Center, Text, VStack} from 'native-base';
 import React from 'react';
+import {Center, Text, VStack} from 'native-base';
+
+import {theme} from '~/theme/theme';
 
 interface Props {
   totalStage: number;
@@ -17,7 +19,10 @@ function StageTextBox({totalStage, currentStage, stageTextList}: Props) {
   return (
     <VStack space={2}>
       <Center>
-        <Text fontSize={13} fontWeight={'400'} color={'#9EA1A8'}>
+        <Text
+          fontSize={13}
+          fontWeight={'400'}
+          color={theme.colors.grayScale[50]}>
           {currentStage} / {totalStage}
         </Text>
       </Center>
@@ -28,7 +33,7 @@ function StageTextBox({totalStage, currentStage, stageTextList}: Props) {
               key={`stage_text_${text}`}
               fontSize={20}
               fontWeight={'500'}
-              color={'#383E4A'}>
+              color={theme.colors.grayScale[80]}>
               {text}
             </Text>
           ))}

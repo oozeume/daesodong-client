@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Text} from 'native-base';
 
+import {theme} from '~/theme/theme';
+
 interface Props {
   start: boolean;
   time: number;
@@ -33,7 +35,7 @@ function Timer({start, time, handleTimeOver = () => {}}: Props) {
   }, [start]);
 
   return (
-    <Text fontSize={15} fontWeight={'400'} color={'#F6363A'}>
+    <Text fontSize={15} fontWeight={'400'} color={theme.colors.negative[0]}>
       {minute === 0 && second === 0
         ? '시간 초과'
         : ` ${minute}:${

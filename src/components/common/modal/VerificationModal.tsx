@@ -11,6 +11,7 @@ import {
 
 import Timer from '../Timer';
 import Button from '../button';
+import {theme} from '~/theme/theme';
 import VerificationForm from '../VerificationForm';
 import {VerificationResult} from '~/../types/verification';
 
@@ -84,7 +85,10 @@ function VerificationModal({
           <VStack h={'100%'} px={'18px'}>
             {/* 인증 모달 타이틀 */}
             <Center py={'28px'}>
-              <Text fontSize={18} fontWeight={'500'} color={'#383E4A'}>
+              <Text
+                fontSize={18}
+                fontWeight={'500'}
+                color={theme.colors.grayScale[80]}>
                 인증번호를 입력해주세요
               </Text>
             </Center>
@@ -114,9 +118,18 @@ function VerificationModal({
                 large
                 shadow
                 text={isTimeOver ? '닫기' : '확인'}
-                fontColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
-                buttonColors={{active: '#FF6B00', disabled: '#FFEADC'}}
-                borderColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
+                fontColors={{
+                  active: theme.colors.grayScale[90],
+                  disabled: theme.colors.grayScale[50],
+                }}
+                buttonColors={{
+                  active: theme.colors.fussOrange[0],
+                  disabled: theme.colors.fussOrange['-30'],
+                }}
+                borderColors={{
+                  active: theme.colors.grayScale[90],
+                  disabled: theme.colors.grayScale[50],
+                }}
                 handlePress={checkVerificationNumber}
                 active={verificationNumber.length === 4 || isTimeOver}
               />

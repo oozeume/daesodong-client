@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Keyboard} from 'react-native';
 
+import {theme} from '~/theme/theme';
 import Button from '~/components/common/button';
 import useRegExPhone from '~/hooks/useRegExPhone';
 import VerificationForm from '~/components/common/VerificationForm';
@@ -41,9 +42,18 @@ function PhoneVerification({handlePage}: Props) {
         inputRightElement={
           <Button
             width={'77px'}
-            fontColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
-            buttonColors={{active: '#FFD53F', disabled: '#FFF6D8'}}
-            borderColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
+            fontColors={{
+              active: theme.colors.grayScale[90],
+              disabled: theme.colors.grayScale[40],
+            }}
+            buttonColors={{
+              active: theme.colors.fussYellow[0],
+              disabled: theme.colors.fussYellow['-30'],
+            }}
+            borderColors={{
+              active: theme.colors.grayScale[90],
+              disabled: theme.colors.grayScale[40],
+            }}
             text={'인증하기'}
             active={phoneNumber.length === 13}
             handlePress={handleModal}

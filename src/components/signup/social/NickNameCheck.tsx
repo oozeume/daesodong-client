@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Keyboard, Platform} from 'react-native';
 import {Box, Center, HStack, Pressable, Text} from 'native-base';
 
+import {theme} from '~/theme/theme';
 import Button from '~/components/common/button';
 import {VerificationResult} from '~/../types/verification';
 import VerificationForm from '~/components/common/VerificationForm';
@@ -56,9 +57,18 @@ function NickNameCheck() {
         inputRightElement={
           <Button
             width={'77px'}
-            fontColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
-            buttonColors={{active: '#FFD53F', disabled: '#FFF6D8'}}
-            borderColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
+            fontColors={{
+              active: theme.colors.grayScale[90],
+              disabled: theme.colors.grayScale[40],
+            }}
+            buttonColors={{
+              active: theme.colors.fussYellow[0],
+              disabled: theme.colors.fussYellow['-30'],
+            }}
+            borderColors={{
+              active: theme.colors.grayScale[90],
+              disabled: theme.colors.grayScale[40],
+            }}
             text={'중복확인'}
             active={nickName.length !== 0 ? true : false}
             handlePress={checkDuplication}
@@ -75,14 +85,20 @@ function NickNameCheck() {
         <HStack space={3}>
           <Center>
             <Pressable onPress={() => setIsAgree(prev => !prev)}>
-              <CheckIcon fill={isAgree ? '#FF6B00' : '#E1E2E4'} />
+              <CheckIcon
+                fill={
+                  isAgree
+                    ? theme.colors.fussOrange[0]
+                    : theme.colors.grayScale[30]
+                }
+              />
             </Pressable>
           </Center>
           <HStack space={0.5}>
             <Text
               fontSize={Platform.OS === 'android' ? 13 : 15}
               fontWeight={'400'}
-              color={'#7F838C'}>
+              color={theme.colors.grayScale[60]}>
               (필수)
             </Text>
             {/* onPress 추가 예정 */}
@@ -90,17 +106,17 @@ function NickNameCheck() {
               <Text
                 fontSize={Platform.OS === 'android' ? 13 : 15}
                 fontWeight={'400'}
-                color={'#7F838C'}
+                color={theme.colors.grayScale[60]}
                 textDecoration={'solid'}
                 textDecorationLine={'underline'}
-                textDecorationColor={'#7F838C'}>
+                textDecorationColor={theme.colors.grayScale[60]}>
                 이용약관
               </Text>
             </Pressable>
             <Text
               fontSize={Platform.OS === 'android' ? 13 : 15}
               fontWeight={'400'}
-              color={'#7F838C'}>
+              color={theme.colors.grayScale[60]}>
               및
             </Text>
             {/* onPress 추가 예정 */}
@@ -108,31 +124,43 @@ function NickNameCheck() {
               <Text
                 fontSize={Platform.OS === 'android' ? 13 : 15}
                 fontWeight={'400'}
-                color={'#7F838C'}
+                color={theme.colors.grayScale[60]}
                 textDecoration={'solid'}
                 textDecorationLine={'underline'}
-                textDecorationColor={'#7F838C'}>
+                textDecorationColor={theme.colors.grayScale[60]}>
                 개인정보 처리 방침
               </Text>
             </Pressable>
             <Text
               fontSize={Platform.OS === 'android' ? 13 : 15}
               fontWeight={'400'}
-              color={'#7F838C'}>
+              color={theme.colors.grayScale[60]}>
               에 동의합니다
             </Text>
           </HStack>
         </HStack>
 
         {/* 가입완료 버튼 */}
-        <Box h={'104px'} pt={'18px'} backgroundColor={'#FFF'}>
+        <Box
+          h={'104px'}
+          pt={'18px'}
+          backgroundColor={theme.colors.grayScale[0]}>
           <Button
             large
             shadow
             text={'가입완료'}
-            fontColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
-            buttonColors={{active: '#FF6B00', disabled: '#FFEADC'}}
-            borderColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
+            fontColors={{
+              active: theme.colors.grayScale[90],
+              disabled: theme.colors.grayScale[50],
+            }}
+            buttonColors={{
+              active: theme.colors.fussOrange[0],
+              disabled: theme.colors.fussOrange['-30'],
+            }}
+            borderColors={{
+              active: theme.colors.grayScale[90],
+              disabled: theme.colors.grayScale[50],
+            }}
             handlePress={onPressSignup}
             active={isAgree && result === 'SUCCESS'}
           />

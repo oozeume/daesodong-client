@@ -6,6 +6,7 @@ import {
   VerificationFormInputType,
   VerificationResult,
 } from '~/../types/verification';
+import {theme} from '~/theme/theme';
 
 interface Props {
   value: string;
@@ -63,7 +64,7 @@ function VerificationForm({
         justifyContent={'space-between'}
         alignItems={'center'}
         borderBottomWidth={'1px'}
-        borderBottomColor={'#E1E2E4'}>
+        borderBottomColor={theme.colors.grayScale[30]}>
         {/* 인풋창 왼쪽 TextInput */}
         <View w={'70%'}>
           <TextInput
@@ -94,7 +95,11 @@ function VerificationForm({
           <Text
             fontSize={13}
             fontWeight={'400'}
-            color={certificationResult === 'SUCCESS' ? '#0094FF' : '#9EA1A8'}
+            color={
+              certificationResult === 'SUCCESS'
+                ? theme.colors.positive[0]
+                : theme.colors.grayScale[50]
+            }
             key={`label_${text}`}>
             {text}
           </Text>
@@ -104,7 +109,11 @@ function VerificationForm({
       {/* 인증 성공 or 실패 라벨 */}
       {certificationResult && (
         <Text
-          color={certificationResult === 'SUCCESS' ? '#0094FF' : '#F6363A'}
+          color={
+            certificationResult === 'SUCCESS'
+              ? theme.colors.positive[0]
+              : theme.colors.negative[0]
+          }
           fontSize={13}
           fontWeight={'400'}>
           {certificationResult === 'SUCCESS'

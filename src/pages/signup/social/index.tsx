@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ParamListBase} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
+import {theme} from '~/theme/theme';
 import StageBar from '~/components/common/stage/StageBar';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import NickNameCheck from '~/components/signup/social/NickNameCheck';
@@ -37,14 +38,14 @@ function SignupSocial({navigation}: Props) {
 
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
-      <SafeAreaView style={{backgroundColor: '#FFF'}}>
+      <SafeAreaView style={{backgroundColor: theme.colors.grayScale[0]}}>
         {/* 상단 버튼 View */}
         <HStack
           space={3}
           h={Platform.OS === 'android' ? '10%' : '8%'}
           justifyContent={'space-between'}
           paddingX={'18px'}
-          backgroundColor={'#fff'}>
+          backgroundColor={theme.colors.grayScale[0]}>
           <Center h="60" w="30">
             <Pressable onPress={onPressBack}>
               <BackIcon />
@@ -58,7 +59,7 @@ function SignupSocial({navigation}: Props) {
           h={Platform.OS === 'android' ? '90%' : '92%'}
           position={'relative'}
           marginX={'18px'}
-          backgroundColor={'#fff'}>
+          backgroundColor={theme.colors.grayScale[0]}>
           {/* 소셜 회원가입 스테이지 및 스테이지별 텍스트 */}
           <Center marginY={'60px'}>
             <StageTextBox
