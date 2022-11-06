@@ -3,20 +3,21 @@ import {Flex, HStack, Text, View, VStack} from 'native-base';
 import {TextInput} from 'react-native';
 
 import {
-  CertificationFormInputType,
-  CertificationResult,
-} from '~/../types/certification';
+  VerificationFormInputType,
+  VerificationResult,
+} from '~/../types/verification';
 
 interface Props {
-  inputType?: CertificationFormInputType;
+  value: string;
+  onChangeText: (text: string) => void;
+  marginBottom?: string;
+  inputType?: VerificationFormInputType;
   placeholder?: string;
-  certificationResult?: CertificationResult;
+  certificationResult?: VerificationResult;
   successMessage?: string;
   errorMessage?: string;
   warningMessage?: string;
   helperTextList?: string[];
-  inputValue: string;
-  onChangeHandle: (text: string) => void;
   inputRightElement?: JSX.Element;
   autoFocus?: boolean;
   inputRef?: LegacyRef<TextInput>;
@@ -24,20 +25,24 @@ interface Props {
 
 /**
  * 인증 관련 폼
+ * @param {string} value - TextInput에 들어갈 value
+ * @param {(text: string) => void} onChangeText - value change 핸들러
+ * @param {string} marginBottom - 하단 마진 값
  * @param {string} inputType - 텍스트 인풋창 타입
  * @param {string} placeholder - 텍스트 인풋창 placeholder
- * @param {CertificationResult} certificationResult - 인증 여부 (성공, 실패)
+ * @param {VerificationResult} certificationResult - 인증 여부 (성공, 실패)
  * @param {string} successMessage - 인증 성공 메세지
  * @param {string} errorMessage - 인증 실패 메세지
  * @param {string} warningMessage - 경고 메세지
  * @param {string[]} helperTextList - 사용자가 입력할때 도움을 주는 도움말 리스트
- * @param {string} inputValue - TextInput에 들어갈 value
- * @param {(text: string) => void} onChangeHandle - inputValue change 핸들러
  * @param {JSX.Element} inputRightElement - 인풋창 오른쪽에 들어갈 element
  * @param {boolean} autoFocus - 텍스트창 자동으로 보이게 하는 기능 on/off
  * @param {LegacyRef<TextInput>} inputRef - autoFocus가 작동하지 않는 경우 강제로 focus하기 위한 ref
  */
-function CertificationForm({
+function VerificationForm({
+  value,
+  onChangeText,
+  marginBottom,
   inputType,
   placeholder,
   certificationResult,
@@ -45,14 +50,12 @@ function CertificationForm({
   errorMessage,
   warningMessage,
   helperTextList,
-  inputValue,
-  onChangeHandle,
   inputRightElement,
   autoFocus,
   inputRef,
 }: Props) {
   return (
-    <VStack space={1} mb={'20px'}>
+    <VStack space={1} mb={marginBottom}>
       <Flex
         w={'100%'}
         h={'52px'}
@@ -64,11 +67,10 @@ function CertificationForm({
         {/* 인풋창 왼쪽 TextInput */}
         <View w={'70%'}>
           <TextInput
-            value={inputValue}
+            value={value}
             placeholder={placeholder}
-            onChangeText={text => onChangeHandle(text)}
-            autoFocus={autoFocus ? autoFocus : false}
-            scrollEnabled={false}
+            onChangeText={onChangeText}
+            autoFocus={autoFocus}
             keyboardType={
               inputType === 'NUMBER'
                 ? 'number-pad'
@@ -116,4 +118,4 @@ function CertificationForm({
   );
 }
 
-export default CertificationForm;
+export default VerificationForm;

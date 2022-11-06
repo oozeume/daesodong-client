@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Keyboard, Platform, TouchableWithoutFeedback} from 'react-native';
+import {Keyboard, Platform} from 'react-native';
 import {Center, HStack, Pressable, Box} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ParamListBase} from '@react-navigation/native';
@@ -8,9 +8,10 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import StageBar from '~/components/common/stage/StageBar';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import NickNameCheck from '~/components/signup/social/NickNameCheck';
-import PhoneCertification from '~/components/signup/social/PhoneCertification';
+import PhoneVerification from '~/components/signup/social/PhoneVerification';
 
 import BackIcon from '../../../assets/icon/back_icon.svg';
+import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 
 type Props = NativeStackScreenProps<ParamListBase, 'SignupSocial'>;
 
@@ -35,7 +36,7 @@ function SignupSocial({navigation}: Props) {
   const moveToNextPage = () => setCurrentStage(prev => prev + 1);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutView onPress={Keyboard.dismiss}>
       <SafeAreaView style={{backgroundColor: '#FFF'}}>
         {/* 상단 버튼 View */}
         <HStack
@@ -71,13 +72,13 @@ function SignupSocial({navigation}: Props) {
 
           {/* Stage 1: 휴대폰 번호 인증 | Stage 2: 닉네임 중복 체크 */}
           {currentStage === 1 ? (
-            <PhoneCertification handlePage={moveToNextPage} />
+            <PhoneVerification handlePage={moveToNextPage} />
           ) : (
             <NickNameCheck />
           )}
         </Box>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutView>
   );
 }
 

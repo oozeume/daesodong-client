@@ -3,8 +3,8 @@ import {Keyboard} from 'react-native';
 
 import Button from '~/components/common/button';
 import useRegExPhone from '~/hooks/useRegExPhone';
-import CertificationForm from '~/components/common/CertificationForm';
-import CertificationModal from '~/components/common/modal/CertificationModal';
+import VerificationForm from '~/components/common/VerificationForm';
+import VerificationModal from '~/components/common/modal/VerificationModal';
 
 interface Props {
   handlePage: () => void;
@@ -14,7 +14,7 @@ interface Props {
  * 휴대폰 인증 스테이지 컴포넌트
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
-function PhoneCertification({handlePage}: Props) {
+function PhoneVerification({handlePage}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [phoneNumber, handlePhoneNumber] = useRegExPhone();
 
@@ -25,25 +25,27 @@ function PhoneCertification({handlePage}: Props) {
 
   return (
     <>
-      <CertificationModal
+      <VerificationModal
         visible={modalVisible}
         handleModal={handleModal}
         handlePage={handlePage}
       />
-      <CertificationForm
+      <VerificationForm
         inputType={'NUMBER'}
         placeholder={'휴대폰 번호'}
         successMessage={'인증번호가 전송되었습니다'}
         errorMessage={'인증번호 전송에 실패했습니다'}
-        inputValue={phoneNumber}
-        onChangeHandle={handlePhoneNumber}
+        value={phoneNumber}
+        marginBottom={'20px'}
+        onChangeText={handlePhoneNumber}
         inputRightElement={
           <Button
-            w={'77px'}
-            btnColor={'#FFD53F'}
-            disabledColor={'#FFF6D8'}
+            width={'77px'}
+            fontColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
+            buttonColors={{active: '#FFD53F', disabled: '#FFF6D8'}}
+            borderColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
             text={'인증하기'}
-            active={phoneNumber.length === 13 ? true : false}
+            active={phoneNumber.length === 13}
             handlePress={handleModal}
           />
         }
@@ -53,4 +55,4 @@ function PhoneCertification({handlePage}: Props) {
   );
 }
 
-export default PhoneCertification;
+export default PhoneVerification;

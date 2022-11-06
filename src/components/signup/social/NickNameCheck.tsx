@@ -3,8 +3,8 @@ import {Keyboard, Platform} from 'react-native';
 import {Box, Center, HStack, Pressable, Text} from 'native-base';
 
 import Button from '~/components/common/button';
-import {CertificationResult} from '~/../types/certification';
-import CertificationForm from '~/components/common/CertificationForm';
+import {VerificationResult} from '~/../types/verification';
+import VerificationForm from '~/components/common/VerificationForm';
 
 import CheckIcon from '../../../assets/icons/check.svg';
 
@@ -17,7 +17,7 @@ const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내'
 function NickNameCheck() {
   const [nickName, setNickName] = useState('');
   const [isAgree, setIsAgree] = useState(false); // 이용약관 및 개인정보 처리 방침동의 여부
-  const [result, setResult] = useState<CertificationResult>(); // 인증 결과
+  const [result, setResult] = useState<VerificationResult>(); // 인증 결과
 
   const hadleNickName = (text: string) => {
     setNickName(prev =>
@@ -43,20 +43,22 @@ function NickNameCheck() {
   return (
     <>
       {/* 닉네임 인증 폼 View */}
-      <CertificationForm
+      <VerificationForm
         placeholder={'닉네임'}
         certificationResult={result}
         successMessage={'사용 가능한 닉네임입니다'}
         errorMessage={'사용할 수 없는 닉네임입니다'}
         warningMessage={'2~10자 이내로 입력해 주세요'}
         helperTextList={helperTextList}
-        inputValue={nickName}
-        onChangeHandle={hadleNickName}
+        value={nickName}
+        marginBottom={'20px'}
+        onChangeText={hadleNickName}
         inputRightElement={
           <Button
-            w={'77px'}
-            btnColor={'#FFD53F'}
-            disabledColor={'#FFF6D8'}
+            width={'77px'}
+            fontColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
+            buttonColors={{active: '#FFD53F', disabled: '#FFF6D8'}}
+            borderColors={{active: '#1A1E27', disabled: '#C6C8CD'}}
             text={'중복확인'}
             active={nickName.length !== 0 ? true : false}
             handlePress={checkDuplication}
@@ -128,10 +130,11 @@ function NickNameCheck() {
             large
             shadow
             text={'가입완료'}
-            btnColor={'#FF6B00'}
-            disabledColor={'#FFEADC'}
+            fontColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
+            buttonColors={{active: '#FF6B00', disabled: '#FFEADC'}}
+            borderColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
             handlePress={onPressSignup}
-            active={isAgree && result === 'SUCCESS' ? true : false}
+            active={isAgree && result === 'SUCCESS'}
           />
         </Box>
       </Box>

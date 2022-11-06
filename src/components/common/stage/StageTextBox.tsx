@@ -12,7 +12,6 @@ interface Props {
  * @param {number} totalStage - 총 스테이지 수
  * @param {number} currentStage - 현재 스테이지
  * @param {string[]} stageTextList - 표시될 텍스트 리스트
- * @param {PropsWithChildren} children - 스테이지 별 들어갈 텍스트 element
  */
 function StageTextBox({totalStage, currentStage, stageTextList}: Props) {
   return (

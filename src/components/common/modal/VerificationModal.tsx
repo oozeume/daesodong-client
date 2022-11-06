@@ -11,8 +11,8 @@ import {
 
 import Timer from '../Timer';
 import Button from '../button';
-import CertificationForm from '../CertificationForm';
-import {CertificationResult} from '~/../types/certification';
+import VerificationForm from '../VerificationForm';
+import {VerificationResult} from '~/../types/verification';
 
 // 숫자만 받을 수 있는 정규식
 const regex = /^[0-9]+$/;
@@ -29,29 +29,31 @@ interface Props {
  * @param {() => void} handleModal - 모달 on/off 핸들러
  * @param {() => void} handlePage - 인증번호 확인 결과에 따라 페이지 이동이 필요할 경우 페이지 변경을 위한 핸들러
  */
-function CertificationModal({
+function VerificationModal({
   visible,
   handleModal,
   handlePage = () => {},
 }: Props) {
   const inputRef = useRef<TextInput>(null);
   const [isTimeOver, setIsTimeOver] = useState<boolean>();
-  const [result, setResult] = useState<CertificationResult>(); // 인증번호 확인 결과
-  const [certificationNumber, setCertificationNumber] = useState('');
+  const [result, setResult] = useState<VerificationResult>(); // 인증번호 확인 결과
+  const [verificationNumber, setVerificationNumber] = useState('');
 
-  const handleCertificationNumber = (text: string) => {
-    setCertificationNumber(prev =>
-      text.length === 0 ? text : regex.test(text) ? text : prev,
-    );
+  const handleVerificationNumber = (text: string) => {
+    setVerificationNumber(prev => {
+      const nextCondition = regex.test(text) ? text : prev;
+
+      return text.length === 0 ? text : nextCondition;
+    });
   };
 
   // 인증번호 확인
-  const checkCertificationNumber = () => {
+  const checkVerificationNumber = () => {
     if (isTimeOver) {
       handleModal();
     } else {
       // API 연동 후 추가 작업 필요
-      if (certificationNumber.length > 4) {
+      if (verificationNumber.length > 4) {
         setResult('FAIL');
       } else {
         setResult('SUCCESS');
@@ -87,14 +89,15 @@ function CertificationModal({
               </Text>
             </Center>
             {/* 인증번호 입력 form */}
-            <CertificationForm
+            <VerificationForm
               inputType={'NUMBER'}
               placeholder={'인증번호 4자리'}
               certificationResult={result}
               successMessage={'인증번호가 일치합니다'}
               errorMessage={'인증번호를 확인해주세요'}
-              inputValue={certificationNumber}
-              onChangeHandle={handleCertificationNumber}
+              marginBottom={'20px'}
+              value={verificationNumber}
+              onChangeText={handleVerificationNumber}
               inputRightElement={
                 <Timer
                   start={visible}
@@ -111,12 +114,11 @@ function CertificationModal({
                 large
                 shadow
                 text={isTimeOver ? '닫기' : '확인'}
-                btnColor={'#FF6B00'}
-                disabledColor={'#FFEADC'}
-                handlePress={checkCertificationNumber}
-                active={
-                  certificationNumber.length === 4 || isTimeOver ? true : false
-                }
+                fontColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
+                buttonColors={{active: '#FF6B00', disabled: '#FFEADC'}}
+                borderColors={{active: '#1A1E27', disabled: '#9EA1A8'}}
+                handlePress={checkVerificationNumber}
+                active={verificationNumber.length === 4 || isTimeOver}
               />
             </Box>
           </VStack>
@@ -126,4 +128,4 @@ function CertificationModal({
   );
 }
 
-export default CertificationModal;
+export default VerificationModal;
