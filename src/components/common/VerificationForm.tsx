@@ -14,11 +14,12 @@ interface Props {
   marginBottom?: string;
   inputType?: VerificationFormInputType;
   placeholder?: string;
-  certificationResult?: VerificationResult;
+  verificationResult?: VerificationResult;
   successMessage?: string;
   errorMessage?: string;
   warningMessage?: string;
-  helperTextList?: string[];
+  helpList?: string[];
+  helpVericationResults?: VerificationResult[];
   inputRightElement?: JSX.Element;
   autoFocus?: boolean;
   inputRef?: LegacyRef<TextInput>;
@@ -31,11 +32,12 @@ interface Props {
  * @param {string} marginBottom - 하단 마진 값
  * @param {string} inputType - 텍스트 인풋창 타입
  * @param {string} placeholder - 텍스트 인풋창 placeholder
- * @param {VerificationResult} certificationResult - 인증 여부 (성공, 실패)
+ * @param {VerificationResult} verificationResult - 인증 여부 (성공, 실패)
  * @param {string} successMessage - 인증 성공 메세지
  * @param {string} errorMessage - 인증 실패 메세지
  * @param {string} warningMessage - 경고 메세지
- * @param {string[]} helperTextList - 사용자가 입력할때 도움을 주는 도움말 리스트
+ * @param {string[]} helpList - 사용자가 입력할때 도움을 주는 도움말 리스트
+ * @param {VerificationResult[]} helpVericationResults - 도움말 검증 결과
  * @param {JSX.Element} inputRightElement - 인풋창 오른쪽에 들어갈 element
  * @param {boolean} autoFocus - 텍스트창 자동으로 보이게 하는 기능 on/off
  * @param {LegacyRef<TextInput>} inputRef - autoFocus가 작동하지 않는 경우 강제로 focus하기 위한 ref
@@ -46,11 +48,12 @@ function VerificationForm({
   marginBottom,
   inputType,
   placeholder,
-  certificationResult,
+  verificationResult,
   successMessage,
   errorMessage,
   warningMessage,
-  helperTextList,
+  helpList,
+  helpVericationResults,
   inputRightElement,
   autoFocus,
   inputRef,
@@ -91,34 +94,35 @@ function VerificationForm({
 
       {/* 인풋 도움말 */}
       <HStack space={3}>
-        {helperTextList?.map(text => (
-          <Text
-            fontSize={13}
-            fontWeight={'400'}
-            color={
-              certificationResult === 'SUCCESS'
-                ? theme.colors.positive[0]
-                : theme.colors.grayScale[50]
-            }
-            key={`label_${text}`}>
-            {text}
-          </Text>
-        ))}
+        {helpList &&
+          helpVericationResults?.map((result, index) => (
+            <Text
+              fontSize={13}
+              fontWeight={'400'}
+              color={
+                result === 'SUCCESS'
+                  ? theme.colors.positive[0]
+                  : theme.colors.grayScale[50]
+              }
+              key={`label_${helpList[index]}`}>
+              {helpList[index]}
+            </Text>
+          ))}
       </HStack>
 
       {/* 인증 성공 or 실패 라벨 */}
-      {certificationResult && (
+      {verificationResult && (
         <Text
           color={
-            certificationResult === 'SUCCESS'
+            verificationResult === 'SUCCESS'
               ? theme.colors.positive[0]
               : theme.colors.negative[0]
           }
           fontSize={13}
           fontWeight={'400'}>
-          {certificationResult === 'SUCCESS'
+          {verificationResult === 'SUCCESS'
             ? successMessage
-            : certificationResult === 'FAIL'
+            : verificationResult === 'FAIL'
             ? errorMessage
             : warningMessage}
         </Text>

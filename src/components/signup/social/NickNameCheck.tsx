@@ -1,56 +1,89 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Keyboard, Platform} from 'react-native';
-import {Box, Center, HStack, Pressable, Text} from 'native-base';
+import {Box} from 'native-base';
 
-import {theme} from '~/theme/theme';
+import {colors} from '~/theme/theme';
 import Button from '~/components/common/button';
 import {VerificationResult} from '~/../types/verification';
 import VerificationForm from '~/components/common/VerificationForm';
 
-import CheckIcon from '../../../assets/icons/check.svg';
+import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
+import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
 
-const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/; // 한글, 영어, 숫자만 받을 수 있는 정규식
-const helperTextList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 닉네임 인풋 도움말 리스트
+const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
 
 /**
  * 닉네임 중복 체크 컴포넌트
  */
 function NickNameCheck() {
   const [nickName, setNickName] = useState('');
-  const [isAgree, setIsAgree] = useState(false); // 이용약관 및 개인정보 처리 방침동의 여부
+  const [modalVisible, setModalVisible] = useState(false);
   const [result, setResult] = useState<VerificationResult>(); // 인증 결과
+  const [helpResults, setHelpResults] = useState<VerificationResult[]>([
+    'FAIL',
+    'FAIL',
+    'FAIL',
+  ]); // 도움말 검증 결과
 
-  const hadleNickName = (text: string) => {
-    setNickName(prev =>
-      text.length === 0 ? text : regex.test(text) ? text : prev,
-    );
-  };
+  const handleModal = () => setModalVisible(prev => !prev);
 
   // 닉네임 중복 검사
   const checkDuplication = () => {
-    Keyboard.dismiss();
     // API 연동 시 수정 필요
-    if (nickName.length < 2 || nickName.length > 11) {
-      // 입력한 닉네임이 2 ~ 10자 사이가 아닐경우
-      setResult('WARNING');
-    } else {
-      setResult('SUCCESS');
-    }
+    Keyboard.dismiss();
+    setResult('SUCCESS');
   };
 
-  // 회원가입
-  const onPressSignup = () => {};
+  // 닉네임 글자수 검사
+  const checkNickNameLength = (text: string): VerificationResult => {
+    return text.length > 1 && text.length <= 10 ? 'SUCCESS' : 'FAIL';
+  };
+
+  // 닉네임 공백 검사
+  const isExistBlank = (text: string): VerificationResult => {
+    return text.indexOf(' ') === -1 ? 'SUCCESS' : 'FAIL';
+  };
+
+  // 닉네임 특수문자 검사
+  const isExistSpecialCharacters = (text: string): VerificationResult => {
+    return SPECIAL_CHARACTERS_REGEX.test(text) ? 'FAIL' : 'SUCCESS';
+  };
+
+  // 도움말 검증 결과 설정
+  const setUpHelpResults = (text: string) => {
+    if (text) {
+      console.log(text);
+      return setHelpResults([
+        isExistBlank(text),
+        isExistSpecialCharacters(text),
+        checkNickNameLength(text),
+      ]);
+    }
+
+    setHelpResults(['FAIL', 'FAIL', 'FAIL']);
+  };
+
+  const hadleNickName = (text: string) => {
+    const textWithRemovedEmoji = text.replace(EMOJI_REGEX, '');
+    setNickName(textWithRemovedEmoji);
+    setUpHelpResults(textWithRemovedEmoji);
+  };
+
+  useEffect(() => {
+    setResult('WARNING');
+  }, [nickName]);
 
   return (
     <>
+      <TermsAgreedModal visible={modalVisible} handleModal={handleModal} />
       {/* 닉네임 인증 폼 View */}
       <VerificationForm
         placeholder={'닉네임'}
-        certificationResult={result}
+        verificationResult={result}
         successMessage={'사용 가능한 닉네임입니다'}
         errorMessage={'사용할 수 없는 닉네임입니다'}
-        warningMessage={'2~10자 이내로 입력해 주세요'}
-        helperTextList={helperTextList}
+        helpList={helpList}
+        helpVericationResults={helpResults}
         value={nickName}
         marginBottom={'20px'}
         onChangeText={hadleNickName}
@@ -58,19 +91,19 @@ function NickNameCheck() {
           <Button
             width={'77px'}
             fontColors={{
-              active: theme.colors.grayScale[90],
-              disabled: theme.colors.grayScale[40],
+              active: colors.grayScale[90],
+              disabled: colors.grayScale[40],
             }}
             buttonColors={{
-              active: theme.colors.fussYellow[0],
-              disabled: theme.colors.fussYellow['-30'],
+              active: colors.fussYellow[0],
+              disabled: colors.fussYellow['-30'],
             }}
             borderColors={{
-              active: theme.colors.grayScale[90],
-              disabled: theme.colors.grayScale[40],
+              active: colors.grayScale[90],
+              disabled: colors.grayScale[40],
             }}
             text={'중복확인'}
-            active={nickName.length !== 0 ? true : false}
+            active={!helpResults.includes('FAIL')}
             handlePress={checkDuplication}
           />
         }
@@ -82,87 +115,27 @@ function NickNameCheck() {
         position={'absolute'}
         bottom={Platform.OS === 'android' ? '10px' : 0}>
         {/* 이용약관 및 개인정보 처리 방침 */}
-        <HStack space={3}>
-          <Center>
-            <Pressable onPress={() => setIsAgree(prev => !prev)}>
-              <CheckIcon
-                fill={
-                  isAgree
-                    ? theme.colors.fussOrange[0]
-                    : theme.colors.grayScale[30]
-                }
-              />
-            </Pressable>
-          </Center>
-          <HStack space={0.5}>
-            <Text
-              fontSize={Platform.OS === 'android' ? 13 : 15}
-              fontWeight={'400'}
-              color={theme.colors.grayScale[60]}>
-              (필수)
-            </Text>
-            {/* onPress 추가 예정 */}
-            <Pressable>
-              <Text
-                fontSize={Platform.OS === 'android' ? 13 : 15}
-                fontWeight={'400'}
-                color={theme.colors.grayScale[60]}
-                textDecoration={'solid'}
-                textDecorationLine={'underline'}
-                textDecorationColor={theme.colors.grayScale[60]}>
-                이용약관
-              </Text>
-            </Pressable>
-            <Text
-              fontSize={Platform.OS === 'android' ? 13 : 15}
-              fontWeight={'400'}
-              color={theme.colors.grayScale[60]}>
-              및
-            </Text>
-            {/* onPress 추가 예정 */}
-            <Pressable>
-              <Text
-                fontSize={Platform.OS === 'android' ? 13 : 15}
-                fontWeight={'400'}
-                color={theme.colors.grayScale[60]}
-                textDecoration={'solid'}
-                textDecorationLine={'underline'}
-                textDecorationColor={theme.colors.grayScale[60]}>
-                개인정보 처리 방침
-              </Text>
-            </Pressable>
-            <Text
-              fontSize={Platform.OS === 'android' ? 13 : 15}
-              fontWeight={'400'}
-              color={theme.colors.grayScale[60]}>
-              에 동의합니다
-            </Text>
-          </HStack>
-        </HStack>
 
         {/* 가입완료 버튼 */}
-        <Box
-          h={'104px'}
-          pt={'18px'}
-          backgroundColor={theme.colors.grayScale[0]}>
+        <Box h={'104px'} pt={'18px'} backgroundColor={colors.grayScale[0]}>
           <Button
             large
             shadow
             text={'가입완료'}
             fontColors={{
-              active: theme.colors.grayScale[90],
-              disabled: theme.colors.grayScale[50],
+              active: colors.grayScale[90],
+              disabled: colors.grayScale[50],
             }}
             buttonColors={{
-              active: theme.colors.fussOrange[0],
-              disabled: theme.colors.fussOrange['-30'],
+              active: colors.fussOrange[0],
+              disabled: colors.fussOrange['-30'],
             }}
             borderColors={{
-              active: theme.colors.grayScale[90],
-              disabled: theme.colors.grayScale[50],
+              active: colors.grayScale[90],
+              disabled: colors.grayScale[50],
             }}
-            handlePress={onPressSignup}
-            active={isAgree && result === 'SUCCESS'}
+            handlePress={handleModal}
+            active={result === 'SUCCESS'}
           />
         </Box>
       </Box>

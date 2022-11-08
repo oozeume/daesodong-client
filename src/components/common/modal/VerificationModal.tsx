@@ -96,7 +96,7 @@ function VerificationModal({
             <VerificationForm
               inputType={'NUMBER'}
               placeholder={'인증번호 4자리'}
-              certificationResult={result}
+              verificationResult={result}
               successMessage={'인증번호가 일치합니다'}
               errorMessage={'인증번호를 확인해주세요'}
               marginBottom={'20px'}
