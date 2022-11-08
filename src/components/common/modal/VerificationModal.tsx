@@ -5,6 +5,7 @@ import {
   Center,
   KeyboardAvoidingView,
   Modal,
+  Pressable,
   Text,
   VStack,
 } from 'native-base';
@@ -14,6 +15,8 @@ import Button from '../button';
 import {colors} from '~/theme/theme';
 import VerificationForm from '../VerificationForm';
 import {VerificationResult} from '~/../types/verification';
+
+import BackIcon from '../../../assets/icons/back.svg';
 
 // 숫자만 받을 수 있는 정규식
 const regex = /^[0-9]+$/;
@@ -77,43 +80,49 @@ function VerificationModal({
     <Modal isOpen={visible} size={'full'}>
       <KeyboardAvoidingView>
         <Modal.Content
-          maxH={'272px'}
+          w={'100%'}
+          maxH={'284'}
           borderTopRadius={'28px'}
           borderBottomRadius={'none'}
           mb={0}
           mt={'auto'}>
-          <VStack h={'100%'} px={'18px'}>
-            {/* 인증 모달 타이틀 */}
-            <Center py={'28px'}>
-              <Text
-                fontSize={18}
-                fontWeight={'500'}
-                color={colors.grayScale[80]}>
-                인증번호를 입력해주세요
-              </Text>
-            </Center>
-            {/* 인증번호 입력 form */}
-            <VerificationForm
-              inputType={'NUMBER'}
-              placeholder={'인증번호 4자리'}
-              verificationResult={result}
-              successMessage={'인증번호가 일치합니다'}
-              errorMessage={'인증번호를 확인해주세요'}
-              marginBottom={'20px'}
-              value={verificationNumber}
-              onChangeText={handleVerificationNumber}
-              inputRightElement={
-                <Timer
-                  start={visible}
-                  time={180}
-                  handleTimeOver={handleTimeOver}
-                />
-              }
-              autoFocus
-              inputRef={inputRef}
-            />
+          <VStack h={'100%'} mx={'28px'}>
+            <Box maxH={'164px'}>
+              {/* 인증 모달 타이틀 */}
+              <Center mt={'28px'} mb={'12px'}>
+                <Pressable position={'absolute'} left={0} onPress={handleModal}>
+                  <BackIcon />
+                </Pressable>
+                <Text
+                  fontSize={18}
+                  fontWeight={'500'}
+                  color={colors.grayScale[80]}>
+                  인증번호를 입력해주세요
+                </Text>
+              </Center>
+              {/* 인증번호 입력 form */}
+              <VerificationForm
+                inputType={'NUMBER'}
+                placeholder={'인증번호 4자리'}
+                verificationResult={result}
+                successMessage={'인증번호가 일치합니다'}
+                errorMessage={'인증번호를 확인해주세요'}
+                value={verificationNumber}
+                onChangeText={handleVerificationNumber}
+                inputRightElement={
+                  <Timer
+                    start={visible}
+                    time={180}
+                    handleTimeOver={handleTimeOver}
+                  />
+                }
+                autoFocus
+                inputRef={inputRef}
+              />
+            </Box>
+
             {/* 인증번호 확인 버튼 */}
-            <Box>
+            <Box h={'144px'} mt={'12px'}>
               <Button
                 large
                 shadow
@@ -133,6 +142,17 @@ function VerificationModal({
                 handlePress={checkVerificationNumber}
                 active={verificationNumber.length === 4 || isTimeOver}
               />
+              <Center mt={'20px'}>
+                <Pressable>
+                  <Text
+                    fontSize={14}
+                    fontWeight={'500'}
+                    color={colors.grayScale[50]}
+                    textDecorationLine={'underline'}>
+                    인증번호를 받지 못했어요
+                  </Text>
+                </Pressable>
+              </Center>
             </Box>
           </VStack>
         </Modal.Content>
