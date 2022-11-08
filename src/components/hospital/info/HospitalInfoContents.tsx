@@ -1,7 +1,7 @@
 import React from 'react';
 import {Center, HStack} from 'native-base';
 
-import {theme} from '~/theme/theme';
+import {colors} from '~/theme/theme';
 import {IconNameType} from '~/../types/hospital';
 import IconView from './IconView';
 
@@ -24,7 +24,7 @@ function HospitalInfoContents({
       <HStack
         width={337}
         borderBottomWidth={1}
-        borderBottomColor={theme.colors.grayScale[10]}
+        borderBottomColor={colors.grayScale[10]}
         style={{paddingVertical: 24}}>
         <IconView iconName={iconName} />
         {children}

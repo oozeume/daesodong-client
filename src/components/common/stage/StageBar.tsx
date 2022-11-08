@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import {Box, HStack} from 'native-base';
 
-import {theme} from '~/theme/theme';
+import {colors} from '~/theme/theme';
 
 interface Props {
   totalStage: number;
@@ -24,8 +24,8 @@ function StageBar({totalStage, currentStage}: Props) {
           h={'1px'}
           backgroundColor={
             stage + 1 <= currentStage
-              ? theme.colors.fussOrange[0]
-              : theme.colors.grayScale[20]
+              ? colors.fussOrange[0]
+              : colors.grayScale[20]
           }
         />
       ))}

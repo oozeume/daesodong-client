@@ -1,7 +1,7 @@
 import React from 'react';
 import {HStack, Text, VStack} from 'native-base';
 
-import {theme} from '~/theme/theme';
+import {colors} from '~/theme/theme';
 import {OpeningHoursType} from '../../../pages/hospital/info';
 
 interface Props {
@@ -19,7 +19,7 @@ function HospitalOpeningHours({openingHours}: Props) {
     <HStack space={2}>
       <Text
         fontSize={14}
-        color={theme.colors.grayScale[70]}
+        color={colors.grayScale[70]}
         fontWeight={'400'}
         textAlign={'left'}
         style={{width: 40, marginRight: 20}}>
@@ -28,7 +28,7 @@ function HospitalOpeningHours({openingHours}: Props) {
       <VStack space={1} width={239}>
         <Text
           fontSize={14}
-          color={theme.colors.grayScale[70]}
+          color={colors.grayScale[70]}
           fontWeight={'400'}
           textAlign={'left'}>
           {openingHours.totalHour}
@@ -36,7 +36,7 @@ function HospitalOpeningHours({openingHours}: Props) {
         {openingHours.break && (
           <Text
             fontSize={14}
-            color={theme.colors.grayScale[70]}
+            color={colors.grayScale[70]}
             fontWeight={'400'}
             textAlign={'left'}>
             {openingHours.break} 휴게시간

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Box, Center, HStack, Pressable, Text, VStack} from 'native-base';
 
-import {theme} from '~/theme/theme';
+import {colors} from '~/theme/theme';
 import {VisitedAnimalsType} from '~/../types/hospital';
 import VisitedAnimalsAccordion from './VisitedAnimalsAccordion';
 
@@ -49,13 +49,13 @@ function RecordVisitedAccordion() {
         py={'16px'}
         mt={'12px'}
         borderRadius={8}
-        backgroundColor={theme.colors.grayScale[10]}>
+        backgroundColor={colors.grayScale[10]}>
         <VStack>
           <HStack space={2} justifyContent="center">
             <Text
               fontSize={14}
               fontWeight={'500'}
-              color={theme.colors.grayScale[80]}
+              color={colors.grayScale[80]}
               textAlign={'center'}>
               {totalVisitsNumber}마리의 친구들이 방문했어요
             </Text>

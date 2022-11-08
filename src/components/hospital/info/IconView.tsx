@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'native-base';
 
-import {theme} from '~/theme/theme';
+import {colors} from '~/theme/theme';
 import {IconNameType} from '~/../types/hospital';
 
 import ChatFillIcon from '../../../assets/icon/chat_fill.svg';
@@ -23,15 +23,15 @@ function IconView({iconName}: Props) {
   const getIcon = (name: IconNameType) => {
     switch (name) {
       case 'chat_fill':
-        return <ChatFillIcon fill={theme.colors.grayScale[20]} />;
+        return <ChatFillIcon fill={colors.grayScale[20]} />;
       case 'call_fill':
-        return <CallFillIcon fill={theme.colors.grayScale[20]} />;
+        return <CallFillIcon fill={colors.grayScale[20]} />;
       case 'info_fill':
-        return <InfoFillIcon fill={theme.colors.grayScale[20]} />;
+        return <InfoFillIcon fill={colors.grayScale[20]} />;
       case 'clock_fill':
-        return <ClockFillIcon fill={theme.colors.grayScale[20]} />;
+        return <ClockFillIcon fill={colors.grayScale[20]} />;
       case 'location_fill':
-        return <LocationFillIcon fill={theme.colors.grayScale[20]} />;
+        return <LocationFillIcon fill={colors.grayScale[20]} />;
       default:
         return null;
     }
