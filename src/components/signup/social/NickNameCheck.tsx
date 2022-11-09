@@ -20,9 +20,9 @@ function NickNameCheck() {
   const [modalVisible, setModalVisible] = useState(false);
   const [result, setResult] = useState<VerificationResult>(); // 인증 결과
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
-    'FAIL',
-    'FAIL',
-    'FAIL',
+    'WARNING',
+    'WARNING',
+    'WARNING',
   ]); // 도움말 검증 결과
 
   const handleModal = () => setModalVisible(prev => !prev);
@@ -52,7 +52,6 @@ function NickNameCheck() {
   // 도움말 검증 결과 설정
   const setUpHelpResults = (text: string) => {
     if (text) {
-      console.log(text);
       return setHelpResults([
         isExistBlank(text),
         isExistSpecialCharacters(text),
@@ -60,7 +59,7 @@ function NickNameCheck() {
       ]);
     }
 
-    setHelpResults(['FAIL', 'FAIL', 'FAIL']);
+    setHelpResults(['WARNING', 'WARNING', 'WARNING']);
   };
 
   const hadleNickName = (text: string) => {
@@ -83,7 +82,7 @@ function NickNameCheck() {
         successMessage={'사용 가능한 닉네임입니다'}
         errorMessage={'사용할 수 없는 닉네임입니다'}
         helpList={helpList}
-        helpVericationResults={helpResults}
+        helpVerificationResults={helpResults}
         value={nickName}
         marginBottom={'20px'}
         onChangeText={hadleNickName}

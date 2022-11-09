@@ -19,7 +19,7 @@ interface Props {
   errorMessage?: string;
   warningMessage?: string;
   helpList?: string[];
-  helpVericationResults?: VerificationResult[];
+  helpVerificationResults?: VerificationResult[];
   inputRightElement?: JSX.Element;
   autoFocus?: boolean;
   inputRef?: LegacyRef<TextInput>;
@@ -37,7 +37,7 @@ interface Props {
  * @param {string} errorMessage - 인증 실패 메세지
  * @param {string} warningMessage - 경고 메세지
  * @param {string[]} helpList - 사용자가 입력할때 도움을 주는 도움말 리스트
- * @param {VerificationResult[]} helpVericationResults - 도움말 검증 결과
+ * @param {VerificationResult[]} helpVerificationResults - 도움말 검증 결과
  * @param {JSX.Element} inputRightElement - 인풋창 오른쪽에 들어갈 element
  * @param {boolean} autoFocus - 텍스트창 자동으로 보이게 하는 기능 on/off
  * @param {LegacyRef<TextInput>} inputRef - autoFocus가 작동하지 않는 경우 강제로 focus하기 위한 ref
@@ -53,7 +53,7 @@ function VerificationForm({
   errorMessage,
   warningMessage,
   helpList,
-  helpVericationResults,
+  helpVerificationResults,
   inputRightElement,
   autoFocus,
   inputRef,
@@ -95,12 +95,16 @@ function VerificationForm({
       {/* 인풋 도움말 */}
       <HStack space={3}>
         {helpList &&
-          helpVericationResults?.map((result, index) => (
+          helpVerificationResults?.map((result, index) => (
             <Text
               fontSize={13}
               fontWeight={'400'}
               color={
-                result === 'SUCCESS' ? colors.positive[0] : colors.grayScale[50]
+                result === 'SUCCESS'
+                  ? colors.positive[0]
+                  : result === 'FAIL'
+                  ? colors.negative[0]
+                  : colors.grayScale[50]
               }
               key={`label_${helpList[index]}`}>
               {helpList[index]}
