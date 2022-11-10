@@ -4,22 +4,23 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import {RouteList} from '~/../types/navigator';
 import Home from '../pages/home';
 import Hospital from '../pages/hospital';
 import Contents from '../pages/contents';
 import Community from '../pages/community';
 import MyPage from '../pages/mypage';
+import InitialLogin from '~/pages/login';
+import SignupEmail from '~/pages/signup/email';
+import SignupSocial from '~/pages/signup/social';
+import DeveloperMenu from '~/pages/developerMenu';
+import HospitalReviewRegister from '~/pages/hospital/review/register';
+import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
 
+import UserIcon from '../assets/icon/nav_user_icon.svg';
 import LocationIcon from '../assets/icon/nav_location_icon.svg';
 import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
-import UserIcon from '../assets/icon/nav_user_icon.svg';
-import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
-import HospitalReviewRegister from '~/pages/hospital/review/register';
-import DeveloperMenu from '~/pages/developerMenu';
-import {RouteList} from '~/../types/navigator';
-import InitialLogin from '~/pages/login';
-import SignupEmail from '~/pages/signup/email';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -122,6 +123,7 @@ const AppNavigator = () => {
 
         <Stack.Screen name="InitialLogin" component={InitialLogin} />
         <Stack.Screen name="SignupEmail" component={SignupEmail} />
+        <Stack.Screen name="SignupSocial" component={SignupSocial} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -13,6 +13,7 @@ import {
 } from 'native-base';
 import Swiper from 'react-native-swiper';
 
+import {colors} from '~/theme/theme';
 import TextEllipsis from '../../../components/common/TextEllipsis';
 import VisitedAnimals from '../../../components/hospital/info/VisitedAnimals';
 import HospitalInfoContents from '../../../components/hospital/info/HospitalInfoContents';
@@ -56,14 +57,14 @@ function HospitalInfo() {
   const handleTextOpen = () => setTextOpen(prev => !prev);
 
   return (
-    <VStack alignItems="center" backgroundColor={'#FFFFFF'}>
+    <VStack alignItems="center" backgroundColor={colors.grayScale[0]}>
       <ScrollView w={'100%'} h={'65%'}>
         {/* 병원 사진 */}
         {/* 이미지 클릭 시 자세히 보기 모달 추가 예정 */}
-        <Center w="375" h="250" backgroundColor={'#ECECEE'}>
+        <Center w="375" h="250" backgroundColor={colors.grayScale[20]}>
           <Swiper
-            dotColor="rgba(26, 30, 39, 0.6)"
-            activeDotColor="#FF6B00"
+            dotColor={colors.scrim[60]}
+            activeDotColor={colors.fussOrange[0]}
             loop={false}>
             {IMAGE_LIST.map(image => (
               <AspectRatio key={image.uri} ratio={375 / 250}>
@@ -103,7 +104,7 @@ function HospitalInfo() {
             {hospitalGreetings.length > 87 && (
               <Pressable onPress={handleTextOpen}>
                 <HStack space={1}>
-                  <Text style={{fontSize: 13, color: '#7F838C'}}>
+                  <Text style={{fontSize: 13, color: colors.grayScale[60]}}>
                     {textOpen ? '닫기' : '전체보기'}
                   </Text>
                   {/* Up 아이콘 추가 예정 */}
@@ -138,10 +139,10 @@ function HospitalInfo() {
               w={299}
               fontSize={13}
               textAlign={'left'}
-              color={'#0094FF'}
+              color={colors.positive[0]}
               textDecoration={'solid'}
               textDecorationLine={'underline'}
-              textDecorationColor={'#0094FF'}>
+              textDecorationColor={colors.positive[0]}>
               02-305-4242
             </Text>
           </Pressable>
@@ -153,7 +154,7 @@ function HospitalInfo() {
             w={299}
             fontSize={14}
             fontWeight={'400'}
-            color={'#5D626D'}
+            color={colors.grayScale[70]}
             textAlign={'left'}>
             첫 방문 시 예약이 불가합니다.
           </Text>
@@ -167,11 +168,16 @@ function HospitalInfo() {
               w={299}
               fontSize={14}
               fontWeight={'400'}
-              color={'#5D626D'}
+              color={colors.grayScale[70]}
               textAlign={'left'}>
               서울 서대문구 남가좌동 385 DMC 파크뷰자이 104동 1층 102A호
             </Text>
-            <Box w={299} h={200} mt={'12px'} background={'#F6F7F7'} />
+            <Box
+              w={299}
+              h={200}
+              mt={'12px'}
+              background={colors.grayScale[10]}
+            />
           </VStack>
         </HospitalInfoContents>
       </ScrollView>
