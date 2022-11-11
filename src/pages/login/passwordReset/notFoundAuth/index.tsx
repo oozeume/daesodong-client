@@ -26,7 +26,6 @@ function PasswordResetNotFoundAuth() {
 
   // 디바이스 높이에 따른 padding 설정
   const containerPaddingTop = `${Math.floor((140 * appHeight) / 812)}px`;
-  const containerPaddingBottom = `${Math.floor((40 * appHeight) / 812)}px`;
 
   return (
     <SafeAreaView>
@@ -35,7 +34,7 @@ function PasswordResetNotFoundAuth() {
         w="100%"
         h="100%"
         pt={containerPaddingTop}
-        pb={containerPaddingBottom}
+        pb={'40px'}
         px="18px"
         justifyContent={'space-between'}>
         <VStack>
@@ -67,10 +66,10 @@ function PasswordResetNotFoundAuth() {
         </VStack>
 
         <VStack>
-          <KakaoLoginButton onPress={() => {}} />
-          <AppleLoginButton onPress={() => {}} />
-          <GoogleLoginButton onPress={() => {}} />
-          <EmailLoginButton onPress={() => onMove('EmailLogin')} />
+          <KakaoLoginButton handlePress={() => {}} />
+          <AppleLoginButton handlePress={() => {}} />
+          <GoogleLoginButton handlePress={() => {}} />
+          <EmailLoginButton handlePress={() => onMove('EmailLogin')} />
         </VStack>
       </VStack>
     </SafeAreaView>

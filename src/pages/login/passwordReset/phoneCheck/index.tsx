@@ -5,10 +5,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Header from '~/components/hospital/review/register/Header';
 import BackIcon from '~/assets/icons/back.svg';
-import FormInput from '~/components/common/FormInput';
-import ActiveButton from '~/components/common/ActiveButton';
 import {colors} from '~/theme/theme';
-import PhoneCheckBottomModal from '~/components/login/passwordReset/phoneCheck/PhoneCheckBottomModal';
+import VerificationForm from '~/components/common/VerificationForm';
+import {YellowActiveSmallButton} from '~/components/login/button';
+import VerificationModal from '~/components/common/modal/VerificationModal';
 
 /**
  *@description 비밀번호 재설정 휴대폰 인증
@@ -21,13 +21,13 @@ function PasswordResetPhoneCheck() {
   };
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
 
   return (
     <SafeAreaView>
-      <VStack bg="#fff" w="100%" h="100%">
+      <VStack bg="#fff" w="100%" h="100%" pb="40px">
         <Header
           title="비밀번호 재설정"
           leftButton={<BackIcon style={{position: 'absolute', left: 22}} />}
@@ -48,47 +48,37 @@ function PasswordResetPhoneCheck() {
               계정 정보를 확인할게요
             </Text>
 
-            <FormInput
+            <VerificationForm
               placeholder={'아이디(이메일)'}
-              inputContainerStyle={{marginBottom: 12}}
-              errorText="입력하신 계정 정보를 찾을 수 없습니다"
+              marginBottom={'12px'}
               onChangeText={setEmail}
-              text={email}
+              value={email}
+              inputType="EMAIL"
+              autoFocus
             />
 
-            <FormInput
+            <VerificationForm
               placeholder={'휴대폰 번호'}
-              inputContainerStyle={{marginBottom: 20}}
-              successText="인증번호가 전송되었습니다"
-              isValidate="SUCCESS"
-              rightElement={
-                <ActiveButton
-                  name={'인증하기'}
-                  buttonStyle={{
-                    width: 77,
-                    height: 36,
-                    borderRadius: 4,
-                  }}
-                  activeBackgroundColor={colors.fussYellow['0']}
-                  inactiveBackgroundColor={colors.fussYellow['-30']}
-                  activeBorderColor={colors.grayScale['90']}
-                  inactiveBorderColor={colors.grayScale['40']}
-                  activeTextColor={colors.grayScale['90']}
-                  inactiveTextColor={colors.grayScale['40']}
-                  nameStyle={{fontSize: 14}}
-                  onPress={() => setIsModalOpen(true)}
+              marginBottom={'20px'}
+              onChangeText={setPhoneNumber}
+              value={phoneNumber}
+              inputType="NUMBER"
+              autoFocus
+              inputRightElement={
+                <YellowActiveSmallButton
+                  active={email.length > 4 && phoneNumber.length > 4}
+                  text={'인증하기'}
+                  handlePress={() => setIsModalOpen(true)}
                 />
               }
-              onChangeText={setPassword}
-              text={password}
             />
           </VStack>
         </VStack>
 
-        <PhoneCheckBottomModal
-          setCertificationNumber={setCertificationNumber}
-          certificationNumber={certificationNumber}
-          isModalOpen={isModalOpen}
+        <VerificationModal
+          handlePage={() => onMove('PasswordResetChange')}
+          handleModal={() => setIsModalOpen(prevState => !prevState)}
+          visible={isModalOpen}
         />
       </VStack>
     </SafeAreaView>

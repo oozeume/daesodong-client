@@ -14,7 +14,7 @@ import {Dimensions} from 'react-native';
 import {colors} from '~/theme/theme';
 
 /**
- *@description 초기 로그인 페이지
+ *@description 초기 소셜 로그인 선택 페이지
  */
 function InitialLogin() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
@@ -25,9 +25,8 @@ function InitialLogin() {
 
   const {height: appHeight} = Dimensions.get('screen');
 
-  // 디바이스 높이에 따른 padding 설정
+  // 디바이스 높이에 따른 페이지 padding top, bottom 설정
   const containerPaddingTop = `${Math.floor((78 * appHeight) / 812)}px`;
-  const containerPaddingBottom = `${Math.floor((40 * appHeight) / 812)}px`;
 
   return (
     <SafeAreaView>
@@ -36,7 +35,7 @@ function InitialLogin() {
         w="100%"
         h="100%"
         pt={containerPaddingTop}
-        pb={containerPaddingBottom}
+        pb={'40px'}
         px="18px"
         justifyContent={'space-between'}>
         <VStack>
@@ -57,10 +56,10 @@ function InitialLogin() {
         </VStack>
 
         <VStack>
-          <KakaoLoginButton onPress={() => {}} />
-          <AppleLoginButton onPress={() => {}} />
-          <GoogleLoginButton onPress={() => {}} />
-          <EmailLoginButton onPress={() => onMove('EmailLogin')} />
+          <KakaoLoginButton handlePress={() => {}} />
+          <AppleLoginButton handlePress={() => {}} />
+          <GoogleLoginButton handlePress={() => {}} />
+          <EmailLoginButton handlePress={() => onMove('EmailLogin')} />
         </VStack>
       </VStack>
     </SafeAreaView>

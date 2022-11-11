@@ -5,8 +5,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Header from '~/components/hospital/review/register/Header';
 import BackIcon from '~/assets/icons/back.svg';
-import ActiveButton from '~/components/common/ActiveButton';
 import {colors} from '~/theme/theme';
+import {RedActiveLargeButton} from '~/components/login/button';
 
 /**
  *@description 비밀번호 변경 성공 페이지
@@ -20,10 +20,10 @@ function PasswordResetSuccess() {
 
   return (
     <SafeAreaView>
-      <VStack bg="#fff" w="100%" h="100%">
+      <VStack bg="#fff" w="100%" h="100%" pb="40px">
         <Header title="" leftButton={<BackIcon style={{left: 22}} />} />
 
-        <VStack flex={1} justifyContent={'space-between'} px="18px" pb="40px">
+        <VStack flex={1} justifyContent={'space-between'} px="18px">
           <VStack>
             <Text
               mt="80px"
@@ -42,10 +42,10 @@ function PasswordResetSuccess() {
             </Text>
           </VStack>
 
-          <ActiveButton
-            name="로그인"
-            onPress={() => onMove('InitialLogin')}
-            isActive
+          <RedActiveLargeButton
+            active
+            handlePress={() => onMove('PasswordResetNotFoundAuth')}
+            text={'로그인'}
           />
         </VStack>
       </VStack>

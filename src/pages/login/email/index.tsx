@@ -6,18 +6,17 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import Header from '~/components/hospital/review/register/Header';
 import BackIcon from '~/assets/icons/back.svg';
 import {
+  RedActiveLargeButton,
   AppleLoginButton,
   GoogleLoginButton,
   KakaoLoginButton,
 } from '~/components/login/button';
-import {InputFormValidate} from '~/../types/common/input';
-import FormInput from '~/components/common/FormInput';
-import ActiveButton from '~/components/common/ActiveButton';
-import {EmailLoginHelperButton} from '~/components/login/email/button';
+import EmailLoginHelperButton from '~/components/login/email/button';
 import {colors} from '~/theme/theme';
+import VerificationForm from '~/components/common/VerificationForm';
 
 /**
- *@description 이메일 로그인 페이지
+ *@description 이메일로 로그인 페이지
  */
 function EmailLogin() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
@@ -28,7 +27,6 @@ function EmailLogin() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isValidate, setIsValidate] = useState<InputFormValidate>('NONE');
 
   return (
     <SafeAreaView>
@@ -43,33 +41,34 @@ function EmailLogin() {
           }
         />
 
-        <VStack flex={1} justifyContent={'space-between'} px="18px">
+        <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
           <VStack>
-            <FormInput
+            <VerificationForm
               placeholder={'아이디(이메일)'}
-              inputContainerStyle={{marginBottom: 12}}
-              isValidate={isValidate}
-              errorText="입력하신 계정 정보를 찾을 수 없습니다"
+              marginBottom={'12px'}
+              errorMessage="입력하신 계정 정보를 찾을 수 없습니다"
               onChangeText={setEmail}
-              text={email}
+              value={email}
+              inputType="EMAIL"
+              autoFocus
+              verificationResult="FAIL"
             />
 
-            <FormInput
+            <VerificationForm
               placeholder={'비밀번호'}
-              inputContainerStyle={{marginBottom: 36}}
-              isValidate={isValidate}
-              errorText="비밀번호를 확인해주세요"
+              marginBottom={'36px'}
+              errorMessage="비밀번호를 확인해주세요"
               onChangeText={setPassword}
-              text={password}
+              value={password}
+              inputType="NUMBER"
+              verificationResult="FAIL"
             />
 
-            <ActiveButton
-              isActive={email.length > 4 && password.length > 4}
-              onPress={() => {
-                setIsValidate('ERROR');
-              }}
+            <RedActiveLargeButton
+              active={email.length > 4 && password.length > 4}
+              handlePress={() => {}}
               buttonStyle={{marginBottom: 20}}
-              name={'로그인'}
+              text={'로그인'}
             />
 
             <HStack alignItems={'center'} justifyContent={'space-between'}>
@@ -88,7 +87,7 @@ function EmailLogin() {
             </HStack>
           </VStack>
 
-          <VStack mb="40px">
+          <VStack>
             <HStack mb="32px" alignItems="center">
               <View flex={1} h="1px" bg={colors.grayScale['20']} />
 
@@ -99,9 +98,9 @@ function EmailLogin() {
               <View flex={1} h="1px" bg={colors.grayScale['20']} />
             </HStack>
 
-            <KakaoLoginButton onPress={() => {}} />
-            <AppleLoginButton onPress={() => {}} />
-            <GoogleLoginButton onPress={() => {}} />
+            <KakaoLoginButton handlePress={() => {}} />
+            <AppleLoginButton handlePress={() => {}} />
+            <GoogleLoginButton handlePress={() => {}} />
           </VStack>
         </VStack>
       </VStack>

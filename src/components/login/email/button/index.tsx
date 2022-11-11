@@ -8,7 +8,7 @@ interface EmailLoginHelperButtonProps {
 }
 
 /**
- *@description 이메일 로그인 폼 바로 아래 버튼 ui (ex. 이메일 찾기, 비밀번호 재설정, 회원가입)
+ *@description 이메일 로그인 폼 바로 아래 버튼 (ex. 이메일 찾기, 비밀번호 재설정, 회원가입)
  *@param {string} name - 버튼 이름
  */
 function EmailLoginHelperButton({onPress, name}: EmailLoginHelperButtonProps) {
@@ -21,4 +21,4 @@ function EmailLoginHelperButton({onPress, name}: EmailLoginHelperButtonProps) {
   );
 }
 
-export {EmailLoginHelperButton};
+export default EmailLoginHelperButton;

@@ -134,6 +134,7 @@ const AppNavigator = () => {
           component={SignupEmail}
           options={{animation: 'slide_from_right'}}
         />
+        <Stack.Screen name="SignupSocial" component={SignupSocial} />
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}
@@ -156,9 +157,6 @@ const AppNavigator = () => {
           name="PasswordResetNotFoundAuth"
           component={PasswordResetNotFoundAuth}
         />
-        <Stack.Screen name="InitialLogin" component={InitialLogin} />
-        <Stack.Screen name="SignupEmail" component={SignupEmail} />
-        <Stack.Screen name="SignupSocial" component={SignupSocial} />
       </Stack.Navigator>
     </NavigationContainer>
   );
