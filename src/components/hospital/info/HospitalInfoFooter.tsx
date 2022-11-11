@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Linking} from 'react-native';
 import {Button, HStack, Text} from 'native-base';
 
+import {colors} from '~/theme/theme';
+
 import BookMarkFillIcon from '../../../assets/icon/bookmark_icon.svg';
 
 /**
@@ -23,13 +25,15 @@ function HospitalInfoFooter() {
       <Button
         width={52}
         height={52}
-        backgroundColor={'#FFFFFF'}
+        backgroundColor={colors.grayScale[0]}
         borderWidth={1}
-        borderColor={'#1A1E27'}
+        borderColor={colors.grayScale[90]}
         borderRadius={8}
         style={{marginTop: 12}}
         onPress={handleBookMark}>
-        <BookMarkFillIcon fill={isBookMark ? '#FF6B00' : '#ECECEE'} />
+        <BookMarkFillIcon
+          fill={isBookMark ? colors.fussOrange[0] : colors.grayScale[20]}
+        />
 
         <Text fontSize={10} textAlign={'center'}>
           {bookMarkNumber}
@@ -38,9 +42,9 @@ function HospitalInfoFooter() {
       <Button
         width={277}
         height={52}
-        backgroundColor={'#FF6B00'}
+        backgroundColor={colors.fussOrange[0]}
         borderWidth={1}
-        borderColor={'#1A1E27'}
+        borderColor={colors.grayScale[90]}
         borderRadius={8}
         style={{marginTop: 12}}
         onPress={() => {

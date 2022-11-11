@@ -6,6 +6,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import HospitalInfo from './info';
+import {colors} from '~/theme/theme';
 import HospitalReview from './review';
 import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 
@@ -28,7 +29,7 @@ function Hospital({navigation}: Props) {
 
   return (
     <SafeAreaView>
-      <View w={'100%'} backgroundColor={'#FFFFFF'} h={'100%'}>
+      <View w={'100%'} backgroundColor={colors.grayScale[0]} h={'100%'}>
         {/* 병원 상세 타이틀바 */}
         <HStack space={3} height={'7%'} justifyContent="center">
           <Center h="60" w="30">

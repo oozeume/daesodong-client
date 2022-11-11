@@ -7,6 +7,7 @@ const theme = extendTheme({
       0: '#0094FF',
     },
     grayScale: {
+      0: '#FFFFFF',
       10: '#F6F7F7',
       20: '#ECECEE',
       30: '#E1E2E4',
@@ -29,6 +30,9 @@ const theme = extendTheme({
     },
     negative: {
       0: '#F6363A',
+    },
+    scrim: {
+      60: 'rgba(26, 30, 39, 0.6)',
     },
   },
 } as const);

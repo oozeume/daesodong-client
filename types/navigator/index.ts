@@ -39,6 +39,7 @@ export type RootStackParamList = {
   PasswordResetChange: undefined;
   PasswordResetSuccess: undefined;
   PasswordResetNotFoundAuth: undefined;
+  SignupSocial: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
