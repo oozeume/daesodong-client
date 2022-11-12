@@ -1,6 +1,8 @@
 import React from 'react';
 import {Text} from 'native-base';
 
+import {colors} from '~/theme/theme';
+
 type TextAlignType =
   | 'center'
   | 'auto'
@@ -34,7 +36,7 @@ function TextEllipsis({
     <Text
       fontSize={14}
       fontWeight={'400'}
-      color={'#5D626D'}
+      color={colors.grayScale[70]}
       textAlign={'center'}
       numberOfLines={numberOfLines}
       style={{width, textAlign}}>

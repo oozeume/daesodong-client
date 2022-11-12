@@ -1,6 +1,7 @@
 import React from 'react';
 import {Center, Flex, Text} from 'native-base';
 
+import {colors} from '~/theme/theme';
 import {VisitedAnimalsType} from '~/../types/hospital';
 
 interface Props {
@@ -33,18 +34,18 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
             borderRadius={8}
             flexDirection={'row'}
             justifyContent={'space-between'}
-            backgroundColor={'#FFFFFF'}>
+            backgroundColor={colors.grayScale[0]}>
             <Text
               fontSize={14}
               fontWeight={'400'}
-              color={'#5D626D'}
+              color={colors.grayScale[70]}
               textAlign={'center'}>
               {data.animalType}
             </Text>
             <Text
               fontSize={14}
               fontWeight={'400'}
-              color={'#5D626D'}
+              color={colors.grayScale[70]}
               textAlign={'center'}>
               {data.visitsNumber}
             </Text>

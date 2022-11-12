@@ -39,6 +39,7 @@ export type RootStackParamList = {
   SignupNicknameRegister: undefined;
   TermsOfServicePolicy: undefined;
   PrivacyPolicy: undefined;
+  SignupSocial: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
