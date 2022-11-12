@@ -22,13 +22,13 @@ function PasswordRegister({handlePage}: Props) {
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const hasEnglish = (text: string) => {
-    const reg = /[a-zA-Z]/;
-    return reg.test(text) ? 'SUCCESS' : 'FAIL';
+    const regEx = /[a-zA-Z]/;
+    return regEx.test(text) ? 'SUCCESS' : 'FAIL';
   };
 
   const hasNumber = (text: string) => {
-    const reg = /[0-9]/;
-    return reg.test(text) ? 'SUCCESS' : 'FAIL';
+    const regEx = /[0-9]/;
+    return regEx.test(text) ? 'SUCCESS' : 'FAIL';
   };
 
   const checkPasswordLength = (text: string) => {
