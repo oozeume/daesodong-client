@@ -1,18 +1,15 @@
 import React, {LegacyRef} from 'react';
 import {Flex, HStack, Text, View, VStack} from 'native-base';
-import {TextInput} from 'react-native';
+import {KeyboardTypeOptions, TextInput} from 'react-native';
 
-import {
-  VerificationFormInputType,
-  VerificationResult,
-} from '~/../types/verification';
+import {VerificationResult} from '~/../types/verification';
 import {colors} from '~/theme/theme';
 
 interface Props {
   value: string;
   onChangeText: (text: string) => void;
   marginBottom?: string;
-  inputType?: VerificationFormInputType;
+  keyboardType?: KeyboardTypeOptions;
   placeholder?: string;
   verificationResult?: VerificationResult;
   successMessage?: string;
@@ -23,6 +20,7 @@ interface Props {
   inputRightElement?: JSX.Element;
   autoFocus?: boolean;
   inputRef?: LegacyRef<TextInput>;
+  secureTextEntry?: boolean;
 }
 
 /**
@@ -30,7 +28,7 @@ interface Props {
  * @param {string} value - TextInput에 들어갈 value
  * @param {(text: string) => void} onChangeText - value change 핸들러
  * @param {string} marginBottom - 하단 마진 값
- * @param {string} inputType - 텍스트 인풋창 타입
+ * @param {string} keyboardType - 텍스트 인풋창 타입
  * @param {string} placeholder - 텍스트 인풋창 placeholder
  * @param {VerificationResult} verificationResult - 인증 여부 (성공, 실패)
  * @param {string} successMessage - 인증 성공 메세지
@@ -46,7 +44,7 @@ function VerificationForm({
   value,
   onChangeText,
   marginBottom,
-  inputType,
+  keyboardType,
   placeholder,
   verificationResult,
   successMessage,
@@ -57,6 +55,7 @@ function VerificationForm({
   inputRightElement,
   autoFocus,
   inputRef,
+  secureTextEntry,
 }: Props) {
   return (
     <VStack space={1} mb={marginBottom}>
@@ -75,13 +74,8 @@ function VerificationForm({
             placeholder={placeholder}
             onChangeText={onChangeText}
             autoFocus={autoFocus}
-            keyboardType={
-              inputType === 'NUMBER'
-                ? 'number-pad'
-                : inputType === 'EMAIL'
-                ? 'email-address'
-                : 'default'
-            }
+            keyboardType={keyboardType ?? 'default'}
+            secureTextEntry={secureTextEntry}
             ref={inputRef && inputRef}
           />
         </View>

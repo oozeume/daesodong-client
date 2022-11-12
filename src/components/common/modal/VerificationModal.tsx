@@ -102,7 +102,7 @@ function VerificationModal({
               </Center>
               {/* 인증번호 입력 form */}
               <VerificationForm
-                inputType={'NUMBER'}
+                keyboardType={'number-pad'}
                 placeholder={'인증번호 4자리'}
                 verificationResult={result}
                 successMessage={'인증번호가 일치합니다'}
