@@ -33,13 +33,10 @@ export type RootStackParamList = {
   HospitalReviewRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;
-  SignupEmailUserCheck: undefined;
-  SignUpEmailRegister: undefined;
-  SignupPasswordRegister: undefined;
-  SignupNicknameRegister: undefined;
   TermsOfServicePolicy: undefined;
   PrivacyPolicy: undefined;
   SignupSocial: undefined;
+  SignUpEmail: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;

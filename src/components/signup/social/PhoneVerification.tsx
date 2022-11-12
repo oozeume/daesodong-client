@@ -32,7 +32,7 @@ function PhoneVerification({handlePage}: Props) {
         handlePage={handlePage}
       />
       <VerificationForm
-        inputType={'NUMBER'}
+        keyboardType={'number-pad'}
         placeholder={'휴대폰 번호'}
         successMessage={'인증번호가 전송되었습니다'}
         errorMessage={'인증번호 전송에 실패했습니다'}

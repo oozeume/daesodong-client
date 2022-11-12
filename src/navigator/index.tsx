@@ -10,7 +10,6 @@ import Hospital from '../pages/hospital';
 import Contents from '../pages/contents';
 import Community from '../pages/community';
 import MyPage from '../pages/mypage';
-import InitialLogin from '~/pages/login';
 import SignupSocial from '~/pages/signup/social';
 import DeveloperMenu from '~/pages/developerMenu';
 import HospitalReviewRegister from '~/pages/hospital/review/register';
@@ -20,12 +19,9 @@ import UserIcon from '../assets/icon/nav_user_icon.svg';
 import LocationIcon from '../assets/icon/nav_location_icon.svg';
 import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
-import ExistedUserConfirm from '~/pages/signup/email/existedUserConfirm';
-import EmailRegister from '~/pages/signup/email/emailRegister';
-import PasswordRegister from '~/pages/signup/email/passwordRegister';
-import NicknameRegister from '~/pages/signup/email/nicknameRegister';
-import PrivacyPolicy from '~/pages/signup/email/privacyPolicy';
-import TermsOfServicePolicy from '~/pages/signup/email/termsOfServicePolicy';
+import PrivacyPolicy from '~/components/signup/privacyPolicy';
+import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
+import SignUpEmail from '~/pages/signup/email';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -125,26 +121,12 @@ const AppNavigator = () => {
           name="HospitalReviewRegisterPrecaution"
           component={HospitalReviewRegisterPrecaution}
         />
-
-        <Stack.Screen name="InitialLogin" component={InitialLogin} />
-        <Stack.Screen
-          name="SignupEmailUserCheck"
-          component={ExistedUserConfirm}
-        />
-        <Stack.Screen name="SignUpEmailRegister" component={EmailRegister} />
-        <Stack.Screen
-          name="SignupPasswordRegister"
-          component={PasswordRegister}
-        />
-        <Stack.Screen
-          name="SignupNicknameRegister"
-          component={NicknameRegister}
-        />
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
         <Stack.Screen
           name="TermsOfServicePolicy"
           component={TermsOfServicePolicy}
         />
+        <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
       </Stack.Navigator>
     </NavigationContainer>

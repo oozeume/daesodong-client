@@ -7,7 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 
 /**
- *@description 이메일 회원가입 - 개인정보 처리방침
+ *@description 개인정보 처리방침
  */
 
 function PrivacyPolicy() {

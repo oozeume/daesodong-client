@@ -7,7 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 
 /**
- *@description 이메일 회원가입 - 서비스 이용약관
+ *@description 서비스 이용약관
  */
 
 function TermsOfServicePolicy() {
