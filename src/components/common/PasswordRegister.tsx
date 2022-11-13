@@ -6,6 +6,11 @@ import {colors} from '~/theme/theme';
 import _ from 'lodash';
 import VerificationForm from '~/components/common/VerificationForm';
 import {VerificationResult} from '~/../types/verification';
+import {
+  INCLUDE_ENGLISH_REGREX,
+  INCLUDE_NUMBER_REGREX,
+  RANGE_TEXT_8_20_REGREX,
+} from '~/constants/regEx';
 
 interface Props {
   handlePage: () => void;
@@ -14,30 +19,12 @@ interface Props {
 const helpList = ['영문 포함', '숫자 포함', '8-20자 이내'];
 
 /**
- *@description 이메일 회원가입 - 비밀번호 입력
+ *@description 비밀번호 입력 폼
  */
 
 function PasswordRegister({handlePage}: Props) {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-
-  const hasEnglish = (text: string) => {
-    const regEx = /[a-zA-Z]/;
-    return regEx.test(text) ? 'SUCCESS' : 'FAIL';
-  };
-
-  const hasNumber = (text: string) => {
-    const regEx = /[0-9]/;
-    return regEx.test(text) ? 'SUCCESS' : 'FAIL';
-  };
-
-  const checkPasswordLength = (text: string) => {
-    if (text.length > 8 && text.length < 20) {
-      return 'SUCCESS';
-    } else {
-      return 'FAIL';
-    }
-  };
 
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
     'WARNING',
@@ -45,26 +32,29 @@ function PasswordRegister({handlePage}: Props) {
     'WARNING',
   ]);
 
-  const setUpHelpResults = (text: string) => {
-    if (text) {
-      return setHelpResults([
-        hasEnglish(text),
-        hasNumber(text),
-        checkPasswordLength(text),
-      ]);
-    }
-
-    setHelpResults(['WARNING', 'WARNING', 'WARNING']);
-  };
-
   const handlePasswordChange = (text: string) => {
+    const isIncludeEnglish = INCLUDE_ENGLISH_REGREX.test(text)
+      ? 'SUCCESS'
+      : 'FAIL';
+    const isIncludeNumber = INCLUDE_NUMBER_REGREX.test(text)
+      ? 'SUCCESS'
+      : 'FAIL';
+    const isProperLength = RANGE_TEXT_8_20_REGREX.test(text)
+      ? 'SUCCESS'
+      : 'FAIL';
+
+    setHelpResults([isIncludeEnglish, isIncludeNumber, isProperLength]);
     setPassword(text);
-    setUpHelpResults(text);
   };
 
   const handlePasswordConfirmChange = (text: string) => {
     setPasswordConfirm(text);
   };
+
+  const isButtonActive =
+    !_.isEmpty(password) &&
+    !_.isEmpty(passwordConfirm) &&
+    password === passwordConfirm;
 
   return (
     <>
@@ -84,6 +74,13 @@ function PasswordRegister({handlePage}: Props) {
         onChangeText={handlePasswordConfirmChange}
         successMessage={'비밀번호가 일치합니다'}
         errorMessage={'비밀번호를 확인해주세요'}
+        verificationResult={
+          password.length > 0
+            ? password === passwordConfirm
+              ? 'SUCCESS'
+              : 'FAIL'
+            : undefined
+        }
         secureTextEntry
       />
       <Box
@@ -110,11 +107,7 @@ function PasswordRegister({handlePage}: Props) {
             handlePress={() => {
               handlePage();
             }}
-            active={
-              !_.isEmpty(password) &&
-              !_.isEmpty(passwordConfirm) &&
-              password === passwordConfirm
-            }
+            active={isButtonActive}
           />
         </Box>
       </Box>
