@@ -30,7 +30,7 @@ function EmailLogin() {
 
   return (
     <SafeAreaView>
-      <VStack bg="#fff" w="100%" h="100%">
+      <VStack bg={colors.grayScale['0']} w="100%" h="100%">
         <Header
           title="이메일로 로그인"
           leftButton={

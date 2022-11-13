@@ -9,6 +9,7 @@ import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
 import {YellowActiveSmallButton} from '~/components/login/button';
 import VerificationModal from '~/components/common/modal/VerificationModal';
+import useRegExPhone from '~/hooks/useRegExPhone';
 
 /**
  *@description 비밀번호 재설정 휴대폰 인증
@@ -21,16 +22,15 @@ function PasswordResetPhoneCheck() {
   };
 
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useRegExPhone();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [certificationNumber, setCertificationNumber] = useState('');
 
   return (
     <SafeAreaView>
-      <VStack bg="#fff" w="100%" h="100%" pb="40px">
+      <VStack bg={colors.grayScale['0']} w="100%" h="100%" pb="40px">
         <Header
           title="비밀번호 재설정"
-          leftButton={<BackIcon style={{position: 'absolute', left: 22}} />}
+          leftButton={<BackIcon style={{position: 'absolute', left: 18}} />}
         />
 
         <VStack

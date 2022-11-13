@@ -60,12 +60,12 @@ function PasswordResetChange() {
 
   return (
     <SafeAreaView>
-      <VStack bg="#fff" w="100%" h="100%" pb="40px">
+      <VStack bg={colors.grayScale['0']} w="100%" h="100%" pb="40px">
         <Header
           title="비밀번호 재설정"
           leftButton={
             <BackIcon
-              style={{left: 22}}
+              style={{position: 'absolute', left: 18}}
               onPress={() => onMove('InitialLogin')}
             />
           }

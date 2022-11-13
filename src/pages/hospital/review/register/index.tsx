@@ -88,7 +88,7 @@ function HospitalReviewRegister() {
 
   return (
     <SafeAreaView>
-      <ScrollView backgroundColor="#fff">
+      <ScrollView backgroundColor={colors.grayScale['0']}>
         <HospitalName text={'어울림동물병원'} onPress={onMoveBack} />
 
         <VStack p={'18px'} pb="40px">

@@ -20,8 +20,8 @@ function PasswordResetSuccess() {
 
   return (
     <SafeAreaView>
-      <VStack bg="#fff" w="100%" h="100%" pb="40px">
-        <Header title="" leftButton={<BackIcon style={{left: 22}} />} />
+      <VStack bg={colors.grayScale['0']} w="100%" h="100%" pb="40px">
+        <Header title="" leftButton={<BackIcon style={{left: 18}} />} />
 
         <VStack flex={1} justifyContent={'space-between'} px="18px">
           <VStack>

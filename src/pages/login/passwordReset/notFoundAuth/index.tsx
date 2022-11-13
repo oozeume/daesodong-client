@@ -30,7 +30,7 @@ function PasswordResetNotFoundAuth() {
   return (
     <SafeAreaView>
       <VStack
-        bg="#fff"
+        bg={colors.grayScale['0']}
         w="100%"
         h="100%"
         pt={containerPaddingTop}
