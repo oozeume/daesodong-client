@@ -13,9 +13,10 @@ import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
 const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
 
 /**
- * 닉네임 중복 체크 컴포넌트
+ * 닉네임 입력 및 중복 체크 컴포넌트
  */
-function NickNameCheck() {
+
+function NickNameRegister() {
   const [nickName, setNickName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [result, setResult] = useState<VerificationResult>(); // 인증 결과
@@ -74,8 +75,6 @@ function NickNameCheck() {
 
   return (
     <>
-      <TermsAgreedModal visible={modalVisible} handleModal={handleModal} />
-      {/* 닉네임 인증 폼 View */}
       <VerificationForm
         placeholder={'닉네임'}
         verificationResult={result}
@@ -108,14 +107,10 @@ function NickNameCheck() {
         }
       />
 
-      {/* 하단 버튼 및 이용약관, 개인정보 처리방침 View */}
       <Box
         w={'100%'}
         position={'absolute'}
-        bottom={Platform.OS === 'android' ? '10px' : 0}>
-        {/* 이용약관 및 개인정보 처리 방침 */}
-
-        {/* 가입완료 버튼 */}
+        bottom={Platform.OS === 'android' ? '10px' : -13}>
         <Box h={'104px'} pt={'18px'} backgroundColor={colors.grayScale[0]}>
           <Button
             large
@@ -138,8 +133,10 @@ function NickNameCheck() {
           />
         </Box>
       </Box>
+
+      <TermsAgreedModal visible={modalVisible} handleModal={handleModal} />
     </>
   );
 }
 
-export default NickNameCheck;
+export default NickNameRegister;

@@ -9,12 +9,12 @@ import BackIcon from '~/assets/icon/back_icon.svg';
 import StageBar from '~/components/common/stage/StageBar';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import NickNameCheck from '~/components/signup/social/NickNameCheck';
+import NickNameRegister from '~/components/common/NickNameRegister';
 import PhoneVerification from '~/components/signup/social/PhoneVerification';
 import {colors} from '~/theme/theme';
-import EmailRegister from '../../../components/signup/email/emailRegister';
-import PasswordRegister from '../../../components/signup/email/passwordRegister';
-import CurrentComponentOfArray from '../../../components/signup/email/currentComponentOfArray';
+import EmailRegister from '~/components/signup/email/emailRegister';
+import PasswordRegister from '~/components/common/PasswordRegister';
+import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
 
 type Props = NativeStackScreenProps<ParamListBase, 'SignUpEmail'>;
 
@@ -89,7 +89,7 @@ function SignUpEmail({navigation}: Props) {
             <PhoneVerification handlePage={moveToNextPage} />
             <EmailRegister handlePage={moveToNextPage} />
             <PasswordRegister handlePage={moveToNextPage} />
-            <NickNameCheck />
+            <NickNameRegister />
           </CurrentComponentOfArray>
         </Box>
       </SafeAreaView>
