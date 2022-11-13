@@ -23,6 +23,7 @@ interface Props {
   inputRightElement?: JSX.Element;
   autoFocus?: boolean;
   inputRef?: LegacyRef<TextInput>;
+  secureTextEntry?: boolean;
 }
 
 /**
@@ -57,6 +58,7 @@ function VerificationForm({
   inputRightElement,
   autoFocus,
   inputRef,
+  secureTextEntry,
 }: Props) {
   return (
     <VStack space={1} mb={marginBottom}>
@@ -82,6 +84,7 @@ function VerificationForm({
                 ? 'email-address'
                 : 'default'
             }
+            secureTextEntry={secureTextEntry}
             ref={inputRef && inputRef}
           />
         </View>

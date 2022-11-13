@@ -15,6 +15,8 @@ import {
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
 import {RedActiveLargeButton} from '~/components/login/button';
+import {Keyboard} from 'react-native';
+import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 
 /**
  *@description 비밀번호 재설정 페이지
@@ -59,64 +61,66 @@ function PasswordResetChange() {
     password === passwordConfirm && PASSWORD_REGREX.test(password);
 
   return (
-    <SafeAreaView>
-      <VStack bg={colors.grayScale['0']} w="100%" h="100%" pb="40px">
-        <Header
-          title="비밀번호 재설정"
-          leftButton={
-            <BackIcon
-              style={{position: 'absolute', left: 18}}
-              onPress={() => onMove('InitialLogin')}
-            />
-          }
-        />
+    <TouchableWithoutView onPress={Keyboard.dismiss}>
+      <SafeAreaView>
+        <VStack bg={colors.grayScale['0']} w="100%" h="100%" pb="40px">
+          <Header
+            title="비밀번호 재설정"
+            leftButton={
+              <BackIcon
+                style={{position: 'absolute', left: 18}}
+                onPress={() => onMove('InitialLogin')}
+              />
+            }
+          />
+          <VStack flex={1} justifyContent={'space-between'} px="18px">
+            <VStack>
+              <Text
+                py="60px"
+                fontSize="20px"
+                color={colors.grayScale['80']}
+                textAlign="center">
+                변경하실 비밀번호를 입력해주세요
+              </Text>
 
-        <VStack flex={1} justifyContent={'space-between'} px="18px">
-          <VStack>
-            <Text
-              py="60px"
-              fontSize="20px"
-              color={colors.grayScale['80']}
-              textAlign="center">
-              변경하실 비밀번호를 입력해주세요
-            </Text>
+              <VerificationForm
+                placeholder={'비밀번호 입력'}
+                marginBottom={'12px'}
+                onChangeText={onChangePassword}
+                value={password}
+                autoFocus
+                helpList={['영문 포함', '숫자포함', '8-20자 이내']}
+                helpVerificationResults={passwordVerificationResult}
+                secureTextEntry
+              />
 
-            <VerificationForm
-              placeholder={'비밀번호 입력'}
-              marginBottom={'12px'}
-              onChangeText={onChangePassword}
-              value={password}
-              autoFocus
-              helpList={['영문 포함', '숫자포함', '8-20자 이내']}
-              helpVerificationResults={passwordVerificationResult}
-            />
+              <VerificationForm
+                placeholder={'비밀번호 확인'}
+                onChangeText={setPasswordConfirm}
+                value={passwordConfirm}
+                helpList={['영문 포함', '숫자포함', '8-20자 이내']}
+                successMessage={'비밀번호가 일치합니다'}
+                errorMessage={'비밀번호를 확인해주세요'}
+                verificationResult={
+                  password.length > 0
+                    ? password === passwordConfirm
+                      ? 'SUCCESS'
+                      : 'FAIL'
+                    : undefined
+                }
+                secureTextEntry
+              />
+            </VStack>
 
-            <VerificationForm
-              placeholder={'비밀번호 확인'}
-              onChangeText={setPasswordConfirm}
-              value={passwordConfirm}
-              autoFocus
-              helpList={['영문 포함', '숫자포함', '8-20자 이내']}
-              successMessage={'비밀번호가 일치합니다'}
-              errorMessage={'비밀번호를 확인해주세요'}
-              verificationResult={
-                password.length > 0
-                  ? password === passwordConfirm
-                    ? 'SUCCESS'
-                    : 'FAIL'
-                  : undefined
-              }
+            <RedActiveLargeButton
+              active={isButtonActive}
+              handlePress={() => onMove('PasswordResetSuccess')}
+              text={'확인'}
             />
           </VStack>
-
-          <RedActiveLargeButton
-            active={isButtonActive}
-            handlePress={() => onMove('PasswordResetSuccess')}
-            text={'확인'}
-          />
         </VStack>
-      </VStack>
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutView>
   );
 }
 
