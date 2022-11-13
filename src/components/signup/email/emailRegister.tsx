@@ -29,6 +29,7 @@ function EmailRegister({handlePage}: Props) {
       <Box
         w={'100%'}
         position={'absolute'}
+        pb={'20px'}
         bottom={Platform.OS === 'android' ? '10px' : 0}>
         <Box pt={'18px'} backgroundColor={colors.grayScale[0]}>
           <Button

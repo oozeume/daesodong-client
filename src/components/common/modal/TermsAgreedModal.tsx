@@ -21,10 +21,8 @@ function TermsAgreedModal({visible, handleModal}: Props) {
   const [isAgreeTermsOfService, setIsAgreeTermsOfService] = useState(false);
 
   const handleSignUp = () => handleModal();
-  const moveToTermsDetail = (type: string) => {
-    if (type === 'privacyPolicy') navigation.navigate('PrivacyPolicy');
-    if (type === 'termsOfService') navigation.navigate('TermsOfServicePolicy');
-
+  const moveToTermsDetail = (route: keyof RouteList) => {
+    navigation.navigate(route);
     handleModal();
   };
 
@@ -78,7 +76,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 </Text>
                 <Pressable
                   w={'5%'}
-                  onPress={() => moveToTermsDetail('termsOfService')}>
+                  onPress={() => moveToTermsDetail('TermsOfServicePolicy')}>
                   <RightIcon />
                 </Pressable>
               </Flex>
@@ -106,7 +104,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 </Text>
                 <Pressable
                   w={'5%'}
-                  onPress={() => moveToTermsDetail('privacyPolicy')}>
+                  onPress={() => moveToTermsDetail('PrivacyPolicy')}>
                   <RightIcon />
                 </Pressable>
               </Flex>
