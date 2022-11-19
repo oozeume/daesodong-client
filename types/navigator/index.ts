@@ -35,9 +35,7 @@ export type RootStackParamList = {
   InitialLogin: undefined;
 
   EmailLogin: undefined;
-  PasswordResetPhoneCheck: undefined;
-  PasswordResetChange: undefined;
-  PasswordResetSuccess: undefined;
+  PasswordReset: undefined;
   PasswordResetNotFoundAuth: undefined;
 
   TermsOfServicePolicy: undefined;
