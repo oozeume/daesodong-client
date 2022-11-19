@@ -144,7 +144,7 @@ function HospitalReviewRegister() {
               marginBottom={'8px'}
               onChangeText={setMedicalPrice}
               value={medicalPrice}
-              inputType="NUMBER"
+              keyboardType="number-pad"
               inputRightElement={
                 <Text color={colors.grayScale['60']} fontSize="15px">
                   만원

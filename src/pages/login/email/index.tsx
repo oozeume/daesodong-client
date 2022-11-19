@@ -52,7 +52,7 @@ function EmailLogin() {
                 errorMessage="입력하신 계정 정보를 찾을 수 없습니다"
                 onChangeText={setEmail}
                 value={email}
-                inputType="EMAIL"
+                keyboardType="email-address"
                 autoFocus
                 verificationResult="FAIL"
               />
@@ -63,7 +63,7 @@ function EmailLogin() {
                 errorMessage="비밀번호를 확인해주세요"
                 onChangeText={setPassword}
                 value={password}
-                inputType="NUMBER"
+                keyboardType="number-pad"
                 verificationResult="FAIL"
                 secureTextEntry
               />
@@ -81,7 +81,7 @@ function EmailLogin() {
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() => onMove('PasswordResetPhoneCheck')}
+                  onPress={() => onMove('PasswordReset')}
                   name="비밀번호 재설정"
                 />
 

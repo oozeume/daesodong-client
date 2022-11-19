@@ -19,13 +19,12 @@ import LocationIcon from '../assets/icon/nav_location_icon.svg';
 import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
 import EmailLogin from '~/pages/login/email';
-import PasswordResetPhoneCheck from '~/pages/login/passwordReset/phoneCheck';
-import PasswordResetChange from '~/pages/login/passwordReset/change';
-import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
+import InitialLogin from '~/pages/login';
+import PasswordReset from '~/pages/login/passwordReset';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -132,8 +131,8 @@ const AppNavigator = () => {
           options={{animation: 'slide_from_right'}}
         />
         <Stack.Screen
-          name="SignupEmail"
-          component={SignupEmail}
+          name="SignUpEmail"
+          component={SignUpEmail}
           options={{animation: 'slide_from_right'}}
         />
 
@@ -149,19 +148,9 @@ const AppNavigator = () => {
           component={EmailLogin}
           options={{animation: 'slide_from_right'}}
         />
-        <Stack.Screen
-          name="PasswordResetPhoneCheck"
-          component={PasswordResetPhoneCheck}
-          options={{animation: 'slide_from_right'}}
-        />
-        <Stack.Screen
-          name="PasswordResetChange"
-          component={PasswordResetChange}
-        />
-        <Stack.Screen
-          name="PasswordResetSuccess"
-          component={PasswordResetSuccess}
-        />
+
+        <Stack.Screen name="PasswordReset" component={PasswordReset} />
+
         <Stack.Screen
           name="PasswordResetNotFoundAuth"
           component={PasswordResetNotFoundAuth}
