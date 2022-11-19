@@ -1,9 +1,8 @@
-import {Center, Text, VStack} from 'native-base';
+import {Text, VStack} from 'native-base';
 import React from 'react';
 import {RouteList} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import TmpInitialLogin from '~/assets/images/tmp_initial_login.svg';
 import {
   AppleLoginButton,
   EmailLoginButton,
@@ -14,9 +13,9 @@ import {Dimensions} from 'react-native';
 import {colors} from '~/theme/theme';
 
 /**
- *@description 초기 소셜 로그인 선택 페이지
+ *@description 휴대폰 인증 확인 시, 계정 없음 페이지
  */
-function InitialLogin() {
+function PasswordResetNotFoundAuth() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
   const onMove = (stack: keyof RouteList) => {
@@ -25,8 +24,8 @@ function InitialLogin() {
 
   const {height: appHeight} = Dimensions.get('screen');
 
-  // 디바이스 높이에 따른 페이지 padding top, bottom 설정
-  const containerPaddingTop = `${Math.floor((78 * appHeight) / 812)}px`;
+  // 디바이스 높이에 따른 padding 설정
+  const containerPaddingTop = `${Math.floor((140 * appHeight) / 812)}px`;
 
   return (
     <SafeAreaView>
@@ -40,19 +39,30 @@ function InitialLogin() {
         justifyContent={'space-between'}>
         <VStack>
           <Text
-            fontSize="28px"
-            color={colors.fussOrange['0']}
-            fontWeight="700"
+            fontSize="24px"
+            mb="12px"
+            fontWeight="500"
+            color={colors.grayScale['80']}
             textAlign="center">
-            우당탕탕
-          </Text>
-          <Text fontSize="28px" textAlign="center" mb="48px" fontWeight="700">
-            대소동에 어서오세요!
+            가입된 계정이 없습니다
           </Text>
 
-          <Center>
-            <TmpInitialLogin />
-          </Center>
+          <Text
+            fontSize="15px"
+            textAlign="center"
+            mb="6px"
+            fontWeight="400"
+            color={colors.grayScale['60']}>
+            {`입력하신 이메일을 확인하시거나`}
+          </Text>
+
+          <Text
+            fontSize="15px"
+            textAlign="center"
+            fontWeight="400"
+            color={colors.grayScale['60']}>
+            회원가입을 진행해주세요
+          </Text>
         </VStack>
 
         <VStack>
@@ -66,4 +76,4 @@ function InitialLogin() {
   );
 }
 
-export default InitialLogin;
+export default PasswordResetNotFoundAuth;

@@ -14,11 +14,15 @@ import SignupSocial from '~/pages/signup/social';
 import DeveloperMenu from '~/pages/developerMenu';
 import HospitalReviewRegister from '~/pages/hospital/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
-
 import UserIcon from '../assets/icon/nav_user_icon.svg';
 import LocationIcon from '../assets/icon/nav_location_icon.svg';
 import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
+import EmailLogin from '~/pages/login/email';
+import PasswordResetPhoneCheck from '~/pages/login/passwordReset/phoneCheck';
+import PasswordResetChange from '~/pages/login/passwordReset/change';
+import PasswordResetSuccess from '~/pages/login/passwordReset/success';
+import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
@@ -50,6 +54,16 @@ const TabNavigator = () => {
         },
       }}>
       <Tab.Screen
+        name="DeveloperMenu"
+        component={DeveloperMenu}
+        options={{
+          tabBarLabel: '개발',
+          headerShown: false,
+          unmountOnBlur: true,
+          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
+        }}
+      />
+      <Tab.Screen
         name="Home"
         component={Home}
         options={{
@@ -79,6 +93,7 @@ const TabNavigator = () => {
           tabBarIcon: ({color}) => <CommunityIcon fill={color} />,
         }}
       />
+
       <Tab.Screen
         name="MyPage"
         component={MyPage}
@@ -87,17 +102,6 @@ const TabNavigator = () => {
           headerShown: false,
           unmountOnBlur: true,
           tabBarIcon: ({color}) => <UserIcon fill={color} />,
-        }}
-      />
-
-      <Tab.Screen
-        name="DeveloperMenu"
-        component={DeveloperMenu}
-        options={{
-          tabBarLabel: '개발',
-          headerShown: false,
-          unmountOnBlur: true,
-          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
         }}
       />
     </Tab.Navigator>
@@ -121,13 +125,47 @@ const AppNavigator = () => {
           name="HospitalReviewRegisterPrecaution"
           component={HospitalReviewRegisterPrecaution}
         />
+
+        <Stack.Screen
+          name="InitialLogin"
+          component={InitialLogin}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="SignupEmail"
+          component={SignupEmail}
+          options={{animation: 'slide_from_right'}}
+        />
+
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
         <Stack.Screen
           name="TermsOfServicePolicy"
           component={TermsOfServicePolicy}
         />
-        <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
+
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
+        <Stack.Screen
+          name="EmailLogin"
+          component={EmailLogin}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="PasswordResetPhoneCheck"
+          component={PasswordResetPhoneCheck}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="PasswordResetChange"
+          component={PasswordResetChange}
+        />
+        <Stack.Screen
+          name="PasswordResetSuccess"
+          component={PasswordResetSuccess}
+        />
+        <Stack.Screen
+          name="PasswordResetNotFoundAuth"
+          component={PasswordResetNotFoundAuth}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

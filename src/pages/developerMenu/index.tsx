@@ -28,6 +28,9 @@ function DeveloperMenu() {
           <Button mb="12px" onPress={() => onMove('SignUpEmail')}>
             이메일로 회원가입
           </Button>
+          <Button mb="12px" onPress={() => onMove('PasswordResetNotFoundAuth')}>
+            패스워드 재설정(인증 실패)
+          </Button>
           <Button mb="12px" onPress={() => onMove('SignupSocial')}>
             소셜 회원가입
           </Button>

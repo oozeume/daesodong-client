@@ -32,6 +32,7 @@ const theme = extendTheme({
       10: '#FFCC16',
     },
     negative: {
+      '-10': '#F8676A',
       0: '#F6363A',
     },
     scrim: {

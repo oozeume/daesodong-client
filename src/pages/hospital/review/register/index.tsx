@@ -1,11 +1,17 @@
-import {Box, FormControl, HStack, ScrollView, Text, VStack} from 'native-base';
+import {
+  Box,
+  FormControl,
+  HStack,
+  ScrollView,
+  Text,
+  TextArea,
+  VStack,
+} from 'native-base';
 
 import React, {useEffect, useState} from 'react';
-import FormInput from '~/components/hospital/review/register/FormInput';
 import StarReviewLine from '~/components/hospital/review/register/starReviewLine';
 import ImageUploader from '~/components/hospital/review/register/imageUploader';
 import {
-  BackButton,
   MoreVisitCheckButton,
   ReviewPrecautionButton,
   ReviewRegisterButton,
@@ -14,12 +20,13 @@ import {
 import HospitalName from '~/components/hospital/review/register/HospitalName';
 import DateSelector from '~/components/hospital/review/register/selector';
 import dayjs from 'dayjs';
-import Header from '~/components/hospital/review/register/Header';
 import {NavigationHookProp} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {VISIT_REVIEW_TEXT} from '~/constants/hospital/review/register';
 import Label from '~/components/hospital/review/register/label';
 import {useNavigation} from '@react-navigation/native';
+import VerificationForm from '~/components/common/VerificationForm';
+import {colors} from '~/theme/theme';
 
 // 셀렉터 state 타입
 interface DateList {
@@ -34,7 +41,7 @@ function HospitalReviewRegister() {
   const navigation = useNavigation<NavigationHookProp>();
 
   // 다시 방문하는지 여부 state
-  const [isRevisit, setIsRevisit] = useState(0);
+  const [isRevisit, setIsRevisit] = useState(false);
 
   // 여러번 방문 여부 state
   const [isMoreVisit, setIsMoreVisit] = useState(false);
@@ -45,8 +52,11 @@ function HospitalReviewRegister() {
     month: dayjs().month(),
   });
 
-  const [yearList, setYearList] = useState<DateList[]>([]);
-  const [monthList, setMonthList] = useState<DateList[]>([]);
+  const [yearList, setYearList] = useState<DateList[]>([]); // 방문 날짜 연 리스트
+  const [monthList, setMonthList] = useState<DateList[]>([]); // 방문 날짜 월 리스트
+
+  const [medicalPrice, setMedicalPrice] = useState(''); // 진료비 state
+  const [diagnostic, setDiagnostic] = useState(''); // 진단 내용
 
   // 후기 작성 시, 주의사항 페이지 이동 함수
   const onMovePrecaution = () => {
@@ -78,22 +88,30 @@ function HospitalReviewRegister() {
 
   return (
     <SafeAreaView>
-      <ScrollView backgroundColor="#fff">
-        <Header
-          title="후기 작성"
-          leftButton={<BackButton onPress={onMoveBack} />}
-        />
+      <ScrollView backgroundColor={colors.grayScale['0']}>
+        <HospitalName text={'어울림동물병원'} onPress={onMoveBack} />
 
-        <HospitalName text={'어울림동물병원'} />
-
-        <VStack padding={'18px'}>
+        <VStack p={'18px'} pb="40px">
           <FormControl>
-            <HStack marginBottom={'15px'}>
+            <VStack
+              bgColor={colors.grayScale['10']}
+              py="20px"
+              px="24px"
+              borderRadius={8}
+              mb="36px">
+              <StarReviewLine text="진료" />
+              <StarReviewLine text="비용" />
+              <StarReviewLine text="시설" />
+              <StarReviewLine text="친절" lineStyle={{marginBottom: 0}} />
+            </VStack>
+
+            <HStack mb={'15px'}>
               <Label text="방문 날짜" />
+              <Label text=" (필수)" color={colors.negative['-10']} />
             </HStack>
 
-            <HStack justifyContent={'space-between'} marginBottom={36}>
-              <Box width="48%">
+            <HStack justifyContent={'space-between'} mb={36}>
+              <Box w="47.5%">
                 <DateSelector
                   headerText="년도"
                   selectedIndex={visitedDate.year}
@@ -104,7 +122,7 @@ function HospitalReviewRegister() {
                 />
               </Box>
 
-              <Box width="48%">
+              <Box w="47.5%">
                 <DateSelector
                   headerText="월"
                   selectedIndex={visitedDate.month}
@@ -116,74 +134,88 @@ function HospitalReviewRegister() {
               </Box>
             </HStack>
 
-            <FormInput
-              topLabel="진료비"
-              placeholder="숫자만 입력할 수 있어요"
-              keyboardType="number-pad"
-              rightLabel="만원"
+            <HStack>
+              <Label text="진료비" />
+              <Label text=" (필수)" color={colors.negative['-10']} />
+            </HStack>
+
+            <VerificationForm
+              placeholder={'숫자만 입력할 수 있어요'}
+              marginBottom={'8px'}
+              onChangeText={setMedicalPrice}
+              value={medicalPrice}
+              inputType="NUMBER"
+              inputRightElement={
+                <Text color={colors.grayScale['60']} fontSize="15px">
+                  만원
+                </Text>
+              }
             />
 
-            <FormInput
-              topLabel="진단 내용"
-              placeholder="#피부병 #각질 #건강검진"
-              bottomLabel="진단받은 내용은 태그로 추가할 수 있습니다"
+            <Text color={colors.grayScale['50']} fontSize="13px" mb={'36px'}>
+              진료비는 반올림해서 만원 단위로 적어주세요
+            </Text>
+
+            <HStack>
+              <Label text="진단 내용" />
+              <Label text=" (필수)" color={colors.negative['-10']} />
+            </HStack>
+
+            <VerificationForm
+              placeholder={'#피부병 #각질 #건강검진'}
+              marginBottom={'8px'}
+              onChangeText={setDiagnostic}
+              value={diagnostic}
             />
 
-            <FormInput
-              topLabel="방문 후기"
+            <Text color={colors.grayScale['50']} fontSize="13px" mb={'36px'}>
+              진단받은 내용은 태그로 추가할 수 있습니다
+            </Text>
+
+            <HStack>
+              <Label text="방문 후기" />
+              <Label text=" (필수)" color={colors.negative['-10']} />
+            </HStack>
+
+            <TextArea
+              my="8px"
+              h="160px"
+              p={'16px 14px'}
+              fontSize="15px"
+              lineHeight="22px"
               placeholder={VISIT_REVIEW_TEXT}
-              inputBoxStyle={{marginBottom: 6}}
-              isTextarea
+              autoCompleteType
+              placeholderTextColor={'#C6C8CD'}
             />
 
+            {/* 후기 작성시 주의사항 안내 */}
             <ReviewPrecautionButton onPress={onMovePrecaution} />
 
-            <HStack marginBottom="8px">
+            <HStack mb="8px">
               <Label text="사진 첨부(최대 5개)" />
             </HStack>
 
             <ImageUploader />
 
-            <HStack marginBottom="8px">
-              <Label text="별점 남기기" />
-            </HStack>
-
-            <VStack
-              backgroundColor="#f6f7f7"
-              paddingY="20px"
-              paddingX="24px"
-              borderRadius={8}
-              marginBottom="36px">
-              <StarReviewLine text="진료" />
-              <StarReviewLine text="비용" />
-              <StarReviewLine text="시설" />
-              <StarReviewLine text="친절" lineStyle={{marginBottom: 0}} />
-            </VStack>
-
-            <HStack marginBottom="12px">
+            <HStack mb="12px">
               <Label text="이 병원을 다시 방문하시겠어요?" />
             </HStack>
 
-            <HStack marginBottom={'52px'} justifyContent={'space-between'}>
+            <HStack mb={'52px'}>
               <RevisitCheckButton
-                text="네, 방문할래요"
-                checkValue={1}
-                isChecked={isRevisit}
-                setCheck={setIsRevisit}
-              />
-              <RevisitCheckButton
-                text="아뇨, 안갈래요"
-                checkValue={2}
-                isChecked={isRevisit}
-                setCheck={setIsRevisit}
+                active={isRevisit}
+                handlePress={() => setIsRevisit(prevState => !prevState)}
               />
             </HStack>
 
+            {/* '이 병원을 여러번 방문했어요.' 버튼 */}
             <MoreVisitCheckButton
               isChecked={isMoreVisit}
               setCheck={setIsMoreVisit}
             />
-            <ReviewRegisterButton />
+
+            {/* 리뷰 등록 버튼 */}
+            <ReviewRegisterButton handlePress={() => {}} active={false} />
           </FormControl>
         </VStack>
       </ScrollView>
