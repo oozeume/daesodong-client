@@ -1,37 +1,87 @@
-import {Button, ScrollView, Text, VStack} from 'native-base';
-import React from 'react';
-import {RouteList} from '~/../types/navigator';
+import {ParamListBase} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import _ from 'lodash';
+import {Box, Center, HStack, Pressable} from 'native-base';
+import React, {useCallback, useState} from 'react';
+import {Keyboard, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import BackIcon from '~/assets/icon/back_icon.svg';
+import StageBar from '~/components/common/stage/StageBar';
+import StageTextBox from '~/components/common/stage/StageTextBox';
+import TouchableWithoutView from '~/components/common/TouchableWithoutView';
+import NickNameRegister from '~/components/common/NickNameRegister';
+import PhoneVerification from '~/components/signup/social/PhoneVerification';
+import {colors} from '~/theme/theme';
+import EmailRegister from '~/components/signup/email/emailRegister';
+import PasswordRegister from '~/components/common/PasswordRegister';
+import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
+
+type Props = NativeStackScreenProps<ParamListBase, 'SignUpEmail'>;
+
+const STAGE_TEXT_LIST = [
+  ['회원여부 확인 및 가입을 진행합니다'],
+  ['아이디를 입력해주세요'],
+  ['비밀번호를 입력해주세요'],
+  ['닉네임을 입력해주세요'],
+];
 
 /**
  *@description 이메일 회원가입 페이지
  */
-function SignupEmail() {
-  const navigation = useNavigation<NavigationProp<RouteList>>();
 
-  const onMove = (stack: keyof RouteList) => {
-    navigation.navigate(stack);
+function SignUpEmail({navigation}: Props) {
+  const [currentStage, setCurrentStage] = useState(1);
+
+  const onPressBack = () => {
+    if (currentStage === 1) {
+      navigation.goBack();
+    } else {
+      setCurrentStage(prev => prev - 1);
+    }
   };
 
+  const moveToNextPage = () => setCurrentStage(prev => prev + 1);
+
   return (
-    <SafeAreaView>
-      <ScrollView backgroundColor={'#fff'}>
-        <VStack padding="18px" marginTop="20px">
-          <Text>이메일 회원가입</Text>
-          <Button mb="12px" onPress={() => onMove('Home')}>
-            홈
-          </Button>
-          <Button mb="12px" onPress={() => onMove('InitialLogin')}>
-            로그인 선택
-          </Button>
-          <Button mb="12px" onPress={() => onMove('SignupEmail')}>
-            이메일로 회원가입
-          </Button>
-        </VStack>
-      </ScrollView>
-    </SafeAreaView>
+    <TouchableWithoutView onPress={Keyboard.dismiss}>
+      <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
+        <HStack
+          space={3}
+          h={Platform.OS === 'android' ? '10%' : '8%'}
+          justifyContent={'space-between'}
+          paddingX={'18px'}
+          backgroundColor={colors.grayScale[0]}>
+          <Center h="60" w="30">
+            <Pressable onPress={onPressBack}>
+              <BackIcon />
+            </Pressable>
+          </Center>
+        </HStack>
+        <StageBar totalStage={4} currentStage={currentStage} />
+
+        <Box
+          h={Platform.OS === 'android' ? '90%' : '92%'}
+          position={'relative'}
+          marginX={'18px'}
+          backgroundColor={colors.grayScale[0]}>
+          <Center marginY={'60px'}>
+            <StageTextBox
+              totalStage={4}
+              currentStage={currentStage}
+              stageTextList={STAGE_TEXT_LIST[currentStage - 1]}
+            />
+          </Center>
+
+          <CurrentComponentOfArray index={currentStage}>
+            <PhoneVerification handlePage={moveToNextPage} />
+            <EmailRegister handlePage={moveToNextPage} />
+            <PasswordRegister handlePage={moveToNextPage} />
+            <NickNameRegister />
+          </CurrentComponentOfArray>
+        </Box>
+      </SafeAreaView>
+    </TouchableWithoutView>
   );
 }
 
-export default SignupEmail;
+export default SignUpEmail;

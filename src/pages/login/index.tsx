@@ -25,7 +25,7 @@ function InitialLogin() {
           <Button mb="12px" onPress={() => onMove('InitialLogin')}>
             로그인 선택
           </Button>
-          <Button mb="12px" onPress={() => onMove('SignupEmail')}>
+          <Button mb="12px" onPress={() => onMove('SignUpEmail')}>
             이메일로 회원가입
           </Button>
         </VStack>
