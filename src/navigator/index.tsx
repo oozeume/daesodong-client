@@ -10,8 +10,6 @@ import Hospital from '../pages/hospital';
 import Contents from '../pages/contents';
 import Community from '../pages/community';
 import MyPage from '../pages/mypage';
-import InitialLogin from '~/pages/login';
-import SignupEmail from '~/pages/signup/email';
 import SignupSocial from '~/pages/signup/social';
 import DeveloperMenu from '~/pages/developerMenu';
 import HospitalReviewRegister from '~/pages/hospital/review/register';
@@ -25,6 +23,9 @@ import PasswordResetPhoneCheck from '~/pages/login/passwordReset/phoneCheck';
 import PasswordResetChange from '~/pages/login/passwordReset/change';
 import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
+import PrivacyPolicy from '~/components/signup/privacyPolicy';
+import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
+import SignUpEmail from '~/pages/signup/email';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -124,6 +125,7 @@ const AppNavigator = () => {
           name="HospitalReviewRegisterPrecaution"
           component={HospitalReviewRegisterPrecaution}
         />
+
         <Stack.Screen
           name="InitialLogin"
           component={InitialLogin}
@@ -134,6 +136,13 @@ const AppNavigator = () => {
           component={SignupEmail}
           options={{animation: 'slide_from_right'}}
         />
+
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+        <Stack.Screen
+          name="TermsOfServicePolicy"
+          component={TermsOfServicePolicy}
+        />
+
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
         <Stack.Screen
           name="EmailLogin"

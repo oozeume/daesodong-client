@@ -8,11 +8,12 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {colors} from '~/theme/theme';
 import StageBar from '~/components/common/stage/StageBar';
 import StageTextBox from '~/components/common/stage/StageTextBox';
-import NickNameCheck from '~/components/signup/social/NickNameCheck';
+import NickNameRegister from '~/components/common/NickNameRegister';
 import PhoneVerification from '~/components/signup/social/PhoneVerification';
 
 import BackIcon from '../../../assets/icon/back_icon.svg';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
+import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
 
 type Props = NativeStackScreenProps<ParamListBase, 'SignupSocial'>;
 
@@ -71,12 +72,10 @@ function SignupSocial({navigation}: Props) {
             />
           </Center>
 
-          {/* Stage 1: 휴대폰 번호 인증 | Stage 2: 닉네임 중복 체크 */}
-          {currentStage === 1 ? (
+          <CurrentComponentOfArray index={currentStage}>
             <PhoneVerification handlePage={moveToNextPage} />
-          ) : (
-            <NickNameCheck />
-          )}
+            <NickNameRegister />
+          </CurrentComponentOfArray>
         </Box>
       </SafeAreaView>
     </TouchableWithoutView>

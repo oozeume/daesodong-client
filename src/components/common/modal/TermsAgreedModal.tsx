@@ -7,6 +7,8 @@ import Button from '../button';
 import CheckIcon from '../../../assets/icons/check.svg';
 import RightIcon from '../../../assets/icons/right.svg';
 import BackIcon from '../../../assets/icon/back_icon.svg';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RouteList} from '~/../types/navigator';
 
 interface Props {
   visible: boolean;
@@ -14,11 +16,16 @@ interface Props {
 }
 
 function TermsAgreedModal({visible, handleModal}: Props) {
+  const navigation = useNavigation<NavigationProp<RouteList>>();
   const [isAgreePrivacyPolicy, setIsAgreePrivacyPolicy] = useState(false);
   const [isAgreeTermsOfService, setIsAgreeTermsOfService] = useState(false);
 
   const handleSignUp = () => handleModal();
-  const moveToTermsDetail = (type: string) => {};
+  const moveToTermsDetail = (route: keyof RouteList) => {
+    navigation.navigate(route);
+    handleModal();
+  };
+
   return (
     <Modal w={'100%'} isOpen={visible} size={'full'}>
       <Modal.Content
@@ -69,7 +76,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 </Text>
                 <Pressable
                   w={'5%'}
-                  onPress={() => moveToTermsDetail('termsOfService')}>
+                  onPress={() => moveToTermsDetail('TermsOfServicePolicy')}>
                   <RightIcon />
                 </Pressable>
               </Flex>
@@ -97,7 +104,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 </Text>
                 <Pressable
                   w={'5%'}
-                  onPress={() => moveToTermsDetail('privacyPolicy')}>
+                  onPress={() => moveToTermsDetail('PrivacyPolicy')}>
                   <RightIcon />
                 </Pressable>
               </Flex>
