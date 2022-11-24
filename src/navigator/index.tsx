@@ -25,6 +25,7 @@ import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
+import CommunityDetail from '~/pages/community/detail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -155,6 +156,8 @@ const AppNavigator = () => {
           name="PasswordResetNotFoundAuth"
           component={PasswordResetNotFoundAuth}
         />
+
+        <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

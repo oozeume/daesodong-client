@@ -21,6 +21,7 @@ interface Props {
   autoFocus?: boolean;
   inputRef?: LegacyRef<TextInput>;
   secureTextEntry?: boolean;
+  noBorderBottom?: boolean;
 }
 
 /**
@@ -39,6 +40,7 @@ interface Props {
  * @param {JSX.Element} inputRightElement - 인풋창 오른쪽에 들어갈 element
  * @param {boolean} autoFocus - 텍스트창 자동으로 보이게 하는 기능 on/off
  * @param {LegacyRef<TextInput>} inputRef - autoFocus가 작동하지 않는 경우 강제로 focus하기 위한 ref
+ * @param {boolean} noBorderBottom - input border 너비
  */
 function VerificationForm({
   value,
@@ -56,6 +58,7 @@ function VerificationForm({
   autoFocus,
   inputRef,
   secureTextEntry,
+  noBorderBottom,
 }: Props) {
   return (
     <VStack space={1} mb={marginBottom}>
@@ -65,7 +68,7 @@ function VerificationForm({
         flexDirection={'row'}
         justifyContent={'space-between'}
         alignItems={'center'}
-        borderBottomWidth={'1px'}
+        borderBottomWidth={noBorderBottom ? 0 : '1px'}
         borderBottomColor={colors.grayScale[30]}>
         {/* 인풋창 왼쪽 TextInput */}
         <View w={'70%'}>
