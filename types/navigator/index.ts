@@ -37,6 +37,7 @@ export type RootStackParamList = {
   EmailLogin: undefined;
   PasswordReset: undefined;
   PasswordResetNotFoundAuth: undefined;
+  FindEmail: undefined;
 
   TermsOfServicePolicy: undefined;
   PrivacyPolicy: undefined;
