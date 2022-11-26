@@ -1,5 +1,5 @@
-import {Button, ScrollView, VStack} from 'native-base';
 import React from 'react';
+import {Button, ScrollView, VStack} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp, RouteList} from '~/../types/navigator';
@@ -34,7 +34,9 @@ function DeveloperMenu() {
           <Button mb="12px" onPress={() => onMove('SignupSocial')}>
             소셜 회원가입
           </Button>
-          <Button mb="12px">아이디</Button>
+          <Button mb="12px" onPress={() => onMove('FindEmail')}>
+            이메일 찾기
+          </Button>
           <Button mb="12px">비밀번호 재설정</Button>
           <Button mb="12px">집사정보/반료동물 등록</Button>
         </VStack>

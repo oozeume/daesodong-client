@@ -25,6 +25,7 @@ import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
+import FindEmail from '~/pages/login/findEmail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -150,7 +151,7 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
-
+        <Stack.Screen name="FindEmail" component={FindEmail} />
         <Stack.Screen
           name="PasswordResetNotFoundAuth"
           component={PasswordResetNotFoundAuth}
