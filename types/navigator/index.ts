@@ -33,6 +33,11 @@ export type RootStackParamList = {
   HospitalReviewRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;
+
+  EmailLogin: undefined;
+  PasswordReset: undefined;
+  PasswordResetNotFoundAuth: undefined;
+
   TermsOfServicePolicy: undefined;
   PrivacyPolicy: undefined;
   SignupSocial: undefined;

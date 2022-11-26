@@ -1,11 +1,12 @@
-import {Button, Center, HStack, Pressable, Text} from 'native-base';
+import {Center, Pressable, Text} from 'native-base';
 import React from 'react';
 import {GestureResponderEvent, StyleProp} from 'react-native';
 import CircleCheckIcon from '~/assets/icons/circle_check.svg';
-import CircleUncheckIcon from '~/assets/icons/circle_uncheck.svg';
 import BackIcon from '~/assets/icons/back.svg';
 import DeleteIcon from '~/assets/icons/delete.svg';
 import {ViewStyle} from 'react-native';
+import Button from '~/components/common/button';
+import {colors} from '~/theme/theme';
 
 interface IconButtonProps {
   buttonStyle?: StyleProp<ViewStyle>;
@@ -41,30 +42,37 @@ function BackButton({buttonStyle, iconStyle, onPress}: IconButtonProps) {
  */
 function CloseButton({buttonStyle, iconStyle, onPress}: IconButtonProps) {
   return (
-    <Button
+    <Pressable
       onPress={onPress}
       position="absolute"
       right="8px"
       backgroundColor="#ffffff00"
       style={buttonStyle}>
       <DeleteIcon style={iconStyle} />
-    </Button>
+    </Pressable>
   );
 }
 
+interface ReviewPrecautionButtonProps {
+  onPress: () => void;
+}
 /**
  *@description 후기 작성 주의 사항 안내 버튼
  */
-function ReviewPrecautionButton({onPress}: {onPress: () => void}) {
+function ReviewPrecautionButton({onPress}: ReviewPrecautionButtonProps) {
   return (
     <Pressable
       paddingY={0}
-      width="150px"
-      height="24px"
-      marginBottom="36px"
+      w="150px"
+      h="24px"
+      mb="36px"
       borderColor="#000"
       onPress={onPress}>
-      <Text color="#FF6B00" fontSize="13px" textDecorationLine="underline">
+      <Text
+        color={colors.grayScale['60']}
+        fontSize="13px"
+        textDecorationLine={'underline'}
+        textDecorationColor={colors.grayScale['60']}>
         후기 작성시 주의사항 안내
       </Text>
     </Pressable>
@@ -76,57 +84,34 @@ interface CheckedButtonProps<T extends number | boolean> {
   setCheck: (isChecked: T) => void;
 }
 
-interface RevisitCheckButtonProps<T extends number | boolean>
-  extends CheckedButtonProps<T> {
-  text: string;
-  checkValue: number;
+interface RevisitCheckButtonProps {
+  handlePress: () => void;
+  active: boolean;
 }
 
 /**
  *@description 이 병원을 다시 방문하시겠습니까? 체크 버튼
- *@param {string} text - 버튼 텍스트
- *@param {number} checkValue - 체크 여부 숫자 해당 prop과 isChecked과 일치하면 체크, 불일치 미체크
- *@param {string} isChecked - 체크 여부 state
- *@param {string} setCheck - 체크 state 변경 이벤트 함수
+ *@param {boolean} active - 버튼 활성화 여부
  */
-const RevisitCheckButton = ({
-  text,
-  checkValue,
-  isChecked,
-  setCheck,
-}: RevisitCheckButtonProps<number>) => {
-  const revisitCheckedButton = {
-    width: '48.5%',
-    height: 50,
-    borderRadius: 8,
-    borderColor: '#FF6B00',
-  };
-
-  const revisitCheckedText = {
-    color: '#FF6B00',
-  };
-
-  const checkedButtonStyle =
-    isChecked === checkValue ? revisitCheckedButton : undefined;
-
-  const checkedTextStyle =
-    isChecked === checkValue ? revisitCheckedText : undefined;
-
+const RevisitCheckButton = ({active, handlePress}: RevisitCheckButtonProps) => {
   return (
     <Pressable
-      style={checkedButtonStyle}
-      width="48.5%"
-      height="50px"
-      borderRadius={8}
-      borderColor="#E1E2E4"
-      borderWidth="1px"
-      variant="outline"
-      onPress={() => setCheck(isChecked === checkValue ? 0 : checkValue)}>
-      <Center height="100%">
-        <Text color="#9EA1A8" style={checkedTextStyle}>
-          {text}
-        </Text>
-      </Center>
+      w={'100%'}
+      h={'50px'}
+      backgroundColor={
+        active ? colors.fussOrange['-40'] : colors.grayScale['0']
+      }
+      borderWidth={'1px'}
+      borderRadius={'8px'}
+      borderColor={active ? colors.fussOrange['0'] : colors.grayScale['30']}
+      onPress={handlePress}>
+      <Text
+        lineHeight={'50px'}
+        textAlign={'center'}
+        color={active ? colors.fussOrange['0'] : colors.grayScale['50']}
+        fontSize="14px">
+        네, 방문할래요!
+      </Text>
     </Pressable>
   );
 };
@@ -143,40 +128,58 @@ function MoreVisitCheckButton({
   };
 
   return (
-    <Button
+    <Pressable
       variant={'unstyled'}
-      marginBottom="24px"
+      mb="24px"
       onPress={() => setCheck(!isChecked)}>
-      <HStack alignItems="center">
+      <Center flexDirection={'row'}>
         {isChecked ? (
-          <CircleCheckIcon style={ICON_STYLE} />
+          <CircleCheckIcon style={ICON_STYLE} fill={colors.fussOrange['0']} />
         ) : (
-          <CircleUncheckIcon style={ICON_STYLE} />
+          <CircleCheckIcon style={ICON_STYLE} fill={colors.grayScale['30']} />
         )}
-        <Text fontSize="15px" color="#7F838C">
+        <Text
+          fontSize="15px"
+          color={isChecked ? colors.grayScale['80'] : colors.grayScale['60']}>
           이 병원을 여러번 방문했어요
         </Text>
-      </HStack>
-    </Button>
+      </Center>
+    </Pressable>
   );
+}
+
+interface ReviewRegisterButtonProps {
+  handlePress: () => void;
+  active: boolean;
 }
 
 /**
  *@description 리뷰 등록 함수
  */
-function ReviewRegisterButton() {
+function ReviewRegisterButton({
+  handlePress,
+  active,
+}: ReviewRegisterButtonProps) {
   return (
     <Button
-      marginBottom="40px"
-      borderRadius={8}
-      height="52px"
-      backgroundColor="#FFEADC"
-      borderColor="#9EA1A8"
-      borderWidth={1}>
-      <Text fontSize="16px" color="#9EA1A8">
-        등록
-      </Text>
-    </Button>
+      handlePress={handlePress}
+      buttonColors={{
+        active: colors.fussOrange['0'],
+        disabled: colors.fussOrange['-30'],
+      }}
+      fontColors={{
+        active: colors.grayScale['90'],
+        disabled: colors.grayScale['50'],
+      }}
+      borderColors={{
+        active: colors.grayScale['90'],
+        disabled: colors.grayScale['50'],
+      }}
+      large
+      text="등록"
+      active={active}
+      textStyle={{fontSize: 16}}
+    />
   );
 }
 

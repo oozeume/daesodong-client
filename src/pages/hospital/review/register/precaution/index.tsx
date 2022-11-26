@@ -21,7 +21,9 @@ function HospitalReviewRegisterPrecaution() {
       <ScrollView backgroundColor={'#fff'}>
         <Header
           title="후기 작성"
-          rightButton={<CloseButton onPress={onBack} />}
+          rightButton={
+            <CloseButton buttonStyle={{right: 18}} onPress={onBack} />
+          }
         />
 
         <VStack padding="18px" marginTop="20px">

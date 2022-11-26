@@ -10,6 +10,7 @@ import {
 } from 'native-base';
 import React from 'react';
 import DownIcon from '~/assets/icons/down.svg';
+import {colors} from '~/theme/theme';
 import {BackButton} from '../button';
 
 interface Props {
@@ -43,7 +44,7 @@ function Selector({headerText, itemList, onSelect, selectedIndex}: Props) {
         borderColor="#E1E2E4"
         borderBottomWidth={1}
         flexDirection="row"
-        backgroundColor="#fff"
+        backgroundColor={colors.grayScale['0']}
         onPress={onOpen}>
         <HStack
           width="100%"

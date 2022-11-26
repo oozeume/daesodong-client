@@ -24,3 +24,8 @@ export const INCLUDE_NUMBER_REGREX = /[0-9]/;
  * 텍스트 길이가 8~20자 여부
  */
 export const RANGE_TEXT_8_20_REGREX = /^.{8,20}$/;
+
+/**
+ * 패스워드 정규식 (영문, 숫자 포함, 8~20자 길이 이내)
+ */
+export const PASSWORD_REGREX = /^[A-Za-z0-9]{8,20}$/;

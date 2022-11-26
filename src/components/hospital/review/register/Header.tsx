@@ -13,10 +13,10 @@ interface Props {
  */
 function Header({title, rightButton, leftButton}: Props) {
   return (
-    <HStack alignItems="center">
+    <HStack alignItems="center" h="60px">
       {leftButton}
 
-      <Center paddingY="17px" w="100%">
+      <Center w="100%">
         <Text fontSize={18} color="black">
           {title}
         </Text>
