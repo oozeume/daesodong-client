@@ -5,7 +5,6 @@ import {
   Pressable,
   ScrollView,
   Text,
-  VStack,
 } from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -18,19 +17,18 @@ import VerificationForm from '~/components/common/VerificationForm';
 import Button from '~/components/common/button';
 import CommunityContent from '~/components/community/detail/Content';
 import Header from '~/components/hospital/review/register/Header';
-import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
+import KekabMenu from '~/components/common/kekab/KekabMenu';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
  */
 const CommunityDetail = () => {
-  const navi = useNavigation<NavigationHookProp>();
+  const navigation = useNavigation<NavigationHookProp>();
   const [comment, setComment] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
-  const [isKebabClick, setKebabClick] = React.useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -45,7 +43,7 @@ const CommunityDetail = () => {
                 position="absolute"
                 left="18px"
                 zIndex={1}
-                onPress={() => navi.goBack()}>
+                onPress={() => navigation.goBack()}>
                 <BackIcon />
               </Pressable>
             }
@@ -65,32 +63,17 @@ const CommunityDetail = () => {
                   />
                 )}
 
-                <Pressable onPress={() => setKebabClick(prev => !prev)}>
-                  <KebabMenuIcon fill={colors.grayScale['70']} />
-                </Pressable>
+                <KekabMenu
+                  top={Platform.OS === 'android' ? '88px' : '110px'}
+                  handleFirstButton={() => {}}
+                  handleSecondButton={() => {}}
+                />
               </HStack>
             }
           />
 
           {/* 컨텐츠 */}
           <CommunityContent />
-
-          {isKebabClick && (
-            <VStack
-              position={'absolute'}
-              right={0}
-              top={10}
-              zIndex={99}
-              borderRadius={'8px'}
-              space={'20px'}
-              borderColor={'black'}
-              backgroundColor={'white'}
-              p={'16px'}
-              shadow={'1'}>
-              <Text>수정</Text>
-              <Text>삭제</Text>
-            </VStack>
-          )}
 
           <Box height="8px" bgColor={colors.grayScale['10']}></Box>
 

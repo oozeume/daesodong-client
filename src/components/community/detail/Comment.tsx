@@ -1,9 +1,9 @@
 import {Box, HStack, Pressable, Text, View, VStack} from 'native-base';
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import AvatarIcon from '~/assets/icons/avartar.svg';
-import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
+import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {colors} from '~/theme/theme';
 
 interface Props {
@@ -19,7 +19,6 @@ const CommunityComment = ({commentType = 'default'}: Props) => {
 
   // 답글 내용 길이 값
   const recommentWidth = commentWidth - 28;
-  const [isKebabClick, setKebabClick] = React.useState(false);
 
   return (
     <Box
@@ -86,12 +85,11 @@ const CommunityComment = ({commentType = 'default'}: Props) => {
             </HStack>
           </HStack>
 
-          <Pressable onPress={() => setKebabClick(prev => !prev)}>
-            <KebabMenuIcon
-              fill={colors.grayScale['70']}
-              onPress={() => setKebabClick(prev => !prev)}
-            />
-          </Pressable>
+          <KekabMenu
+            handleFirstButton={() => {}}
+            handleSecondButton={() => {}}
+            top={Platform.OS === 'android' ? '142px' : '116px'}
+          />
         </HStack>
 
         <HStack mb="8px" ml="28px" alignItems={'center'}>
@@ -126,23 +124,6 @@ const CommunityComment = ({commentType = 'default'}: Props) => {
             ? '삭제된 댓글입니다'
             : '지나고 그러나 그리워 다 같이 봅니다. 잔디가 나는 위에 무엇인지 아무 듯합니다. 피어나듯이 불러 당신은 내 말 위에도 부끄러운 했던 계십니다'}
         </Text>
-
-        {isKebabClick && (
-          <VStack
-            position={'absolute'}
-            right={0}
-            top={10}
-            zIndex={99}
-            borderRadius={'8px'}
-            space={'20px'}
-            borderColor={'black'}
-            backgroundColor={'white'}
-            p={'16px'}
-            shadow={'1'}>
-            <Text>수정</Text>
-            <Text>삭제</Text>
-          </VStack>
-        )}
 
         <HStack ml="28px">
           <Pressable
