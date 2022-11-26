@@ -20,8 +20,14 @@ import CommunityContent from '~/components/community/detail/Content';
 import Header from '~/components/hospital/review/register/Header';
 import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import {Platform} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationHookProp} from '~/../types/navigator';
 
+/**
+ *@description 커뮤니티 상세 + 댓글 페이지
+ */
 const CommunityDetail = () => {
+  const navi = useNavigation<NavigationHookProp>();
   const [comment, setComment] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
   const [isKebabClick, setKebabClick] = React.useState(false);
@@ -34,8 +40,16 @@ const CommunityDetail = () => {
         <ScrollView bgColor={colors.grayScale['0']} minHeight="100%">
           <Header
             title={''}
-            rightButton={<BackIcon style={{position: 'absolute', left: 18}} />}
             leftButton={
+              <Pressable
+                position="absolute"
+                left="18px"
+                zIndex={1}
+                onPress={() => navi.goBack()}>
+                <BackIcon />
+              </Pressable>
+            }
+            rightButton={
               <HStack position="absolute" right={18} zIndex={1}>
                 {isBookmark ? (
                   <BookmarFillIcon
