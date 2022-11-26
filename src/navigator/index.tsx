@@ -22,6 +22,7 @@ import CommunityIcon from '../assets/icon/nav_community_icon.svg';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
+import PetInfoRegister from '~/pages/signup/petInfo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -128,6 +129,7 @@ const AppNavigator = () => {
         />
         <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
+        <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
       </Stack.Navigator>
     </NavigationContainer>
   );
