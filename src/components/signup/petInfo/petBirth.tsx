@@ -9,6 +9,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 반려동물 태어난 년도
+ */
+
 function PetBirth({handlePage}: Props) {
   const [petName, setPetName] = useState('');
   return (

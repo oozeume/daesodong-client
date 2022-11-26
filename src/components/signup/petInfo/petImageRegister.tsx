@@ -8,6 +8,10 @@ interface Props {
   onPress: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 반려동물 이미지
+ */
+
 function PetImageRegister({onPress}: Props) {
   return (
     <LayoutContainer>

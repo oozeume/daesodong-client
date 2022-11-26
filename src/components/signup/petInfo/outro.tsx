@@ -6,6 +6,10 @@ import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
 import {DEVICE_HEIGHT} from '~/utils/dimention';
 
+/**
+ *@description 집사정보등록 - 마지막 페이지
+ */
+
 function Outro() {
   const statusbarHeight = getStatusBarHeight();
   return (

@@ -39,6 +39,10 @@ const STAGE_TEXT_LIST = [
 
 export const STAGE_TEXT_BOX_HEIGHT = 172;
 
+/**
+ *@description 반려동물 등록 페이지
+ */
+
 function PetInfoRegister({navigation}: Props) {
   const [currentStage, setCurrentStage] = useState(1);
 

@@ -7,8 +7,12 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 
 interface Props {
-  onPress: () => {};
+  onPress: () => void;
 }
+
+/**
+ *@description 집사정보등록 - 첫 페이지
+ */
 
 function Intro({onPress}: Props) {
   const statusbarHeight = getStatusBarHeight();

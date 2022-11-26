@@ -8,6 +8,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 주소
+ */
+
 function Address({handlePage}: Props) {
   return (
     <LayoutContainer>
