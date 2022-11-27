@@ -1,3 +1,4 @@
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NativeBaseProvider} from 'native-base';
 import React from 'react';
 
@@ -6,13 +7,19 @@ import {theme} from '~/theme/theme';
 
 import AppNavigator from './src/navigator';
 
+const queryClient = new QueryClient({
+  defaultOptions: {queries: {retry: 2}},
+});
+
 const App = () => {
   return (
-    <NativeBaseProvider theme={theme}>
-      <SafeAreaProvider>
-        <AppNavigator />
-      </SafeAreaProvider>
-    </NativeBaseProvider>
+    <QueryClientProvider client={queryClient}>
+      <NativeBaseProvider theme={theme}>
+        <SafeAreaProvider>
+          <AppNavigator />
+        </SafeAreaProvider>
+      </NativeBaseProvider>
+    </QueryClientProvider>
   );
 };
 

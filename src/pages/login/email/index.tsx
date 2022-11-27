@@ -90,7 +90,10 @@ function EmailLogin() {
 
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
-                <EmailLoginHelperButton onPress={() => {}} name="회원가입" />
+                <EmailLoginHelperButton
+                  onPress={() => onMove('SignUpEmail')}
+                  name="회원가입"
+                />
               </HStack>
             </VStack>
 

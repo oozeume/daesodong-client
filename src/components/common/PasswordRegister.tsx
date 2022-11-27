@@ -11,9 +11,12 @@ import {
   INCLUDE_NUMBER_REGREX,
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
+import {initSignupForm} from '~/constants/signup';
 
 interface Props {
   handlePage: () => void;
+  signupForm: typeof initSignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<typeof initSignupForm>>;
 }
 
 const helpList = ['영문 포함', '숫자 포함', '8-20자 이내'];
@@ -21,9 +24,7 @@ const helpList = ['영문 포함', '숫자 포함', '8-20자 이내'];
 /**
  *@description 비밀번호 입력 폼
  */
-
-function PasswordRegister({handlePage}: Props) {
-  const [password, setPassword] = useState('');
+function PasswordRegister({handlePage, signupForm, setSignupForm}: Props) {
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
@@ -44,7 +45,7 @@ function PasswordRegister({handlePage}: Props) {
       : 'FAIL';
 
     setHelpResults([isIncludeEnglish, isIncludeNumber, isProperLength]);
-    setPassword(text);
+    setSignupForm(prevState => ({...prevState, password: text}));
   };
 
   const handlePasswordConfirmChange = (text: string) => {
@@ -52,15 +53,15 @@ function PasswordRegister({handlePage}: Props) {
   };
 
   const isButtonActive =
-    !_.isEmpty(password) &&
+    !_.isEmpty(signupForm.password) &&
     !_.isEmpty(passwordConfirm) &&
-    password === passwordConfirm;
+    signupForm.password === passwordConfirm;
 
   return (
     <>
       <VerificationForm
         placeholder={'비밀번호 입력'}
-        value={password}
+        value={signupForm.password}
         onChangeText={handlePasswordChange}
         helpList={helpList}
         marginBottom={'20px'}
@@ -75,8 +76,8 @@ function PasswordRegister({handlePage}: Props) {
         successMessage={'비밀번호가 일치합니다'}
         errorMessage={'비밀번호를 확인해주세요'}
         verificationResult={
-          password.length > 0
-            ? password === passwordConfirm
+          signupForm.password.length > 0
+            ? signupForm.password === passwordConfirm
               ? 'SUCCESS'
               : 'FAIL'
             : undefined

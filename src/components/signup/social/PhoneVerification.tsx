@@ -6,23 +6,29 @@ import Button from '~/components/common/button';
 import useRegExPhone from '~/hooks/useRegExPhone';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
+import {initSignupForm} from '~/constants/signup';
 
 interface Props {
   handlePage: () => void;
+  signupForm: typeof initSignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<typeof initSignupForm>>;
 }
 
 /**
  * 휴대폰 인증 스테이지 컴포넌트
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
-function PhoneVerification({handlePage}: Props) {
+function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [phoneNumber, handlePhoneNumber] = useRegExPhone();
+  // const [phoneNumber, handlePhoneNumber] = useRegExPhone();
 
   const handleModal = () => {
     Keyboard.dismiss();
     setModalVisible(prev => !prev);
   };
+
+  const onChangeText = (text: string) =>
+    setSignupForm(prevState => ({...prevState, mobile: text}));
 
   return (
     <>
@@ -36,9 +42,10 @@ function PhoneVerification({handlePage}: Props) {
         placeholder={'휴대폰 번호'}
         successMessage={'인증번호가 전송되었습니다'}
         errorMessage={'인증번호 전송에 실패했습니다'}
-        value={phoneNumber}
+        value={signupForm.mobile}
         marginBottom={'20px'}
-        onChangeText={handlePhoneNumber}
+        onChangeText={onChangeText}
+        maxLength={11}
         inputRightElement={
           <Button
             width={'77px'}
@@ -55,7 +62,7 @@ function PhoneVerification({handlePage}: Props) {
               disabled: colors.grayScale[40],
             }}
             text={'인증하기'}
-            active={phoneNumber.length === 13}
+            active={signupForm.mobile.length > 10}
             handlePress={handleModal}
           />
         }
