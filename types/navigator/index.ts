@@ -43,6 +43,8 @@ export type RootStackParamList = {
   PrivacyPolicy: undefined;
   SignupSocial: undefined;
   SignUpEmail: undefined;
+
+  CommunityDetail: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
