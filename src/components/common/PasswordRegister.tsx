@@ -11,12 +11,12 @@ import {
   INCLUDE_NUMBER_REGREX,
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
-import {initSignupForm} from '~/constants/signup';
+import {SignupForm} from '~/../types/login';
 
 interface Props {
   handlePage: () => void;
-  signupForm: typeof initSignupForm;
-  setSignupForm: React.Dispatch<React.SetStateAction<typeof initSignupForm>>;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 const helpList = ['영문 포함', '숫자 포함', '8-20자 이내'];

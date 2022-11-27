@@ -6,12 +6,12 @@ import Button from '~/components/common/button';
 import useRegExPhone from '~/hooks/useRegExPhone';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
-import {initSignupForm} from '~/constants/signup';
+import {SignupForm} from '~/../types/login';
 
 interface Props {
   handlePage: () => void;
-  signupForm: typeof initSignupForm;
-  setSignupForm: React.Dispatch<React.SetStateAction<typeof initSignupForm>>;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
@@ -20,7 +20,6 @@ interface Props {
  */
 function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
-  // const [phoneNumber, handlePhoneNumber] = useRegExPhone();
 
   const handleModal = () => {
     Keyboard.dismiss();

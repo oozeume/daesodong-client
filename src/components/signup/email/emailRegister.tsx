@@ -2,16 +2,16 @@ import _ from 'lodash';
 import {Box} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
+import {SignupForm} from '~/../types/login';
 
 import Button from '~/components/common/button';
 import VerificationForm from '~/components/common/VerificationForm';
-import {initSignupForm} from '~/constants/signup';
 import {colors} from '~/theme/theme';
 
 interface Props {
   handlePage: () => void;
-  signupForm: typeof initSignupForm;
-  setSignupForm: React.Dispatch<React.SetStateAction<typeof initSignupForm>>;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**

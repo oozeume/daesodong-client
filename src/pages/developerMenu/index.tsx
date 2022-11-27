@@ -19,9 +19,6 @@ function DeveloperMenu() {
     <SafeAreaView>
       <ScrollView backgroundColor={'#fff'}>
         <VStack padding="18px" marginTop="20px">
-          <Button mb="12px" onPress={() => onMove('Hospital')}>
-            병원정보
-          </Button>
           <Button mb="12px" onPress={() => onMove('InitialLogin')}>
             로그인 선택
           </Button>
@@ -39,6 +36,9 @@ function DeveloperMenu() {
           </Button>
           <Button mb="12px" onPress={() => onMove('FindEmail')}>
             이메일 찾기
+          </Button>
+          <Button mb="12px" onPress={() => onMove('Hospital')}>
+            병원정보
           </Button>
           <Button mb="12px">비밀번호 재설정</Button>
           <Button mb="12px">집사정보/반료동물 등록</Button>

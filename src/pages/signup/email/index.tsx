@@ -15,7 +15,7 @@ import {colors} from '~/theme/theme';
 import EmailRegister from '~/components/signup/email/emailRegister';
 import PasswordRegister from '~/components/common/PasswordRegister';
 import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
-import {initSignupForm} from '~/constants/signup';
+import {INIT_SIGNUP_FORM} from '~/constants/signup';
 
 type Props = NativeStackScreenProps<ParamListBase, 'SignUpEmail'>;
 
@@ -33,7 +33,7 @@ const STAGE_TEXT_LIST = [
 function SignUpEmail({navigation}: Props) {
   const [currentStage, setCurrentStage] = useState(1);
 
-  const [signupForm, setSignupForm] = useState(initSignupForm);
+  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
 
   const onPressBack = () => {
     if (currentStage === 1) {
@@ -42,8 +42,6 @@ function SignUpEmail({navigation}: Props) {
       setCurrentStage(prev => prev - 1);
     }
   };
-
-  console.log(signupForm);
 
   const moveToNextPage = () => setCurrentStage(prev => prev + 1);
 

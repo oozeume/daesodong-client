@@ -14,6 +14,7 @@ import PhoneVerification from '~/components/signup/social/PhoneVerification';
 import BackIcon from '../../../assets/icon/back_icon.svg';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
+import {INIT_SIGNUP_FORM} from '~/constants/signup';
 
 type Props = NativeStackScreenProps<ParamListBase, 'SignupSocial'>;
 
@@ -26,6 +27,7 @@ const stageTwoTextList = ['닉네임을 입력해주세요'];
  */
 function SignupSocial({navigation}: Props) {
   const [currentStage, setCurrentStage] = useState(1);
+  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
 
   const onPressBack = () => {
     if (currentStage === 1) {
@@ -73,8 +75,15 @@ function SignupSocial({navigation}: Props) {
           </Center>
 
           <CurrentComponentOfArray index={currentStage}>
-            <PhoneVerification handlePage={moveToNextPage} />
-            <NickNameRegister />
+            <PhoneVerification
+              handlePage={moveToNextPage}
+              signupForm={signupForm}
+              setSignupForm={setSignupForm}
+            />
+            <NickNameRegister
+              signupForm={signupForm}
+              setSignupForm={setSignupForm}
+            />
           </CurrentComponentOfArray>
         </Box>
       </SafeAreaView>

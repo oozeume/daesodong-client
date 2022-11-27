@@ -12,7 +12,6 @@ import {
 } from '~/components/login/button';
 import {Dimensions} from 'react-native';
 import {colors} from '~/theme/theme';
-import {useGetAuthNickname, usePostAuthSignup} from '~/api/login';
 
 /**
  *@description 초기 소셜 로그인 선택 페이지
@@ -28,8 +27,6 @@ function InitialLogin() {
 
   // 디바이스 높이에 따른 페이지 padding top, bottom 설정
   const containerPaddingTop = `${Math.floor((78 * appHeight) / 812)}px`;
-  const postAuthSignup = usePostAuthSignup();
-  const test = useGetAuthNickname('봉이네');
 
   return (
     <SafeAreaView>
@@ -59,7 +56,7 @@ function InitialLogin() {
         </VStack>
 
         <VStack>
-          <KakaoLoginButton handlePress={() => postAuthSignup.mutate({})} />
+          <KakaoLoginButton handlePress={() => {}} />
           <AppleLoginButton handlePress={() => {}} />
           <GoogleLoginButton handlePress={() => {}} />
           <EmailLoginButton handlePress={() => onMove('EmailLogin')} />
