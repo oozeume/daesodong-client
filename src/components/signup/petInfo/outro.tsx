@@ -4,14 +4,19 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT} from '~/utils/dimention';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimention';
 
-function Outro() {
+interface Props {
+  handlePage: () => void;
+}
+
+function Outro({handlePage}: Props) {
   const statusbarHeight = getStatusBarHeight();
   return (
     <Stack
       position={'relative'}
       px={'18px'}
+      w={DEVICE_WIDTH}
       backgroundColor={colors.grayScale[0]}
       h={DEVICE_HEIGHT - HEADER_HEIGHT - statusbarHeight - 6}
       alignItems={'center'}
@@ -45,7 +50,7 @@ function Outro() {
 
       <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
         <Button
-          handlePress={() => {}}
+          handlePress={handlePage}
           large
           active
           shadow

@@ -16,6 +16,7 @@ interface Props {
   active?: boolean;
   shadow?: boolean;
   handlePress?: () => void;
+  activeButton?: boolean;
 }
 
 /**
@@ -38,6 +39,7 @@ function Button({
   width,
   large,
   active,
+  activeButton,
   shadow,
   handlePress,
 }: Props) {
@@ -45,10 +47,14 @@ function Button({
     <Pressable
       w={width ?? '100%'}
       h={large ? '52px' : '36px'}
-      backgroundColor={active ? buttonColors.active : buttonColors.disabled}
+      backgroundColor={
+        active || activeButton ? buttonColors.active : buttonColors.disabled
+      }
       borderWidth={'1px'}
       borderRadius={large ? '8px' : '4px'}
-      borderColor={active ? borderColors.active : borderColors.disabled}
+      borderColor={
+        active || activeButton ? borderColors.active : borderColors.disabled
+      }
       disabled={!active}
       style={
         shadow && {shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.15}
@@ -57,7 +63,9 @@ function Button({
       <Text
         lineHeight={large ? '52px' : '36px'}
         textAlign={'center'}
-        color={active ? fontColors.active : fontColors.disabled}>
+        color={
+          active || activeButton ? fontColors.active : fontColors.disabled
+        }>
         {text}
       </Text>
     </Pressable>

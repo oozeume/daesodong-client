@@ -1,4 +1,4 @@
-import {Box, Center, HStack, Pressable, Stack} from 'native-base';
+import {Box, Center, HStack, Pressable, Stack, useDisclose} from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';
@@ -17,11 +17,12 @@ import PetSitterBirth from '~/components/signup/petInfo/petSitterBirth';
 import PetName from '~/components/signup/petInfo/petName';
 import PetTypeSelector from '~/components/signup/petInfo/petTypeSelector';
 import PetBirth from '~/components/signup/petInfo/petBirth';
-import PetGender from '~/components/signup/petInfo/petGender';
 import Address from '~/components/signup/petInfo/address';
 import AnyQuestion from '~/components/signup/petInfo/anyQuestion';
 import PetImageRegister from '~/components/signup/petInfo/petImageRegister';
 import Outro from '~/components/signup/petInfo/outro';
+import ChoicePetGender from '~/components/signup/petInfo/choicePetGender';
+import PetTypeSelectModal from '~/components/signup/petInfo/petTypeSelectModal';
 
 type Props = NativeStackScreenProps<ParamListBase, 'PetInfoRegister'>;
 
@@ -35,6 +36,7 @@ const STAGE_TEXT_LIST = [
   ['봉식이와 어디서 함께 살고 계세요?'],
   ['봉식이를 키우면서', '고민되는 점이 있으신가요?'],
   ['아주 좋아요!', '마지막으로 우리 봉삼이', '예쁜 모습 자랑해주실까요?'],
+  [''],
 ];
 
 export const STAGE_TEXT_BOX_HEIGHT = 172;
@@ -54,6 +56,9 @@ function PetInfoRegister({navigation}: Props) {
 
   const statusbarHeight = getStatusBarHeight();
   const [onStartPress, setStartPress] = useState(false);
+  const {isOpen, onOpen, onClose} = useDisclose();
+
+  const [petType, setPetType] = useState({id: '', title: ''});
 
   return (
     <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
@@ -78,40 +83,51 @@ function PetInfoRegister({navigation}: Props) {
           alignItems={'center'}
           justifyContent={'space-between'}>
           <Stack>
-            <StageBar totalStage={9} currentStage={currentStage} />
+            {currentStage !== STAGE_TEXT_LIST.length && (
+              <StageBar totalStage={9} currentStage={currentStage} />
+            )}
 
             <Box backgroundColor={colors.grayScale[0]} px={'18px'}>
-              <Center py={'60px'} height={STAGE_TEXT_BOX_HEIGHT}>
-                <StageTextBox
-                  totalStage={9}
-                  currentStage={currentStage}
-                  stageTextList={STAGE_TEXT_LIST[currentStage - 1]}
-                />
-              </Center>
+              {currentStage !== STAGE_TEXT_LIST.length && (
+                <Center py={'60px'} height={STAGE_TEXT_BOX_HEIGHT}>
+                  <StageTextBox
+                    totalStage={9}
+                    currentStage={currentStage}
+                    stageTextList={STAGE_TEXT_LIST[currentStage - 1]}
+                  />
+                </Center>
+              )}
 
               <CurrentComponentOfArray index={currentStage}>
                 <ChoiceGender handlePage={moveToNextPage} />
                 <PetSitterBirth handlePage={moveToNextPage} />
                 <PetName handlePage={moveToNextPage} />
-                <PetTypeSelector handlePage={moveToNextPage} />
+                <PetTypeSelector
+                  handlePage={moveToNextPage}
+                  onPress={onOpen}
+                  petType={petType}
+                />
                 <PetBirth handlePage={moveToNextPage} />
-                <PetGender handlePage={moveToNextPage} />
+                <ChoicePetGender handlePage={moveToNextPage} />
                 <Address handlePage={moveToNextPage} />
                 <AnyQuestion handlePage={moveToNextPage} />
-                <PetImageRegister onPress={() => setStartPress(false)} />
+                <PetImageRegister handlePage={moveToNextPage} />
+                <Outro
+                  handlePage={() => navigation.navigate('DeveloperMenu')}
+                />
               </CurrentComponentOfArray>
             </Box>
           </Stack>
         </Stack>
       ) : (
-        <>
-          {currentStage === STAGE_TEXT_LIST.length ? (
-            <Outro />
-          ) : (
-            <Intro onPress={() => setStartPress(true)} />
-          )}
-        </>
+        <Intro onPress={() => setStartPress(true)} />
       )}
+
+      <PetTypeSelectModal
+        isOpen={isOpen}
+        onClose={onClose}
+        setPetType={setPetType}
+      />
     </SafeAreaView>
   );
 }

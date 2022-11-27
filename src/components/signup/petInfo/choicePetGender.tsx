@@ -1,22 +1,41 @@
+import _ from 'lodash';
 import {Stack} from 'native-base';
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
+import ChoiceButton from './choiceButton';
 import LayoutContainer from './layoutContainer';
 
 interface Props {
   handlePage: () => void;
 }
 
-function PetGender({handlePage}: Props) {
+type PetGenderType = '여아' | '남아' | undefined;
+
+function ChoicePetGender({handlePage}: Props) {
+  const [selectGender, setSelectGender] = useState<PetGenderType>(undefined);
+
   return (
     <LayoutContainer>
+      <Stack space={'10px'}>
+        <ChoiceButton
+          buttonName={'여아'}
+          onPress={() => setSelectGender('여아')}
+          active={selectGender === '여아'}
+        />
+
+        <ChoiceButton
+          buttonName={'남아'}
+          onPress={() => setSelectGender('남아')}
+          active={selectGender === '남아'}
+        />
+      </Stack>
       <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
         <Button
           handlePress={handlePage}
           large
+          active={!_.isNil(selectGender)}
           shadow
-          active
           text={'다음'}
           fontColors={{
             active: colors.grayScale[90],
@@ -36,4 +55,4 @@ function PetGender({handlePage}: Props) {
   );
 }
 
-export default PetGender;
+export default ChoicePetGender;

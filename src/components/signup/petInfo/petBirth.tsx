@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
@@ -10,7 +11,7 @@ interface Props {
 }
 
 function PetBirth({handlePage}: Props) {
-  const [petName, setPetName] = useState('');
+  const [petBirth, setPetBirth] = useState('');
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Stack>
@@ -22,8 +23,8 @@ function PetBirth({handlePage}: Props) {
             borderBottomColor={colors.grayScale[30]}
             borderBottomWidth={1}>
             <TextInput
-              onChangeText={setPetName}
-              value={petName}
+              onChangeText={setPetBirth}
+              value={petBirth}
               onSubmitEditing={Keyboard.dismiss}
               keyboardType={'number-pad'}
               placeholder={'숫자만 입력해주세요'}
@@ -36,9 +37,9 @@ function PetBirth({handlePage}: Props) {
             <Button
               handlePress={handlePage}
               large
-              active
               shadow
               text={'다음'}
+              active={!_.isEmpty(petBirth)}
               fontColors={{
                 active: colors.grayScale[90],
                 disabled: colors.grayScale[50],

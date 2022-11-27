@@ -14,36 +14,38 @@ interface Props {
 function PetName({handlePage}: Props) {
   const [petName, setPetName] = useState('');
   return (
-    <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
-      <LayoutContainer>
-        <TextInput
-          style={styles.input}
-          onChangeText={setPetName}
-          value={petName}
-          placeholder={'이름을 입력해주세요'}
-        />
-        <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
-          <Button
-            handlePress={handlePage}
-            large
-            shadow
-            active
-            text={'다음'}
-            fontColors={{
-              active: colors.grayScale[90],
-              disabled: colors.grayScale[50],
-            }}
-            buttonColors={{
-              active: colors.fussOrange[0],
-              disabled: colors.fussOrange['-30'],
-            }}
-            borderColors={{
-              active: colors.grayScale[90],
-              disabled: colors.grayScale[50],
-            }}
+    <TouchableWithoutView onPress={Keyboard.dismiss}>
+      <Stack>
+        <LayoutContainer>
+          <TextInput
+            style={styles.input}
+            onChangeText={setPetName}
+            value={petName}
+            placeholder={'이름을 입력해주세요'}
           />
-        </Stack>
-      </LayoutContainer>
+          <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
+            <Button
+              handlePress={handlePage}
+              large
+              shadow
+              active={!_.isEmpty(petName)}
+              text={'다음'}
+              fontColors={{
+                active: colors.grayScale[90],
+                disabled: colors.grayScale[50],
+              }}
+              buttonColors={{
+                active: colors.fussOrange[0],
+                disabled: colors.fussOrange['-30'],
+              }}
+              borderColors={{
+                active: colors.grayScale[90],
+                disabled: colors.grayScale[50],
+              }}
+            />
+          </Stack>
+        </LayoutContainer>
+      </Stack>
     </TouchableWithoutView>
   );
 }
