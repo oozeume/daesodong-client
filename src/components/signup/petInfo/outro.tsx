@@ -10,6 +10,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 마지막 페이지
+ */
+
 function Outro({handlePage}: Props) {
   const statusbarHeight = getStatusBarHeight();
   return (

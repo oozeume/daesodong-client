@@ -16,6 +16,10 @@ interface DateList {
   txt: string;
 }
 
+/**
+ *@description 집사정보등록 - 집사 태어난 년도
+ */
+
 function PetSitterBirth({handlePage}: Props) {
   const [visitedDate, setVisitedDate] = useState<{year: number | undefined}>({
     year: undefined,

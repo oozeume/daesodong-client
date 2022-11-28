@@ -11,6 +11,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 반려동물 이름
+ */
+
 function PetName({handlePage}: Props) {
   const [petName, setPetName] = useState('');
   return (

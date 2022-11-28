@@ -9,6 +9,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 반려동물 이미지
+ */
+
 function PetImageRegister({handlePage}: Props) {
   const [image, setImage] = useState('');
   return (

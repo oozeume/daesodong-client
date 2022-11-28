@@ -14,15 +14,20 @@ import SignupSocial from '~/pages/signup/social';
 import DeveloperMenu from '~/pages/developerMenu';
 import HospitalReviewRegister from '~/pages/hospital/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
-
 import UserIcon from '../assets/icon/nav_user_icon.svg';
 import LocationIcon from '../assets/icon/nav_location_icon.svg';
 import ContentsIcon from '../assets/icon/nav_contents_icon.svg';
 import CommunityIcon from '../assets/icon/nav_community_icon.svg';
+import EmailLogin from '~/pages/login/email';
+import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
 import PetInfoRegister from '~/pages/signup/petInfo';
+import InitialLogin from '~/pages/login';
+import PasswordReset from '~/pages/login/passwordReset';
+import CommunityDetail from '~/pages/community/detail';
+import FindEmail from '~/pages/login/findEmail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -50,6 +55,16 @@ const TabNavigator = () => {
           lineHeight: Platform.OS === 'android' ? 14 : 14,
         },
       }}>
+      <Tab.Screen
+        name="DeveloperMenu"
+        component={DeveloperMenu}
+        options={{
+          tabBarLabel: '개발',
+          headerShown: false,
+          unmountOnBlur: true,
+          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
+        }}
+      />
       <Tab.Screen
         name="Home"
         component={Home}
@@ -80,6 +95,7 @@ const TabNavigator = () => {
           tabBarIcon: ({color}) => <CommunityIcon fill={color} />,
         }}
       />
+
       <Tab.Screen
         name="MyPage"
         component={MyPage}
@@ -88,17 +104,6 @@ const TabNavigator = () => {
           headerShown: false,
           unmountOnBlur: true,
           tabBarIcon: ({color}) => <UserIcon fill={color} />,
-        }}
-      />
-
-      <Tab.Screen
-        name="DeveloperMenu"
-        component={DeveloperMenu}
-        options={{
-          tabBarLabel: '개발',
-          headerShown: false,
-          unmountOnBlur: true,
-          tabBarIcon: ({color}) => <UserIcon fill={'#000'} />,
         }}
       />
     </Tab.Navigator>
@@ -122,14 +127,40 @@ const AppNavigator = () => {
           name="HospitalReviewRegisterPrecaution"
           component={HospitalReviewRegisterPrecaution}
         />
+
+        <Stack.Screen
+          name="InitialLogin"
+          component={InitialLogin}
+          options={{animation: 'slide_from_right'}}
+        />
+        <Stack.Screen
+          name="SignUpEmail"
+          component={SignUpEmail}
+          options={{animation: 'slide_from_right'}}
+        />
+
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
         <Stack.Screen
           name="TermsOfServicePolicy"
           component={TermsOfServicePolicy}
         />
-        <Stack.Screen name="SignUpEmail" component={SignUpEmail} />
+
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
         <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
+        <Stack.Screen
+          name="EmailLogin"
+          component={EmailLogin}
+          options={{animation: 'slide_from_right'}}
+        />
+
+        <Stack.Screen name="PasswordReset" component={PasswordReset} />
+        <Stack.Screen name="FindEmail" component={FindEmail} />
+        <Stack.Screen
+          name="PasswordResetNotFoundAuth"
+          component={PasswordResetNotFoundAuth}
+        />
+
+        <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

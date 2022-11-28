@@ -11,6 +11,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 고민되는 점
+ */
+
 function AnyQuestion({handlePage}: Props) {
   const [question, setQuestion] = useState('');
   return (

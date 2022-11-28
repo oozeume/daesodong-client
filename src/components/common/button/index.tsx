@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable, Text} from 'native-base';
+import {StyleProp, TextStyle, ViewStyle} from 'react-native';
 
 interface Colors {
   active?: string;
@@ -16,6 +17,8 @@ interface Props {
   active?: boolean;
   shadow?: boolean;
   handlePress?: () => void;
+  buttonStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   activeButton?: boolean;
 }
 
@@ -30,6 +33,9 @@ interface Props {
  * @param {boolean} active - 버튼 활성화 on/off
  * @param {boolean} shadow - 버튼 그림자 on/off
  * @param {() => void} handlePress - 버튼 클릭 핸들러
+ * @param buttonStyle - 버튼 추가 커스텀 스타일
+ * @param textStyle - 버튼 텍스트 추가 스타일
+ *
  */
 function Button({
   text,
@@ -42,6 +48,8 @@ function Button({
   activeButton,
   shadow,
   handlePress,
+  buttonStyle,
+  textStyle,
 }: Props) {
   return (
     <Pressable
@@ -56,16 +64,16 @@ function Button({
         active || activeButton ? borderColors.active : borderColors.disabled
       }
       disabled={!active}
-      style={
-        shadow && {shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.15}
-      }
+      style={[
+        shadow && {shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.15},
+        buttonStyle,
+      ]}
       onPress={handlePress}>
       <Text
         lineHeight={large ? '52px' : '36px'}
         textAlign={'center'}
-        color={
-          active || activeButton ? fontColors.active : fontColors.disabled
-        }>
+        color={active || activeButton ? fontColors.active : fontColors.disabled}
+        style={textStyle}>
         {text}
       </Text>
     </Pressable>

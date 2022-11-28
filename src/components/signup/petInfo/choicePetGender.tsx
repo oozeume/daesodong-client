@@ -12,6 +12,10 @@ interface Props {
 
 type PetGenderType = '여아' | '남아' | undefined;
 
+/**
+ *@description 집사정보등록 - 반려동물 성별
+ */
+
 function ChoicePetGender({handlePage}: Props) {
   const [selectGender, setSelectGender] = useState<PetGenderType>(undefined);
 

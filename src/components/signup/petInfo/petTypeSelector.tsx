@@ -13,6 +13,10 @@ interface Props {
   petType: {id: string; title: string};
 }
 
+/**
+ *@description 집사정보등록 - 반려동물 종
+ */
+
 function PetTypeSelector({handlePage, onPress, petType}: Props) {
   return (
     <LayoutContainer>

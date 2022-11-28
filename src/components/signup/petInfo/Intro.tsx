@@ -10,6 +10,10 @@ interface Props {
   onPress: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 첫 페이지
+ */
+
 function Intro({onPress}: Props) {
   const statusbarHeight = getStatusBarHeight();
   return (

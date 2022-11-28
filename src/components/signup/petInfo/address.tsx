@@ -14,6 +14,10 @@ interface Props {
   handlePage: () => void;
 }
 
+/**
+ *@description 집사정보등록 - 주소
+ */
+
 function Address({handlePage}: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
   const {sigugun, dong} = hangjungdong;

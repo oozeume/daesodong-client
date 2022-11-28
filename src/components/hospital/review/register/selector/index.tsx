@@ -57,7 +57,7 @@ function Selector({
         borderColor="#E1E2E4"
         borderBottomWidth={1}
         flexDirection="row"
-        backgroundColor="#fff"
+        backgroundColor={colors.grayScale['0']}
         onPress={onOpen}>
         <HStack
           width="100%"
