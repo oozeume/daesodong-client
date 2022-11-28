@@ -76,7 +76,10 @@ function EmailLogin() {
               />
 
               <HStack alignItems={'center'} justifyContent={'space-between'}>
-                <EmailLoginHelperButton onPress={() => {}} name="이메일 찾기" />
+                <EmailLoginHelperButton
+                  onPress={() => onMove('FindEmail')}
+                  name="이메일 찾기"
+                />
 
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 

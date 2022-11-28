@@ -27,6 +27,7 @@ const theme = extendTheme({
       '-30': '#FFF6D8',
       0: '#FFD53F',
       10: '#FFCC16',
+      30: '#A77800',
     },
     negative: {
       '-10': '#F8676A',
