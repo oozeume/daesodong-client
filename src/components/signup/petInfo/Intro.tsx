@@ -2,7 +2,7 @@ import {Center, Stack, Text, Image} from 'native-base';
 import React from 'react';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT} from '~/utils/dimention';
+import {DEVICE_HEIGHT} from '~/utils/dimension';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 

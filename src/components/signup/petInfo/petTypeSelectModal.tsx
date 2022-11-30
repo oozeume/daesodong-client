@@ -2,7 +2,7 @@ import {Actionsheet, HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {FlatList, SafeAreaView, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimention';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimension';
 import CheckIcon from '~/assets/icons/check-20.svg';
 import {CloseButton} from '~/components/hospital/review/register/button';
 import SearchIcon from '~/assets/icons/search.svg';

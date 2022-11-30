@@ -13,7 +13,7 @@ import DownIcon from '~/assets/icons/down.svg';
 import {colors} from '~/theme/theme';
 import {BackButton} from '../button';
 import CheckIcon from '~/assets/icons/check-20.svg';
-import {DEVICE_WIDTH} from '~/utils/dimention';
+import {DEVICE_WIDTH} from '~/utils/dimension';
 import Button from '~/components/common/button';
 import _ from 'lodash';
 

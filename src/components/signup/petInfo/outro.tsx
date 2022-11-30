@@ -4,7 +4,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimention';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimension';
 
 interface Props {
   handlePage: () => void;

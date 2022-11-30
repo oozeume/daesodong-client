@@ -1,11 +1,8 @@
-import _ from 'lodash';
-import {Stack} from 'native-base';
 import React, {useState} from 'react';
 import {TextInput, StyleSheet, Keyboard} from 'react-native';
-import Button from '~/components/common/button';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {colors} from '~/theme/theme';
-import LayoutContainer from './layoutContainer';
+import LayoutContainer from './LayoutContainer';
 
 interface Props {
   handlePage: () => void;
@@ -18,38 +15,15 @@ interface Props {
 function PetName({handlePage}: Props) {
   const [petName, setPetName] = useState('');
   return (
-    <TouchableWithoutView onPress={Keyboard.dismiss}>
-      <Stack>
-        <LayoutContainer>
-          <TextInput
-            style={styles.input}
-            onChangeText={setPetName}
-            value={petName}
-            placeholder={'이름을 입력해주세요'}
-          />
-          <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
-            <Button
-              handlePress={handlePage}
-              large
-              shadow
-              active={!_.isEmpty(petName)}
-              text={'다음'}
-              fontColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-              buttonColors={{
-                active: colors.fussOrange[0],
-                disabled: colors.fussOrange['-30'],
-              }}
-              borderColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-            />
-          </Stack>
-        </LayoutContainer>
-      </Stack>
+    <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
+      <LayoutContainer buttonPress={handlePage}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setPetName}
+          value={petName}
+          placeholder={'이름을 입력해주세요'}
+        />
+      </LayoutContainer>
     </TouchableWithoutView>
   );
 }

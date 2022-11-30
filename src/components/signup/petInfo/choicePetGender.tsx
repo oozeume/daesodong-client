@@ -1,10 +1,7 @@
-import _ from 'lodash';
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import Button from '~/components/common/button';
-import {colors} from '~/theme/theme';
-import ChoiceButton from './choiceButton';
-import LayoutContainer from './layoutContainer';
+import ChoiceButton from './ChoiceButton';
+import LayoutContainer from './LayoutContainer';
 
 interface Props {
   handlePage: () => void;
@@ -20,7 +17,7 @@ function ChoicePetGender({handlePage}: Props) {
   const [selectGender, setSelectGender] = useState<PetGenderType>(undefined);
 
   return (
-    <LayoutContainer>
+    <LayoutContainer buttonPress={handlePage}>
       <Stack space={'10px'}>
         <ChoiceButton
           buttonName={'여아'}
@@ -32,27 +29,6 @@ function ChoicePetGender({handlePage}: Props) {
           buttonName={'남아'}
           onPress={() => setSelectGender('남아')}
           active={selectGender === '남아'}
-        />
-      </Stack>
-      <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
-        <Button
-          handlePress={handlePage}
-          large
-          active={!_.isNil(selectGender)}
-          shadow
-          text={'다음'}
-          fontColors={{
-            active: colors.grayScale[90],
-            disabled: colors.grayScale[50],
-          }}
-          buttonColors={{
-            active: colors.fussOrange[0],
-            disabled: colors.fussOrange['-30'],
-          }}
-          borderColors={{
-            active: colors.grayScale[90],
-            disabled: colors.grayScale[50],
-          }}
         />
       </Stack>
     </LayoutContainer>

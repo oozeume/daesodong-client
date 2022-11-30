@@ -8,21 +8,21 @@ import StageTextBox from '~/components/common/stage/StageTextBox';
 import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ParamListBase} from '@react-navigation/native';
-import {DEVICE_HEIGHT} from '~/utils/dimention';
+import {DEVICE_HEIGHT} from '~/utils/dimension';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import Intro from '~/components/signup/petInfo/Intro';
-import ChoiceGender from '~/components/signup/petInfo/choiceGender';
-import PetSitterBirth from '~/components/signup/petInfo/petSitterBirth';
-import PetName from '~/components/signup/petInfo/petName';
-import PetTypeSelector from '~/components/signup/petInfo/petTypeSelector';
-import PetBirth from '~/components/signup/petInfo/petBirth';
-import Address from '~/components/signup/petInfo/address';
-import AnyQuestion from '~/components/signup/petInfo/anyQuestion';
-import PetImageRegister from '~/components/signup/petInfo/petImageRegister';
-import Outro from '~/components/signup/petInfo/outro';
-import ChoicePetGender from '~/components/signup/petInfo/choicePetGender';
-import PetTypeSelectModal from '~/components/signup/petInfo/petTypeSelectModal';
+import ChoiceGender from '~/components/signup/petInfo/ChoiceGender';
+import PetOwnerBirth from '~/components/signup/petInfo/PetOwnerBirth';
+import PetName from '~/components/signup/petInfo/PetName';
+import PetTypeSelector from '~/components/signup/petInfo/PetTypeSelector';
+import PetBirth from '~/components/signup/petInfo/PetBirth';
+import Address from '~/components/signup/petInfo/Address';
+import AnyQuestion from '~/components/signup/petInfo/AnyQuestion';
+import PetImageRegister from '~/components/signup/petInfo/PetImageRegister';
+import Outro from '~/components/signup/petInfo/Outro';
+import ChoicePetGender from '~/components/signup/petInfo/ChoicePetGender';
+import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 
 type Props = NativeStackScreenProps<ParamListBase, 'PetInfoRegister'>;
 
@@ -83,7 +83,7 @@ function PetInfoRegister({navigation}: Props) {
         <Stack
           position={'relative'}
           backgroundColor={colors.grayScale[0]}
-          h={DEVICE_HEIGHT - HEADER_HEIGHT - statusbarHeight - 6}
+          h={DEVICE_HEIGHT - HEADER_HEIGHT - statusbarHeight}
           alignItems={'center'}
           justifyContent={'space-between'}>
           <Stack>
@@ -104,7 +104,7 @@ function PetInfoRegister({navigation}: Props) {
 
               <CurrentComponentOfArray index={currentStage}>
                 <ChoiceGender handlePage={moveToNextPage} />
-                <PetSitterBirth handlePage={moveToNextPage} />
+                <PetOwnerBirth handlePage={moveToNextPage} />
                 <PetName handlePage={moveToNextPage} />
                 <PetTypeSelector
                   handlePage={moveToNextPage}

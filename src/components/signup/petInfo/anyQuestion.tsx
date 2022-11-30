@@ -2,10 +2,9 @@ import _ from 'lodash';
 import {Stack, Text, TextArea} from 'native-base';
 import React, {useState} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
-import Button from '~/components/common/button';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {colors} from '~/theme/theme';
-import LayoutContainer from './layoutContainer';
+import LayoutContainer from './LayoutContainer';
 
 interface Props {
   handlePage: () => void;
@@ -18,9 +17,9 @@ interface Props {
 function AnyQuestion({handlePage}: Props) {
   const [question, setQuestion] = useState('');
   return (
-    <TouchableWithoutView onPress={Keyboard.dismiss}>
+    <TouchableWithoutView>
       <Stack>
-        <LayoutContainer>
+        <LayoutContainer buttonPress={handlePage}>
           <Stack>
             <TextArea
               _focus={{
@@ -47,28 +46,6 @@ function AnyQuestion({handlePage}: Props) {
             <Text onPress={handlePage} color={colors.grayScale[60]}>
               건너뛰기
             </Text>
-          </Stack>
-
-          <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
-            <Button
-              handlePress={handlePage}
-              large
-              shadow
-              active={!_.isEmpty(question)}
-              text={'다음'}
-              fontColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-              buttonColors={{
-                active: colors.fussOrange[0],
-                disabled: colors.fussOrange['-30'],
-              }}
-              borderColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-            />
           </Stack>
         </LayoutContainer>
       </Stack>

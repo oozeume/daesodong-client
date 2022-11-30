@@ -1,11 +1,10 @@
-import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {Pressable} from 'native-base';
 import React from 'react';
+import {NavigationHookProp} from '~/../types/navigator';
 import BackIcon from '~/assets/icon/back_icon.svg';
 
 interface Props {
-  navigation: NavigationProp<any>;
-  route: RouteProp<any>;
+  navigation: NavigationHookProp;
 }
 
 const HeaderLeft = ({navigation}: Props) => {
