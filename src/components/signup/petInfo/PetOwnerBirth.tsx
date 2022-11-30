@@ -6,10 +6,10 @@ interface Props {
 }
 
 /**
- *@description 집사정보등록 - 반려동물 성별
+ *@description 집사정보등록 - 집사 태어난 년도
  */
 
-function PetGender({handlePage}: Props) {
+function PetOwnerBirth({handlePage}: Props) {
   return (
     <LayoutContainer buttonPress={handlePage}>
       <></>
@@ -17,4 +17,4 @@ function PetGender({handlePage}: Props) {
   );
 }
 
-export default PetGender;
+export default PetOwnerBirth;

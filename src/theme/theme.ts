@@ -1,6 +1,58 @@
 import {extendTheme} from 'native-base';
 
 const theme = extendTheme({
+  components: {
+    Pressable: {
+      variants: {
+        solidFussOrange: () => {
+          return {
+            backgroundColor: '#FF6B00',
+            height: '52px',
+            borderWidth: '1px',
+            borderRadius: '8px',
+            borderColor: '#1A1E27',
+            shadowOffset: {
+              width: 0,
+              heigth: 3,
+            },
+            shadowOpacity: 0.15,
+          };
+        },
+        opacityFussOrange: () => {
+          return {
+            backgroundColor: '#FFEADC',
+            height: '52px',
+            borderWidth: '1px',
+            borderRadius: '8px',
+            borderColor: '#9EA1A8',
+            shadowOffset: {
+              width: 0,
+              heigth: 3,
+            },
+            shadowOpacity: 0.15,
+          };
+        },
+      },
+    },
+    Text: {
+      variants: {
+        solidFussOrange: () => {
+          return {
+            textAlign: 'center',
+            lineHeight: '52px',
+            color: '#1A1E27',
+          };
+        },
+        opacityFussOrange: () => {
+          return {
+            textAlign: 'center',
+            lineHeight: '52px',
+            color: '#9EA1A8',
+          };
+        },
+      },
+    },
+  },
   colors: {
     positive: {
       '-40': '#E5F5FF',
@@ -37,7 +89,7 @@ const theme = extendTheme({
       60: 'rgba(26, 30, 39, 0.6)',
     },
   },
-} as const);
+});
 
 const {colors} = theme;
 

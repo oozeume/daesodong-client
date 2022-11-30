@@ -4,7 +4,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT} from '~/utils/dimention';
+import {DEVICE_HEIGHT} from '~/utils/dimension';
 
 /**
  *@description 집사정보등록 - 마지막 페이지
