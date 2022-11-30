@@ -34,7 +34,9 @@ function Address({handlePage}: Props) {
   const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>();
   const [dongValue, setDongValue] = useState<Hangjungdong>();
 
-  const [sortedSigugun, setSortedSigugun] = useState<any[]>();
+  const [sortedSigugun, setSortedSigugun] = useState<
+    Partial<Hangjungdong>[] | undefined
+  >();
   const [sortedDong, setSortedDong] = useState<Hangjungdong[]>();
 
   useEffect(() => {
@@ -47,8 +49,9 @@ function Address({handlePage}: Props) {
     if (sigugunValue) {
       setSortedDong(
         dong.filter(
-          i =>
-            i.sigugun === sigugunValue.sigugun && i.sido === sigugunValue.sido,
+          item =>
+            item.sigugun === sigugunValue.sigugun &&
+            item.sido === sigugunValue.sido,
         ),
       );
     }
@@ -86,7 +89,7 @@ function Address({handlePage}: Props) {
         onClose={onSigugunClose}
         onPress={() => onDongOpen()}
         setSigugunValue={setSigugunValue}
-        sortedSigugun={sortedSigugun ?? []}
+        sortedSigugun={sortedSigugun}
         sigugunValue={sigugunValue}
       />
       <AddressDongDrawer

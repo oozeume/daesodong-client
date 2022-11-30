@@ -54,7 +54,7 @@ function Selector({
   return (
     <Center>
       <Pressable
-        borderColor="#E1E2E4"
+        borderColor={colors.grayScale[30]}
         borderBottomWidth={1}
         flexDirection="row"
         backgroundColor={colors.grayScale['0']}
@@ -64,7 +64,7 @@ function Selector({
           paddingBottom="15px"
           justifyContent="space-between"
           alignItems="center">
-          <Text fontSize={15} color="#383E4A">
+          <Text fontSize={15} color={colors.grayScale[80]}>
             {itemList && selectedIndex !== undefined
               ? itemList[selectedIndex].txt
               : ''}
@@ -93,7 +93,10 @@ function Selector({
                 left: '2%',
               }}
             />
-            <Text fontSize="18px" color="#383E4A" lineHeight="24px">
+            <Text
+              fontSize="18px"
+              color={colors.grayScale[80]}
+              lineHeight="24px">
               {headerText || ''}
             </Text>
           </Center>
@@ -125,7 +128,7 @@ function Selector({
                       justifyContent={'space-between'}>
                       <Text
                         py={'17px'}
-                        color="#7F838C"
+                        color={colors.grayScale[70]}
                         fontSize="16px"
                         marginBottom="1.2px">
                         {val.txt}
@@ -149,7 +152,7 @@ function Selector({
                         height="22px"
                         marginRight="10px"
                         borderWidth={2}
-                        borderColor="#E1E2E4"
+                        borderColor={colors.grayScale[30]}
                         borderRadius={22}>
                         {selectedIndex === i && (
                           <Box
@@ -162,7 +165,7 @@ function Selector({
                       </Center>
 
                       <Text
-                        color="#7F838C"
+                        color={colors.grayScale[60]}
                         fontSize="16px"
                         marginBottom="1.2px">
                         {val.txt}

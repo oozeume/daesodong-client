@@ -7,11 +7,10 @@ import {
   Stack,
   Text,
 } from 'native-base';
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {colors} from '~/theme/theme';
 import {BackButton} from '../../hospital/review/register/button';
 import {hangjungdong} from '~/utils/hangjungdong';
-import _ from 'lodash';
 
 interface Props {
   isOpen: boolean;
@@ -36,23 +35,6 @@ function AddressSidoDrawer({
   sidoValue,
 }: Props) {
   const {sido} = hangjungdong;
-
-  // const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>();
-
-  // const [sortedSigugun, setSortedSigugun] = useState<Hangjungdong[]>();
-  // const [sortedDong, setSortedDong] = useState<Hangjungdong[]>();
-
-  // useEffect(() => {
-  //   if (sidoValue) {
-  //     setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
-  //   }
-  // }, [sidoValue, sigugun]);
-
-  // useEffect(() => {
-  //   if (sigugunValue) {
-  //     setSortedDong(dong.filter(i => i.sigugun === sigugunValue?.sigugun));
-  //   }
-  // }, [sigugunValue, dong]);
 
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
@@ -83,7 +65,6 @@ function AddressSidoDrawer({
                 key={s.sido}
                 onPress={() => {
                   setSidoValue(s);
-                  // onClose();
                   _onPress();
                 }}>
                 <HStack alignItems={'center'}>
@@ -92,7 +73,7 @@ function AddressSidoDrawer({
                     height="22px"
                     marginRight="10px"
                     borderWidth={2}
-                    borderColor="#E1E2E4"
+                    borderColor={colors.grayScale[30]}
                     borderRadius={22}>
                     {s.sido === sidoValue?.sido && (
                       <Box

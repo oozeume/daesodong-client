@@ -43,7 +43,7 @@ function AddressDongDrawer({
               left: '2%',
             }}
           />
-          <Text fontSize="18px" color="#383E4A" lineHeight="24px">
+          <Text fontSize="18px" color={colors.grayScale[80]} lineHeight="24px">
             읍/면/동
           </Text>
         </Center>
@@ -64,7 +64,7 @@ function AddressDongDrawer({
                     height="22px"
                     marginRight="10px"
                     borderWidth={2}
-                    borderColor="#E1E2E4"
+                    borderColor={colors.grayScale[30]}
                     borderRadius={22}>
                     {s.dong === dongValue?.dong && (
                       <Box

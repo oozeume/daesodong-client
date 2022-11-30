@@ -11,7 +11,7 @@ interface Props {
 function SelectButtonForm({onPress: _onPress, selectorName}: Props) {
   return (
     <Pressable
-      borderColor="#E1E2E4"
+      borderColor={colors.grayScale[30]}
       borderBottomWidth={1}
       flexDirection="row"
       backgroundColor="#fff"

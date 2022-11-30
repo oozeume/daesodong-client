@@ -20,7 +20,7 @@ function PetTypeSelector({handlePage, onPress, petType}: Props) {
   return (
     <LayoutContainer buttonPress={handlePage}>
       <Pressable
-        borderColor="#E1E2E4"
+        borderColor={colors.grayScale[30]}
         borderBottomWidth={1}
         flexDirection="row"
         backgroundColor="#fff"

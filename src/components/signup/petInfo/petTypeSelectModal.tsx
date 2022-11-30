@@ -72,6 +72,10 @@ const DATA = [
   },
 ];
 
+/**
+ *@description 집사정보등록 - 반려동물 종 선택 모달
+ */
+
 function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
   const statusbarHeight = getStatusBarHeight();
   const [isPetTypeEmpty, setPetTypeEmpty] = useState(false);
@@ -83,7 +87,7 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
         maxHeight={DEVICE_HEIGHT}
         height={DEVICE_HEIGHT}
         w={DEVICE_WIDTH}
-        backgroundColor={'white'}>
+        backgroundColor={colors.grayScale[0]}>
         <SafeAreaView style={{width: '100%'}}>
           <Stack h={DEVICE_HEIGHT - statusbarHeight}>
             {isPetTypeEmpty ? (
@@ -169,11 +173,11 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
                           alignItems={'center'}>
                           <HStack alignItems={'center'} space={'10px'}>
                             <Tag
-                              tagName="설치류"
+                              name="설치류"
                               bgColor={colors.fussOrange['-30']}
                               color={colors.fussOrange[0]}
                             />
-                            <Text color="#7F838C" fontSize="16px">
+                            <Text color={colors.grayScale[60]} fontSize="16px">
                               test
                             </Text>
                           </HStack>

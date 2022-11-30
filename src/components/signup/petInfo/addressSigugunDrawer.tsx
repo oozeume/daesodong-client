@@ -18,7 +18,7 @@ import {ActionSheetIOS} from 'react-native';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  sortedSigugun?: Hangjungdong[];
+  sortedSigugun?: Partial<Hangjungdong>[];
   onPress: () => void;
   setSigugunValue: (s: any) => void;
   sigugunValue: any;
@@ -78,7 +78,7 @@ function AddressSigugunDrawer({
                     height="22px"
                     marginRight="10px"
                     borderWidth={2}
-                    borderColor="#E1E2E4"
+                    borderColor={colors.grayScale[30]}
                     borderRadius={22}>
                     {s.sigugun === sigugunValue?.sigugun && (
                       <Box

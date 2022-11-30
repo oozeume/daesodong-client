@@ -3,12 +3,12 @@ import React from 'react';
 import {colors} from '~/theme/theme';
 
 interface Props {
-  tagName: string;
+  name: string;
   bgColor?: string;
   color?: string;
 }
 
-function Tag({tagName, bgColor, color}: Props) {
+function Tag({name, bgColor, color}: Props) {
   return (
     <Flex
       w={'44px'}
@@ -17,7 +17,7 @@ function Tag({tagName, bgColor, color}: Props) {
       backgroundColor={bgColor ?? colors.grayScale[20]}
       alignItems={'center'}>
       <Text color={color ?? colors.grayScale[70]} fontSize={'12px'}>
-        {tagName}
+        {name}
       </Text>
     </Flex>
   );
