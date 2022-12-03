@@ -1,11 +1,10 @@
 import {Stack, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
-import AddressSidoDrawer, {Hangjungdong} from './AddressSidoDrawer';
-import AddressDongDrawer from './AddressDongDrawer';
-import AddressSigugunDrawer from './AddressSigugunDrawer';
+import {Hangjungdong} from './AddressSidoDrawer';
 import {hangjungdong} from '~/utils/hangjungdong';
 import SelectButtonForm from './SelectButtonForm';
 import LayoutContainer from './LayoutContainer';
+import AddressDrawer from './AddressDrawer';
 
 interface Props {
   handlePage: () => void;
@@ -17,7 +16,8 @@ interface Props {
 
 function Address({handlePage}: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
-  const {sigugun, dong} = hangjungdong;
+  const {sido, sigugun, dong} = hangjungdong;
+
   const {
     isOpen: isSigugunOpen,
     onOpen: onSigugunOpen,
@@ -75,24 +75,25 @@ function Address({handlePage}: Props) {
         )}
       </Stack>
 
-      <AddressSidoDrawer
+      <AddressDrawer
         isOpen={isOpen}
         onClose={onClose}
-        onPress={() => {
-          onSigugunOpen();
-        }}
-        setSidoValue={setSidoValue}
+        onPress={() => onSigugunOpen()}
+        setValue={setSidoValue}
         sidoValue={sidoValue}
+        selectableList={sido}
       />
-      <AddressSigugunDrawer
+
+      <AddressDrawer
         isOpen={isSigugunOpen}
         onClose={onSigugunClose}
         onPress={() => onDongOpen()}
-        setSigugunValue={setSigugunValue}
-        sortedSigugun={sortedSigugun}
+        setValue={setSigugunValue}
+        selectableList={sortedSigugun}
         sigugunValue={sigugunValue}
       />
-      <AddressDongDrawer
+
+      <AddressDrawer
         isOpen={isDongOpen}
         onClose={onDongClose}
         onPress={() => {
@@ -100,8 +101,8 @@ function Address({handlePage}: Props) {
           onSigugunClose();
           onDongClose();
         }}
-        sortedDong={sortedDong ?? []}
-        setDongValue={setDongValue}
+        setValue={setDongValue}
+        selectableList={sortedDong}
         dongValue={dongValue}
       />
     </LayoutContainer>
