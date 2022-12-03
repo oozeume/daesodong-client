@@ -1,19 +1,21 @@
 import {Circle, HStack, Stack, Text, Pressable} from 'native-base';
-import React from 'react';
+import React, {useState} from 'react';
 import {colors} from '~/theme/theme';
 import LayoutContainer from './LayoutContainer';
 
 interface Props {
-  onPress: () => void;
+  handlePage: () => void;
 }
 
 /**
  *@description 집사정보등록 - 반려동물 이미지
  */
 
-function PetImageRegister({onPress}: Props) {
+function PetImageRegister({handlePage}: Props) {
+  const [image, setImage] = useState('');
+
   return (
-    <LayoutContainer buttonPress={onPress}>
+    <LayoutContainer buttonPress={handlePage}>
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
         <Circle
           w={'165px'}
@@ -37,7 +39,9 @@ function PetImageRegister({onPress}: Props) {
       </Pressable>
 
       <Stack position={'absolute'} bottom={120} alignSelf={'center'}>
-        <Text color={colors.grayScale[60]}>건너뛰기</Text>
+        <Text onPress={handlePage} color={colors.grayScale[60]}>
+          건너뛰기
+        </Text>
       </Stack>
     </LayoutContainer>
   );

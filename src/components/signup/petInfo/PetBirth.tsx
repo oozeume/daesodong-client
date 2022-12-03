@@ -1,6 +1,12 @@
+import _ from 'lodash';
 import {HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
-import {TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+} from 'react-native';
 import {colors} from '~/theme/theme';
 import LayoutContainer from './LayoutContainer';
 
@@ -13,20 +19,22 @@ interface Props {
  */
 
 function PetBirth({handlePage}: Props) {
-  const [petName, setPetName] = useState('');
+  const [petBirth, setPetBirth] = useState('');
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Stack>
-        <LayoutContainer buttonPress={handlePage}>
+        <LayoutContainer
+          buttonPress={handlePage}
+          possibleButtonPress={!_.isEmpty(petBirth)}>
           <HStack
             justifyContent={'space-between'}
-            paddingTop={15}
-            paddingBottom={15}
+            alignItems={'center'}
             borderBottomColor={colors.grayScale[30]}
             borderBottomWidth={1}>
             <TextInput
-              onChangeText={setPetName}
-              value={petName}
+              style={styles.input}
+              onChangeText={setPetBirth}
+              value={petBirth}
               onSubmitEditing={Keyboard.dismiss}
               keyboardType={'number-pad'}
               placeholder={'숫자만 입력해주세요'}
@@ -42,3 +50,10 @@ function PetBirth({handlePage}: Props) {
 }
 
 export default PetBirth;
+
+const styles = StyleSheet.create({
+  input: {
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+});

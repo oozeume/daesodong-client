@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {useState} from 'react';
 import {TextInput, StyleSheet, Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
@@ -14,9 +15,12 @@ interface Props {
 
 function PetName({handlePage}: Props) {
   const [petName, setPetName] = useState('');
+
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
-      <LayoutContainer buttonPress={handlePage}>
+      <LayoutContainer
+        buttonPress={handlePage}
+        possibleButtonPress={!_.isEmpty(petName)}>
         <TextInput
           style={styles.input}
           onChangeText={setPetName}

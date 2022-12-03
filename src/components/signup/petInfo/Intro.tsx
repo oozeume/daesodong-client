@@ -46,6 +46,7 @@ function Intro({onPress}: Props) {
         <Image
           width={196}
           height={222}
+          alt={'image'}
           source={require('../../../assets/images/intro_image.png')}
         />
       </Center>
