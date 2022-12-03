@@ -25,7 +25,7 @@ function PetTypeSelector({handlePage, onPress, petType}: Props) {
         borderColor={colors.grayScale[30]}
         borderBottomWidth={1}
         flexDirection="row"
-        backgroundColor="#fff"
+        backgroundColor={colors.grayScale[0]}
         onPress={onPress}>
         <HStack
           width="100%"
