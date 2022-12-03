@@ -1,7 +1,7 @@
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import ChoiceButton from './ChoiceButton-1';
-import LayoutContainer from './LayoutContainer-1';
+import ChoiceButton from './ChoiceButton';
+import LayoutContainer from './LayoutContainer';
 
 interface Props {
   handlePage: () => void;
@@ -13,9 +13,8 @@ type PetGenderType = '여아' | '남아' | undefined;
  *@description 집사정보등록 - 반려동물 성별
  */
 
-function ChoicePetGender({handlePage}: Props) {
+function PetGender({handlePage}: Props) {
   const [selectGender, setSelectGender] = useState<PetGenderType>(undefined);
-
   return (
     <LayoutContainer buttonPress={handlePage}>
       <Stack space={'10px'}>
@@ -35,4 +34,4 @@ function ChoicePetGender({handlePage}: Props) {
   );
 }
 
-export default ChoicePetGender;
+export default PetGender;

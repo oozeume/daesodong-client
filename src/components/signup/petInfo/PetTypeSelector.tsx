@@ -1,7 +1,7 @@
 import {HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 import {colors} from '~/theme/theme';
-import LayoutContainer from './LayoutContainer-1';
+import LayoutContainer from './LayoutContainer';
 import DownIcon from '~/assets/icons/down.svg';
 import _ from 'lodash';
 import Tag from '~/components/common/Tag';

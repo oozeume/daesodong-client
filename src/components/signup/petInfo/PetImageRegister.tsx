@@ -1,7 +1,7 @@
 import {Circle, HStack, Stack, Text, Pressable} from 'native-base';
 import React, {useState} from 'react';
 import {colors} from '~/theme/theme';
-import LayoutContainer from './LayoutContainer-1';
+import LayoutContainer from './LayoutContainer';
 
 interface Props {
   handlePage: () => void;

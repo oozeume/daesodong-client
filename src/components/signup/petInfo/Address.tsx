@@ -2,9 +2,9 @@ import {Stack, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Hangjungdong} from './AddressSidoDrawer';
 import {hangjungdong} from '~/utils/hangjungdong';
-import SelectButtonForm from './SelectButtonForm-1';
-import LayoutContainer from './LayoutContainer-1';
-import AddressDrawer from './AddressDrawer-1';
+import SelectButtonForm from './SelectButtonForm';
+import LayoutContainer from './LayoutContainer';
+import AddressDrawer from './AddressDrawer';
 
 interface Props {
   handlePage: () => void;
