@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import DateSelector from '~/components/hospital/review/register/selector';
 import dayjs from 'dayjs';
 import LayoutContainer from './LayoutContainer';
+import _ from 'lodash';
 
 interface Props {
   handlePage: () => void;
@@ -36,7 +37,9 @@ function PetOwnerBirth({handlePage}: Props) {
 
   const [yearList, setYearList] = useState<DateList[]>([]);
   return (
-    <LayoutContainer buttonPress={handlePage}>
+    <LayoutContainer
+      buttonPress={handlePage}
+      possibleButtonPress={!_.isNil(visitedDate.year)}>
       <DateSelector
         headerText="년도"
         selectedIndex={visitedDate.year}

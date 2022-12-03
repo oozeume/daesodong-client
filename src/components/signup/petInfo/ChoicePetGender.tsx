@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
 import ChoiceButton from './ChoiceButton';
@@ -14,10 +15,12 @@ type PetGenderType = '여아' | '남아' | undefined;
  */
 
 function ChoicePetGender({handlePage}: Props) {
-  const [selectGender, setSelectGender] = useState<PetGenderType>(undefined);
+  const [selectGender, setSelectGender] = useState<PetGenderType>();
 
   return (
-    <LayoutContainer buttonPress={handlePage}>
+    <LayoutContainer
+      buttonPress={handlePage}
+      possibleButtonPress={!_.isNil(selectGender)}>
       <Stack space={'10px'}>
         <ChoiceButton
           buttonName={'여아'}

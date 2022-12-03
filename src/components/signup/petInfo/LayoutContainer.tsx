@@ -8,13 +8,18 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 interface Props {
   children?: React.ReactNode;
   buttonPress?: () => void;
+  possibleButtonPress?: boolean;
 }
 
 /**
  *@description 상단 statusbar와 하단 button을 제외한 영역의 레이아웃
  */
 
-function LayoutContainer({children, buttonPress}: Props) {
+function LayoutContainer({
+  children,
+  buttonPress,
+  possibleButtonPress = false,
+}: Props) {
   const statusbarHeight = getStatusBarHeight();
   return (
     <Stack
@@ -24,9 +29,15 @@ function LayoutContainer({children, buttonPress}: Props) {
       {children}
       <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
         <Pressable
+          disabled={!possibleButtonPress}
           onPress={buttonPress}
-          variant={false ? 'opacityFussOrange' : 'solidFussOrange'}>
-          <Text variant={false ? 'opacityFussOrange' : 'solidFussOrange'}>
+          variant={
+            possibleButtonPress ? 'solidFussOrange' : 'opacityFussOrange'
+          }>
+          <Text
+            variant={
+              possibleButtonPress ? 'solidFussOrange' : 'opacityFussOrange'
+            }>
             확인
           </Text>
         </Pressable>

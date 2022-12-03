@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
@@ -17,7 +18,9 @@ function PetBirth({handlePage}: Props) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Stack>
-        <LayoutContainer buttonPress={handlePage}>
+        <LayoutContainer
+          buttonPress={handlePage}
+          possibleButtonPress={!_.isEmpty(petBirth)}>
           <HStack
             justifyContent={'space-between'}
             paddingTop={15}

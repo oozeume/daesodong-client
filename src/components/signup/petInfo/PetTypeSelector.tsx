@@ -18,7 +18,9 @@ interface Props {
 
 function PetTypeSelector({handlePage, onPress, petType}: Props) {
   return (
-    <LayoutContainer buttonPress={handlePage}>
+    <LayoutContainer
+      buttonPress={handlePage}
+      possibleButtonPress={!_.isEmpty(petType.title)}>
       <Pressable
         borderColor={colors.grayScale[30]}
         borderBottomWidth={1}
@@ -35,7 +37,7 @@ function PetTypeSelector({handlePage, onPress, petType}: Props) {
               <Tag
                 bgColor={colors.fussOrange['-30']}
                 color={colors.fussOrange[0]}
-                tagName="설치류"
+                name="설치류"
               />
             )}
             <Text

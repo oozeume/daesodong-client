@@ -1,10 +1,10 @@
 import {Stack, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
-import {Hangjungdong} from './AddressSidoDrawer';
 import {hangjungdong} from '~/utils/hangjungdong';
 import SelectButtonForm from './SelectButtonForm';
 import LayoutContainer from './LayoutContainer';
-import AddressDrawer from './AddressDrawer';
+import AddressDrawer, {Hangjungdong} from './AddressDrawer';
+import _ from 'lodash';
 
 interface Props {
   handlePage: () => void;
@@ -58,7 +58,9 @@ function Address({handlePage}: Props) {
   }, [sigugunValue, dong]);
 
   return (
-    <LayoutContainer buttonPress={handlePage}>
+    <LayoutContainer
+      buttonPress={handlePage}
+      possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>
       <Stack space={'10px'}>
         <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />
         {sigugunValue && (
