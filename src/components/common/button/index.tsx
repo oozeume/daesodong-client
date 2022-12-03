@@ -19,6 +19,7 @@ interface Props {
   handlePress?: () => void;
   buttonStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  activeButton?: boolean;
 }
 
 /**
