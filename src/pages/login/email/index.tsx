@@ -14,8 +14,9 @@ import {
 import EmailLoginHelperButton from '~/components/login/email/button';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
-import {Keyboard} from 'react-native';
+import {Alert, Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
+import {usePostAuthEmailLogin} from '~/api/auth';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -23,12 +24,24 @@ import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 function EmailLogin() {
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
+  const postAuthEmailLogin = usePostAuthEmailLogin();
+
   const onMove = (stack: keyof RouteList) => {
     navigation.navigate(stack);
   };
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const onLogin = async () => {
+    const response = await postAuthEmailLogin.mutateAsync({
+      email,
+      password,
+    });
+
+    if (response?.success === 'SUCCESS') Alert.alert('로그인 성공');
+    else Alert.alert(response?.message || '로그인 실패');
+  };
 
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
@@ -54,7 +67,7 @@ function EmailLogin() {
                 value={email}
                 keyboardType="email-address"
                 autoFocus
-                verificationResult="FAIL"
+                // verificationResult="FAIL"
               />
 
               <VerificationForm
@@ -63,14 +76,13 @@ function EmailLogin() {
                 errorMessage="비밀번호를 확인해주세요"
                 onChangeText={setPassword}
                 value={password}
-                keyboardType="number-pad"
-                verificationResult="FAIL"
+                // verificationResult="FAIL"
                 secureTextEntry
               />
 
               <RedActiveLargeButton
                 active={email.length > 4 && password.length > 4}
-                handlePress={() => {}}
+                handlePress={onLogin}
                 buttonStyle={{marginBottom: 20}}
                 text={'로그인'}
               />
@@ -90,7 +102,10 @@ function EmailLogin() {
 
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
-                <EmailLoginHelperButton onPress={() => {}} name="회원가입" />
+                <EmailLoginHelperButton
+                  onPress={() => onMove('SignUpEmail')}
+                  name="회원가입"
+                />
               </HStack>
             </VStack>
 
