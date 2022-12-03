@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DateSelector from '~/components/hospital/review/register/selector';
 import dayjs from 'dayjs';
-import LayoutContainer from './LayoutContainer';
+import LayoutContainer from './LayoutContainer-1';
 
 interface Props {
   handlePage: () => void;

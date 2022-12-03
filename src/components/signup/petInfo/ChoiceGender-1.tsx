@@ -1,7 +1,7 @@
 import {Stack} from 'native-base';
 import React, {useState} from 'react';
-import LayoutContainer from './LayoutContainer';
-import ChoiceButton from './ChoiceButton';
+import LayoutContainer from './LayoutContainer-1';
+import ChoiceButton from './ChoiceButton-1';
 
 type PetSitterGenderType = '여성' | '남성' | undefined;
 

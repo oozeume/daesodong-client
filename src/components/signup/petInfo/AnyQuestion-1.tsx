@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {colors} from '~/theme/theme';
-import LayoutContainer from './LayoutContainer';
+import LayoutContainer from './LayoutContainer-1';
 
 interface Props {
   handlePage: () => void;
