@@ -23,6 +23,7 @@ import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth'
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
+import PetInfoRegister from '~/pages/signup/petInfo';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
 import CommunityDetail from '~/pages/community/detail';
@@ -145,6 +146,7 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
+        <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}

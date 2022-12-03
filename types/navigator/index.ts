@@ -43,6 +43,7 @@ export type RootStackParamList = {
   PrivacyPolicy: undefined;
   SignupSocial: undefined;
   SignUpEmail: undefined;
+  PetInfoRegister: undefined;
 
   CommunityDetail: undefined;
 };

@@ -41,7 +41,9 @@ function DeveloperMenu() {
             이메일 찾기
           </Button>
           <Button mb="12px">비밀번호 재설정</Button>
-          <Button mb="12px">집사정보/반료동물 등록</Button>
+          <Button mb="12px" onPress={() => onMove('PetInfoRegister')}>
+            집사정보/반려동물 등록
+          </Button>
         </VStack>
       </ScrollView>
     </SafeAreaView>
