@@ -159,7 +159,7 @@ function Selector({
                             width="14px"
                             height="14px"
                             borderRadius={14}
-                            backgroundColor="#bbb"
+                            backgroundColor={colors.grayScale[0]}
                           />
                         )}
                       </Center>

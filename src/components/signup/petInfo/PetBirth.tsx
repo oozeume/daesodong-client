@@ -1,7 +1,12 @@
 import _ from 'lodash';
 import {HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
-import {TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+} from 'react-native';
 import {colors} from '~/theme/theme';
 import LayoutContainer from './LayoutContainer';
 
@@ -23,11 +28,11 @@ function PetBirth({handlePage}: Props) {
           possibleButtonPress={!_.isEmpty(petBirth)}>
           <HStack
             justifyContent={'space-between'}
-            paddingTop={15}
-            paddingBottom={15}
+            alignItems={'center'}
             borderBottomColor={colors.grayScale[30]}
             borderBottomWidth={1}>
             <TextInput
+              style={styles.input}
               onChangeText={setPetBirth}
               value={petBirth}
               onSubmitEditing={Keyboard.dismiss}
@@ -45,3 +50,10 @@ function PetBirth({handlePage}: Props) {
 }
 
 export default PetBirth;
+
+const styles = StyleSheet.create({
+  input: {
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+});

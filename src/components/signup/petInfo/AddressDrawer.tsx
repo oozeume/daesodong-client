@@ -54,14 +54,14 @@ function AddressDrawer({
 }: Props) {
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
-      <Actionsheet.Content height={'534px'} bgColor={colors.grayScale[0]}>
+      <Actionsheet.Content bgColor={colors.grayScale[0]}>
         <Center
           alignItems="center"
           width="100%"
           height="26px"
           margin="24px 0px 36px">
           <BackButton onPress={onClose} buttonStyle={styles.backButton} />
-          <Text fontSize="18px" color="#383E4A" lineHeight="24px">
+          <Text fontSize="18px" color={colors.grayScale[80]} lineHeight="24px">
             시/도
           </Text>
         </Center>
