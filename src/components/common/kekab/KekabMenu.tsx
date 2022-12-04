@@ -8,6 +8,9 @@ interface Props {
   top?: number | string;
   left?: number | string;
   kekabMenuViewStyle?: StyleProp<ViewStyle>;
+  firstButtonName?: string;
+  secondButtonName?: string;
+  pressableIcon?: JSX.Element;
   handleFirstButton: () => void;
   handleSecondButton: () => void;
 }
@@ -26,19 +29,22 @@ function KekabMenu({
   kekabMenuViewStyle,
   handleFirstButton,
   handleSecondButton,
+  pressableIcon,
+  firstButtonName,
+  secondButtonName,
 }: Props) {
   return (
     <Menu
       py="12px"
       top={top || '116px'}
       left={left || '20px'}
-      placement="right bottom"
+      // placement="right bottom"
       backgroundColor={colors.grayScale['0']}
       style={kekabMenuViewStyle}
       trigger={triggerProps => {
         return (
           <Pressable {...triggerProps}>
-            <KebabMenuIcon fill={colors.grayScale['70']} />
+            {pressableIcon ?? <KebabMenuIcon fill={colors.grayScale['70']} />}
           </Pressable>
         );
       }}>
@@ -46,14 +52,14 @@ function KekabMenu({
         color={colors.grayScale['80']}
         fontSize={'14px'}
         onPress={handleFirstButton}>
-        수정
+        {firstButtonName ?? '수정'}
       </Menu.Item>
 
       <Menu.Item
         color={colors.grayScale['80']}
         fontSize={'14px'}
         onPress={handleSecondButton}>
-        삭제
+        {secondButtonName ?? '삭제'}
       </Menu.Item>
     </Menu>
   );

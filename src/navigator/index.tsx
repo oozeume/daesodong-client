@@ -147,6 +147,7 @@ const AppNavigator = () => {
 
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
         <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
+        <Stack.Screen name="Community" component={Community} />
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}
