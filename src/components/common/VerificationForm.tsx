@@ -22,6 +22,7 @@ interface Props {
   inputRef?: LegacyRef<TextInput>;
   secureTextEntry?: boolean;
   noBorderBottom?: boolean;
+  maxLength?: number;
 }
 
 /**
@@ -41,6 +42,7 @@ interface Props {
  * @param {boolean} autoFocus - 텍스트창 자동으로 보이게 하는 기능 on/off
  * @param {LegacyRef<TextInput>} inputRef - autoFocus가 작동하지 않는 경우 강제로 focus하기 위한 ref
  * @param {boolean} noBorderBottom - input border 너비
+ * @param {number | undefined} maxLength - 입력 최대수
  */
 function VerificationForm({
   value,
@@ -59,6 +61,7 @@ function VerificationForm({
   inputRef,
   secureTextEntry,
   noBorderBottom,
+  maxLength,
 }: Props) {
   return (
     <VStack space={1} mb={marginBottom}>
@@ -79,6 +82,7 @@ function VerificationForm({
             autoFocus={autoFocus}
             keyboardType={keyboardType ?? 'default'}
             secureTextEntry={secureTextEntry}
+            maxLength={maxLength}
             ref={inputRef && inputRef}
           />
         </View>

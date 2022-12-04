@@ -13,6 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
+    "@tanstack/react-query": "^4.17.1",
     "axios": "0.27.2",
     "dayjs": "^1.11.6",
     "lodash": "^4.17.21",

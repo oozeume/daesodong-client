@@ -15,6 +15,7 @@ import {colors} from '~/theme/theme';
 import EmailRegister from '~/components/signup/email/emailRegister';
 import PasswordRegister from '~/components/common/PasswordRegister';
 import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
+import {INIT_SIGNUP_FORM} from '~/constants/signup';
 
 type Props = NativeStackScreenProps<ParamListBase, 'SignUpEmail'>;
 
@@ -31,6 +32,8 @@ const STAGE_TEXT_LIST = [
 
 function SignUpEmail({navigation}: Props) {
   const [currentStage, setCurrentStage] = useState(1);
+
+  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
 
   const onPressBack = () => {
     if (currentStage === 1) {
@@ -73,10 +76,25 @@ function SignUpEmail({navigation}: Props) {
           </Center>
 
           <CurrentComponentOfArray index={currentStage}>
-            <PhoneVerification handlePage={moveToNextPage} />
-            <EmailRegister handlePage={moveToNextPage} />
-            <PasswordRegister handlePage={moveToNextPage} />
-            <NickNameRegister />
+            <PhoneVerification
+              handlePage={moveToNextPage}
+              signupForm={signupForm}
+              setSignupForm={setSignupForm}
+            />
+            <EmailRegister
+              handlePage={moveToNextPage}
+              signupForm={signupForm}
+              setSignupForm={setSignupForm}
+            />
+            <PasswordRegister
+              handlePage={moveToNextPage}
+              signupForm={signupForm}
+              setSignupForm={setSignupForm}
+            />
+            <NickNameRegister
+              signupForm={signupForm}
+              setSignupForm={setSignupForm}
+            />
           </CurrentComponentOfArray>
         </Box>
       </SafeAreaView>
