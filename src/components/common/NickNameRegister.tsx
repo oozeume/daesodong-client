@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform} from 'react-native';
+import {Alert, Keyboard, Platform} from 'react-native';
 import {Box} from 'native-base';
 
 import {colors} from '~/theme/theme';
@@ -9,15 +9,20 @@ import VerificationForm from '~/components/common/VerificationForm';
 
 import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
 import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
+import {usePostAuthEmailSignup} from '~/api/auth';
+import {SignupForm} from '~/../types/login';
 
 const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
+
+interface Props {
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
+}
 
 /**
  * 닉네임 입력 및 중복 체크 컴포넌트
  */
-
-function NickNameRegister() {
-  const [nickName, setNickName] = useState('');
+function NickNameRegister({signupForm, setSignupForm}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [result, setResult] = useState<VerificationResult>(); // 인증 결과
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
@@ -26,7 +31,20 @@ function NickNameRegister() {
     'WARNING',
   ]); // 도움말 검증 결과
 
-  const handleModal = () => setModalVisible(prev => !prev);
+  const postAuthSignup = usePostAuthEmailSignup();
+
+  // 약관 동의 후, 회원가입 api 요청 및 모달창 제어
+  const handleModal = async () => {
+    const response = await postAuthSignup.mutateAsync(signupForm);
+
+    if (response?.success === 'SUCCESS') Alert.alert('회원가입 성공');
+    else Alert.alert(response?.message || '회원가입 실패');
+    setModalVisible(false);
+  };
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
 
   // 닉네임 중복 검사
   const checkDuplication = () => {
@@ -36,7 +54,7 @@ function NickNameRegister() {
   };
 
   // 닉네임 글자수 검사
-  const checkNickNameLength = (text: string): VerificationResult => {
+  const checkNicknameLength = (text: string): VerificationResult => {
     return text.length > 1 && text.length <= 10 ? 'SUCCESS' : 'FAIL';
   };
 
@@ -56,22 +74,25 @@ function NickNameRegister() {
       return setHelpResults([
         isExistBlank(text),
         isExistSpecialCharacters(text),
-        checkNickNameLength(text),
+        checkNicknameLength(text),
       ]);
     }
 
     setHelpResults(['WARNING', 'WARNING', 'WARNING']);
   };
 
-  const hadleNickName = (text: string) => {
+  const hadleNickname = (text: string) => {
     const textWithRemovedEmoji = text.replace(EMOJI_REGEX, '');
-    setNickName(textWithRemovedEmoji);
+    setSignupForm(prevState => ({
+      ...prevState,
+      nickname: textWithRemovedEmoji,
+    }));
     setUpHelpResults(textWithRemovedEmoji);
   };
 
   useEffect(() => {
     setResult('WARNING');
-  }, [nickName]);
+  }, [signupForm.nickname]);
 
   return (
     <>
@@ -82,9 +103,9 @@ function NickNameRegister() {
         errorMessage={'사용할 수 없는 닉네임입니다'}
         helpList={helpList}
         helpVerificationResults={helpResults}
-        value={nickName}
+        value={signupForm.nickname}
         marginBottom={'20px'}
-        onChangeText={hadleNickName}
+        onChangeText={hadleNickname}
         inputRightElement={
           <Button
             width={'77px'}
@@ -128,7 +149,7 @@ function NickNameRegister() {
               active: colors.grayScale[90],
               disabled: colors.grayScale[50],
             }}
-            handlePress={handleModal}
+            handlePress={openModal}
             active={result === 'SUCCESS'}
           />
         </Box>

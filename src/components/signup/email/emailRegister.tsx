@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import {Box} from 'native-base';
-import React, {useState} from 'react';
+import React from 'react';
 import {Platform} from 'react-native';
+import {SignupForm} from '~/../types/login';
 
 import Button from '~/components/common/button';
 import VerificationForm from '~/components/common/VerificationForm';
@@ -9,21 +10,23 @@ import {colors} from '~/theme/theme';
 
 interface Props {
   handlePage: () => void;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
  *@description 아이디(이메일) 입력
  */
 
-function EmailRegister({handlePage}: Props) {
-  const [email, setEmail] = useState('');
-  const onEmailChange = (text: string) => setEmail(text);
+function EmailRegister({handlePage, signupForm, setSignupForm}: Props) {
+  const onEmailChange = (text: string) =>
+    setSignupForm(prevState => ({...prevState, email: text}));
 
   return (
     <>
       <VerificationForm
         placeholder={'아이디 (이메일)'}
-        value={email}
+        value={signupForm.email}
         onChangeText={onEmailChange}
       />
       <Box
@@ -51,7 +54,7 @@ function EmailRegister({handlePage}: Props) {
             handlePress={() => {
               handlePage();
             }}
-            active={!_.isEmpty(email)}
+            active={!_.isEmpty(signupForm.email)}
           />
         </Box>
       </Box>

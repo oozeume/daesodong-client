@@ -2278,6 +2278,19 @@
     deepmerge "^4.2.2"
     svgo "^2.8.0"
 
+"@tanstack/query-core@4.15.1":
+  version "4.15.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.15.1.tgz#a282f04fe5e612b50019e1cfaf0efabd220e00ce"
+  integrity sha512-+UfqJsNbPIVo0a9ANW0ZxtjiMfGLaaoIaL9vZeVycvmBuWywJGtSi7fgPVMCPdZQFOzMsaXaOsDtSKQD5xLRVQ==
+
+"@tanstack/react-query@^4.17.1":
+  version "4.17.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.17.1.tgz#f6efb0c9790e7103cd0ee4b61712fe362e8beac4"
+  integrity sha512-0AAC1DerbNmmmR4EB6fkILhgTVao7nRPp8jDNHUq1m6AHaDdNV9VKy+h9fsTnBbiHBbcr3erfF//KEO3y3HojA==
+  dependencies:
+    "@tanstack/query-core" "4.15.1"
+    use-sync-external-store "^1.2.0"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@tootallnate/once/-/once-1.1.2.tgz"
