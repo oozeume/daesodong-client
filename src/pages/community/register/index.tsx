@@ -49,12 +49,16 @@ const CommunityRegister = () => {
   const isFormComplete =
     form.community && form.title.length !== 0 && form.content.length !== 0;
 
+  const registerImageViewHeight = 84;
+
+  const paddingX = 36;
+
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView>
         <ScrollView
           bgColor={colors.grayScale['0']}
-          minHeight={APP_HEIGHT - 114}>
+          minHeight={APP_HEIGHT - registerImageViewHeight}>
           <Header
             title={`게시글 ${formType === 'REGISTER' ? '작성' : '수정'}`}
             leftButton={
@@ -78,7 +82,7 @@ const CommunityRegister = () => {
                         justifyContent={'center'}
                         alignItems="center"
                         borderRadius={8}
-                        w={APP_WIDTH - 36}
+                        w={APP_WIDTH - paddingX}
                         h="44px"
                         bgColor={'#1A1E27CC'}>
                         <Text fontSize={'14px'} color={colors.grayScale['0']}>
@@ -170,7 +174,7 @@ const CommunityRegister = () => {
           pt="12px"
           pb="52px"
           pl="18px"
-          h="114px"
+          h={`${registerImageViewHeight}px`}
           bgColor={colors.grayScale['0']}
           borderTopWidth={1}
           borderTopColor={colors.grayScale['30']}>
