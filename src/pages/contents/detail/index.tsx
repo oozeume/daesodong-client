@@ -23,6 +23,7 @@ import {NavigationHookProp} from '~/../types/navigator';
 import TagList from '~/components/contents/detail/TagList';
 import OtherContentsList from '~/components/contents/detail/OtherContentsList';
 import ContentsReivewView from '~/components/contents/detail/ContentsReivewView';
+import ReviewPopup from '~/components/contents/detail/ReviewPopup';
 
 /**
  *@description 컨텐츠 상세
@@ -41,6 +42,13 @@ const ContentsDetail = () => {
       keyboardVerticalOffset={0}
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
       <SafeAreaView>
+        <ReviewPopup
+          visible={true}
+          handleModal={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
+
         <ScrollView
           ref={scrollViewRef}
           bgColor={colors.grayScale['0']}
