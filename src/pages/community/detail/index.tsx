@@ -21,6 +21,7 @@ import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
+import Popup from '~/components/common/popup/Popup';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -29,6 +30,8 @@ const CommunityDetail = () => {
   const navigation = useNavigation<NavigationHookProp>();
   const [comment, setComment] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
+
+  const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -65,11 +68,20 @@ const CommunityDetail = () => {
 
                 <KekabMenu
                   top={Platform.OS === 'android' ? '88px' : '110px'}
-                  handleFirstButton={() => {}}
-                  handleSecondButton={() => {}}
+                  handleFirstButton={() =>
+                    navigation.navigate('CommunityRegister', {type: 'MODIFY'})
+                  }
+                  handleSecondButton={() => setIsOpenDeletePopup(true)}
                 />
               </HStack>
             }
+          />
+
+          <Popup
+            title={'게시글을 삭제할까요?'}
+            subText="삭제한 게시글의 내용은 복구할 수 없어요"
+            isVisible={isOpenDeletePopup}
+            setIsVisible={setIsOpenDeletePopup}
           />
 
           {/* 컨텐츠 */}
