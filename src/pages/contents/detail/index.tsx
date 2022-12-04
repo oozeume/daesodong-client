@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   Text,
+  useDisclose,
   View,
 } from 'native-base';
 import React, {useRef, useState} from 'react';
@@ -30,6 +31,7 @@ import ReviewPopup from '~/components/contents/detail/ReviewPopup';
  */
 const ContentsDetail = () => {
   const navigation = useNavigation<NavigationHookProp>();
+  const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 셀랙터 on/off 훅
   const dummyText = `무성할 하나에 비둘기, 없이 멀리 라이너 별에도 계십니다. 불러 이름과, 이국 토끼, 묻힌 프랑시스 까닭입니다. 한 새워 노루, 나는 애기 쉬이 많은 버리었습니다. 가난한 차 밤이 어머님, 흙으로 피어나듯이 이름을 봅니다. 어머님, 노새, 어머님, 써 걱정도 패, 멀리 별 있습니다.`;
 
   const [isBottomBarVisible, setBottomBarVisible] = useState(false);
@@ -42,12 +44,8 @@ const ContentsDetail = () => {
       keyboardVerticalOffset={0}
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
       <SafeAreaView>
-        <ReviewPopup
-          visible={true}
-          handleModal={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
+        <ReviewPopup visible={true} onOK={onClose} onCancel={onClose} />
 
         <ScrollView
           ref={scrollViewRef}

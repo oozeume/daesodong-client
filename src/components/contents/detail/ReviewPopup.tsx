@@ -1,43 +1,24 @@
-import React, {useState} from 'react';
-import {
-  Box,
-  Center,
-  Flex,
-  Modal,
-  Pressable,
-  Text,
-  TextArea,
-  VStack,
-} from 'native-base';
+import React from 'react';
+import {Box, Center, Modal, Text, TextArea, VStack} from 'native-base';
 import {colors} from '~/theme/theme';
-
-import CheckIcon from '../../../assets/icons/check.svg';
-import RightIcon from '../../../assets/icons/right.svg';
-import BackIcon from '../../../assets/icon/back_icon.svg';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RouteList} from '~/../types/navigator';
 import Button from '~/components/common/button';
 
 interface Props {
   visible: boolean;
-  handleModal: () => void;
+  onCancel: () => void;
+  onOK: () => void;
 }
 
-function ReviewPopup({visible, handleModal}: Props) {
-  const navigation = useNavigation<NavigationProp<RouteList>>();
-
-  const handleSignUp = () => handleModal();
-
+function ReviewPopup({visible, onCancel, onOK}: Props) {
   return (
     <Modal w={'100%'} isOpen={visible} size={'full'}>
       <Modal.Content
         w={'100%'}
-        h={'284px'}
         borderTopRadius={'20px'}
         borderBottomRadius={'none'}
         mb={0}
         mt={'auto'}>
-        <VStack h={'100%'} px={'18px'}>
+        <VStack px={'18px'}>
           {/* 모달 헤더 */}
           <Box pt="28px" pb="12px" px="18px">
             <Center py={'28px'}>
@@ -86,6 +67,7 @@ function ReviewPopup({visible, handleModal}: Props) {
             borderRadius={8}
             borderColor={colors.grayScale['30']}
             borderWidth={1}
+            h="160px"
             px={'16px'}
             py={'14px'}
             placeholder={
@@ -112,7 +94,7 @@ function ReviewPopup({visible, handleModal}: Props) {
                 active: colors.grayScale[90],
                 disabled: colors.grayScale[50],
               }}
-              handlePress={handleSignUp}
+              handlePress={onCancel}
               active
             />
 
@@ -132,7 +114,7 @@ function ReviewPopup({visible, handleModal}: Props) {
                 active: colors.grayScale[90],
                 disabled: colors.grayScale[50],
               }}
-              handlePress={handleSignUp}
+              handlePress={onOK}
               active
             />
           </Box>
