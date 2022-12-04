@@ -58,7 +58,7 @@ const CommunityRegister = () => {
       keyboardVerticalOffset={0}
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
       <SafeAreaView>
-        <ScrollView bgColor={colors.grayScale['0']} minHeight={appHeight - 94}>
+        <ScrollView bgColor={colors.grayScale['0']} minHeight={appHeight - 114}>
           <Header
             title={`게시글 ${formType === 'REGISTER' ? '작성' : '수정'}`}
             leftButton={
@@ -152,7 +152,7 @@ const CommunityRegister = () => {
             <TextArea
               mt="14px"
               mb="36px"
-              h="264px"
+              h="204px"
               fontSize="15px"
               lineHeight="22px"
               p={0}
@@ -174,6 +174,7 @@ const CommunityRegister = () => {
           pt="12px"
           pb="52px"
           pl="18px"
+          h="114px"
           bgColor={colors.grayScale['0']}
           borderTopWidth={1}
           borderTopColor={colors.grayScale['30']}>
