@@ -181,13 +181,7 @@ const CommunityRegister = () => {
           <ImageIcon style={{marginRight: 10}} />
 
           <Text color={colors.grayScale['80']} fontSize="13px">
-            0
-          </Text>
-          <Text color={colors.grayScale['80']} fontSize="13px" mx="2px">
-            /
-          </Text>
-          <Text color={colors.grayScale['80']} fontSize="13px">
-            5
+            {`0 / 5`}
           </Text>
         </HStack>
       </SafeAreaView>
