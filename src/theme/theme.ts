@@ -73,6 +73,7 @@ const theme = extendTheme({
     fussOrange: {
       '-40': '#FFF5EF',
       '-30': '#FFEADC',
+      '-20': '#FFD0AE',
       0: '#FF6B00',
     },
     fussYellow: {

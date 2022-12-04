@@ -4,7 +4,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimension';
+import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 
 interface Props {
   handlePage: () => void;
@@ -20,9 +20,9 @@ function Outro({handlePage}: Props) {
     <Stack
       position={'relative'}
       px={'18px'}
-      w={DEVICE_WIDTH}
+      w={APP_WIDTH}
       backgroundColor={colors.grayScale[0]}
-      h={DEVICE_HEIGHT - HEADER_HEIGHT - statusbarHeight - 6}
+      h={APP_HEIGHT - HEADER_HEIGHT - statusbarHeight - 6}
       alignItems={'center'}
       justifyContent={'space-between'}>
       <Center pt={60}>
