@@ -48,6 +48,8 @@ export type RootStackParamList = {
 
   CommunityDetail: undefined;
   CommunityRegister?: FormType;
+
+  ContentsDetail: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
