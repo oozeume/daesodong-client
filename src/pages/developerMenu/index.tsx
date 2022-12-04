@@ -44,6 +44,9 @@ function DeveloperMenu() {
           <Button mb="12px" onPress={() => onMove('PetInfoRegister')}>
             집사정보/반려동물 등록
           </Button>
+          <Button mb="12px" onPress={() => onMove('CommunityRegister')}>
+            커뮤니티 게시글 작성
+          </Button>
         </VStack>
       </ScrollView>
     </SafeAreaView>

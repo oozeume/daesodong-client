@@ -46,6 +46,7 @@ export type RootStackParamList = {
   PetInfoRegister: undefined;
 
   CommunityDetail: undefined;
+  CommunityRegister: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
