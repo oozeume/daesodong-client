@@ -2,7 +2,7 @@ import {Center, Stack, Text, Image} from 'native-base';
 import React from 'react';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT} from '~/utils/dimension';
+import {APP_HEIGHT} from '~/utils/dimension';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
 
@@ -21,7 +21,7 @@ function Intro({onPress}: Props) {
       position={'relative'}
       px={'18px'}
       backgroundColor={colors.grayScale[0]}
-      h={DEVICE_HEIGHT - HEADER_HEIGHT - statusbarHeight - 6}
+      h={APP_HEIGHT - HEADER_HEIGHT - statusbarHeight - 6}
       alignItems={'center'}
       justifyContent={'space-between'}>
       <Center pt={60}>
