@@ -9,7 +9,7 @@ import HeartFill from '~/assets/icons/heart_fill.svg';
 import MessageFill from '~/assets/icons/message_fill.svg';
 
 /**
- *@description 커뮤니티 베스트 컨텐츠
+ *@description 커뮤니티 메인 - 베스트 컨텐츠
  */
 
 function BestContents() {

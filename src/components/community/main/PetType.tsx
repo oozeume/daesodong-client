@@ -4,6 +4,10 @@ import React from 'react';
 import {ScrollView} from 'react-native';
 import {colors} from '~/theme/theme';
 
+/**
+ *@description 커뮤니티 메인 - 반려동물 종 선택
+ */
+
 function PetType() {
   const petTypes = _.range(0, 9);
   return (

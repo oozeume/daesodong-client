@@ -12,6 +12,10 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RouteList} from '~/../types/navigator';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 
+/**
+ *@description 커뮤니티 메인페이지
+ */
+
 const Community = () => {
   const navigation = useNavigation<NavigationProp<RouteList>>();
   return (
