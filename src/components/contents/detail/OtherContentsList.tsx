@@ -1,5 +1,7 @@
+import {useNavigation} from '@react-navigation/native';
 import {Box, Center, Pressable, Text} from 'native-base';
 import React from 'react';
+import {NavigationHookProp} from '~/../types/navigator';
 import {colors} from '~/theme/theme';
 import ContentItem from './ContentItem';
 
@@ -7,6 +9,7 @@ import ContentItem from './ContentItem';
  *@description 다른 컨텐츠 리스트
  */
 const OtherContentsList = () => {
+  const navigation = useNavigation<NavigationHookProp>();
   return (
     <Box
       mb="90px"
@@ -35,7 +38,8 @@ const OtherContentsList = () => {
         h="44px"
         borderWidth={1}
         borderRadius={8}
-        borderColor={colors.grayScale['60']}>
+        borderColor={colors.grayScale['60']}
+        onPress={() => navigation.navigate('OtherContents')}>
         <Center w="100%" h="100%">
           <Text fontSize={'15px'} color={colors.grayScale['90']}>
             더보기

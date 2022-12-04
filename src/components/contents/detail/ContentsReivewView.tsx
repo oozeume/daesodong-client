@@ -3,10 +3,14 @@ import React, {useState} from 'react';
 import ContentDetailReviewImage from '~/assets/images/content_detail_review_image.svg';
 import {colors} from '~/theme/theme';
 
+interface Props {
+  onOpenModal: () => void;
+}
+
 /**
  *@description 컨텐츠 리뷰 뷰
  */
-const ContentsReivewView = () => {
+const ContentsReivewView = ({onOpenModal}: Props) => {
   const [contentReview, setContentReview] = useState(0);
 
   return (
@@ -68,7 +72,10 @@ const ContentsReivewView = () => {
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            onPress={() => setContentReview(2)}>
+            onPress={() => {
+              setContentReview(2);
+              onOpenModal();
+            }}>
             <Text
               color={
                 contentReview === 2

@@ -1,7 +1,15 @@
 import React from 'react';
-import {Box, Center, Modal, Text, TextArea, VStack} from 'native-base';
+import {
+  Box,
+  Center,
+  HStack,
+  Modal,
+  Pressable,
+  Text,
+  TextArea,
+  VStack,
+} from 'native-base';
 import {colors} from '~/theme/theme';
-import Button from '~/components/common/button';
 
 interface Props {
   visible: boolean;
@@ -18,10 +26,10 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
         borderBottomRadius={'none'}
         mb={0}
         mt={'auto'}>
-        <VStack px={'18px'}>
+        <VStack pt="28px" px={'18px'}>
           {/* 모달 헤더 */}
-          <Box pt="28px" pb="12px" px="18px">
-            <Center py={'28px'}>
+          <Box px="18px" mb="24px">
+            <Center>
               <Text
                 fontSize={18}
                 fontWeight={'500'}
@@ -63,6 +71,7 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
           </Box>
 
           <TextArea
+            bgColor={colors.grayScale[0]}
             autoCompleteType={undefined}
             borderRadius={8}
             borderColor={colors.grayScale['30']}
@@ -77,47 +86,32 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
           />
 
           {/* 버튼 리스트 */}
-          <Box h={'104px'} pt="12px" pb="40px" px="18px">
-            <Button
-              large
-              shadow
-              text={'닫기'}
-              fontColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-              buttonColors={{
-                active: colors.fussOrange[0],
-                disabled: colors.fussOrange['-30'],
-              }}
-              borderColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-              handlePress={onCancel}
-              active
-            />
+          <HStack h={'104px'} pt="12px" pb="40px">
+            <Pressable
+              flex={1}
+              bgColor={colors.grayScale[10]}
+              borderWidth={1}
+              borderColor={colors.grayScale[60]}
+              borderRadius={8}
+              mr="8px"
+              onPress={onCancel}>
+              <Center h="52px">
+                <Text color={colors.grayScale[90]}>닫기</Text>
+              </Center>
+            </Pressable>
 
-            <Button
-              large
-              shadow
-              text={'확인'}
-              fontColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-              buttonColors={{
-                active: colors.fussOrange[0],
-                disabled: colors.fussOrange['-30'],
-              }}
-              borderColors={{
-                active: colors.grayScale[90],
-                disabled: colors.grayScale[50],
-              }}
-              handlePress={onOK}
-              active
-            />
-          </Box>
+            <Pressable
+              flex={3}
+              bgColor={colors.fussOrange[0]}
+              borderWidth={1}
+              borderColor={colors.grayScale[90]}
+              borderRadius={8}
+              onPress={onOK}>
+              <Center h="52px">
+                <Text color={colors.grayScale[90]}>확인</Text>
+              </Center>
+            </Pressable>
+          </HStack>
         </VStack>
       </Modal.Content>
     </Modal>

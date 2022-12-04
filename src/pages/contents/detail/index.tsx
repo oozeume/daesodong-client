@@ -45,7 +45,7 @@ const ContentsDetail = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
       <SafeAreaView>
         {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
-        <ReviewPopup visible={true} onOK={onClose} onCancel={onClose} />
+        <ReviewPopup visible={isOpen} onOK={onClose} onCancel={onClose} />
 
         <ScrollView
           ref={scrollViewRef}
@@ -55,6 +55,7 @@ const ContentsDetail = () => {
             if (!scrollViewHeight)
               setScrollViewHeight(event.nativeEvent.layoutMeasurement.height);
           }}
+          scrollEventThrottle={50}
           onScroll={event => {
             setScrollHeight(event.nativeEvent.contentOffset.y);
           }}
@@ -138,7 +139,7 @@ const ContentsDetail = () => {
           </Box>
 
           {/* 컨텐츠 평가 뷰 */}
-          <ContentsReivewView />
+          <ContentsReivewView onOpenModal={onOpen} />
 
           {/* 다른 컨텐츠 리스트 뷰 */}
           <OtherContentsList />
@@ -171,28 +172,32 @@ const ContentsDetail = () => {
 
             <HStack justifyContent={'space-between'}>
               <HStack>
-                <BookmarkIcon
-                  width={'24px'}
-                  height={'24px'}
-                  fill={colors.fussOrange['0']}
-                  style={{marginRight: 6}}
-                />
-                <Text
-                  mr="16px"
-                  fontSize={'15px'}
-                  color={colors.grayScale['60']}>
-                  100
-                </Text>
+                <Pressable mr="6px">
+                  <BookmarkIcon
+                    width={'24px'}
+                    height={'24px'}
+                    fill={colors.fussOrange['0']}
+                  />
+                  <Text
+                    mr="16px"
+                    fontSize={'15px'}
+                    color={colors.grayScale['60']}>
+                    100
+                  </Text>
+                </Pressable>
 
-                <MessageFillIcon
-                  width={'24px'}
-                  height={'24px'}
-                  fill={colors.grayScale['40']}
-                  style={{marginRight: 6}}
-                />
-                <Text fontSize={'15px'} color={colors.grayScale['60']}>
-                  100
-                </Text>
+                <Pressable
+                  onPress={() => navigation.navigate('ContentsCommentsList')}>
+                  <MessageFillIcon
+                    width={'24px'}
+                    height={'24px'}
+                    fill={colors.grayScale['40']}
+                    style={{marginRight: 6}}
+                  />
+                  <Text fontSize={'15px'} color={colors.grayScale['60']}>
+                    100
+                  </Text>
+                </Pressable>
               </HStack>
 
               <HStack>

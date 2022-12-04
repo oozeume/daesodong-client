@@ -50,6 +50,9 @@ export type RootStackParamList = {
   CommunityRegister?: FormType;
 
   ContentsDetail: undefined;
+  OtherContents: undefined;
+  ContentsCommentsList: undefined;
+  ContentsRecommentsList: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;

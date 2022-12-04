@@ -30,6 +30,9 @@ import CommunityDetail from '~/pages/community/detail';
 import FindEmail from '~/pages/login/findEmail';
 import CommunityRegister from '~/pages/community/register';
 import ContentsDetail from '~/pages/contents/detail';
+import OtherContents from '~/pages/contents/otherContents';
+import ContentsCommentsList from '~/pages/contents/commentsList';
+import ContentsRecommentsList from '~/pages/contents/recommentsList';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -165,6 +168,15 @@ const AppNavigator = () => {
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
         <Stack.Screen name="CommunityRegister" component={CommunityRegister} />
         <Stack.Screen name="ContentsDetail" component={ContentsDetail} />
+        <Stack.Screen name="OtherContents" component={OtherContents} />
+        <Stack.Screen
+          name="ContentsCommentsList"
+          component={ContentsCommentsList}
+        />
+        <Stack.Screen
+          name="ContentsRecommentsList"
+          component={ContentsRecommentsList}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,4 +1,4 @@
-import {Box, HStack, Pressable, Text, View, VStack} from 'native-base';
+import {Box, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Dimensions, Platform} from 'react-native';
 import AvatarIcon from '~/assets/icons/avartar.svg';
@@ -8,13 +8,14 @@ import {colors} from '~/theme/theme';
 
 interface Props {
   commentType?: 'default' | 'reply' | 'delete';
+  onRegisterRecomment?: () => void;
 }
 
 /**
  *@description 커뮤니티 게시글 댓글
  *@param {'default' | 'reply' | 'delete' | undefined} commentType - 댓글 유형 (reply: 답글, delete: 삭제된 댓글)
  */
-const CommunityComment = ({commentType = 'default'}: Props) => {
+const Comment = ({onRegisterRecomment, commentType = 'default'}: Props) => {
   const commentWidth = Dimensions.get('screen').width - 36;
 
   // 답글 내용 길이 값
@@ -88,7 +89,7 @@ const CommunityComment = ({commentType = 'default'}: Props) => {
           <KekabMenu
             handleFirstButton={() => {}}
             handleSecondButton={() => {}}
-            top={Platform.OS === 'android' ? '142px' : '116px'}
+            bottom={Platform.OS === 'android' ? 0 : 0}
           />
         </HStack>
 
@@ -153,7 +154,8 @@ const CommunityComment = ({commentType = 'default'}: Props) => {
             pr="8px"
             py="4px"
             mr="6px"
-            borderRadius={4}>
+            borderRadius={4}
+            onPress={onRegisterRecomment}>
             <Text color={colors.grayScale['60']} fontSize="13px">
               답글달기
             </Text>
@@ -164,4 +166,4 @@ const CommunityComment = ({commentType = 'default'}: Props) => {
   );
 };
 
-export default CommunityComment;
+export default Comment;

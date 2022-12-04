@@ -5,11 +5,14 @@ import {colors} from '~/theme/theme';
 import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 
 interface Props {
-  top?: number | string;
-  left?: number | string;
+  bottom?: number | string;
+  right?: number | string;
   kekabMenuViewStyle?: StyleProp<ViewStyle>;
   handleFirstButton: () => void;
   handleSecondButton: () => void;
+  firstButtonName?: string;
+  secondButtonName?: string;
+  kekabElement?: JSX.Element;
 }
 
 /**
@@ -21,24 +24,27 @@ interface Props {
  *@param {()=>void} handleSecondButton - 키캡 첫 번째 버튼 핸들러
  */
 function KekabMenu({
-  top,
-  left,
+  bottom,
+  right,
   kekabMenuViewStyle,
   handleFirstButton,
   handleSecondButton,
+  firstButtonName = '수정',
+  secondButtonName = '삭제',
+  kekabElement,
 }: Props) {
   return (
     <Menu
       py="12px"
-      top={top || '116px'}
-      left={left || '20px'}
-      placement="right bottom"
+      bottom={bottom || '-12px'}
+      right={right || '20px'}
+      placement="bottom"
       backgroundColor={colors.grayScale['0']}
       style={kekabMenuViewStyle}
       trigger={triggerProps => {
         return (
-          <Pressable {...triggerProps}>
-            <KebabMenuIcon fill={colors.grayScale['70']} />
+          <Pressable {...triggerProps} zIndex={100}>
+            {kekabElement ?? <KebabMenuIcon fill={colors.grayScale['70']} />}
           </Pressable>
         );
       }}>
@@ -46,14 +52,14 @@ function KekabMenu({
         color={colors.grayScale['80']}
         fontSize={'14px'}
         onPress={handleFirstButton}>
-        수정
+        {firstButtonName}
       </Menu.Item>
 
       <Menu.Item
         color={colors.grayScale['80']}
         fontSize={'14px'}
         onPress={handleSecondButton}>
-        삭제
+        {secondButtonName}
       </Menu.Item>
     </Menu>
   );
