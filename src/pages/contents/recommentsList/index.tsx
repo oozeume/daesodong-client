@@ -30,12 +30,9 @@ const ContentsRecommentsList = () => {
   const [isRecommentWriting, setRecommentWriting] = useState(false);
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
-        <ScrollView
-          bounces={false}
-          bgColor={colors.grayScale['0']}
-          minHeight="100%">
+        <ScrollView bgColor={colors.grayScale['0']} minHeight="100%">
           <Header
             title={'답글 23'}
             leftButton={

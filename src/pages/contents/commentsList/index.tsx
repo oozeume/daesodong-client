@@ -25,7 +25,7 @@ const ContentsCommentsList = () => {
   const commentInputHeight = 98;
 
   return (
-    <KeyboardAwareScrollView bounces={false}>
+    <KeyboardAwareScrollView bounces={false} enableOnAndroid>
       <SafeAreaView>
         <ScrollView bgColor={colors.grayScale['0']} minHeight="100%">
           <Header

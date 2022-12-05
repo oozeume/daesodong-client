@@ -67,7 +67,7 @@ const OtherContents = () => {
             </Text>
 
             <KekabMenu
-              top={Platform.OS === 'android' ? '18px' : '14px'}
+              top={Platform.OS === 'android' ? '40px' : '14px'}
               left={'-3px'}
               handleFirstButton={() => setFilter('최신순')}
               handleSecondButton={() => setFilter('조회순')}

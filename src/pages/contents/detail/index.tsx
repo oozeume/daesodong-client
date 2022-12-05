@@ -2,7 +2,6 @@ import {
   Box,
   Center,
   HStack,
-  KeyboardAvoidingView,
   Pressable,
   ScrollView,
   Text,
@@ -18,13 +17,13 @@ import MessageFillIcon from '~/assets/icons/message_fill.svg';
 
 import {colors} from '~/theme/theme';
 import Header from '~/components/hospital/review/register/Header';
-import {Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import TagList from '~/components/contents/detail/TagList';
 import OtherContentsList from '~/components/contents/detail/OtherContentsList';
 import ContentsReivewView from '~/components/contents/detail/ContentsReivewView';
 import ReviewPopup from '~/components/contents/detail/ReviewPopup';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 /**
  *@description 컨텐츠 상세
@@ -44,15 +43,12 @@ const ContentsDetail = () => {
   console.log(scrollViewHeight);
 
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={0}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
         {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
         <ReviewPopup visible={isOpen} onOK={onClose} onCancel={onClose} />
 
         <ScrollView
-          bounces={false}
           ref={scrollViewRef}
           bgColor={colors.grayScale['0']}
           minHeight={'100%'}
@@ -223,7 +219,7 @@ const ContentsDetail = () => {
           </Box>
         )}
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

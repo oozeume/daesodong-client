@@ -96,8 +96,8 @@ const Comment = ({
           <KekabMenu
             handleFirstButton={() => {}}
             handleSecondButton={() => {}}
-            top={Platform.OS === 'android' ? '0px' : '12px'}
-            left={Platform.OS === 'android' ? '0px' : '-12px'}
+            top={Platform.OS === 'android' ? '36px' : '12px'}
+            left={Platform.OS === 'android' ? '-22px' : '-12px'}
           />
         </HStack>
 
