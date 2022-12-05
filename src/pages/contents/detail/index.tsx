@@ -8,7 +8,7 @@ import {
   useDisclose,
   View,
 } from 'native-base';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackIcon from '~/assets/icons/back.svg';
 import ShareFillIcon from '~/assets/icons/share_fill.svg';
@@ -36,20 +36,11 @@ const ContentsDetail = () => {
   const [isBottomBarVisible, setBottomBarVisible] = useState(false);
   const [scrollViewHeight, setScrollViewHeight] = useState<number>();
   const [scrollHeight, setScrollHeight] = useState<number>(0);
-  const scrollViewRef = useRef();
-
-  console.log('@');
-  console.log(scrollHeight);
-  console.log(scrollViewHeight);
 
   return (
     <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
-        {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
-        <ReviewPopup visible={isOpen} onOK={onClose} onCancel={onClose} />
-
         <ScrollView
-          ref={scrollViewRef}
           bgColor={colors.grayScale['0']}
           minHeight={'100%'}
           onScrollBeginDrag={event => {
@@ -75,6 +66,21 @@ const ContentsDetail = () => {
                 onPress={() => navigation.goBack()}>
                 <BackIcon />
               </Pressable>
+            }
+          />
+
+          {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
+          <ReviewPopup
+            visible={isOpen}
+            onOK={onClose}
+            onCancel={onClose}
+            title={'무엇이 아쉬우셨나요?🥲'}
+            exampleTextList={[
+              '소개한 내용의 예시를 더 자세히 알고 싶어요!',
+              '다른 동물에 관련된 정보고 알고 싶어요!',
+            ]}
+            placeholder={
+              '콘텐츠를 읽으면서 궁금했던 점을 알려주시면 대소동팀이 더 열심히 공부해서 알려드릴게요.'
             }
           />
 

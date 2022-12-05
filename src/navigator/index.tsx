@@ -33,6 +33,7 @@ import ContentsDetail from '~/pages/contents/detail';
 import OtherContents from '~/pages/contents/otherContents';
 import ContentsCommentsList from '~/pages/contents/commentsList';
 import ContentsRecommentsList from '~/pages/contents/recommentsList';
+import ContentsMain from '~/pages/contents/main';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -177,6 +178,7 @@ const AppNavigator = () => {
           name="ContentsRecommentsList"
           component={ContentsRecommentsList}
         />
+        <Stack.Screen name="ContentsMain" component={ContentsMain} />
       </Stack.Navigator>
     </NavigationContainer>
   );

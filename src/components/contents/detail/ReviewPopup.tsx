@@ -15,9 +15,24 @@ interface Props {
   visible: boolean;
   onCancel: () => void;
   onOK: () => void;
+  title: string;
+  exampleTextList: string[];
+  placeholder: string;
 }
 
-function ReviewPopup({visible, onCancel, onOK}: Props) {
+/**
+ *@description 컨텐츠 리뷰 팝업 (ex. 무엇이 아쉬우셨나요?)
+ *@param onOK - 대소동 팀에게 전달 버튼 핸들러
+ *@param exampleTextList - 질문 예시 리스트
+ */
+function ReviewPopup({
+  visible,
+  onCancel,
+  onOK,
+  title,
+  exampleTextList,
+  placeholder,
+}: Props) {
   return (
     <Modal w={'100%'} isOpen={visible} size={'full'}>
       <Modal.Content
@@ -34,7 +49,7 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
                 fontSize={18}
                 fontWeight={'500'}
                 color={colors.grayScale[80]}>
-                무엇이 아쉬우셨나요?🥲
+                {title}
               </Text>
             </Center>
           </Box>
@@ -54,20 +69,16 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
               아래 예시처럼 질문을 간단하게 적어보세요
             </Text>
 
-            <Text
-              marginBottom={'4px'}
-              fontSize={'14px'}
-              fontWeight={400}
-              color={colors.grayScale['60']}>
-              • 소개한 내용의 예시를 더 자세히 알고 싶어요!
-            </Text>
-
-            <Text
-              fontSize={'14px'}
-              fontWeight={400}
-              color={colors.grayScale['60']}>
-              • 다른 동물에 관련된 정보고 알고 싶어요!
-            </Text>
+            {exampleTextList.map((item, i) => (
+              <Text
+                key={i.toString()}
+                marginBottom={'4px'}
+                fontSize={'14px'}
+                fontWeight={400}
+                color={colors.grayScale['60']}>
+                • {item}
+              </Text>
+            ))}
           </Box>
 
           <TextArea
@@ -77,11 +88,10 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
             borderColor={colors.grayScale['30']}
             borderWidth={1}
             h="160px"
+            mb="12px"
             px={'16px'}
             py={'14px'}
-            placeholder={
-              '콘텐츠를 읽으면서 궁금했던 점을 알려주시면 대소동팀이 더 열심히 공부해서 알려드릴게요.'
-            }
+            placeholder={placeholder}
             placeholderTextColor={colors.grayScale['40']}
           />
 
@@ -101,14 +111,14 @@ function ReviewPopup({visible, onCancel, onOK}: Props) {
             </Pressable>
 
             <Pressable
-              flex={3}
+              flex={4}
               bgColor={colors.fussOrange[0]}
               borderWidth={1}
               borderColor={colors.grayScale[90]}
               borderRadius={8}
               onPress={onOK}>
               <Center h="52px">
-                <Text color={colors.grayScale[90]}>확인</Text>
+                <Text color={colors.grayScale[90]}>대소동팀에게 전달</Text>
               </Center>
             </Pressable>
           </HStack>

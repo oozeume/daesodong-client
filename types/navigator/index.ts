@@ -1,6 +1,6 @@
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {FormType} from '../\bcommunity';
+import {FormType} from '../community';
 
 /**
  * @description script 설명
@@ -53,6 +53,7 @@ export type RootStackParamList = {
   OtherContents: undefined;
   ContentsCommentsList: undefined;
   ContentsRecommentsList: undefined;
+  ContentsMain: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
