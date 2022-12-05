@@ -54,7 +54,7 @@ const CommunityRegister = () => {
   const paddingX = 36;
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
         <ScrollView
           bgColor={colors.grayScale['0']}

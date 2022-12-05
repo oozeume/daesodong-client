@@ -42,18 +42,10 @@ const OtherContents = () => {
   return (
     <SafeAreaView>
       <ScrollView
+        bounces={false}
         ref={scrollViewRef}
         bgColor={colors.grayScale['0']}
-        minHeight={'100%'}
-        onScrollBeginDrag={event => {
-          if (!scrollViewHeight)
-            setScrollViewHeight(event.nativeEvent.layoutMeasurement.height);
-        }}
-        scrollEventThrottle={50}
-        onScroll={event => {
-          setScrollHeight(event.nativeEvent.contentOffset.y);
-        }}
-        onScrollEndDrag={() => setBottomBarVisible(true)}>
+        minHeight={'100%'}>
         <Header
           title={'시리즈 이름'}
           leftButton={
@@ -75,8 +67,8 @@ const OtherContents = () => {
             </Text>
 
             <KekabMenu
-              top={Platform.OS === 'android' ? '18px' : '16px'}
-              right={'-1px'}
+              top={Platform.OS === 'android' ? '18px' : '14px'}
+              left={'-3px'}
               handleFirstButton={() => setFilter('최신순')}
               handleSecondButton={() => setFilter('조회순')}
               firstButtonName="최신순"

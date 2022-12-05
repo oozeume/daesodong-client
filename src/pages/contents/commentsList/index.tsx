@@ -1,16 +1,17 @@
-import {Box, HStack, KeyboardAvoidingView, ScrollView} from 'native-base';
+import {Box, HStack, ScrollView} from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import BackIcon from '~/assets/icon/back_icon.svg';
+import DeleteIcon from '~/assets/icons/delete.svg';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
 import Button from '~/components/common/button';
 import Header from '~/components/hospital/review/register/Header';
-import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import Popup from '~/components/common/popup/Popup';
 import Comment from '~/components/common/comment';
+import {APP_WIDTH} from '~/utils/dimension';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 /**
  *@description 컨텐츠 댓글 리스트
@@ -21,17 +22,17 @@ const ContentsCommentsList = () => {
 
   const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
 
+  const commentInputHeight = 98;
+
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={0}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
         <ScrollView bgColor={colors.grayScale['0']} minHeight="100%">
           <Header
             title={'댓글 23'}
             rightButton={
               <HStack position="absolute" right={18} zIndex={1}>
-                <BackIcon />
+                <DeleteIcon onPress={() => navigation.goBack()} />
               </HStack>
             }
           />
@@ -44,10 +45,11 @@ const ContentsCommentsList = () => {
           />
 
           {/* 댓글 리스트 */}
-          <Box>
+          <Box mb={`${commentInputHeight}px`}>
             {['', '', '', ''].map((item, i) => (
               <React.Fragment key={i.toString()}>
                 <Comment
+                  isBest
                   onRegisterRecomment={() =>
                     navigation.navigate('ContentsRecommentsList')
                   }
@@ -65,6 +67,7 @@ const ContentsCommentsList = () => {
 
         {/* 댓글 입력 */}
         <Box
+          w={APP_WIDTH}
           position="absolute"
           bottom={0}
           pt="6px"
@@ -102,7 +105,7 @@ const ContentsCommentsList = () => {
           />
         </Box>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

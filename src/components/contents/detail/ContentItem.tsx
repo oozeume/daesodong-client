@@ -1,4 +1,4 @@
-import {Box, Center, HStack, Pressable, Text, View, VStack} from 'native-base';
+import {Box, HStack, Text, View, VStack} from 'native-base';
 import React from 'react';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
@@ -17,7 +17,7 @@ const ContentItem = () => {
         <VStack
           flex={1}
           p="12px"
-          bgColor={colors.grayScale['0']}
+          bgColor={colors.grayScale['10']}
           justifyContent="space-between">
           <VStack>
             <Text mb="2px" fontSize={'12px'} color={colors.grayScale['70']}>

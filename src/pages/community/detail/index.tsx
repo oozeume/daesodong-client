@@ -67,7 +67,7 @@ const CommunityDetail = () => {
                 )}
 
                 <KekabMenu
-                  bottom={Platform.OS === 'android' ? '88px' : '110px'}
+                  top={Platform.OS === 'android' ? '88px' : '110px'}
                   handleFirstButton={() =>
                     navigation.navigate('CommunityRegister', {type: 'MODIFY'})
                   }
