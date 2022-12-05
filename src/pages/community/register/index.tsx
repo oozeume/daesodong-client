@@ -1,6 +1,5 @@
 import {
   HStack,
-  KeyboardAvoidingView,
   Pressable,
   ScrollView,
   Text,
@@ -15,14 +14,14 @@ import DeleteIcon from '~/assets/icons/delete.svg';
 import ImageIcon from '~/assets/icons/image.svg';
 import {colors} from '~/theme/theme';
 import Header from '~/components/hospital/review/register/Header';
-import {Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import VerificationForm from '~/components/common/VerificationForm';
 import CommunitySelect from '~/components/community/register/CommunitySelect';
 import SelectButtonForm from '~/components/community/register/SelectButtonForm';
 import {FormState, FormType} from '~/../types/\bcommunity';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimension';
+import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 /**
  *@description 커뮤니티 등록/수정
@@ -42,9 +41,6 @@ const CommunityRegister = () => {
     content: '',
   };
 
-  const appHeight = DEVICE_HEIGHT;
-  const appWidth = DEVICE_WIDTH;
-
   const [tag, setTag] = useState('');
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 셀랙터 on/off 훅
   const [form, setForm] = useState(initFormState);
@@ -53,12 +49,16 @@ const CommunityRegister = () => {
   const isFormComplete =
     form.community && form.title.length !== 0 && form.content.length !== 0;
 
+  const registerImageViewHeight = 84;
+
+  const paddingX = 36;
+
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={0}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+    <KeyboardAwareScrollView>
       <SafeAreaView>
-        <ScrollView bgColor={colors.grayScale['0']} minHeight={appHeight - 114}>
+        <ScrollView
+          bgColor={colors.grayScale['0']}
+          minHeight={APP_HEIGHT - registerImageViewHeight}>
           <Header
             title={`게시글 ${formType === 'REGISTER' ? '작성' : '수정'}`}
             leftButton={
@@ -82,7 +82,7 @@ const CommunityRegister = () => {
                         justifyContent={'center'}
                         alignItems="center"
                         borderRadius={8}
-                        w={appWidth - 36}
+                        w={APP_WIDTH - paddingX}
                         h="44px"
                         bgColor={'#1A1E27CC'}>
                         <Text fontSize={'14px'} color={colors.grayScale['0']}>
@@ -174,7 +174,7 @@ const CommunityRegister = () => {
           pt="12px"
           pb="52px"
           pl="18px"
-          h="114px"
+          h={`${registerImageViewHeight}px`}
           bgColor={colors.grayScale['0']}
           borderTopWidth={1}
           borderTopColor={colors.grayScale['30']}>
@@ -185,7 +185,7 @@ const CommunityRegister = () => {
           </Text>
         </HStack>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

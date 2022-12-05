@@ -13,7 +13,7 @@ import DownIcon from '~/assets/icons/down.svg';
 import {colors} from '~/theme/theme';
 import {BackButton} from '../button';
 import CheckIcon from '~/assets/icons/check-20.svg';
-import {DEVICE_WIDTH} from '~/utils/dimension';
+import {APP_WIDTH} from '~/utils/dimension';
 import Button from '~/components/common/button';
 import _ from 'lodash';
 
@@ -117,7 +117,7 @@ function Selector({
                         : () => onClickItem(i)
                     }>
                     <HStack
-                      w={DEVICE_WIDTH - 36}
+                      w={APP_WIDTH - 36}
                       borderBottomWidth={1}
                       borderBottomColor={
                         selectedIndex === i
