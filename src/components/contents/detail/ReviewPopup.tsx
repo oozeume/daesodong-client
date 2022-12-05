@@ -39,6 +39,7 @@ function ReviewPopup({
         w={'100%'}
         borderTopRadius={'20px'}
         borderBottomRadius={'none'}
+        bgColor={colors.grayScale[0]}
         mb={0}
         mt={'auto'}>
         <VStack pt="28px" px={'18px'}>

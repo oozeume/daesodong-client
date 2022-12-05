@@ -132,12 +132,22 @@ const ContentsMain = () => {
 
       {isTooltipOpen && (
         <TooltipImage
-          style={{position: 'absolute', bottom: 78, right: 24, zIndex: 99}}
+          style={{
+            position: 'absolute',
+            bottom: Platform.OS === 'android' ? 78 : 110,
+            right: 24,
+            zIndex: 99,
+          }}
         />
       )}
       <FloatingButtonImage
         onPress={onOpen}
-        style={{position: 'absolute', bottom: 20, right: 18, zIndex: 99}}
+        style={{
+          position: 'absolute',
+          bottom: Platform.OS === 'android' ? 20 : 52,
+          right: 18,
+          zIndex: 99,
+        }}
         fill={colors.fussOrange[0]}
       />
     </SafeAreaView>
