@@ -28,6 +28,7 @@ import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
 import CommunityDetail from '~/pages/community/detail';
 import FindEmail from '~/pages/login/findEmail';
+import CommunityRegister from '~/pages/community/register';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -162,6 +163,7 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
+        <Stack.Screen name="CommunityRegister" component={CommunityRegister} />
       </Stack.Navigator>
     </NavigationContainer>
   );

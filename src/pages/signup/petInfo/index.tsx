@@ -8,7 +8,7 @@ import StageTextBox from '~/components/common/stage/StageTextBox';
 import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ParamListBase} from '@react-navigation/native';
-import {DEVICE_HEIGHT} from '~/utils/dimension';
+import {APP_HEIGHT} from '~/utils/dimension';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {HEADER_HEIGHT} from '~/constants/heights';
 import Intro from '~/components/signup/petInfo/Intro';
@@ -83,7 +83,7 @@ function PetInfoRegister({navigation}: Props) {
         <Stack
           position={'relative'}
           backgroundColor={colors.grayScale[0]}
-          h={DEVICE_HEIGHT - HEADER_HEIGHT - statusbarHeight}
+          h={APP_HEIGHT - HEADER_HEIGHT - statusbarHeight}
           alignItems={'center'}
           justifyContent={'space-between'}>
           <Stack>

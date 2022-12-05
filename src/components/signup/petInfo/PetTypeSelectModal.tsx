@@ -2,7 +2,7 @@ import {Actionsheet, HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {FlatList, SafeAreaView, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
-import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/utils/dimension';
+import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 import CheckIcon from '~/assets/icons/check-20.svg';
 import {CloseButton} from '~/components/hospital/review/register/button';
 import SearchIcon from '~/assets/icons/search.svg';
@@ -84,12 +84,12 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose} paddingBottom={0}>
       <Actionsheet.Content
-        maxHeight={DEVICE_HEIGHT}
-        height={DEVICE_HEIGHT}
-        w={DEVICE_WIDTH}
+        maxHeight={APP_HEIGHT}
+        height={APP_HEIGHT}
+        w={APP_WIDTH}
         backgroundColor={colors.grayScale[0]}>
         <SafeAreaView style={{width: '100%'}}>
-          <Stack h={DEVICE_HEIGHT - statusbarHeight}>
+          <Stack h={APP_HEIGHT - statusbarHeight}>
             {isPetTypeEmpty ? (
               <>
                 <Text>
@@ -152,7 +152,7 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
 
                   <FlatList
                     style={{
-                      height: DEVICE_HEIGHT - statusbarHeight - 200,
+                      height: APP_HEIGHT - statusbarHeight - 200,
                     }}
                     data={DATA}
                     keyExtractor={item => item.id}
@@ -168,7 +168,7 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
                         }
                         onPress={() => setSelectedItem(item)}>
                         <HStack
-                          w={`${DEVICE_WIDTH - 36}px`}
+                          w={`${APP_WIDTH - 36}px`}
                           justifyContent={'space-between'}
                           alignItems={'center'}>
                           <HStack alignItems={'center'} space={'10px'}>

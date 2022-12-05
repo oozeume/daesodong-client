@@ -1,5 +1,6 @@
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {FormType} from '../\bcommunity';
 
 /**
  * @description script 설명
@@ -47,6 +48,7 @@ export type RootStackParamList = {
 
   Community: undefined;
   CommunityDetail: undefined;
+  CommunityRegister?: FormType;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
