@@ -1,6 +1,6 @@
 import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
-import {Dimensions, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
@@ -22,11 +22,6 @@ const Comment = ({
   isBest,
   commentType = 'default',
 }: Props) => {
-  const commentWidth = Dimensions.get('screen').width - 36;
-
-  // 답글 내용 길이 값
-  const recommentWidth = commentWidth - 28;
-
   return (
     <Box
       px="18px"
@@ -42,7 +37,7 @@ const Comment = ({
       {/* 답글 표시 아이콘 */}
       {commentType === 'reply' && <ReplyIcon style={{marginRight: 12}} />}
 
-      <Box width={commentType === 'reply' ? recommentWidth : commentWidth}>
+      <Box flex={1}>
         <HStack justifyContent={'space-between'} alignItems="center">
           <HStack alignItems={'center'}>
             <AvatarIcon
