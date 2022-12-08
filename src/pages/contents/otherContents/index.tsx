@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import ContentItem from '~/components/contents/detail/ContentItem';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
+import {FlatList} from 'react-native-gesture-handler';
 
 /**
  *@description 이 시리즈의 다른 이야기 페이지
@@ -24,6 +25,7 @@ const OtherContents = () => {
   return (
     <SafeAreaView>
       <ScrollView
+        nestedScrollEnabled
         bounces={false}
         bgColor={colors.grayScale['0']}
         minHeight={'100%'}>
@@ -72,11 +74,12 @@ const OtherContents = () => {
 
         {/* 다른 컨텐츠 리스트 뷰 */}
         <Box mb="24px" px="18px">
-          {['', '', '', '', '', '', '', '', ''].map((item, i) => (
-            <React.Fragment key={i}>
-              <ContentItem />
-            </React.Fragment>
-          ))}
+          <FlatList
+            nestedScrollEnabled
+            data={['', '', '', '', '', '', '', '', '']}
+            renderItem={ContentItem}
+            keyExtractor={(item, index) => String(index)}
+          />
         </Box>
       </ScrollView>
     </SafeAreaView>

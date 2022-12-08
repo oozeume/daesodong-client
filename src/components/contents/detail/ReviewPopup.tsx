@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   Box,
   Center,
   HStack,
-  Modal,
   Pressable,
   Text,
   TextArea,
   VStack,
 } from 'native-base';
 import {colors} from '~/theme/theme';
+import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
+import {Modal} from 'react-native';
+import {APP_HEIGHT} from '~/utils/dimension';
 
 interface Props {
   visible: boolean;
@@ -23,6 +25,7 @@ interface Props {
 /**
  *@description 컨텐츠 리뷰 팝업 (ex. 무엇이 아쉬우셨나요?)
  *@param onOK - 대소동 팀에게 전달 버튼 핸들러
+ *@param onCancel - 취소 버튼 핸들러
  *@param exampleTextList - 질문 예시 리스트
  */
 function ReviewPopup({
@@ -33,16 +36,37 @@ function ReviewPopup({
   exampleTextList,
   placeholder,
 }: Props) {
+  const keyobardHeight = useGetKeyboardHeight();
+
+  const inputRef = useRef();
+
+  // 대소동팀에게 전달, 취소 버튼
+  const buttonListPaddingBottom = 20;
+
+  const modalBottom = keyobardHeight - buttonListPaddingBottom;
+
   return (
-    <Modal w={'100%'} isOpen={visible} size={'full'}>
-      <Modal.Content
+    <Modal visible={visible} transparent>
+      <Pressable
+        width="100%"
+        height={APP_HEIGHT}
+        bgColor={colors.scrim['60']}
+        onPress={onCancel}
+        position="absolute"
+        zIndex={0}
+      />
+
+      <Center
+        p={0}
         w={'100%'}
         borderTopRadius={'20px'}
         borderBottomRadius={'none'}
         bgColor={colors.grayScale[0]}
         mb={0}
-        mt={'auto'}>
-        <VStack pt="28px" px={'18px'}>
+        mt={'auto'}
+        pb={'40px'}
+        bottom={keyobardHeight && modalBottom}>
+        <VStack pt="28px" px={'18px'} w={'100%'}>
           {/* 모달 헤더 */}
           <Box px="18px" mb="24px">
             <Center>
@@ -56,6 +80,7 @@ function ReviewPopup({
           </Box>
 
           <Box
+            w="100%"
             mb="12px"
             pt="16px"
             pb="18px"
@@ -83,6 +108,7 @@ function ReviewPopup({
           </Box>
 
           <TextArea
+            autoFocus
             bgColor={colors.grayScale[0]}
             autoCompleteType={undefined}
             borderRadius={8}
@@ -92,12 +118,14 @@ function ReviewPopup({
             mb="12px"
             px={'16px'}
             py={'14px'}
+            fontSize={'15px'}
             placeholder={placeholder}
             placeholderTextColor={colors.grayScale['40']}
+            ref={inputRef}
           />
 
           {/* 버튼 리스트 */}
-          <HStack h={'104px'} pt="12px" pb="40px">
+          <HStack pt="12px">
             <Pressable
               flex={1}
               bgColor={colors.grayScale[10]}
@@ -124,7 +152,7 @@ function ReviewPopup({
             </Pressable>
           </HStack>
         </VStack>
-      </Modal.Content>
+      </Center>
     </Modal>
   );
 }

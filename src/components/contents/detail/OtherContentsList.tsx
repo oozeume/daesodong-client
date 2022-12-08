@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {Box, Center, Pressable, Text} from 'native-base';
 import React from 'react';
+import {FlatList} from 'react-native-gesture-handler';
 import {NavigationHookProp} from '~/../types/navigator';
 import {colors} from '~/theme/theme';
 import ContentItem from './ContentItem';
@@ -27,11 +28,12 @@ const OtherContentsList = () => {
       </Text>
 
       <Box mb="24px">
-        {['', '', ''].map((item, i) => (
-          <React.Fragment key={i}>
-            <ContentItem />
-          </React.Fragment>
-        ))}
+        <FlatList
+          nestedScrollEnabled
+          data={['', '', '', '', '', '', '', '', '']}
+          renderItem={ContentItem}
+          keyExtractor={(item, index) => String(index)}
+        />
       </Box>
 
       <Pressable

@@ -7,7 +7,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RouteList} from '~/../types/navigator';
 import Home from '../pages/home';
 import Hospital from '../pages/hospital';
-import Contents from '../pages/contents';
 import Community from '../pages/community';
 import MyPage from '../pages/mypage';
 import SignupSocial from '~/pages/signup/social';
@@ -83,7 +82,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Contents"
-        component={Contents}
+        component={ContentsMain}
         options={{
           tabBarLabel: '콘텐츠',
           headerShown: false,

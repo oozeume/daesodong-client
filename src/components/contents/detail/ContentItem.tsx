@@ -3,17 +3,18 @@ import React from 'react';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
 import {colors} from '~/theme/theme';
-import {useNavigation} from '@react-navigation/native';
-import {NavigationHookProp} from '~/../types/navigator';
+import {StyleSheet} from 'react-native';
+
+interface Props {
+  item: any;
+}
 
 /**
  *@description  컨텐츠 리스트 아이템
  */
-const ContentItem = () => {
-  const navigation = useNavigation<NavigationHookProp>();
-
+const ContentItem = ({item}: Props) => {
   return (
-    <Pressable onPress={() => navigation.navigate('ContentsDetail')}>
+    <Pressable onPress={() => {}}>
       <Box mb="8px">
         <HStack>
           {/* 다른 컨텐츠 이미지 */}
@@ -39,7 +40,7 @@ const ContentItem = () => {
                 width={'14px'}
                 height={'14px'}
                 fill={colors.grayScale['40']}
-                style={{marginRight: 4}}
+                style={styles.icon}
               />
               <Text mr="16px" fontSize={'12px'} color={colors.grayScale['50']}>
                 100
@@ -49,7 +50,7 @@ const ContentItem = () => {
                 width={'14px'}
                 height={'14px'}
                 fill={colors.grayScale['40']}
-                style={{marginRight: 4}}
+                style={styles.icon}
               />
               <Text fontSize={'12px'} color={colors.grayScale['50']}>
                 100
@@ -61,5 +62,11 @@ const ContentItem = () => {
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  icon: {
+    marginRight: 4,
+  },
+});
 
 export default ContentItem;

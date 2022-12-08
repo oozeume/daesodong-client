@@ -11,6 +11,8 @@ interface Props {
  *@description 컨텐츠 리뷰 뷰
  */
 const ContentsReivewView = ({onOpenModal}: Props) => {
+  const [isHelpfulContent, setHelpfulContent] = useState(false);
+  const [isDisappointContent, setDisappointContent] = useState(false);
   const [contentReview, setContentReview] = useState(0);
 
   return (
@@ -33,21 +35,19 @@ const ContentsReivewView = ({onOpenModal}: Props) => {
             h={'50px'}
             mr="8px"
             bgColor={
-              contentReview === 1
+              isHelpfulContent
                 ? colors.fussOrange['-40']
                 : colors.grayScale['0']
             }
             borderColor={
-              contentReview === 1
-                ? colors.fussOrange['0']
-                : colors.grayScale['30']
+              isHelpfulContent ? colors.fussOrange['0'] : colors.grayScale['30']
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            onPress={() => setContentReview(1)}>
+            onPress={() => setHelpfulContent(true)}>
             <Text
               color={
-                contentReview === 1
+                isHelpfulContent
                   ? colors.fussOrange['0']
                   : colors.grayScale['50']
               }
@@ -61,24 +61,24 @@ const ContentsReivewView = ({onOpenModal}: Props) => {
             flex={1}
             h={'50px'}
             bgColor={
-              contentReview === 2
+              isDisappointContent
                 ? colors.fussOrange['-40']
                 : colors.grayScale['0']
             }
             borderColor={
-              contentReview === 2
+              isDisappointContent
                 ? colors.fussOrange['0']
                 : colors.grayScale['30']
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
             onPress={() => {
-              setContentReview(2);
+              setDisappointContent(true);
               onOpenModal();
             }}>
             <Text
               color={
-                contentReview === 2
+                isDisappointContent
                   ? colors.fussOrange['0']
                   : colors.grayScale['50']
               }

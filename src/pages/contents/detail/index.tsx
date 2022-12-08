@@ -17,13 +17,13 @@ import MessageFillIcon from '~/assets/icons/message_fill.svg';
 
 import {colors} from '~/theme/theme';
 import Header from '~/components/hospital/review/register/Header';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import TagList from '~/components/contents/detail/TagList';
 import OtherContentsList from '~/components/contents/detail/OtherContentsList';
 import ContentsReivewView from '~/components/contents/detail/ContentsReivewView';
 import ReviewPopup from '~/components/contents/detail/ReviewPopup';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {StyleSheet} from 'react-native';
 
 /**
  *@description 컨텐츠 상세
@@ -38,195 +38,197 @@ const ContentsDetail = () => {
   const [scrollHeight, setScrollHeight] = useState<number>(0);
 
   return (
-    <KeyboardAwareScrollView bounces={false}>
-      <SafeAreaView>
-        <ScrollView
-          bgColor={colors.grayScale['0']}
-          minHeight={'100%'}
-          onScrollBeginDrag={event => {
-            console.log(event.nativeEvent);
-            if (!scrollViewHeight)
-              setScrollViewHeight(
-                event.nativeEvent.contentSize.height -
-                  event.nativeEvent.layoutMeasurement.height,
-              );
-          }}
-          scrollEventThrottle={50}
-          onScroll={event => {
-            setScrollHeight(event.nativeEvent.contentOffset.y);
-          }}
-          onScrollEndDrag={() => setBottomBarVisible(true)}>
-          <Header
-            title={``}
-            leftButton={
-              <Pressable
-                position="absolute"
-                left="18px"
-                zIndex={1}
-                onPress={() => navigation.goBack()}>
-                <BackIcon />
-              </Pressable>
-            }
-          />
-
-          {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
-          <ReviewPopup
-            visible={isOpen}
-            onOK={onClose}
-            onCancel={onClose}
-            title={'무엇이 아쉬우셨나요?🥲'}
-            exampleTextList={[
-              '소개한 내용의 예시를 더 자세히 알고 싶어요!',
-              '다른 동물에 관련된 정보고 알고 싶어요!',
-            ]}
-            placeholder={
-              '콘텐츠를 읽으면서 궁금했던 점을 알려주시면 대소동팀이 더 열심히 공부해서 알려드릴게요.'
-            }
-          />
-
-          {/* 콘텐츠 이미지 */}
-          <Box mb="53px" height={'375px'} bgColor={colors.grayScale['10']} />
-
-          <Box mb="44px" px="20px">
-            <Center>
-              {/* 태그 리스트 */}
-              <TagList list={['텍스트', '텍스트', '텍스트']} />
-
-              {/* 콘텐츠 제목 */}
-              <Text
-                mb="12px"
-                fontSize={'20px'}
-                fontWeight={700}
-                color={colors.grayScale['80']}>
-                콘텐츠 제목 텍스트가 노출됩니다
-              </Text>
-
-              {/* 콘텐츠 작성일 */}
-              <Text
-                mb="48px"
-                fontSize={'13px'}
-                fontWeight={400}
-                color={colors.grayScale['60']}>
-                YYYY.MM.DD
-              </Text>
-
-              {/* 콘텐츠 본문 */}
-              <Box>
-                <Text
-                  mb="44px"
-                  fontSize={'15px'}
-                  color={colors.grayScale['70']}>
-                  {dummyText}
-                </Text>
-              </Box>
-            </Center>
-          </Box>
-
-          {/* 콘텐츠 이미지 */}
-          <Box mb="53px" height={'240px'} bgColor={colors.grayScale['10']} />
-
-          <Box mb="80px" px="18px">
-            <Center>
-              {/* 콘텐츠 소제목 */}
-              <Text
-                w="100%"
-                mb="12px"
-                fontSize={'18px'}
-                fontWeight={700}
-                color={colors.grayScale['80']}>
-                소제목 텍스트가 노출됩니다
-              </Text>
-
-              {/* 콘텐츠 본문 */}
-              <Box>
-                <Text
-                  mb="44px"
-                  fontSize={'15px'}
-                  color={colors.grayScale['70']}>
-                  {dummyText}
-                </Text>
-              </Box>
-            </Center>
-          </Box>
-
-          {/* 컨텐츠 평가 뷰 */}
-          <ContentsReivewView onOpenModal={onOpen} />
-
-          {/* 다른 컨텐츠 리스트 뷰 */}
-          <OtherContentsList />
-        </ScrollView>
-
-        {/* 하단 북마크, 댓글, 공유하기 버튼 뷰 */}
-        {isBottomBarVisible && (
-          <Box
-            w="100%"
-            position={'absolute'}
-            bottom="0px"
-            bgColor={colors.grayScale['0']}
-            h="86px"
-            zIndex={99}
-            pl="21"
-            pr="18px"
-            pt="19px">
-            <View
-              position={'absolute'}
-              top={0}
+    <SafeAreaView>
+      <ScrollView
+        nestedScrollEnabled
+        bounces={false}
+        style={{backgroundColor: colors.grayScale['0'], minHeight: '100%'}}
+        onScrollBeginDrag={event => {
+          if (!scrollViewHeight)
+            setScrollViewHeight(
+              event.nativeEvent.contentSize.height -
+                event.nativeEvent.layoutMeasurement.height,
+            );
+        }}
+        scrollEventThrottle={50}
+        onScroll={event => {
+          setScrollHeight(event.nativeEvent.contentOffset.y);
+        }}
+        onScrollEndDrag={() => setBottomBarVisible(true)}>
+        <Header
+          title={``}
+          leftButton={
+            <Pressable
+              position="absolute"
+              left="18px"
               zIndex={1}
-              w={
-                scrollViewHeight
-                  ? `${(scrollHeight / scrollViewHeight) * 110}%`
-                  : 0
-              }
-              h="2px"
-              bgColor={colors.fussOrange['0']}
-            />
+              onPress={() => navigation.goBack()}>
+              <BackIcon />
+            </Pressable>
+          }
+        />
 
-            <HStack justifyContent={'space-between'}>
-              <HStack>
-                <Pressable mr="6px">
-                  <BookmarkIcon
-                    width={'24px'}
-                    height={'24px'}
-                    fill={colors.fussOrange['0']}
-                  />
-                  <Text
-                    mr="16px"
-                    fontSize={'15px'}
-                    color={colors.grayScale['60']}>
-                    100
-                  </Text>
-                </Pressable>
+        {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
+        <ReviewPopup
+          visible={isOpen}
+          onOK={onClose}
+          onCancel={onClose}
+          title={'무엇이 아쉬우셨나요?🥲'}
+          exampleTextList={[
+            '소개한 내용의 예시를 더 자세히 알고 싶어요!',
+            '다른 동물에 관련된 정보고 알고 싶어요!',
+          ]}
+          placeholder={
+            '콘텐츠를 읽으면서 궁금했던 점을 알려주시면 대소동팀이 더 열심히 공부해서 알려드릴게요.'
+          }
+        />
 
-                <Pressable
-                  onPress={() => navigation.navigate('ContentsCommentsList')}>
-                  <MessageFillIcon
-                    width={'24px'}
-                    height={'24px'}
-                    fill={colors.grayScale['40']}
-                    style={{marginRight: 6}}
-                  />
-                  <Text fontSize={'15px'} color={colors.grayScale['60']}>
-                    100
-                  </Text>
-                </Pressable>
-              </HStack>
+        {/* 콘텐츠 이미지 */}
+        <Box mb="53px" height={'375px'} bgColor={colors.grayScale['10']} />
 
-              <HStack>
-                <ShareFillIcon
-                  fill={colors.grayScale['70']}
-                  style={{marginRight: 10}}
+        <Box mb="44px" px="20px">
+          <Center>
+            {/* 태그 리스트 */}
+            <TagList list={['텍스트', '텍스트', '텍스트']} />
+
+            {/* 콘텐츠 제목 */}
+            <Text
+              mb="12px"
+              fontSize={'20px'}
+              fontWeight={700}
+              color={colors.grayScale['80']}>
+              콘텐츠 제목 텍스트가 노출됩니다
+            </Text>
+
+            {/* 콘텐츠 작성일 */}
+            <Text
+              mb="48px"
+              fontSize={'13px'}
+              fontWeight={400}
+              color={colors.grayScale['60']}>
+              YYYY.MM.DD
+            </Text>
+
+            {/* 콘텐츠 본문 */}
+            <Box>
+              <Text mb="44px" fontSize={'15px'} color={colors.grayScale['70']}>
+                {dummyText}
+              </Text>
+            </Box>
+          </Center>
+        </Box>
+
+        {/* 콘텐츠 이미지 */}
+        <Box mb="53px" height={'240px'} bgColor={colors.grayScale['10']} />
+
+        <Box mb="80px" px="18px">
+          <Center>
+            {/* 콘텐츠 소제목 */}
+            <Text
+              w="100%"
+              mb="12px"
+              fontSize={'18px'}
+              fontWeight={700}
+              color={colors.grayScale['80']}>
+              소제목 텍스트가 노출됩니다
+            </Text>
+
+            {/* 콘텐츠 본문 */}
+            <Box>
+              <Text mb="44px" fontSize={'15px'} color={colors.grayScale['70']}>
+                {dummyText}
+              </Text>
+            </Box>
+          </Center>
+        </Box>
+
+        {/* 컨텐츠 평가 뷰 */}
+        <ContentsReivewView onOpenModal={onOpen} />
+
+        {/* 다른 컨텐츠 리스트 뷰 */}
+        <OtherContentsList />
+      </ScrollView>
+
+      {/* 하단 북마크, 댓글, 공유하기 버튼 뷰 */}
+      {isBottomBarVisible && (
+        <Box
+          w="100%"
+          position={'absolute'}
+          bottom="0px"
+          bgColor={colors.grayScale['0']}
+          h="86px"
+          zIndex={99}
+          pl="21"
+          pr="18px"
+          pt="19px">
+          <View
+            position={'absolute'}
+            top={0}
+            zIndex={1}
+            w={
+              scrollViewHeight
+                ? `${(scrollHeight / scrollViewHeight) * 110}%`
+                : 0
+            }
+            h="2px"
+            bgColor={colors.fussOrange['0']}
+          />
+
+          <HStack justifyContent={'space-between'}>
+            <HStack>
+              <Pressable mr="6px">
+                <BookmarkIcon
+                  width={'24px'}
+                  height={'24px'}
+                  fill={colors.fussOrange['0']}
                 />
-
-                <Text fontSize={'15px'} color={colors.grayScale['70']}>
-                  친구에게 공유
+                <Text
+                  mr="16px"
+                  fontSize={'15px'}
+                  color={colors.grayScale['60']}>
+                  100
                 </Text>
-              </HStack>
+              </Pressable>
+
+              <Pressable
+                onPress={() => navigation.navigate('ContentsCommentsList')}>
+                <MessageFillIcon
+                  width={'24px'}
+                  height={'24px'}
+                  fill={colors.grayScale['40']}
+                  style={styles.messageFillIcon}
+                />
+                <Text fontSize={'15px'} color={colors.grayScale['60']}>
+                  100
+                </Text>
+              </Pressable>
             </HStack>
-          </Box>
-        )}
-      </SafeAreaView>
-    </KeyboardAwareScrollView>
+
+            <HStack>
+              <ShareFillIcon
+                fill={colors.grayScale['70']}
+                style={styles.shareFillIcon}
+              />
+
+              <Text fontSize={'15px'} color={colors.grayScale['70']}>
+                친구에게 공유
+              </Text>
+            </HStack>
+          </HStack>
+        </Box>
+      )}
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  shareFillIcon: {
+    marginRight: 4,
+  },
+
+  messageFillIcon: {
+    marginRight: 6,
+  },
+});
 
 export default ContentsDetail;

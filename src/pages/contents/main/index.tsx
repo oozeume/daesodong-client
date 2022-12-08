@@ -7,11 +7,13 @@ import FloatingButtonImage from '~/assets/images/floating_button_image.svg';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
 
 import {colors} from '~/theme/theme';
-import {Platform, TextInput} from 'react-native';
+import {Platform, StyleSheet, TextInput} from 'react-native';
 import ContentItem from '~/components/contents/detail/ContentItem';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import FilterButton from '~/components/contents/main/FilterButton';
 import ReviewPopup from '~/components/contents/detail/ReviewPopup';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {FlatList} from 'react-native-gesture-handler';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -33,7 +35,10 @@ const ContentsMain = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView bounces={false} bgColor={colors.grayScale[0]}>
+      <KeyboardAwareScrollView
+        nestedScrollEnabled
+        bounces={false}
+        style={{backgroundColor: colors.grayScale[0]}}>
         {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
         <ReviewPopup
           visible={isOpen}
@@ -68,7 +73,7 @@ const ContentsMain = () => {
                 color: colors.grayScale[40],
               }}
             />
-            <SearchIcon style={{marginLeft: 12}} />
+            <SearchIcon style={styles.searchIcon} />
           </HStack>
         </Box>
 
@@ -122,36 +127,43 @@ const ContentsMain = () => {
 
         {/* 다른 컨텐츠 리스트 뷰 */}
         <Box mb="24px" px="18px">
-          {['', '', '', '', '', '', '', '', ''].map((item, i) => (
-            <React.Fragment key={i}>
-              <ContentItem />
-            </React.Fragment>
-          ))}
+          <FlatList
+            nestedScrollEnabled
+            data={['', '', '', '', '', '', '', '', '']}
+            renderItem={ContentItem}
+            keyExtractor={(item, index) => String(index)}
+          />
         </Box>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
-      {isTooltipOpen && (
-        <TooltipImage
-          style={{
-            position: 'absolute',
-            bottom: Platform.OS === 'android' ? 78 : 110,
-            right: 24,
-            zIndex: 99,
-          }}
-        />
-      )}
+      {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
       <FloatingButtonImage
         onPress={onOpen}
-        style={{
-          position: 'absolute',
-          bottom: Platform.OS === 'android' ? 20 : 52,
-          right: 18,
-          zIndex: 99,
-        }}
+        style={styles.floatingButtonImage}
         fill={colors.fussOrange[0]}
       />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  floatingButtonImage: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? 20 : 52,
+    right: 18,
+    zIndex: 99,
+  },
+
+  tooltipImage: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? 78 : 110,
+    right: 24,
+    zIndex: 99,
+  },
+
+  searchIcon: {
+    marginLeft: 12,
+  },
+});
 
 export default ContentsMain;
