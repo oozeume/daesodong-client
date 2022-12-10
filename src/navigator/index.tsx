@@ -33,6 +33,10 @@ import OtherContents from '~/pages/contents/otherContents';
 import ContentsCommentsList from '~/pages/contents/commentsList';
 import ContentsRecommentsList from '~/pages/contents/recommentsList';
 import ContentsMain from '~/pages/contents/main';
+import Header from '~/components/common/header/Header';
+
+import BackIcon from '~/assets/icon/back_icon.svg';
+import DeleteIcon from '~/assets/icons/delete.svg';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -167,15 +171,64 @@ const AppNavigator = () => {
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
         <Stack.Screen name="CommunityRegister" component={CommunityRegister} />
-        <Stack.Screen name="ContentsDetail" component={ContentsDetail} />
-        <Stack.Screen name="OtherContents" component={OtherContents} />
+        <Stack.Screen
+          name="ContentsDetail"
+          component={ContentsDetail}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="OtherContents"
+          component={OtherContents}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'시리즈 이름'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
         <Stack.Screen
           name="ContentsCommentsList"
           component={ContentsCommentsList}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'댓글 23'}
+                rightButton={
+                  <DeleteIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
         />
         <Stack.Screen
           name="ContentsRecommentsList"
           component={ContentsRecommentsList}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'답글 23'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
         />
         <Stack.Screen name="ContentsMain" component={ContentsMain} />
       </Stack.Navigator>

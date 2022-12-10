@@ -1,4 +1,4 @@
-import {Actionsheet, HStack, Stack, Text} from 'native-base';
+import {Actionsheet, FlatList, HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
@@ -9,7 +9,6 @@ import SearchIcon from '~/assets/icons/search.svg';
 import Tag from '~/components/common/Tag';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
-import {FlatList} from 'react-native-gesture-handler';
 
 interface Props {
   isOpen: boolean;

@@ -4,26 +4,30 @@ import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
 import {colors} from '~/theme/theme';
 import {StyleSheet} from 'react-native';
+import {ColorType} from 'native-base/lib/typescript/components/types';
 
 interface Props {
   item: any;
+  onPress: () => void;
+  detailViewBackgroundColor?: ColorType;
 }
 
 /**
  *@description  컨텐츠 리스트 아이템
  */
-const ContentItem = ({item}: Props) => {
+const ContentItem = ({item, onPress, detailViewBackgroundColor}: Props) => {
   return (
-    <Pressable onPress={() => {}}>
+    <Pressable onPress={onPress} px="18px">
       <Box mb="8px">
         <HStack>
           {/* 다른 컨텐츠 이미지 */}
           <View w="92px" h="92px" bgColor={colors.grayScale['20']}></View>
 
+          {/* detail view */}
           <VStack
             flex={1}
             p="12px"
-            bgColor={colors.grayScale['10']}
+            bgColor={detailViewBackgroundColor || colors.grayScale['10']}
             justifyContent="space-between">
             <VStack>
               <Text mb="2px" fontSize={'12px'} color={colors.grayScale['70']}>

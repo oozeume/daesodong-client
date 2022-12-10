@@ -11,9 +11,11 @@ interface Props {
  *@description 컨텐츠 리뷰 뷰
  */
 const ContentsReivewView = ({onOpenModal}: Props) => {
+  // 도움이 되었어요 버튼 on/off state
   const [isHelpfulContent, setHelpfulContent] = useState(false);
+
+  // 쪼금 아쉬워요 버튼 on/off state
   const [isDisappointContent, setDisappointContent] = useState(false);
-  const [contentReview, setContentReview] = useState(0);
 
   return (
     <Box mb="120px" px="18px">
@@ -44,7 +46,10 @@ const ContentsReivewView = ({onOpenModal}: Props) => {
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            onPress={() => setHelpfulContent(true)}>
+            onPress={() => {
+              setHelpfulContent(true);
+              setDisappointContent(false);
+            }}>
             <Text
               color={
                 isHelpfulContent
@@ -74,6 +79,7 @@ const ContentsReivewView = ({onOpenModal}: Props) => {
             borderRadius={'8px'}
             onPress={() => {
               setDisappointContent(true);
+              setHelpfulContent(false);
               onOpenModal();
             }}>
             <Text

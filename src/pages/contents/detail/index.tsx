@@ -10,13 +10,10 @@ import {
 } from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import BackIcon from '~/assets/icons/back.svg';
 import ShareFillIcon from '~/assets/icons/share_fill.svg';
 import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
-
 import {colors} from '~/theme/theme';
-import Header from '~/components/hospital/review/register/Header';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import TagList from '~/components/contents/detail/TagList';
@@ -33,6 +30,7 @@ const ContentsDetail = () => {
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 '무엇이 아쉬웠나요' 리뷰 모달 on/off 훅
   const dummyText = `무성할 하나에 비둘기, 없이 멀리 라이너 별에도 계십니다. 불러 이름과, 이국 토끼, 묻힌 프랑시스 까닭입니다. 한 새워 노루, 나는 애기 쉬이 많은 버리었습니다. 가난한 차 밤이 어머님, 흙으로 피어나듯이 이름을 봅니다. 어머님, 노새, 어머님, 써 걱정도 패, 멀리 별 있습니다.`;
 
+  // 하단 북마크, 댓글, 공유하기 버튼 뷰 on/off state
   const [isBottomBarVisible, setBottomBarVisible] = useState(false);
   const [scrollViewHeight, setScrollViewHeight] = useState<number>();
   const [scrollHeight, setScrollHeight] = useState<number>(0);
@@ -55,19 +53,6 @@ const ContentsDetail = () => {
           setScrollHeight(event.nativeEvent.contentOffset.y);
         }}
         onScrollEndDrag={() => setBottomBarVisible(true)}>
-        <Header
-          title={``}
-          leftButton={
-            <Pressable
-              position="absolute"
-              left="18px"
-              zIndex={1}
-              onPress={() => navigation.goBack()}>
-              <BackIcon />
-            </Pressable>
-          }
-        />
-
         {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
         <ReviewPopup
           visible={isOpen}
