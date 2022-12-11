@@ -7,7 +7,7 @@ import {colors} from '~/theme/theme';
 import DownIcon from '~/assets/icons/down.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {FlatList} from 'react-native-gesture-handler';
-import CommunityContents from './main/CommunityContents';
+import CommunityContents from '../../components/community/main/CommunityContents';
 
 /**
  *@description 커뮤니티 메인페이지
