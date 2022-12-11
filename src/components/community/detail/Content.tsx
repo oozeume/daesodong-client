@@ -7,86 +7,102 @@ import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
 
+interface Props {
+  visibleUserInfo?: boolean;
+  visibleLike?: boolean;
+  userInfo?: JSX.Element;
+  visibleTag?: boolean;
+  viewAllButton?: JSX.Element;
+}
+
 /**
  *@description 커뮤니티 게시글 내용
  */
-const CommunityContent = () => {
+const CommunityContent = ({
+  visibleUserInfo = false,
+  visibleLike = false,
+  visibleTag = false,
+  viewAllButton,
+  userInfo,
+}: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
   return (
-    <Box px="18px" mb="8px">
+    <Box px="18px" mb="8px" bgColor={colors.grayScale[0]}>
       {/* 글쓴이 정보 */}
-      <HStack
-        pt="8px"
-        pb="20px"
-        borderBottomWidth={1}
-        borderBottomColor={colors.grayScale['10']}>
-        {/* 유저 이미지 */}
+      {visibleUserInfo && (
+        <HStack
+          pt="8px"
+          pb="20px"
+          borderBottomWidth={1}
+          borderBottomColor={colors.grayScale['10']}>
+          {/* 유저 이미지 */}
 
-        <HStack w="100%">
-          <AvatarIcon
-            width={44}
-            height={44}
-            fill={colors.grayScale['30']}
-            style={{marginRight: 12}}
-          />
+          <HStack w="100%">
+            <AvatarIcon
+              width={44}
+              height={44}
+              fill={colors.grayScale['30']}
+              style={{marginRight: 12}}
+            />
 
-          <VStack>
-            <HStack mr="12px" alignItems={'center'} fontWeight={700}>
-              <Text color={colors.grayScale['80']} fontSize={'14px'} mr="4px">
-                닉네임
-              </Text>
-
-              <View
-                borderWidth={1}
-                borderStyle="dotted"
-                borderColor={colors.grayScale['20']}
-                px="6px">
-                <Text color={colors.grayScale['80']} fontSize={'10px'}>
-                  Blank
+            <VStack>
+              <HStack mr="12px" alignItems={'center'} fontWeight={700}>
+                <Text color={colors.grayScale['80']} fontSize={'14px'} mr="4px">
+                  닉네임
                 </Text>
-              </View>
-            </HStack>
 
-            <HStack alignItems={'center'}>
-              <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                골든햄스터
-              </Text>
+                <View
+                  borderWidth={1}
+                  borderStyle="dotted"
+                  borderColor={colors.grayScale['20']}
+                  px="6px">
+                  <Text color={colors.grayScale['80']} fontSize={'10px'}>
+                    Blank
+                  </Text>
+                </View>
+              </HStack>
 
-              <View
-                backgroundColor={colors.grayScale['30']}
-                h="8px"
-                w="1px"
-                mx="6px"
-              />
+              <HStack alignItems={'center'}>
+                <Text color={colors.grayScale['60']} fontSize={'13px'}>
+                  골든햄스터
+                </Text>
 
-              <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                남아
-              </Text>
+                <View
+                  backgroundColor={colors.grayScale['30']}
+                  h="8px"
+                  w="1px"
+                  mx="6px"
+                />
 
-              <View
-                backgroundColor={colors.grayScale['30']}
-                h="8px"
-                w="1px"
-                mx="6px"
-              />
+                <Text color={colors.grayScale['60']} fontSize={'13px'}>
+                  남아
+                </Text>
 
-              <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                2개월
-              </Text>
-            </HStack>
-          </VStack>
+                <View
+                  backgroundColor={colors.grayScale['30']}
+                  h="8px"
+                  w="1px"
+                  mx="6px"
+                />
 
-          <Text
-            position={'absolute'}
-            right={0}
-            bottom={0}
-            color={colors.grayScale['50']}
-            fontSize={'12px'}>
-            YY.MM.DD
-          </Text>
+                <Text color={colors.grayScale['60']} fontSize={'13px'}>
+                  2개월
+                </Text>
+              </HStack>
+            </VStack>
+
+            <Text
+              position={'absolute'}
+              right={0}
+              bottom={0}
+              color={colors.grayScale['50']}
+              fontSize={'12px'}>
+              YY.MM.DD
+            </Text>
+          </HStack>
         </HStack>
-      </HStack>
+      )}
 
       {/* 내용 */}
       <Box py="20px">
@@ -105,26 +121,25 @@ const CommunityContent = () => {
           까닭입니다.
         </Text>
 
-        <Box
-          bgColor={colors.grayScale['20']}
-          w={imageWidth}
-          h={imageWidth}
-          mb="20px"
-        />
+        {viewAllButton}
 
-        <HStack>
-          <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
-            <Text color={colors.fussYellow['30']}>태그1</Text>
-          </View>
+        <Box bgColor={colors.grayScale['20']} w={imageWidth} h={imageWidth} />
 
-          <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
-            <Text color={colors.fussYellow['30']}>태그1</Text>
-          </View>
+        {visibleTag && (
+          <HStack mt={'20px'}>
+            <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
+              <Text color={colors.fussYellow['30']}>태그1</Text>
+            </View>
 
-          <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
-            <Text color={colors.fussYellow['30']}>태그1</Text>
-          </View>
-        </HStack>
+            <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
+              <Text color={colors.fussYellow['30']}>태그1</Text>
+            </View>
+
+            <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
+              <Text color={colors.fussYellow['30']}>태그1</Text>
+            </View>
+          </HStack>
+        )}
       </Box>
 
       {/* 컨텐츠 헬퍼 */}
@@ -135,17 +150,20 @@ const CommunityContent = () => {
         px="3px"
         borderTopWidth={1}
         borderTopColor={colors.grayScale['10']}>
-        <HStack alignItems={'center'}>
-          <HeartFillIcon fill={colors.grayScale['30']} />
+        {userInfo}
+        {visibleLike && (
+          <HStack alignItems={'center'}>
+            <HeartFillIcon fill={colors.grayScale['30']} />
 
-          <Text mx="4px" fontSize="12px" color={colors.grayScale['60']}>
-            고마워요
-          </Text>
+            <Text mx="4px" fontSize="12px" color={colors.grayScale['60']}>
+              고마워요
+            </Text>
 
-          <Text fontSize="12px" color={colors.grayScale['60']}>
-            100
-          </Text>
-        </HStack>
+            <Text fontSize="12px" color={colors.grayScale['60']}>
+              100
+            </Text>
+          </HStack>
+        )}
 
         <HStack>
           <Pressable mr="16px">

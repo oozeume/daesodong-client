@@ -46,6 +46,7 @@ export type RootStackParamList = {
   SignUpEmail: undefined;
   PetInfoRegister: undefined;
 
+  Community: undefined;
   CommunityDetail: undefined;
   CommunityRegister?: FormType;
 

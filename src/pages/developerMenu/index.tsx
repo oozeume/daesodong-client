@@ -31,6 +31,9 @@ function DeveloperMenu() {
           <Button mb="12px" onPress={() => onMove('SignupSocial')}>
             소셜 회원가입
           </Button>
+          <Button mb="12px" onPress={() => onMove('Community')}>
+            커뮤니티 메인
+          </Button>
           <Button mb="12px" onPress={() => onMove('CommunityDetail')}>
             커뮤니티 상세
           </Button>

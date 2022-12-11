@@ -9,6 +9,7 @@ interface Props {
   left?: number | string;
   placement?: number | string;
   kekabMenuViewStyle?: StyleProp<ViewStyle>;
+  pressableIcon?: JSX.Element;
   handleFirstButton: () => void;
   handleSecondButton: () => void;
   firstButtonName?: string;
@@ -30,6 +31,7 @@ function KekabMenu({
   kekabMenuViewStyle,
   handleFirstButton,
   handleSecondButton,
+  pressableIcon,
   firstButtonName = '수정',
   secondButtonName = '삭제',
   kekabElement,
@@ -45,7 +47,9 @@ function KekabMenu({
       trigger={triggerProps => {
         return (
           <Pressable {...triggerProps}>
-            {kekabElement ?? <KebabMenuIcon fill={colors.grayScale['70']} />}
+            {(pressableIcon || kekabElement) ?? (
+              <KebabMenuIcon fill={colors.grayScale['70']} />
+            )}
           </Pressable>
         );
       }}>
