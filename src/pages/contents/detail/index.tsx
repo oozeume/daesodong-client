@@ -1,0 +1,219 @@
+import {
+  Box,
+  Center,
+  HStack,
+  Pressable,
+  ScrollView,
+  Text,
+  useDisclose,
+  View,
+} from 'native-base';
+import React, {useState} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import ShareFillIcon from '~/assets/icons/share_fill.svg';
+import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
+import MessageFillIcon from '~/assets/icons/message_fill.svg';
+import {colors} from '~/theme/theme';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationHookProp} from '~/../types/navigator';
+import TagList from '~/components/contents/detail/TagList';
+import OtherContentsList from '~/components/contents/detail/OtherContentsList';
+import ContentsReivewView from '~/components/contents/detail/ContentsReivewView';
+import ReviewPopup from '~/components/contents/detail/ReviewPopup';
+import {StyleSheet} from 'react-native';
+
+/**
+ *@description 컨텐츠 상세
+ */
+const ContentsDetail = () => {
+  const navigation = useNavigation<NavigationHookProp>();
+  const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 '무엇이 아쉬웠나요' 리뷰 모달 on/off 훅
+  const dummyText = `무성할 하나에 비둘기, 없이 멀리 라이너 별에도 계십니다. 불러 이름과, 이국 토끼, 묻힌 프랑시스 까닭입니다. 한 새워 노루, 나는 애기 쉬이 많은 버리었습니다. 가난한 차 밤이 어머님, 흙으로 피어나듯이 이름을 봅니다. 어머님, 노새, 어머님, 써 걱정도 패, 멀리 별 있습니다.`;
+
+  // 하단 북마크, 댓글, 공유하기 버튼 뷰 on/off state
+  const [isBottomBarVisible, setBottomBarVisible] = useState(false);
+  const [scrollViewHeight, setScrollViewHeight] = useState<number>();
+  const [scrollHeight, setScrollHeight] = useState<number>(0);
+
+  return (
+    <SafeAreaView>
+      <ScrollView
+        nestedScrollEnabled
+        bounces={false}
+        style={{backgroundColor: colors.grayScale['0'], minHeight: '100%'}}
+        onScrollBeginDrag={event => {
+          if (!scrollViewHeight)
+            setScrollViewHeight(
+              event.nativeEvent.contentSize.height -
+                event.nativeEvent.layoutMeasurement.height,
+            );
+        }}
+        scrollEventThrottle={50}
+        onScroll={event => {
+          setScrollHeight(event.nativeEvent.contentOffset.y);
+        }}
+        onScrollEndDrag={() => setBottomBarVisible(true)}>
+        {/* 무엇이 아쉬웠나요? 리뷰 등록 팝업 */}
+        <ReviewPopup
+          visible={isOpen}
+          onOK={onClose}
+          onCancel={onClose}
+          title={'무엇이 아쉬우셨나요?🥲'}
+          exampleTextList={[
+            '소개한 내용의 예시를 더 자세히 알고 싶어요!',
+            '다른 동물에 관련된 정보고 알고 싶어요!',
+          ]}
+          placeholder={
+            '콘텐츠를 읽으면서 궁금했던 점을 알려주시면 대소동팀이 더 열심히 공부해서 알려드릴게요.'
+          }
+        />
+
+        {/* 콘텐츠 이미지 */}
+        <Box mb="53px" height={'375px'} bgColor={colors.grayScale['10']} />
+
+        <Box mb="44px" px="20px">
+          <Center>
+            {/* 태그 리스트 */}
+            <TagList list={['텍스트', '텍스트', '텍스트']} />
+
+            {/* 콘텐츠 제목 */}
+            <Text
+              mb="12px"
+              fontSize={'20px'}
+              fontWeight={700}
+              color={colors.grayScale['80']}>
+              콘텐츠 제목 텍스트가 노출됩니다
+            </Text>
+
+            {/* 콘텐츠 작성일 */}
+            <Text
+              mb="48px"
+              fontSize={'13px'}
+              fontWeight={400}
+              color={colors.grayScale['60']}>
+              YYYY.MM.DD
+            </Text>
+
+            {/* 콘텐츠 본문 */}
+            <Box>
+              <Text mb="44px" fontSize={'15px'} color={colors.grayScale['70']}>
+                {dummyText}
+              </Text>
+            </Box>
+          </Center>
+        </Box>
+
+        {/* 콘텐츠 이미지 */}
+        <Box mb="53px" height={'240px'} bgColor={colors.grayScale['10']} />
+
+        <Box mb="80px" px="18px">
+          <Center>
+            {/* 콘텐츠 소제목 */}
+            <Text
+              w="100%"
+              mb="12px"
+              fontSize={'18px'}
+              fontWeight={700}
+              color={colors.grayScale['80']}>
+              소제목 텍스트가 노출됩니다
+            </Text>
+
+            {/* 콘텐츠 본문 */}
+            <Box>
+              <Text mb="44px" fontSize={'15px'} color={colors.grayScale['70']}>
+                {dummyText}
+              </Text>
+            </Box>
+          </Center>
+        </Box>
+
+        {/* 컨텐츠 평가 뷰 */}
+        <ContentsReivewView onOpenModal={onOpen} />
+
+        {/* 다른 컨텐츠 리스트 뷰 */}
+        <OtherContentsList />
+      </ScrollView>
+
+      {/* 하단 북마크, 댓글, 공유하기 버튼 뷰 */}
+      {isBottomBarVisible && (
+        <Box
+          w="100%"
+          position={'absolute'}
+          bottom="0px"
+          bgColor={colors.grayScale['0']}
+          h="86px"
+          zIndex={99}
+          pl="21"
+          pr="18px"
+          pt="19px">
+          <View
+            position={'absolute'}
+            top={0}
+            zIndex={1}
+            w={
+              scrollViewHeight
+                ? `${(scrollHeight / scrollViewHeight) * 110}%`
+                : 0
+            }
+            h="2px"
+            bgColor={colors.fussOrange['0']}
+          />
+
+          <HStack justifyContent={'space-between'}>
+            <HStack>
+              <Pressable mr="6px">
+                <BookmarkIcon
+                  width={'24px'}
+                  height={'24px'}
+                  fill={colors.fussOrange['0']}
+                />
+                <Text
+                  mr="16px"
+                  fontSize={'15px'}
+                  color={colors.grayScale['60']}>
+                  100
+                </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => navigation.navigate('ContentsCommentsList')}>
+                <MessageFillIcon
+                  width={'24px'}
+                  height={'24px'}
+                  fill={colors.grayScale['40']}
+                  style={styles.messageFillIcon}
+                />
+                <Text fontSize={'15px'} color={colors.grayScale['60']}>
+                  100
+                </Text>
+              </Pressable>
+            </HStack>
+
+            <HStack>
+              <ShareFillIcon
+                fill={colors.grayScale['70']}
+                style={styles.shareFillIcon}
+              />
+
+              <Text fontSize={'15px'} color={colors.grayScale['70']}>
+                친구에게 공유
+              </Text>
+            </HStack>
+          </HStack>
+        </Box>
+      )}
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  shareFillIcon: {
+    marginRight: 4,
+  },
+
+  messageFillIcon: {
+    marginRight: 6,
+  },
+});
+
+export default ContentsDetail;

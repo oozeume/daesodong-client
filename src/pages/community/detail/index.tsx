@@ -12,7 +12,6 @@ import BookmarLineIcon from '~/assets/icons/bookmark_line.svg';
 import BookmarFillIcon from '~/assets/icons/bookmark_fill.svg';
 import BackIcon from '~/assets/icon/back_icon.svg';
 import {colors} from '~/theme/theme';
-import CommunityComment from '~/components/community/detail/Comment';
 import VerificationForm from '~/components/common/VerificationForm';
 import Button from '~/components/common/button';
 import CommunityContent from '~/components/community/detail/Content';
@@ -22,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import Popup from '~/components/common/popup/Popup';
+import Comment from '~/components/common/comment';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -91,10 +91,10 @@ const CommunityDetail = () => {
 
           {/* 댓글 리스트 */}
           <Box>
-            <CommunityComment />
-            <CommunityComment commentType="reply" />
-            <CommunityComment commentType="delete" />
-            <CommunityComment commentType="reply" />
+            <Comment />
+            <Comment commentType="reply" />
+            <Comment commentType="delete" />
+            <Comment commentType="reply" />
 
             {comment.length !== 0 && (
               <HStack

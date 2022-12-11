@@ -7,9 +7,13 @@ import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 interface Props {
   top?: number | string;
   left?: number | string;
+  placement?: number | string;
   kekabMenuViewStyle?: StyleProp<ViewStyle>;
   handleFirstButton: () => void;
   handleSecondButton: () => void;
+  firstButtonName?: string;
+  secondButtonName?: string;
+  kekabElement?: JSX.Element;
 }
 
 /**
@@ -26,19 +30,22 @@ function KekabMenu({
   kekabMenuViewStyle,
   handleFirstButton,
   handleSecondButton,
+  firstButtonName = '수정',
+  secondButtonName = '삭제',
+  kekabElement,
 }: Props) {
   return (
     <Menu
       py="12px"
       top={top || '116px'}
       left={left || '20px'}
-      placement="right bottom"
+      placement={'bottom'}
       backgroundColor={colors.grayScale['0']}
       style={kekabMenuViewStyle}
       trigger={triggerProps => {
         return (
           <Pressable {...triggerProps}>
-            <KebabMenuIcon fill={colors.grayScale['70']} />
+            {kekabElement ?? <KebabMenuIcon fill={colors.grayScale['70']} />}
           </Pressable>
         );
       }}>
@@ -46,14 +53,14 @@ function KekabMenu({
         color={colors.grayScale['80']}
         fontSize={'14px'}
         onPress={handleFirstButton}>
-        수정
+        {firstButtonName}
       </Menu.Item>
 
       <Menu.Item
         color={colors.grayScale['80']}
         fontSize={'14px'}
         onPress={handleSecondButton}>
-        삭제
+        {secondButtonName}
       </Menu.Item>
     </Menu>
   );

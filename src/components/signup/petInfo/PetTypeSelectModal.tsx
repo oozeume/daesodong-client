@@ -1,6 +1,6 @@
-import {Actionsheet, HStack, Stack, Text} from 'native-base';
+import {Actionsheet, FlatList, HStack, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
-import {FlatList, SafeAreaView, TextInput} from 'react-native';
+import {SafeAreaView, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 import CheckIcon from '~/assets/icons/check-20.svg';
