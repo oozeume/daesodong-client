@@ -19,7 +19,7 @@ import {NavigationHookProp} from '~/../types/navigator';
 import VerificationForm from '~/components/common/VerificationForm';
 import CommunitySelect from '~/components/community/register/CommunitySelect';
 import SelectButtonForm from '~/components/community/register/SelectButtonForm';
-import {FormState, FormType} from '~/../types/\bcommunity';
+import {FormState, FormType} from '~/../types/community';
 import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -54,7 +54,7 @@ const CommunityRegister = () => {
   const paddingX = 36;
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
         <ScrollView
           bgColor={colors.grayScale['0']}

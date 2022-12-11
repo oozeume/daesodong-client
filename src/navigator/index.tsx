@@ -7,7 +7,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RouteList} from '~/../types/navigator';
 import Home from '../pages/home';
 import Hospital from '../pages/hospital';
-import Contents from '../pages/contents';
 import CommunityMain from '../pages/community';
 import MyPage from '../pages/mypage';
 import SignupSocial from '~/pages/signup/social';
@@ -29,6 +28,15 @@ import PasswordReset from '~/pages/login/passwordReset';
 import CommunityDetail from '~/pages/community/detail';
 import FindEmail from '~/pages/login/findEmail';
 import CommunityRegister from '~/pages/community/register';
+import ContentsDetail from '~/pages/contents/detail';
+import OtherContents from '~/pages/contents/otherContents';
+import ContentsCommentsList from '~/pages/contents/commentsList';
+import ContentsRecommentsList from '~/pages/contents/recommentsList';
+import ContentsMain from '~/pages/contents/main';
+import Header from '~/components/common/header/Header';
+
+import BackIcon from '~/assets/icon/back_icon.svg';
+import DeleteIcon from '~/assets/icons/delete.svg';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -78,7 +86,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Contents"
-        component={Contents}
+        component={ContentsMain}
         options={{
           tabBarLabel: '콘텐츠',
           headerShown: false,
@@ -164,6 +172,66 @@ const AppNavigator = () => {
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
         <Stack.Screen name="CommunityRegister" component={CommunityRegister} />
+        <Stack.Screen
+          name="ContentsDetail"
+          component={ContentsDetail}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="OtherContents"
+          component={OtherContents}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'시리즈 이름'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="ContentsCommentsList"
+          component={ContentsCommentsList}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'댓글 23'}
+                rightButton={
+                  <DeleteIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="ContentsRecommentsList"
+          component={ContentsRecommentsList}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'답글 23'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
+        <Stack.Screen name="ContentsMain" component={ContentsMain} />
       </Stack.Navigator>
     </NavigationContainer>
   );

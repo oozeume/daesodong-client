@@ -1,6 +1,11 @@
 import React, {LegacyRef} from 'react';
 import {Flex, HStack, Text, View, VStack} from 'native-base';
-import {KeyboardTypeOptions, TextInput} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputFocusEventData,
+} from 'react-native';
 
 import {VerificationResult} from '~/../types/verification';
 import {colors} from '~/theme/theme';
@@ -23,6 +28,8 @@ interface Props {
   secureTextEntry?: boolean;
   noBorderBottom?: boolean;
   maxLength?: number;
+  onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
 /**
@@ -62,6 +69,8 @@ function VerificationForm({
   secureTextEntry,
   noBorderBottom,
   maxLength,
+  onFocus,
+  onBlur,
 }: Props) {
   return (
     <VStack space={1} mb={marginBottom}>
@@ -84,6 +93,8 @@ function VerificationForm({
             secureTextEntry={secureTextEntry}
             maxLength={maxLength}
             ref={inputRef && inputRef}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </View>
 
