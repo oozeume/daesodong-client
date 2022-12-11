@@ -8,7 +8,7 @@ import {RouteList} from '~/../types/navigator';
 import Home from '../pages/home';
 import Hospital from '../pages/hospital';
 import Contents from '../pages/contents';
-import Community from '../pages/community';
+import CommunityMain from '../pages/community';
 import MyPage from '../pages/mypage';
 import SignupSocial from '~/pages/signup/social';
 import DeveloperMenu from '~/pages/developerMenu';
@@ -88,7 +88,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Commuity"
-        component={Community}
+        component={CommunityMain}
         options={{
           tabBarLabel: '커뮤니티',
           headerShown: false,
@@ -148,7 +148,7 @@ const AppNavigator = () => {
 
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
         <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
-        <Stack.Screen name="Community" component={Community} />
+        <Stack.Screen name="Community" component={CommunityMain} />
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}

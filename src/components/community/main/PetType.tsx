@@ -11,7 +11,7 @@ import {colors} from '~/theme/theme';
 function PetType() {
   const petTypes = _.range(0, 9);
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{}}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <HStack space={'16px'} px={'18px'} pt={'24px'} pb={'12px'}>
         {petTypes.map((item, index) => (
           <Stack key={index.toString()} alignItems={'center'} space={'6px'}>

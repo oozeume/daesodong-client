@@ -16,7 +16,7 @@ import KekabMenu from '~/components/common/kekab/KekabMenu';
  *@description 커뮤니티 메인페이지
  */
 
-const Community = () => {
+const CommunityMain = () => {
   const navigation = useNavigation<NavigationProp<RouteList>>();
   return (
     <SafeAreaView>
@@ -37,7 +37,13 @@ const Community = () => {
           py={'16px'}
           justifyContent={'space-between'}
           alignItems={'center'}>
-          <Text>총100개의 이야기</Text>
+          <Text color={colors.grayScale[70]}>
+            총{' '}
+            <Text color={colors.grayScale[70]} fontWeight={'700'}>
+              100
+            </Text>
+            개의 이야기
+          </Text>
 
           <KekabMenu
             pressableIcon={
@@ -68,48 +74,41 @@ const Community = () => {
                 </Box>
               }
               userInfo={
-                <HStack
-                  borderBottomWidth={1}
-                  borderBottomColor={colors.grayScale['10']}>
-                  <HStack space={'8px'}>
-                    <AvatarIcon
-                      width={20}
-                      height={20}
-                      fill={colors.grayScale['30']}
-                      style={{marginRight: 12}}
-                    />
+                <HStack>
+                  <AvatarIcon
+                    width={20}
+                    height={20}
+                    fill={colors.grayScale['30']}
+                  />
 
-                    <Stack>
-                      <HStack alignItems={'center'} space="4px">
-                        <Text color={colors.grayScale['80']} fontSize={'14px'}>
-                          닉네임
-                        </Text>
-                        <View
-                          backgroundColor={colors.grayScale['30']}
-                          h="8px"
-                          w="1px"
-                        />
-                        <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                          골든햄스터
-                        </Text>
-                        <View
-                          backgroundColor={colors.grayScale['30']}
-                          h="8px"
-                          w="1px"
-                        />
-                        <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                          남아
-                        </Text>
-                        <View
-                          backgroundColor={colors.grayScale['30']}
-                          h="8px"
-                          w="1px"
-                        />
-                        <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                          2개월
-                        </Text>
-                      </HStack>
-                    </Stack>
+                  <HStack alignItems={'center'} space="4px" marginLeft={'8px'}>
+                    <Text color={colors.grayScale['80']} fontSize={'14px'}>
+                      닉네임
+                    </Text>
+                    <View
+                      backgroundColor={colors.grayScale['30']}
+                      h="8px"
+                      w="1px"
+                    />
+                    <Text color={colors.grayScale['60']} fontSize={'13px'}>
+                      골든햄스터
+                    </Text>
+                    <View
+                      backgroundColor={colors.grayScale['30']}
+                      h="8px"
+                      w="1px"
+                    />
+                    <Text color={colors.grayScale['60']} fontSize={'13px'}>
+                      남아
+                    </Text>
+                    <View
+                      backgroundColor={colors.grayScale['30']}
+                      h="8px"
+                      w="1px"
+                    />
+                    <Text color={colors.grayScale['60']} fontSize={'13px'}>
+                      2개월
+                    </Text>
                   </HStack>
                 </HStack>
               }
@@ -128,12 +127,11 @@ const Community = () => {
                 <HStack
                   borderBottomWidth={1}
                   borderBottomColor={colors.grayScale['10']}>
-                  <HStack space={'8px'}>
+                  <HStack>
                     <AvatarIcon
                       width={20}
                       height={20}
                       fill={colors.grayScale['30']}
-                      style={{marginRight: 12}}
                     />
 
                     <Stack>
@@ -178,4 +176,4 @@ const Community = () => {
   );
 };
 
-export default Community;
+export default CommunityMain;

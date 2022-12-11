@@ -7,6 +7,9 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {StyleSheet} from 'react-native';
 import HeartFill from '~/assets/icons/heart_fill.svg';
 import MessageFill from '~/assets/icons/message_fill.svg';
+import {APP_WIDTH} from '~/utils/dimension';
+
+const BEST_CONTENTS_PADDING_X = 18;
 
 /**
  *@description 커뮤니티 메인 - 베스트 컨텐츠
@@ -20,7 +23,7 @@ function BestContents() {
       background={colors.fussYellow[0]}>
       <Stack alignItems={'center'}>
         <HStack
-          w={'339px'}
+          w={APP_WIDTH - BEST_CONTENTS_PADDING_X * 2}
           justifyContent={'space-between'}
           alignItems={'center'}>
           <Stack>
@@ -42,8 +45,7 @@ function BestContents() {
         </HStack>
 
         <Stack
-          w={'339px'}
-          zIndex={-1}
+          w={APP_WIDTH - BEST_CONTENTS_PADDING_X * 2}
           px={'20px'}
           py={'16px'}
           height={'134px'}
