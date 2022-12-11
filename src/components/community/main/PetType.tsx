@@ -12,7 +12,12 @@ function PetType() {
   const petTypes = _.range(0, 9);
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      <HStack space={'16px'} px={'18px'} pt={'24px'} pb={'12px'}>
+      <HStack
+        space={'16px'}
+        px={'18px'}
+        pt={'24px'}
+        pb={'12px'}
+        backgroundColor={colors.grayScale[0]}>
         {petTypes.map((item, index) => (
           <Stack key={index.toString()} alignItems={'center'} space={'6px'}>
             <Circle
