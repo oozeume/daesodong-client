@@ -10,12 +10,16 @@ import AvatarIcon from '~/assets/icons/avartar.svg';
 import {ScrollView} from 'react-native-gesture-handler';
 import Tag from '~/components/common/Tag';
 import {StyleSheet} from 'react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RouteList} from '~/../types/navigator';
 
 /**
  *@description 내 계정 - 메인
  */
 
 function MyPage() {
+  const navigation = useNavigation<NavigationProp<RouteList>>();
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       {/* 대시보드 */}
@@ -63,6 +67,7 @@ function MyPage() {
               name={'새 알림'}
               count={10}
               icon={<Notice fill={colors.fussOrange[0]} />}
+              onPress={() => navigation.navigate('MyPageNotice')}
             />
             <NoticeDashboard
               name={'저장'}

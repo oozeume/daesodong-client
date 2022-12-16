@@ -55,6 +55,9 @@ export type RootStackParamList = {
   ContentsCommentsList: undefined;
   ContentsRecommentsList: undefined;
   ContentsMain: undefined;
+
+  MyPageNotice: undefined;
+  MyPageNoticeDetail: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
