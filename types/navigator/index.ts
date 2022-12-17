@@ -58,6 +58,7 @@ export type RootStackParamList = {
 
   MyPageNotice: undefined;
   MyPageNoticeDetail: undefined;
+  MyPageSave: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;

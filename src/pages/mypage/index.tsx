@@ -73,6 +73,7 @@ function MyPage() {
               name={'저장'}
               count={1000}
               icon={<BookMarkFillIcon fill={colors.fussOrange[0]} />}
+              onPress={() => navigation.navigate('MyPageSave')}
             />
             <NoticeDashboard
               name={'고마워요'}
