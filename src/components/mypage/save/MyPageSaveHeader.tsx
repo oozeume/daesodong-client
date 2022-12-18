@@ -4,8 +4,9 @@ import React, {useEffect} from 'react';
 import {Animated, StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import TabElement from './TabElement';
+import {MaterialTopTabBarProps} from '@react-navigation/material-top-tabs';
 
-type Props = any;
+type Props = MaterialTopTabBarProps;
 
 export const TABS = {
   ['Facility']: '시설',
@@ -36,7 +37,7 @@ function MyPageSaveHeader(props: Props) {
     translateTab(props.state.index);
   }, [props.state.index, tabsPosition]);
 
-  const setActivePage = page => {
+  const setActivePage = (page: keyof typeof TABS) => {
     navigation.navigate(page);
   };
 
@@ -48,6 +49,7 @@ function MyPageSaveHeader(props: Props) {
       };
       setTabsPosition(_.clone(tabsPosition));
     };
+
   return (
     <Stack
       backgroundColor={'white'}
@@ -79,7 +81,7 @@ function MyPageSaveHeader(props: Props) {
             key={tab}
             text={TABS[tab as keyof typeof TABS]}
             active={currentRoute === tab}
-            onPress={() => setActivePage(tab)}
+            onPress={() => setActivePage(tab as keyof typeof TABS)}
             onLayout={setElementSize(i)}
           />
         ))}

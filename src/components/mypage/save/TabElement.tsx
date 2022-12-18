@@ -1,12 +1,14 @@
 import {Pressable, Text} from 'native-base';
 import React from 'react';
 import {APP_WIDTH} from '~/utils/dimension';
+import {TABS} from './MyPageSaveHeader';
+import {ValuesType} from 'utility-types';
 
 const TAB_PADDING_X = 18;
 const TAB_WIDTH = APP_WIDTH - TAB_PADDING_X * 2;
 
 interface Props {
-  text: string;
+  text: ValuesType<typeof TABS>;
   active?: boolean;
   onPress?: () => void;
   onLayout?: any;
