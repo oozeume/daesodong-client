@@ -7,18 +7,19 @@ interface Props {
   title?: string;
   rightButton?: JSX.Element;
   leftButton?: JSX.Element;
+  removeTopPosition?: boolean;
 }
 /**
  *@description 페이지 헤더
  *@param {JSX.Element} rightButton - 헤더 기준 좌쪽 위치 버튼
  *@param {JSX.Element} leftButton - 헤더 기준 우쪽 위치 버튼
  */
-function Header({title, rightButton, leftButton}: Props) {
+function Header({title, rightButton, leftButton, removeTopPosition}: Props) {
   const insets = useSafeAreaInsets();
 
   return (
     <HStack
-      top={insets.top}
+      top={removeTopPosition ? undefined : insets.top}
       alignItems={'center'}
       h="60px"
       bgColor={colors.grayScale[0]}>
