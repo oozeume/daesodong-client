@@ -36,21 +36,17 @@ function MyPage() {
             봉삼이
           </Text>
 
-          <HStack alignItems={'center'} space="4px" ml={'8px'} mt={'2px'}>
+          <HStack alignItems={'center'} space="6px" ml={'8px'} mt={'2px'}>
             <Text color={colors.grayScale[90]} fontSize={'14px'}>
-              닉네임
+              햄스터
             </Text>
             <View backgroundColor={colors.grayScale['80']} h="8px" w="1px" />
-            <Text color={colors.grayScale[90]} fontSize={'13px'}>
-              골든햄스터
-            </Text>
-            <View backgroundColor={colors.grayScale['80']} h="8px" w="1px" />
-            <Text color={colors.grayScale[90]} fontSize={'13px'}>
-              남아
-            </Text>
-            <View backgroundColor={colors.grayScale['80']} h="8px" w="1px" />
-            <Text color={colors.grayScale[90]} fontSize={'13px'}>
+            <Text color={colors.grayScale[90]} fontSize={'14px'}>
               2개월
+            </Text>
+            <View backgroundColor={colors.grayScale['80']} h="8px" w="1px" />
+            <Text color={colors.grayScale[90]} fontSize={'14px'}>
+              남아
             </Text>
           </HStack>
 
