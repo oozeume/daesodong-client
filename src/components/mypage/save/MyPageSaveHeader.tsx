@@ -5,14 +5,9 @@ import {Animated, StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import TabElement from './TabElement';
 import {MaterialTopTabBarProps} from '@react-navigation/material-top-tabs';
+import {TABS} from '~/../types/mypage';
 
 type Props = MaterialTopTabBarProps;
-
-export const TABS = {
-  ['Facility']: '시설',
-  ['Contents']: '콘텐츠',
-  ['Community']: '커뮤니티',
-} as const;
 
 /**
  *@description 내 계정 - 저장 Tab 헤더
