@@ -242,10 +242,9 @@ const AppNavigator = () => {
           component={MyPageNotice}
           options={({navigation}) => ({
             headerShown: true,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
             headerTitle: () => <Text>새 알림</Text>,
-            headerStyle: {
-              backgroundColor: 'transparent',
-            },
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
             ),
