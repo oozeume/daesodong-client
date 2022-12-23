@@ -13,6 +13,7 @@ interface Props {
   userInfo?: JSX.Element;
   visibleTag?: boolean;
   viewAllButton?: JSX.Element;
+  viewMode?: 'default' | 'simple';
 }
 
 /**
@@ -24,11 +25,18 @@ const CommunityContent = ({
   visibleTag = false,
   viewAllButton,
   userInfo,
+  viewMode = 'default',
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
   return (
-    <Box px="18px" mb="8px" bgColor={colors.grayScale[0]}>
+    <Box
+      px="18px"
+      mb="8px"
+      bgColor={
+        viewMode === 'simple' ? colors.grayScale[10] : colors.grayScale[0]
+      }
+      borderRadius={viewMode === 'simple' ? '16px' : undefined}>
       {/* 글쓴이 정보 */}
       {visibleUserInfo && (
         <HStack
@@ -107,6 +115,7 @@ const CommunityContent = ({
       {/* 내용 */}
       <Box py="20px">
         <Text
+          noOfLines={viewMode === 'simple' ? 1 : undefined}
           mb="12px"
           fontSize={'16px'}
           color={colors.grayScale['80']}
@@ -115,7 +124,10 @@ const CommunityContent = ({
           까닭입니다
         </Text>
 
-        <Text mb="20px" fontSize={'14px'} color={colors.grayScale['80']}>
+        <Text
+          noOfLines={viewMode === 'simple' ? 2 : undefined}
+          fontSize={'14px'}
+          color={colors.grayScale['80']}>
           이름자를 언덕 봄이 아름다운 어머니 별들을 이런 봅니다. 패, 흙으로
           어머님, 걱정도 쓸쓸함과 새겨지는 있습니다. 그러나 슬퍼하는 이런 애기
           까닭입니다.
@@ -123,7 +135,9 @@ const CommunityContent = ({
 
         {viewAllButton}
 
-        <Box bgColor={colors.grayScale['20']} w={imageWidth} h={imageWidth} />
+        {viewMode !== 'simple' && (
+          <Box bgColor={colors.grayScale['20']} w={imageWidth} h={imageWidth} />
+        )}
 
         {visibleTag && (
           <HStack mt={'20px'}>
@@ -149,7 +163,11 @@ const CommunityContent = ({
         pb="15px"
         px="3px"
         borderTopWidth={1}
-        borderTopColor={colors.grayScale['10']}>
+        borderTopColor={
+          viewMode === 'simple'
+            ? colors.grayScale['20']
+            : colors.grayScale['10']
+        }>
         {userInfo}
         {visibleLike && (
           <HStack alignItems={'center'}>
@@ -166,14 +184,16 @@ const CommunityContent = ({
         )}
 
         <HStack>
-          <Pressable mr="16px">
-            <HStack alignItems={'center'}>
-              <ViewFillIcon fill={colors.grayScale['30']} />
-              <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
-                100
-              </Text>
-            </HStack>
-          </Pressable>
+          {viewMode !== 'simple' && (
+            <Pressable mr="16px">
+              <HStack alignItems={'center'}>
+                <ViewFillIcon fill={colors.grayScale['30']} />
+                <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
+                  100
+                </Text>
+              </HStack>
+            </Pressable>
+          )}
 
           <Pressable>
             <HStack alignItems={'center'}>

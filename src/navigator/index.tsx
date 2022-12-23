@@ -42,6 +42,7 @@ import HeaderLeft from '~/components/common/header/HeaderLeft';
 import {Text} from 'native-base';
 import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
+import MyPageSave from '~/pages/mypage/save';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -260,6 +261,22 @@ const AppNavigator = () => {
             headerStyle: {
               backgroundColor: colors.fussYellow['-40'],
             },
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyPageSave"
+          component={MyPageSave}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerStyle: {backgroundColor: 'transparent'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                저장
+              </Text>
+            ),
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
             ),
