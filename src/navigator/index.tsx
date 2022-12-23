@@ -43,6 +43,7 @@ import {Text} from 'native-base';
 import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
+import FacilityMain from '~/pages/facilify/main';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -282,6 +283,22 @@ const AppNavigator = () => {
               <HeaderLeft {...props} navigation={navigation} />
             ),
           })}
+        />
+
+        <Stack.Screen
+          name="FacilityMain"
+          component={FacilityMain}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'시설'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
