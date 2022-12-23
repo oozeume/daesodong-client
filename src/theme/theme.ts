@@ -78,7 +78,9 @@ const theme = extendTheme({
       0: '#FF6B00',
     },
     fussYellow: {
+      '-40': '#FFFBEC',
       '-30': '#FFF6D8',
+      '-20': '#FFEEAF',
       0: '#FFD53F',
       10: '#FFCC16',
       30: '#A77800',

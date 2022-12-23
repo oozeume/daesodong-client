@@ -37,6 +37,11 @@ import Header from '~/components/common/header/Header';
 
 import BackIcon from '~/assets/icon/back_icon.svg';
 import DeleteIcon from '~/assets/icons/delete.svg';
+import MyPageNotice from '~/pages/mypage/notice';
+import HeaderLeft from '~/components/common/header/HeaderLeft';
+import {Text} from 'native-base';
+import NoticeDetail from '~/components/mypage/NoticeDetail';
+import {colors} from '~/theme/theme';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -232,6 +237,34 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen name="ContentsMain" component={ContentsMain} />
+        <Stack.Screen
+          name="MyPageNotice"
+          component={MyPageNotice}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerTitle: () => <Text>새 알림</Text>,
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyPageNoticeDetail"
+          component={NoticeDetail}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <Header />,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: colors.fussYellow['-40'],
+            },
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
