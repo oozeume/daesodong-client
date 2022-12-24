@@ -288,15 +288,7 @@ const AppNavigator = () => {
           name="FacilityMain"
           component={FacilityMain}
           options={{
-            headerShown: true,
-            header: props => (
-              <Header
-                title={'시설'}
-                leftButton={
-                  <BackIcon onPress={() => props.navigation.goBack()} />
-                }
-              />
-            ),
+            headerShown: false,
           }}
         />
       </Stack.Navigator>

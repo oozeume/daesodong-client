@@ -14,6 +14,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   setPetType: (selectedItem: {id: string; title: string}) => void;
+  isEnrollPet?: boolean;
 }
 
 const DATA = [
@@ -74,15 +75,20 @@ const DATA = [
 
 /**
  *@description 집사정보등록 - 반려동물 종 선택 모달
+ *@param isEnrollPet - 새로 팻을 등록할 지 여부
  */
 
-function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
+function PetTypeSelectModal({isOpen, onClose, setPetType, isEnrollPet}: Props) {
   const statusbarHeight = getStatusBarHeight();
   const [isPetTypeEmpty, setPetTypeEmpty] = useState(false);
   const [selectedItem, setSelectedItem] = useState({id: '', title: ''});
 
   return (
-    <Actionsheet isOpen={isOpen} onClose={onClose} paddingBottom={0}>
+    <Actionsheet
+      isOpen={isOpen}
+      onClose={onClose}
+      paddingBottom={0}
+      hideDragIndicator>
       <Actionsheet.Content
         maxHeight={APP_HEIGHT}
         height={APP_HEIGHT}
@@ -90,7 +96,7 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
         backgroundColor={colors.grayScale[0]}>
         <SafeAreaView style={{width: '100%'}}>
           <Stack h={APP_HEIGHT - statusbarHeight}>
-            {isPetTypeEmpty ? (
+            {isEnrollPet && isPetTypeEmpty ? (
               <>
                 <Text>
                   집사님의 아이는 ‘친칠라'이군요! 검색결과에는 아직 없지만 곧
@@ -157,7 +163,7 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
                     data={DATA}
                     keyExtractor={item => item.id}
                     scrollEnabled
-                    renderItem={({item}) => (
+                    renderItem={({item, index}) => (
                       <Actionsheet.Item
                         backgroundColor={colors.grayScale[0]}
                         borderBottomWidth={1}
@@ -174,11 +180,21 @@ function PetTypeSelectModal({isOpen, onClose, setPetType}: Props) {
                           <HStack alignItems={'center'} space={'10px'}>
                             <Tag
                               name="설치류"
-                              bgColor={colors.fussOrange['-30']}
-                              color={colors.fussOrange[0]}
+                              bgColor={
+                                index === 0 && !isEnrollPet
+                                  ? colors.positive[0]
+                                  : colors.fussOrange['-30']
+                              }
+                              color={
+                                index === 0 && !isEnrollPet
+                                  ? colors.positive['-40']
+                                  : colors.fussOrange[0]
+                              }
                             />
                             <Text color={colors.grayScale[60]} fontSize="16px">
-                              test
+                              {index === 0 && !isEnrollPet
+                                ? '우리 아이(친칠라)'
+                                : 'test'}
                             </Text>
                           </HStack>
                           <CheckIcon
