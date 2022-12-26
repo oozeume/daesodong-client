@@ -44,6 +44,8 @@ import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
 import MyPageHeart from '~/pages/mypage/heart';
+import MyInfo from '~/pages/mypage/myInfo';
+import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -293,6 +295,38 @@ const AppNavigator = () => {
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 고마워요
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyInfo"
+          component={MyInfo}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerStyle: {backgroundColor: 'transparent'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                내 정보
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyLoginInfo"
+          component={LoginInfo}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerStyle: {backgroundColor: 'transparent'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                로그인 정보
               </Text>
             ),
             headerLeft: props => (

@@ -10,7 +10,8 @@ import {
 import React from 'react';
 import {colors} from '~/theme/theme';
 import {BackButton} from '../../hospital/review/register/button';
-import {StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import {APP_WIDTH} from '~/utils/dimension';
 
 interface Props {
   isOpen: boolean;
@@ -21,6 +22,9 @@ interface Props {
   sidoValue?: Partial<Hangjungdong>;
   sigugunValue?: Partial<Hangjungdong>;
   dongValue?: Partial<Hangjungdong>;
+  titleText?: string;
+  ElementComponent?: JSX.Element;
+  contentsHeight?: string;
 }
 
 export type Hangjungdong = {
@@ -51,10 +55,13 @@ function AddressDrawer({
   sigugunValue,
   dongValue,
   setValue,
+  titleText,
+  ElementComponent,
+  contentsHeight,
 }: Props) {
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose}>
-      <Actionsheet.Content bgColor={colors.grayScale[0]}>
+      <Actionsheet.Content bgColor={colors.grayScale[0]} minHeight={'534px'}>
         <Center
           alignItems="center"
           width="100%"
@@ -62,60 +69,67 @@ function AddressDrawer({
           margin="24px 0px 36px">
           <BackButton onPress={onClose} buttonStyle={styles.backButton} />
           <Text fontSize="18px" color={colors.grayScale[80]} lineHeight="24px">
-            시/도
+            {titleText ?? '시 / 도'}
           </Text>
         </Center>
 
-        <Stack w={'100%'}>
-          <ScrollView>
-            {selectableList?.map((s, index) => {
-              return (
-                <Actionsheet.Item
-                  backgroundColor={colors.grayScale[0]}
-                  key={`${s.sido} + ${index}`}
-                  onPress={() => {
-                    if (setValue) {
-                      setValue(s);
-                    }
-                    _onPress();
-                  }}>
-                  <HStack alignItems={'center'}>
-                    <Center
-                      width="22px"
-                      height="22px"
-                      marginRight="10px"
-                      borderWidth={2}
-                      borderColor={colors.grayScale[30]}
-                      borderRadius={22}>
-                      {s.sido === sidoValue?.sido &&
-                        s.sigugun === sigugunValue?.sigugun &&
-                        s.dong === dongValue?.dong && (
-                          <Box
-                            width="14px"
-                            height="14px"
-                            borderRadius={14}
-                            backgroundColor={colors.fussOrange[0]}
-                          />
-                        )}
-                    </Center>
-                    <Text
-                      bgColor={colors.fussOrange[0]}
-                      fontSize={'16px'}
-                      color={
-                        s.sido === sidoValue?.sido ||
-                        s.sigugun === sigugunValue?.sigugun ||
-                        s.dong === dongValue?.dong
-                          ? colors.grayScale[80]
-                          : colors.grayScale[60]
-                      }>
-                      {s.name}
-                    </Text>
-                  </HStack>
-                </Actionsheet.Item>
-              );
-            })}
-          </ScrollView>
-        </Stack>
+        <SafeAreaView style={{width: APP_WIDTH, height: '100%'}}>
+          <Stack height={'100%'}>
+            <ScrollView mb={'40px'} height={contentsHeight}>
+              {selectableList?.map((s, index) => {
+                return (
+                  <Actionsheet.Item
+                    backgroundColor={colors.grayScale[0]}
+                    key={`${s.sido} + ${index}`}
+                    onPress={() => {
+                      if (setValue) {
+                        setValue(s);
+                      }
+
+                      _onPress();
+                    }}>
+                    <HStack alignItems={'center'}>
+                      <Center
+                        width="22px"
+                        height="22px"
+                        marginRight="10px"
+                        borderWidth={2}
+                        borderColor={colors.grayScale[30]}
+                        borderRadius={22}>
+                        <Box
+                          width="14px"
+                          height="14px"
+                          borderRadius={14}
+                          backgroundColor={
+                            s.sido === sidoValue?.sido &&
+                            s.sigugun === sigugunValue?.sigugun &&
+                            s.dong === dongValue?.dong
+                              ? colors.fussOrange[0]
+                              : colors.grayScale[0]
+                          }
+                        />
+                      </Center>
+                      <Text
+                        bgColor={colors.fussOrange[0]}
+                        fontSize={'16px'}
+                        color={
+                          s.sido === sidoValue?.sido &&
+                          s.sigugun === sigugunValue?.sigugun &&
+                          s.dong === dongValue?.dong
+                            ? colors.grayScale[80]
+                            : colors.grayScale[60]
+                        }>
+                        {s.name}
+                      </Text>
+                    </HStack>
+                  </Actionsheet.Item>
+                );
+              })}
+            </ScrollView>
+
+            {ElementComponent}
+          </Stack>
+        </SafeAreaView>
       </Actionsheet.Content>
     </Actionsheet>
   );
