@@ -16,7 +16,7 @@ import {FormType} from '../community';
  * { ... Home: { id: string; }; ... }
  */
 export type RootTabParamList = {
-  Home: undefined;
+  Facility: undefined;
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
