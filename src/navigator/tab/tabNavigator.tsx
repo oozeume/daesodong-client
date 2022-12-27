@@ -24,6 +24,7 @@ const Stack = createNativeStackNavigator<RouteList>();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Facility"
       screenOptions={{
         tabBarStyle: {
           backgroundColor: '#FFFFFF',
