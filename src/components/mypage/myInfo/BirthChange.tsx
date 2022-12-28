@@ -19,10 +19,7 @@ interface Props {
  */
 
 function BirthChange({onClose, onPress}: Props) {
-  const [birthDate, setBirthDate] = useState<{year: number | undefined}>({
-    year: undefined,
-  });
-
+  const [birthDate, setBirthDate] = useState<number>();
   const [yearList, setYearList] = useState<DateList[]>([]);
 
   useEffect(() => {
@@ -47,18 +44,18 @@ function BirthChange({onClose, onPress}: Props) {
 
         <Stack height={'336px'} pb={'12px'}>
           <FlatList
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={item => item.txt}
             data={yearList}
-            renderItem={({item, index}) => (
+            renderItem={({item}) => (
               <Pressable
                 alignItems={'center'}
                 backgroundColor={colors.grayScale[0]}
-                onPress={() => setBirthDate(prev => ({...prev, year: index}))}>
+                onPress={() => setBirthDate(item.value)}>
                 <HStack
                   width={APP_WIDTH - PADDING_X * 2}
                   borderBottomWidth={1}
                   borderBottomColor={
-                    birthDate.year === index
+                    birthDate === item.value
                       ? colors.fussOrange[0]
                       : colors.grayScale[40]
                   }
@@ -73,7 +70,7 @@ function BirthChange({onClose, onPress}: Props) {
                   <Center>
                     <CheckIcon
                       fill={
-                        birthDate.year === index
+                        birthDate === item.value
                           ? colors.fussOrange[0]
                           : colors.grayScale[40]
                       }
@@ -91,6 +88,7 @@ function BirthChange({onClose, onPress}: Props) {
           onPress={onClose}
           width={'80px'}
           height={'52px'}
+          borderRadius={'8px'}
           borderColor={colors.grayScale[60]}
           borderWidth={1}
           backgroundColor={colors.grayScale[10]}>
@@ -103,15 +101,16 @@ function BirthChange({onClose, onPress}: Props) {
           onPress={onPress}
           flex={1}
           height={'52px'}
+          borderRadius={'8px'}
           borderColor={colors.grayScale[60]}
           borderWidth={1}
           backgroundColor={
-            birthDate.year ? colors.fussOrange[0] : colors.fussOrange['-30']
+            birthDate ? colors.fussOrange[0] : colors.fussOrange['-30']
           }>
           <Text
             fontSize={'16px'}
             fontWeight={'500'}
-            color={birthDate.year ? 'black' : colors.grayScale[50]}>
+            color={birthDate ? 'black' : colors.grayScale[50]}>
             수정
           </Text>
         </Button>

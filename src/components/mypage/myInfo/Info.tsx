@@ -23,7 +23,7 @@ function Info({text, info, onPress, invisibleIcon = false}: Props) {
           {text}
         </Text>
 
-        <HStack>
+        <HStack alignItems={'center'}>
           <Text color={colors.grayScale[80]} fontSize={'15px'}>
             {info}
           </Text>

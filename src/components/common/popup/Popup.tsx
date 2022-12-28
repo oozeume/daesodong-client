@@ -67,7 +67,8 @@ function Popup({
     <Modal isOpen={isVisible} onClose={() => setIsVisible(false)}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Modal.Content
-          style={styles.container}
+          width={APP_WIDTH - MODAL_PADDING_X * 2}
+          backgroundColor={'white'}
           borderWidth={1}
           borderColor={colors.grayScale['90']}>
           <Modal.Header py="28px" px="20px" borderBottomWidth={0}>
@@ -132,10 +133,3 @@ function Popup({
 }
 
 export default Popup;
-
-const styles = StyleSheet.create({
-  container: {
-    width: APP_WIDTH - MODAL_PADDING_X * 2,
-    backgroundColor: 'white',
-  },
-});

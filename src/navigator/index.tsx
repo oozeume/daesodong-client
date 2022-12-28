@@ -307,7 +307,10 @@ const AppNavigator = () => {
           component={MyInfo}
           options={({navigation}) => ({
             headerShown: true,
-            headerStyle: {backgroundColor: 'transparent'},
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 내 정보
@@ -323,7 +326,10 @@ const AppNavigator = () => {
           component={LoginInfo}
           options={({navigation}) => ({
             headerShown: true,
-            headerStyle: {backgroundColor: 'transparent'},
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 로그인 정보

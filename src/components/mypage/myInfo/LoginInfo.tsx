@@ -5,7 +5,7 @@ import {colors} from '~/theme/theme';
 import Popup from '~/components/common/popup/Popup';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 
 /**
  *@description 내 계정 - 내 정보 - 로그인 정보 페이지
@@ -22,7 +22,11 @@ function LoginInfo() {
   };
   return (
     <>
-      <Stack px={'18px'} backgroundColor={'white'} flex={1}>
+      <Stack
+        pt={Platform.OS === 'android' ? '20px' : 0}
+        px={'18px'}
+        backgroundColor={'white'}
+        flex={1}>
         <Info
           invisibleIcon
           text={

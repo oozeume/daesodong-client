@@ -1,7 +1,9 @@
-import {Stack, Text} from 'native-base';
+import {Center, Text} from 'native-base';
 import React from 'react';
 import {colors} from '~/theme/theme';
 import {APP_WIDTH} from '~/utils/dimension';
+
+const PADDING_X = 18;
 
 interface Props {
   text: string;
@@ -14,16 +16,14 @@ interface Props {
 
 function ToastMessage({text}: Props) {
   return (
-    <Stack
-      alignSelf={'center'}
+    <Center
       height={'44px'}
-      w={APP_WIDTH - 18 * 2}
+      w={APP_WIDTH - PADDING_X * 2}
       justifyContent={'center'}
-      alignItems={'center'}
       borderRadius={'8px'}
       backgroundColor={'rgba(26, 30, 39, 0.8)'}>
       <Text color={colors.grayScale[0]}>{text}</Text>
-    </Stack>
+    </Center>
   );
 }
 

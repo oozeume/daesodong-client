@@ -73,9 +73,9 @@ function AddressDrawer({
           </Text>
         </Center>
 
-        <SafeAreaView style={{width: APP_WIDTH, height: '100%'}}>
+        <SafeAreaView style={styles.container}>
           <Stack height={'100%'}>
-            <ScrollView mb={'40px'} height={contentsHeight}>
+            <ScrollView pb={'40px'} flex={1} height={contentsHeight}>
               {selectableList?.map((s, index) => {
                 return (
                   <Actionsheet.Item
@@ -138,6 +138,11 @@ function AddressDrawer({
 export default AddressDrawer;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: APP_WIDTH,
+    height: '100%',
+  },
   backButton: {
     width: 16,
     height: 16,
