@@ -1,4 +1,4 @@
-import {Box, Center, HStack, Text} from 'native-base';
+import {Center, HStack, Text} from 'native-base';
 import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';

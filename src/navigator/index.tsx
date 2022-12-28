@@ -244,10 +244,11 @@ const AppNavigator = () => {
           component={MyPageNotice}
           options={({navigation}) => ({
             headerShown: true,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => <Text>새 알림</Text>,
-            headerStyle: {
-              backgroundColor: 'transparent',
-            },
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
             ),
@@ -258,7 +259,7 @@ const AppNavigator = () => {
           component={NoticeDetail}
           options={({navigation}) => ({
             headerShown: true,
-            headerBackground: () => <Header />,
+            headerBackground: () => <></>,
             headerTitle: '',
             headerStyle: {
               backgroundColor: colors.fussYellow['-40'],
@@ -273,7 +274,10 @@ const AppNavigator = () => {
           component={MyPageSave}
           options={({navigation}) => ({
             headerShown: true,
-            headerStyle: {backgroundColor: 'transparent'},
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 저장
@@ -289,7 +293,10 @@ const AppNavigator = () => {
           component={MyPageHeart}
           options={({navigation}) => ({
             headerShown: true,
-            headerStyle: {backgroundColor: 'transparent'},
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 고마워요

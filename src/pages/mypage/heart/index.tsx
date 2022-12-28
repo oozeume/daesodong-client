@@ -1,27 +1,28 @@
 import {
   FlatList,
   HStack,
+  Image,
   Pressable,
   Stack,
   Text,
   useDisclose,
 } from 'native-base';
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import RightIcon from '~/assets/icons/right.svg';
 import HeartDescription from '~/components/mypage/heart/HeartDescription';
-import PetInfoOneLine from '~/components/mypage/heart/PetInfo';
+import UserInfo from '~/components/mypage/heart/UserInfo';
 
 /**
  *@description 내 계정 - 고마워요
  */
-function Index() {
+function MyPageHeart() {
   const {isOpen, onOpen, onClose} = useDisclose();
   return (
     <>
       <FlatList
-        style={styles.container}
+        backgroundColor={'white'}
+        flex={1}
         data={['', '', '']}
         ListHeaderComponent={() => (
           <>
@@ -58,7 +59,9 @@ function Index() {
               </Stack>
               <Image
                 source={require('../../../assets/images/mypage_heart_image.png')}
-                style={styles.image}
+                width={'108px'}
+                height={'82px'}
+                alt={'heartImage'}
               />
             </HStack>
             <Pressable onPress={onOpen}>
@@ -78,7 +81,7 @@ function Index() {
             </Pressable>
           </>
         )}
-        renderItem={__ => <PetInfoOneLine />}
+        renderItem={__ => <UserInfo />}
       />
 
       <HeartDescription isOpen={isOpen} onClose={onClose} />
@@ -86,15 +89,4 @@ function Index() {
   );
 }
 
-export default Index;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  image: {
-    width: 108,
-    height: 82,
-  },
-});
+export default MyPageHeart;

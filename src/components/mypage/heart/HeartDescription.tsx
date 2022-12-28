@@ -1,6 +1,6 @@
 import {Actionsheet, Pressable, Stack, Text} from 'native-base';
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import Header from '~/components/common/header/Header';
 
 import {colors} from '~/theme/theme';
@@ -22,7 +22,7 @@ function HeartDescription({isOpen, onClose}: Props) {
       <Actionsheet.Content
         maxHeight={APP_HEIGHT}
         height={APP_HEIGHT}
-        style={styles.container}>
+        backgroundColor={colors.grayScale[0]}>
         <SafeAreaView>
           <>
             <Header
@@ -61,7 +61,7 @@ function HeartDescription({isOpen, onClose}: Props) {
                 <Text color={colors.grayScale[80]}>
                   회원등급을 올리는데 도움
                 </Text>
-                이 됩니다.
+                {'이 됩니다. \n'}
               </Text>
 
               <Text fontSize={'14px'} color={colors.grayScale[60]}>
@@ -79,11 +79,3 @@ function HeartDescription({isOpen, onClose}: Props) {
 }
 
 export default HeartDescription;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingLeft: 0,
-    paddingRight: 0,
-    backgroundColor: colors.grayScale[0],
-  },
-});

@@ -6,7 +6,7 @@ import {colors} from '~/theme/theme';
 /**
  *@description 내 계정 - 고마워요 누른 유저정보
  */
-function PetInfo() {
+function UserInfo() {
   return (
     <HStack
       flex={1}
@@ -35,4 +35,4 @@ function PetInfo() {
   );
 }
 
-export default PetInfo;
+export default UserInfo;
