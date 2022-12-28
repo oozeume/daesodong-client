@@ -1,7 +1,7 @@
 import {Pressable, Text} from 'native-base';
 import React from 'react';
 import {APP_WIDTH} from '~/utils/dimension';
-import {TABS} from './MyPageSaveHeader';
+import {TABS} from '~/../types/mypage';
 import {ValuesType} from 'utility-types';
 
 const TAB_PADDING_X = 18;
