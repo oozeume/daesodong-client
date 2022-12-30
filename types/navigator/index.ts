@@ -37,7 +37,10 @@ export type RootStackParamList = {
 
   EmailLogin: undefined;
   PasswordReset: undefined;
-  PasswordResetNotFoundAuth: undefined;
+  AuthFoundResult: {
+    type: '이메일' | '카카오' | '구글' | 'Apple' | 'NOT_FOUND';
+    previousURL: 'FOUND_EMAIL' | 'FOUND_PASSWORD';
+  };
   FindEmail: undefined;
 
   TermsOfServicePolicy: undefined;

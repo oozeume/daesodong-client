@@ -9,7 +9,6 @@ import HospitalReviewRegister from '~/pages/hospital/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
-import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
@@ -34,6 +33,7 @@ import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
 import TabNavigator from './tab/tabNavigator';
+import AuthFoundResult from '~/pages/login/authFoundResult';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -82,10 +82,7 @@ const AppNavigator = () => {
 
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
         <Stack.Screen name="FindEmail" component={FindEmail} />
-        <Stack.Screen
-          name="PasswordResetNotFoundAuth"
-          component={PasswordResetNotFoundAuth}
-        />
+        <Stack.Screen name="AuthFoundResult" component={AuthFoundResult} />
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
         <Stack.Screen name="CommunityRegister" component={CommunityRegister} />

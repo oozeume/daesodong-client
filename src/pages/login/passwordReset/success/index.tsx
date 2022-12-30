@@ -32,11 +32,7 @@ function PasswordResetSuccess() {
         </Text>
       </VStack>
 
-      <RedActiveLargeButton
-        active
-        handlePress={() => onMove('PasswordResetNotFoundAuth')}
-        text={'로그인'}
-      />
+      <RedActiveLargeButton active handlePress={() => {}} text={'로그인'} />
     </VStack>
   );
 }
