@@ -34,7 +34,6 @@ import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
 import TabNavigator from './tab/tabNavigator';
-import FacilityMain from '~/pages/facilify/main';
 import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
@@ -200,14 +199,6 @@ const AppNavigator = () => {
               <HeaderLeft {...props} navigation={navigation} />
             ),
           })}
-        />
-
-        <Stack.Screen
-          name="FacilityMain"
-          component={FacilityMain}
-          options={{
-            headerShown: false,
-          }}
         />
 
         <Stack.Screen

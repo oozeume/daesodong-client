@@ -40,7 +40,7 @@ const TabNavigator = () => {
           fontStyle: 'normal',
           fontWeight: '500',
           fontSize: 10,
-          marginBottom: Platform.OS === 'android' ? 40 : 0,
+          marginBottom: Platform.OS === 'android' ? 40 : 10,
           lineHeight: Platform.OS === 'android' ? 14 : 14,
         },
         tabBarIconStyle: {

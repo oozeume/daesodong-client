@@ -21,9 +21,6 @@ function DeveloperMenu() {
           <Button mb="12px" onPress={() => navigate('SignUpEmail')}>
             이메일로 회원가입
           </Button>
-          <Button mb="12px" onPress={() => navigate('FacilityMain')}>
-            시설
-          </Button>
         </VStack>
       </ScrollView>
     </SafeAreaView>
