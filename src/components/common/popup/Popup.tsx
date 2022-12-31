@@ -1,7 +1,16 @@
 import React from 'react';
 import {Center, Modal, Pressable, Text} from 'native-base';
 import {colors} from '~/theme/theme';
-import {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {
+  Keyboard,
+  StyleProp,
+  TextStyle,
+  TouchableWithoutFeedback,
+  ViewStyle,
+} from 'react-native';
+import {APP_WIDTH} from '~/utils/dimension';
+
+const MODAL_PADDING_X = 18;
 
 interface Props {
   title: string;
@@ -17,6 +26,7 @@ interface Props {
   successButtonName?: string;
   successButtonStyle?: StyleProp<ViewStyle>;
   successButtonNameStyle?: StyleProp<TextStyle>;
+  isInvisibleCancelButton?: boolean;
 }
 
 /**
@@ -35,6 +45,7 @@ function Popup({
   setIsVisible,
   onCancel,
   onSuccess,
+  isInvisibleCancelButton = false,
   cancelButtonName = '취소',
   cancelButtonStyle,
   cancelButtonNameStyle,
@@ -53,61 +64,69 @@ function Popup({
   };
   return (
     <Modal isOpen={isVisible} onClose={() => setIsVisible(false)}>
-      <Modal.Content borderWidth={1} borderColor={colors.grayScale['90']}>
-        <Modal.Header py="28px" px="20px" borderBottomWidth={0}>
-          <Text fontSize={'16px'} mb={'8px'} color={colors.grayScale['80']}>
-            {title}
-          </Text>
-          {subText && (
-            <Text color={colors.grayScale['60']} fontSize="14px">
-              {subText}
-            </Text>
-          )}
-        </Modal.Header>
-
-        {bodyElement && (
-          <Modal.Body px="20px" mb="28px">
-            {bodyElement}
-          </Modal.Body>
-        )}
-
-        <Modal.Footer
-          p="0"
-          borderTopWidth={1}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <Modal.Content
+          width={APP_WIDTH - MODAL_PADDING_X * 2}
+          backgroundColor={'white'}
+          borderWidth={1}
           borderColor={colors.grayScale['90']}>
-          <Pressable
-            flex="1"
-            onPress={_onCancel}
-            bgColor={colors.grayScale['10']}
-            style={cancelButtonStyle}>
-            <Center h="52px">
-              <Text
-                fontSize={'16px'}
-                color={colors.grayScale['90']}
-                style={cancelButtonNameStyle}>
-                {cancelButtonName}
+          <Modal.Header py="28px" px="20px" borderBottomWidth={0}>
+            <Text fontSize={'16px'} mb={'8px'} color={colors.grayScale['80']}>
+              {title}
+            </Text>
+            {subText && (
+              <Text color={colors.grayScale['60']} fontSize="14px">
+                {subText}
               </Text>
-            </Center>
-          </Pressable>
+            )}
+          </Modal.Header>
 
-          <Pressable
-            flex="1"
-            borderLeftWidth={1}
-            borderColor={colors.grayScale['90']}
-            backgroundColor={colors.negative['0']}
-            style={successButtonStyle}
-            onPress={_onSuccess}>
-            <Center h="52px">
-              <Text
-                fontSize={'16px'}
-                color={colors.grayScale['90']}
-                style={successButtonNameStyle}>
-                {successButtonName}
-              </Text>
-            </Center>
-          </Pressable>
-        </Modal.Footer>
-      </Modal.Content>
+          {bodyElement && (
+            <Modal.Body px="20px" mb="28px">
+              {bodyElement}
+            </Modal.Body>
+          )}
+
+          <Modal.Footer
+            p="0"
+            borderTopWidth={1}
+            borderColor={colors.grayScale['90']}>
+            {!isInvisibleCancelButton && (
+              <Pressable
+                flex="1"
+                onPress={_onCancel}
+                bgColor={colors.grayScale['10']}
+                style={cancelButtonStyle}>
+                <Center h="52px">
+                  <Text
+                    fontSize={'16px'}
+                    color={colors.grayScale['90']}
+                    style={cancelButtonNameStyle}>
+                    {cancelButtonName}
+                  </Text>
+                </Center>
+              </Pressable>
+            )}
+
+            <Pressable
+              flex="1"
+              borderLeftWidth={isInvisibleCancelButton ? 0 : 1}
+              borderColor={colors.grayScale['90']}
+              backgroundColor={colors.negative['0']}
+              style={successButtonStyle}
+              onPress={_onSuccess}>
+              <Center h="52px">
+                <Text
+                  fontSize={'16px'}
+                  color={colors.grayScale['90']}
+                  style={successButtonNameStyle}>
+                  {successButtonName}
+                </Text>
+              </Center>
+            </Pressable>
+          </Modal.Footer>
+        </Modal.Content>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }

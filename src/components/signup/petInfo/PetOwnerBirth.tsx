@@ -8,7 +8,7 @@ interface Props {
   handlePage: () => void;
 }
 
-interface DateList {
+export interface DateList {
   value: number;
   txt: string;
 }
@@ -21,6 +21,8 @@ function PetOwnerBirth({handlePage}: Props) {
   const [visitedDate, setVisitedDate] = useState<{year: number | undefined}>({
     year: undefined,
   });
+
+  const [yearList, setYearList] = useState<DateList[]>([]);
 
   useEffect(() => {
     const curYear = dayjs().year();
@@ -35,7 +37,6 @@ function PetOwnerBirth({handlePage}: Props) {
     setYearList(_yearList);
   }, []);
 
-  const [yearList, setYearList] = useState<DateList[]>([]);
   return (
     <LayoutContainer
       buttonPress={handlePage}
