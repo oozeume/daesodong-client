@@ -56,6 +56,9 @@ function DeveloperMenu() {
           <Button mb="12px" onPress={() => onMove('ContentsMain')}>
             컨텐츠 메인
           </Button>
+          <Button mb="12px" onPress={() => onMove('FacilityMain')}>
+            시설
+          </Button>
         </VStack>
       </ScrollView>
     </SafeAreaView>

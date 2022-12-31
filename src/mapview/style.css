@@ -1,0 +1,19 @@
+body {
+  position: relative;
+  margin: 0;
+}
+
+.map {
+  width: 100%;
+  height: 100vh;
+}
+
+#debug {
+  padding: 2px 4px;
+  position: absolute;
+  bottom: 6vh;
+  left: 5vw;
+  z-index: 9999;
+  border: 2px solid black;
+  font-size: 10px;
+}

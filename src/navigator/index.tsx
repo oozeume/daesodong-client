@@ -43,6 +43,7 @@ import {Text} from 'native-base';
 import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
+import FacilityMain from '~/pages/facilify/main';
 import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
@@ -290,6 +291,15 @@ const AppNavigator = () => {
             ),
           })}
         />
+
+        <Stack.Screen
+          name="FacilityMain"
+          component={FacilityMain}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         <Stack.Screen
           name="MyPageHeart"
           component={MyPageHeart}
@@ -309,6 +319,7 @@ const AppNavigator = () => {
             ),
           })}
         />
+
         <Stack.Screen
           name="MyInfo"
           component={MyInfo}
@@ -328,6 +339,7 @@ const AppNavigator = () => {
             ),
           })}
         />
+
         <Stack.Screen
           name="MyLoginInfo"
           component={LoginInfo}
