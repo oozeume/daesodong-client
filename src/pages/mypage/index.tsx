@@ -75,6 +75,7 @@ function MyPage() {
               name={'고마워요'}
               count={1000}
               icon={<HeartFillIcon fill={colors.fussOrange[0]} />}
+              onPress={() => navigation.navigate('MyPageHeart')}
             />
           </HStack>
         </Stack>

@@ -43,6 +43,7 @@ import {Text} from 'native-base';
 import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
+import MyPageHeart from '~/pages/mypage/heart';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
@@ -245,6 +246,8 @@ const AppNavigator = () => {
             headerShown: true,
             headerTitleAlign: 'center',
             headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => <Text>새 알림</Text>,
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
@@ -256,7 +259,7 @@ const AppNavigator = () => {
           component={NoticeDetail}
           options={({navigation}) => ({
             headerShown: true,
-            headerBackground: () => <Header />,
+            headerBackground: () => <></>,
             headerTitle: '',
             headerStyle: {
               backgroundColor: colors.fussYellow['-40'],
@@ -271,10 +274,32 @@ const AppNavigator = () => {
           component={MyPageSave}
           options={({navigation}) => ({
             headerShown: true,
-            headerStyle: {backgroundColor: 'transparent'},
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 저장
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyPageHeart"
+          component={MyPageHeart}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                고마워요
               </Text>
             ),
             headerLeft: props => (
