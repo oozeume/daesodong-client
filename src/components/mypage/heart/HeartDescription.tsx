@@ -31,7 +31,7 @@ function HeartDescription({isOpen, onClose}: Props) {
                   <DeleteIcon />
                 </Pressable>
               }
-              removeTopPosition
+              isRemoveTopPosition
             />
 
             <Stack px={'18px'} py={'16px'} space={'6px'}>
