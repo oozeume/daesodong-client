@@ -14,6 +14,8 @@ interface Props {
  *@description 시설 메인 > 지도보기, 목록 보기 버튼
  */
 function ListViewChangeButton({icon, onPress, name}: Props) {
+  const buttonLeftValue = 49;
+
   return (
     <Pressable
       onPress={onPress}
@@ -24,7 +26,7 @@ function ListViewChangeButton({icon, onPress, name}: Props) {
       position={'absolute'}
       bottom={'64px'}
       style={styles.shadow}
-      left={Math.floor(APP_WIDTH * 0.5 - 49)}
+      left={Math.floor(APP_WIDTH * 0.5 - buttonLeftValue)}
       bgColor={colors.grayScale[0]}>
       <Center flexDir={'row'}>
         {icon}

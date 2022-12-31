@@ -18,7 +18,7 @@ function MapFilterButton({onPress, name}: Props) {
   return (
     <Pressable
       borderRadius={8}
-      w={'31.5%'}
+      flex={1}
       onPress={onPress}
       style={styles.shadow}>
       <HStack

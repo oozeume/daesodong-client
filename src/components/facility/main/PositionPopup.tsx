@@ -24,7 +24,7 @@ interface Props {
 
 /**
  *@description 시설 메인 위치 선택 팝업
- *@param onOK - 대소동 팀에게 전달 버튼 핸들러
+ *@param onOK - 확인 버튼 핸들러
  *@param onCancel - 취소 버튼 핸들러
  */
 function PositionPopup({
