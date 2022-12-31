@@ -12,7 +12,7 @@ interface Props {
   fontColors: Colors;
   buttonColors: Colors;
   borderColors: Colors;
-  width?: string;
+  width?: string | number;
   large?: boolean;
   active?: boolean;
   shadow?: boolean;
