@@ -7,10 +7,10 @@ interface Props {
   text: string | JSX.Element;
   info?: any;
   onPress?: () => void;
-  invisibleIcon?: boolean;
+  isInvisibleIcon?: boolean;
 }
 
-function Info({text, info, onPress, invisibleIcon = false}: Props) {
+function Info({text, info, onPress, isInvisibleIcon = false}: Props) {
   return (
     <Pressable onPress={onPress}>
       <HStack
@@ -27,7 +27,7 @@ function Info({text, info, onPress, invisibleIcon = false}: Props) {
           <Text color={colors.grayScale[80]} fontSize={'15px'}>
             {info}
           </Text>
-          {!invisibleIcon && <RightIcon stroke={colors.grayScale[80]} />}
+          {!isInvisibleIcon && <RightIcon stroke={colors.grayScale[80]} />}
         </HStack>
       </HStack>
     </Pressable>

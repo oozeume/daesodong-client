@@ -4,7 +4,6 @@ import {colors} from '~/theme/theme';
 import {
   Keyboard,
   StyleProp,
-  StyleSheet,
   TextStyle,
   TouchableWithoutFeedback,
   ViewStyle,
@@ -27,7 +26,7 @@ interface Props {
   successButtonName?: string;
   successButtonStyle?: StyleProp<ViewStyle>;
   successButtonNameStyle?: StyleProp<TextStyle>;
-  invisibleCancelButton?: boolean;
+  isInvisibleCancelButton?: boolean;
 }
 
 /**
@@ -46,7 +45,7 @@ function Popup({
   setIsVisible,
   onCancel,
   onSuccess,
-  invisibleCancelButton = false,
+  isInvisibleCancelButton = false,
   cancelButtonName = '취소',
   cancelButtonStyle,
   cancelButtonNameStyle,
@@ -92,7 +91,7 @@ function Popup({
             p="0"
             borderTopWidth={1}
             borderColor={colors.grayScale['90']}>
-            {!invisibleCancelButton && (
+            {!isInvisibleCancelButton && (
               <Pressable
                 flex="1"
                 onPress={_onCancel}
@@ -111,7 +110,7 @@ function Popup({
 
             <Pressable
               flex="1"
-              borderLeftWidth={invisibleCancelButton ? 0 : 1}
+              borderLeftWidth={isInvisibleCancelButton ? 0 : 1}
               borderColor={colors.grayScale['90']}
               backgroundColor={colors.negative['0']}
               style={successButtonStyle}

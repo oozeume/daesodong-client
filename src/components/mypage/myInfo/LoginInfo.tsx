@@ -81,7 +81,7 @@ function LoginInfo() {
       <Popup
         isVisible={withdrawalConfirm}
         setIsVisible={setWithdrawalConfirm}
-        invisibleCancelButton
+        isInvisibleCancelButton
         title={'이유를 알려주셔서 감사해요. \n우리 다음에 또 만나요!'}
         successButtonName={'확인'}
         successButtonStyle={{backgroundColor: colors.grayScale[10]}}
