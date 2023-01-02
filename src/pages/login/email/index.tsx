@@ -1,8 +1,7 @@
 import {HStack, Text, View, VStack} from 'native-base';
 import React, {useState} from 'react';
-import {RouteList} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Header from '~/components/hospital/review/register/Header';
 import BackIcon from '~/assets/icons/back.svg';
 import {
@@ -17,30 +16,29 @@ import VerificationForm from '~/components/common/VerificationForm';
 import {Alert, Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {usePostAuthEmailLogin} from '~/api/auth';
+import {NavigationHookProp} from '~/../types/navigator';
 
 /**
  *@description 이메일로 로그인 페이지
  */
 function EmailLogin() {
-  const navigation = useNavigation<NavigationProp<RouteList>>();
+  const {navigate, reset} = useNavigation<NavigationHookProp>();
 
   const postAuthEmailLogin = usePostAuthEmailLogin();
-
-  const onMove = (stack: keyof RouteList) => {
-    navigation.navigate(stack);
-  };
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onLogin = async () => {
-    const response = await postAuthEmailLogin.mutateAsync({
-      email,
-      password,
-    });
+    reset({index: 0, routes: [{name: 'tab'}]});
 
-    if (response?.success === 'SUCCESS') Alert.alert('로그인 성공');
-    else Alert.alert(response?.message || '로그인 실패');
+    // const response = await postAuthEmailLogin.mutateAsync({
+    //   email,
+    //   password,
+    // });
+
+    // if (response?.success === 'SUCCESS') Alert.alert('로그인 성공');
+    // else Alert.alert(response?.message || '로그인 실패');
   };
 
   return (
@@ -52,7 +50,7 @@ function EmailLogin() {
             leftButton={
               <BackIcon
                 style={{position: 'absolute', left: 18}}
-                onPress={() => onMove('InitialLogin')}
+                onPress={() => navigate('InitialLogin')}
               />
             }
           />
@@ -67,7 +65,6 @@ function EmailLogin() {
                 value={email}
                 keyboardType="email-address"
                 autoFocus
-                // verificationResult="FAIL"
               />
 
               <VerificationForm
@@ -76,12 +73,11 @@ function EmailLogin() {
                 errorMessage="비밀번호를 확인해주세요"
                 onChangeText={setPassword}
                 value={password}
-                // verificationResult="FAIL"
                 secureTextEntry
               />
 
               <RedActiveLargeButton
-                active={email.length > 4 && password.length > 4}
+                active={true}
                 handlePress={onLogin}
                 buttonStyle={{marginBottom: 20}}
                 text={'로그인'}
@@ -89,21 +85,21 @@ function EmailLogin() {
 
               <HStack alignItems={'center'} justifyContent={'space-between'}>
                 <EmailLoginHelperButton
-                  onPress={() => onMove('FindEmail')}
+                  onPress={() => navigate('FindEmail')}
                   name="이메일 찾기"
                 />
 
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() => onMove('PasswordReset')}
+                  onPress={() => navigate('PasswordReset')}
                   name="비밀번호 재설정"
                 />
 
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() => onMove('SignUpEmail')}
+                  onPress={() => navigate('SignUpEmail')}
                   name="회원가입"
                 />
               </HStack>

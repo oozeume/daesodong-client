@@ -16,7 +16,7 @@ import {FormType} from '../community';
  * { ... Home: { id: string; }; ... }
  */
 export type RootTabParamList = {
-  Home: undefined;
+  Facility: undefined;
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
@@ -59,7 +59,6 @@ export type RootStackParamList = {
   MyPageNotice: undefined;
   MyPageNoticeDetail: undefined;
   MyPageSave: undefined;
-  FacilityMain: undefined;
   MyPageHeart: undefined;
   MyInfo: undefined;
   MyLoginInfo: undefined;
