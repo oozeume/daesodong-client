@@ -10,23 +10,24 @@ interface Props {
   isInvisibleDuplicationButton?: boolean;
   title?: string;
   value?: string;
-  ValueUnit?: JSX.Element;
+  valueUnit?: JSX.Element;
+  subText?: JSX.Element;
 }
 
 /**
- *@description 내 계정 - 내 정보 - 닉네임 변경 컴포넌트
+ *@description 내 계정 - 내 정보/아이 정보 - 이름 변경 컴포넌트
  */
 
-function NicknameChange({
+function NameChange({
   onPress,
   onClose,
-  isInvisibleSubText,
   isInvisibleDuplicationButton,
   title,
   value,
-  ValueUnit,
+  valueUnit,
+  subText,
 }: Props) {
-  const [newNickname, setNewNickname] = useState(value);
+  const [newName, setNewname] = useState(value);
   return (
     <>
       <Center flex={1} px={'18px'} pt={'28px'}>
@@ -37,12 +38,7 @@ function NicknameChange({
           color={colors.grayScale[80]}>
           {title ?? '닉네임'}
         </Text>
-
-        {!isInvisibleSubText && (
-          <Text fontSize={'15px'} color={colors.grayScale[60]}>
-            닉네임은 한 달에 1회 변경할 수 있어요
-          </Text>
-        )}
+        {subText}
       </Center>
 
       <HStack
@@ -51,9 +47,9 @@ function NicknameChange({
         width="100%"
         justifyContent={'space-between'}
         alignItems={'center'}>
-        <TextInput onChangeText={setNewNickname} value={newNickname} />
+        <TextInput onChangeText={setNewname} value={newName} />
 
-        {ValueUnit}
+        {valueUnit}
 
         {!isInvisibleDuplicationButton && (
           <Button
@@ -103,4 +99,4 @@ function NicknameChange({
   );
 }
 
-export default NicknameChange;
+export default NameChange;

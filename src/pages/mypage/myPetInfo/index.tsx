@@ -6,7 +6,7 @@ import ToastMessage from '~/components/common/toast/ToastMessage';
 import GenderChange from '~/components/mypage/myInfo/GenderChange';
 import Info from '~/components/mypage/myInfo/Info';
 import InfoChangeBottomSheet from '~/components/mypage/myInfo/InfoChangeBottomSheet';
-import NicknameChange from '~/components/mypage/myInfo/NicknameChange';
+import NameChange from '~/components/mypage/myInfo/NameChange';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import {colors} from '~/theme/theme';
 
@@ -98,11 +98,10 @@ function MyPetInfo() {
         isOpen={birthModalOpen}
         onClose={() => setBirthModalOpen(false)}
         ElementComponent={
-          <NicknameChange
+          <NameChange
             title={'나이'}
             value={'2'}
-            ValueUnit={<Text color={colors.grayScale[70]}>개월</Text>}
-            isInvisibleSubText
+            valueUnit={<Text color={colors.grayScale[70]}>개월</Text>}
             isInvisibleDuplicationButton
             onClose={() => setBirthModalOpen(false)}
             onPress={() => {
@@ -132,10 +131,9 @@ function MyPetInfo() {
         isOpen={nameModalOpen}
         onClose={() => setNameModalOpen(false)}
         ElementComponent={
-          <NicknameChange
+          <NameChange
             title={'아이 이름'}
             value={'봉이네'}
-            isInvisibleSubText
             isInvisibleDuplicationButton
             onClose={() => setNameModalOpen(false)}
             onPress={() => {
