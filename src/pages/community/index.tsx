@@ -52,7 +52,7 @@ const CommunityMain = () => {
     <CommunityContents />,
   ];
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['top', 'left', 'right']}>
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         data={data}

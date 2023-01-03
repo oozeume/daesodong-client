@@ -18,6 +18,7 @@ import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import {usePostAuthEmailLogin} from '~/api/auth';
+import {NavigationHookProp} from '~/../types/navigator';
 
 interface EmailLoginForm {
   email: string;
