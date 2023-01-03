@@ -34,6 +34,9 @@ import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
 import TabNavigator from './tab/tabNavigator';
 import AuthFoundResult from '~/pages/login/authFoundResult';
+import MyPageHeart from '~/pages/mypage/heart';
+import MyInfo from '~/pages/mypage/myInfo';
+import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -152,6 +155,8 @@ const AppNavigator = () => {
             headerShown: true,
             headerTitleAlign: 'center',
             headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => <Text>새 알림</Text>,
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
@@ -163,7 +168,7 @@ const AppNavigator = () => {
           component={NoticeDetail}
           options={({navigation}) => ({
             headerShown: true,
-            headerBackground: () => <Header />,
+            headerBackground: () => <></>,
             headerTitle: '',
             headerStyle: {
               backgroundColor: colors.fussYellow['-40'],
@@ -178,10 +183,73 @@ const AppNavigator = () => {
           component={MyPageSave}
           options={({navigation}) => ({
             headerShown: true,
-            headerStyle: {backgroundColor: 'transparent'},
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 저장
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyPageHeart"
+          component={MyPageHeart}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerBackground: () => <></>,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                고마워요
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyInfo"
+          component={MyInfo}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                내 정보
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyLoginInfo"
+          component={LoginInfo}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                로그인 정보
               </Text>
             ),
             headerLeft: props => (

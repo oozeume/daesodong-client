@@ -209,7 +209,7 @@ const FacilityMain = () => {
           </HStack>
         </Pressable>
 
-        <HStack justifyContent={'space-between'} w="100%">
+        <HStack justifyContent={'space-between'} w="100%" space={3}>
           <MapFilterButton
             name={filterForm.facility || '시설'}
             onPress={onFacilityFilterOpen}

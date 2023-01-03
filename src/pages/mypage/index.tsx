@@ -75,6 +75,7 @@ function MyPage() {
               name={'고마워요'}
               count={1000}
               icon={<HeartFillIcon fill={colors.fussOrange[0]} />}
+              onPress={() => navigation.navigate('MyPageHeart')}
             />
           </HStack>
         </Stack>
@@ -100,7 +101,10 @@ function MyPage() {
             color={colors.grayScale[80]}
           />
         </HStack>
-        <Text fontSize={'16px'} py={'14px'}>
+        <Text
+          fontSize={'16px'}
+          py={'14px'}
+          onPress={() => navigation.navigate('MyInfo')}>
           내 정보
         </Text>
         <Text fontSize={'16px'} py={'14px'}>
