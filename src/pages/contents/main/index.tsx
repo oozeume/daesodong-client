@@ -28,7 +28,7 @@ const ContentsMain = () => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['top', 'left', 'right']}>
       {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
       <ReviewPopup
         visible={isOpen}
