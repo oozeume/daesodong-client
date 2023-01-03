@@ -1,8 +1,8 @@
 import {Text, VStack} from 'native-base';
 import React from 'react';
-import {RouteList} from '~/../types/navigator';
+import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   AppleLoginButton,
   EmailLoginButton,
@@ -16,24 +16,20 @@ import {colors} from '~/theme/theme';
  *@description 휴대폰 인증 확인 시, 계정 없음 페이지
  */
 function AuthFoundResult() {
-  const {navigate} = useNavigation<NavigationProp<RouteList>>();
+  const {navigate} = useNavigation<NavigationHookProp>();
+  const {params} = useRoute<RouteHookProp<'AuthFoundResult'>>();
 
   const {height: appHeight} = Dimensions.get('screen');
 
   // 디바이스 높이에 따른 padding 설정
   const containerPaddingTop = `${Math.floor((140 * appHeight) / 812)}px`;
 
-  // email, password
-  let previousURL = 'email';
-
-  // KAKAO GOOGLE APPLE
-  let _type = 'NOT_FOUND';
-
   let mainText = '';
   let subText = '';
 
-  if (_type === 'NOT_FOUND') {
-    if (previousURL === 'email') {
+  // 인증 결과 문구 입력 로직
+  if (params?.type === 'NOT_FOUND') {
+    if (params?.previousURL === 'FOUND_EMAIL') {
       subText = '회원가입하고 대소동 서비스를 이용해보세요';
     } else {
       subText = '입력하신 이메일을 확인하시거나\n회원가입을 진행해주세요';
@@ -43,12 +39,6 @@ function AuthFoundResult() {
     subText = '가입했던 계정으로 로그인 해보세요';
     mainText = '카카오 계정으로 로그인하셨네요!';
   }
-
-  /**
-   카카오 계정으로 로그인한 이력이 있어요!
-
-   가입된 계정이 없어요
-   */
 
   return (
     <SafeAreaView>
@@ -78,14 +68,6 @@ function AuthFoundResult() {
             color={colors.grayScale['60']}>
             {subText}
           </Text>
-
-          {/* <Text
-            fontSize="15px"
-            textAlign="center"
-            fontWeight="400"
-            color={colors.grayScale['60']}>
-            회원가입을 진행해주세요
-          </Text> */}
         </VStack>
 
         <VStack>

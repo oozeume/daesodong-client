@@ -18,6 +18,7 @@ import {VerificationResult} from '~/../types/verification';
 
 import BackIcon from '../../../assets/icons/back.svg';
 import {usePostAuthMobileVerifyCode} from '~/api/auth';
+import {ErrorResponseTransform} from '~/../types/api/common';
 
 // 숫자만 받을 수 있는 정규식
 const regex = /^[0-9]+$/;
@@ -28,6 +29,7 @@ interface Props {
   handlePage?: () => void;
   onResendVerification: () => void;
   onVerificationFail?: () => void;
+  phoneNumber: string;
 }
 
 /**
@@ -42,13 +44,15 @@ function VerificationModal({
   handlePage = () => {},
   onVerificationFail,
   onResendVerification,
+  phoneNumber,
 }: Props) {
   const inputRef = useRef<TextInput>(null);
   const [isTimeOver, setIsTimeOver] = useState<boolean>();
   const [result, setResult] = useState<VerificationResult>(); // 인증번호 확인 결과
+  const [errorMessage, setErrorMessage] = useState('인증번호를 확인해주세요');
   const [verificationNumber, setVerificationNumber] = useState('');
 
-  const VERIFICATION_CODE_DIGITS = 6;
+  const VERIFICATION_CODE_DIGITS = 4;
 
   const {mutateAsync} = usePostAuthMobileVerifyCode();
 
@@ -62,23 +66,43 @@ function VerificationModal({
 
   // 인증번호 확인
   const checkVerificationNumber = async () => {
+    let response = null;
+
     if (isTimeOver) {
       handleModal();
-      mutateAsync({code: verificationNumber});
+      response = await mutateAsync({
+        code: verificationNumber,
+        mobile: phoneNumber,
+      });
     } else {
       if (verificationNumber.length > VERIFICATION_CODE_DIGITS)
         return setResult('FAIL');
 
-      const response = await mutateAsync({code: verificationNumber});
+      response = await mutateAsync(
+        {
+          code: verificationNumber,
+          mobile: phoneNumber,
+        },
+        {
+          onError: error => {
+            const errorResponse = error as ErrorResponseTransform;
 
-      if (response?.data) {
-        setResult('SUCCESS');
-        handlePage();
-        handleModal();
-      } else {
-        setResult('FAIL');
-        if (onVerificationFail) onVerificationFail();
-      }
+            if (errorResponse?.message && errorResponse?.message !== '') {
+              setResult('FAIL');
+              setErrorMessage(errorResponse?.message);
+            }
+          },
+        },
+      );
+    }
+
+    if (response?.data) {
+      setResult('SUCCESS');
+      handlePage();
+      handleModal();
+    } else {
+      setResult('FAIL');
+      if (onVerificationFail) onVerificationFail();
     }
   };
 
@@ -121,7 +145,7 @@ function VerificationModal({
                 placeholder={`인증번호 ${VERIFICATION_CODE_DIGITS}자리`}
                 verificationResult={result}
                 successMessage={'인증번호가 일치합니다'}
-                errorMessage={'인증번호를 확인해주세요'}
+                errorMessage={errorMessage}
                 value={verificationNumber}
                 onChangeText={handleVerificationNumber}
                 inputRightElement={

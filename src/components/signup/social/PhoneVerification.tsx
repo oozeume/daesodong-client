@@ -3,7 +3,6 @@ import {Keyboard} from 'react-native';
 
 import {colors} from '~/theme/theme';
 import Button from '~/components/common/button';
-import useRegExPhone from '~/hooks/useRegExPhone';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 import {SignupForm} from '~/../types/login';
@@ -21,7 +20,6 @@ interface Props {
  */
 function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
-
   const postAuthMobileVerify = usePostAuthMobileVerify();
 
   const handleModal = () => {
@@ -54,6 +52,7 @@ function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
         handleModal={handleModal}
         handlePage={handlePage}
         onResendVerification={onResendVerification}
+        phoneNumber={signupForm.mobile}
       />
       <VerificationForm
         keyboardType={'number-pad'}

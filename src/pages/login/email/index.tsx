@@ -13,12 +13,11 @@ import {
 import EmailLoginHelperButton from '~/components/login/email/button';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
-import {Alert, Keyboard} from 'react-native';
+import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {usePostAuthEmailLogin} from '~/api/auth';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import axios from 'axios';
+import {usePostAuthEmailLogin} from '~/api/auth';
 
 interface EmailLoginForm {
   email: string;

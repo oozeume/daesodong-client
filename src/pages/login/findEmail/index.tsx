@@ -73,6 +73,7 @@ function FindEmail() {
         handlePage={handlePage}
         onResendVerification={onResendVerification}
         onVerificationFail={onVerificationFail}
+        phoneNumber={phoneNumber.replace(/\-/g, '')}
       />
 
       <TouchableWithoutView onPress={Keyboard.dismiss}>
