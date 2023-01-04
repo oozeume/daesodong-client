@@ -1,5 +1,5 @@
 import {HStack, Text, View, VStack} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import Header from '~/components/hospital/review/register/Header';
@@ -18,7 +18,7 @@ import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import {usePostAuthEmailLogin} from '~/api/auth';
-import {NavigationHookProp} from '~/../types/navigator';
+import {getSecurityData, setSecurityData} from '~/utils/storage';
 
 interface EmailLoginForm {
   email: string;
@@ -42,7 +42,21 @@ function EmailLogin() {
 
   const [errorForm, setErrorForm] = useState<EmailLoginForm>(initForm);
 
+  useEffect(() => {
+    async function checkIsLogin() {
+      const accessToken = await getSecurityData('access_token');
+
+      if (accessToken) reset({index: 0, routes: [{name: 'tab'}]});
+    }
+
+    // 로그인 가능 여부 체크
+    if (!__DEV__) checkIsLogin();
+  }, []);
+
   const onLogin = async () => {
+    // 테스트 혹은 토큰 발급 로그인을 위한 로그인 시, 아랫줄을 주석 처리해주세요.
+    if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
+
     if (!loginForm.email) return;
     if (!loginForm.password) return;
 
@@ -57,8 +71,12 @@ function EmailLogin() {
       },
     });
 
-    if (response?.success === 'SUCCESS')
+    if (response?.success === 'SUCCESS') {
+      await setSecurityData('access_token', response.data.access);
+      await setSecurityData('refresh_token', response.data.refresh);
+
       reset({index: 0, routes: [{name: 'tab'}]});
+    }
   };
 
   return (
