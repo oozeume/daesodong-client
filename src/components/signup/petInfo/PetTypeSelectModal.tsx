@@ -15,6 +15,8 @@ interface Props {
   onClose: () => void;
   setPetType: (selectedItem: {id: string; title: string}) => void;
   isEnrollPet?: boolean;
+  onPress: () => void;
+  buttonText?: string;
 }
 
 const DATA = [
@@ -78,7 +80,14 @@ const DATA = [
  *@param isEnrollPet - 새로 팻을 등록할 지 여부
  */
 
-function PetTypeSelectModal({isOpen, onClose, setPetType, isEnrollPet}: Props) {
+function PetTypeSelectModal({
+  isOpen,
+  onClose,
+  setPetType,
+  isEnrollPet,
+  onPress,
+  buttonText,
+}: Props) {
   const statusbarHeight = getStatusBarHeight();
   const [isPetTypeEmpty, setPetTypeEmpty] = useState(false);
   const [selectedItem, setSelectedItem] = useState({id: '', title: ''});
@@ -217,11 +226,12 @@ function PetTypeSelectModal({isOpen, onClose, setPetType, isEnrollPet}: Props) {
                 handlePress={() => {
                   onClose();
                   setPetType(selectedItem);
+                  onPress();
                 }}
                 large
                 active
                 shadow
-                text={'다음'}
+                text={buttonText ?? '다음'}
                 fontColors={{
                   active: colors.grayScale[90],
                   disabled: colors.grayScale[50],

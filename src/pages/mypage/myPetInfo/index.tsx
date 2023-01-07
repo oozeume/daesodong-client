@@ -119,12 +119,13 @@ function MyPetInfo() {
       <PetTypeSelectModal
         isOpen={petTypeModalOpen}
         setPetType={setPetType}
-        onClose={() => {
-          setPetTypeModalOpen(false);
+        buttonText={'변경'}
+        onPress={() => {
           toast.show({
             render: () => <ToastMessage text={'우리 아이 종을 변경했어요'} />,
           });
         }}
+        onClose={() => setPetTypeModalOpen(false)}
       />
 
       <InfoChangeBottomSheet

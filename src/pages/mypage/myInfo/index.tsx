@@ -11,7 +11,7 @@ import ToastMessage from '~/components/common/toast/ToastMessage';
 import NameChange from '~/components/mypage/myInfo/NameChange';
 import {colors} from '~/theme/theme';
 
-function Index() {
+function MyInfo() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [nicknameModalOpen, setNicknameModalOpen] = useState(false);
   const [genderModalOpen, setGenderModalOpen] = useState(false);
@@ -122,4 +122,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MyInfo;

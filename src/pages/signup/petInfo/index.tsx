@@ -132,6 +132,7 @@ function PetInfoRegister({navigation}: Props) {
         onClose={onClose}
         setPetType={setPetType}
         isEnrollPet
+        onPress={() => {}}
       />
     </SafeAreaView>
   );

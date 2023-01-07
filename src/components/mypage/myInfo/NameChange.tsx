@@ -6,7 +6,6 @@ import {colors} from '~/theme/theme';
 interface Props {
   onPress: () => void;
   onClose: () => void;
-  isInvisibleSubText?: boolean;
   isInvisibleDuplicationButton?: boolean;
   title?: string;
   value?: string;
