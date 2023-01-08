@@ -13,18 +13,19 @@ import {NavigationHookProp, RouteList} from '~/../types/navigator';
 interface Props {
   visible: boolean;
   handleModal: () => void;
+  onSignup: () => Promise<void>;
 }
 
-function TermsAgreedModal({visible, handleModal}: Props) {
+function TermsAgreedModal({visible, handleModal, onSignup}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const [isAgreePrivacyPolicy, setIsAgreePrivacyPolicy] = useState(false);
   const [isAgreeTermsOfService, setIsAgreeTermsOfService] = useState(false);
 
-  const handleSignUp = () => handleModal();
   const moveToTermsDetail = (
     route: 'TermsOfServicePolicy' | 'PrivacyPolicy',
   ) => {
     navigate(route);
+    handleModal();
   };
 
   return (
@@ -130,7 +131,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 active: colors.grayScale[90],
                 disabled: colors.grayScale[50],
               }}
-              handlePress={handleSignUp}
+              handlePress={onSignup}
               active={isAgreeTermsOfService && isAgreePrivacyPolicy}
             />
           </Box>
