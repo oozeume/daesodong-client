@@ -22,7 +22,7 @@ function Header({title, rightButton, leftButton, isRemoveTopPosition}: Props) {
       top={isRemoveTopPosition ? undefined : insets.top}
       alignItems={'center'}
       h="60px"
-      bgColor={colors.grayScale[20]}>
+      bgColor={colors.grayScale[0]}>
       <HStack left="18px" position={'absolute'} zIndex={1}>
         {leftButton}
       </HStack>
