@@ -83,16 +83,6 @@ function EmailLogin() {
     <TouchableWithoutView onPress={Keyboard.dismiss}>
       <SafeAreaView>
         <VStack bg={colors.grayScale['0']} w="100%" h="100%">
-          <Header
-            title="이메일로 로그인"
-            leftButton={
-              <BackIcon
-                style={{position: 'absolute', left: 18}}
-                onPress={() => navigate('InitialLogin')}
-              />
-            }
-          />
-
           <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
             <VStack>
               <VerificationForm
