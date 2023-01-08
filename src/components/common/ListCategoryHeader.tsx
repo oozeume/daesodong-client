@@ -6,7 +6,7 @@ import {ScrollView} from 'native-base';
  *@description 컨텐츠, 커뮤니티 리스트의 카테고리 헤더
  */
 
-function ContentsCategoryHeader() {
+function ListCategoryHeader() {
   return (
     <ScrollView
       pl={'18px'}
@@ -23,4 +23,4 @@ function ContentsCategoryHeader() {
   );
 }
 
-export default ContentsCategoryHeader;
+export default ListCategoryHeader;

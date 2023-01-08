@@ -5,7 +5,7 @@ import CommunityContent from '~/components/community/detail/Content';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {colors} from '~/theme/theme';
 import ListFilterHeader from '~/components/common/ListFilterHeader';
-import ContentsCategoryHeader from '~/components/common/ContentsCategoryHeader';
+import ListCategoryHeader from '~/components/common/ListCategoryHeader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 /**
@@ -20,7 +20,7 @@ function MyCommunityContent() {
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
           <>
-            <ContentsCategoryHeader />
+            <ListCategoryHeader />
             <ListFilterHeader />
           </>
         }
