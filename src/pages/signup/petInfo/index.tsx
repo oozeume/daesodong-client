@@ -7,7 +7,7 @@ import StageBar from '~/components/common/stage/StageBar';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import CurrentComponentOfArray from '~/components/common/CurrentComponentOfArray';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ParamListBase} from '@react-navigation/native';
+import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {APP_HEIGHT} from '~/utils/dimension';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {HEADER_HEIGHT} from '~/constants/heights';
@@ -23,6 +23,9 @@ import PetImageRegister from '~/components/signup/petInfo/PetImageRegister';
 import Outro from '~/components/signup/petInfo/Outro';
 import ChoicePetGender from '~/components/signup/petInfo/ChoicePetGender';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
+import {initPetInfoForm} from '~/constants/signup';
+import {NavigationHookProp} from '~/../types/navigator';
+import {usePatchUserInfo} from '~/api/user';
 
 type Props = NativeStackScreenProps<ParamListBase, 'PetInfoRegister'>;
 
@@ -43,26 +46,40 @@ export const STAGE_TEXT_BOX_HEIGHT = 172;
 
 /**
  *@description 반려동물 등록 페이지
+ *@todo 거주지 부터 하고 api 만들기
  */
 
-function PetInfoRegister({navigation}: Props) {
+function PetInfoRegister() {
+  const {navigate, goBack} = useNavigation<NavigationHookProp>();
+  const statusbarHeight = getStatusBarHeight();
+
+  const {isOpen, onOpen, onClose} = useDisclose();
   const [currentStage, setCurrentStage] = useState(1);
+  const [form, setForm] = useState(initPetInfoForm);
+  const [petType, setPetType] = useState({id: '', title: ''});
+  const [onStartPress, setStartPress] = useState(false);
+
+  const {mutateAsync} = usePatchUserInfo();
 
   const onPressBack = () => {
     if (currentStage === 1) {
-      navigation.goBack();
+      goBack();
     } else {
       setCurrentStage(prev => prev - 1);
     }
   };
 
+  const onChangeAddress = (address: string) => {
+    setForm(() => ({...form, address}));
+  };
+
   const moveToNextPage = () => setCurrentStage(prev => prev + 1);
 
-  const statusbarHeight = getStatusBarHeight();
-  const [onStartPress, setStartPress] = useState(false);
-  const {isOpen, onOpen, onClose} = useDisclose();
+  const onSubmit = async () => {
+    const response = await mutateAsync(form);
 
-  const [petType, setPetType] = useState({id: '', title: ''});
+    moveToNextPage();
+  };
 
   return (
     <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
@@ -103,22 +120,51 @@ function PetInfoRegister({navigation}: Props) {
               )}
 
               <CurrentComponentOfArray index={currentStage}>
-                <ChoiceGender handlePage={moveToNextPage} />
-                <PetOwnerBirth handlePage={moveToNextPage} />
-                <PetName handlePage={moveToNextPage} />
+                <ChoiceGender
+                  handlePage={moveToNextPage}
+                  form={form}
+                  setForm={setForm}
+                />
+                <PetOwnerBirth
+                  handlePage={moveToNextPage}
+                  form={form}
+                  setForm={setForm}
+                />
+                <PetName
+                  handlePage={moveToNextPage}
+                  form={form}
+                  setForm={setForm}
+                />
                 <PetTypeSelector
                   handlePage={moveToNextPage}
                   onPress={onOpen}
                   petType={petType}
                 />
-                <PetBirth handlePage={moveToNextPage} />
-                <ChoicePetGender handlePage={moveToNextPage} />
-                <Address handlePage={moveToNextPage} />
-                <AnyQuestion handlePage={moveToNextPage} />
-                <PetImageRegister handlePage={moveToNextPage} />
-                <Outro
-                  handlePage={() => navigation.navigate('DeveloperMenu')}
+                <PetBirth
+                  handlePage={moveToNextPage}
+                  form={form}
+                  setForm={setForm}
                 />
+                <ChoicePetGender
+                  handlePage={moveToNextPage}
+                  form={form}
+                  setForm={setForm}
+                />
+                <Address
+                  handlePage={moveToNextPage}
+                  onChangeAddress={onChangeAddress}
+                />
+                <AnyQuestion
+                  handlePage={moveToNextPage}
+                  form={form}
+                  setForm={setForm}
+                />
+                <PetImageRegister
+                  handlePage={onSubmit}
+                  form={form}
+                  setForm={setForm}
+                />
+                <Outro handlePage={() => navigate('tab')} />
               </CurrentComponentOfArray>
             </Box>
           </Stack>

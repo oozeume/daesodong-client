@@ -8,13 +8,14 @@ import _ from 'lodash';
 
 interface Props {
   handlePage: () => void;
+  onChangeAddress: (address: string) => void;
 }
 
 /**
  *@description 집사정보등록 - 주소
  */
 
-function Address({handlePage}: Props) {
+function Address({handlePage, onChangeAddress}: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
   const {sido, sigugun, dong} = hangjungdong;
 
@@ -99,6 +100,9 @@ function Address({handlePage}: Props) {
         isOpen={isDongOpen}
         onClose={onDongClose}
         onPress={() => {
+          onChangeAddress(
+            `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`,
+          );
           onClose();
           onSigugunClose();
           onDongClose();

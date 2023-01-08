@@ -5,3 +5,15 @@ export const INIT_SIGNUP_FORM = {
   password: '',
   mobile: '',
 };
+
+export const initPetInfoForm = {
+  gender: '',
+  birthdate: undefined as number | undefined,
+  name: '',
+  speciesName: '햄스터',
+  age: undefined as number | undefined,
+  sex: undefined as 'Male' | 'Female' | undefined,
+  address: '',
+  concern: '',
+  pet_picture_url: '',
+};

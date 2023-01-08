@@ -3,9 +3,12 @@ import DateSelector from '~/components/hospital/review/register/selector';
 import dayjs from 'dayjs';
 import LayoutContainer from './LayoutContainer';
 import _ from 'lodash';
+import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 
 interface Props {
   handlePage: () => void;
+  form: PetInfoForm;
+  setForm: SetPetInfoForm;
 }
 
 export interface DateList {
@@ -17,11 +20,8 @@ export interface DateList {
  *@description 집사정보등록 - 집사 태어난 년도
  */
 
-function PetOwnerBirth({handlePage}: Props) {
-  const [visitedDate, setVisitedDate] = useState<{year: number | undefined}>({
-    year: undefined,
-  });
-
+function PetOwnerBirth({handlePage, form, setForm}: Props) {
+  const [index, setIndex] = useState<number>();
   const [yearList, setYearList] = useState<DateList[]>([]);
 
   useEffect(() => {
@@ -40,13 +40,14 @@ function PetOwnerBirth({handlePage}: Props) {
   return (
     <LayoutContainer
       buttonPress={handlePage}
-      possibleButtonPress={!_.isNil(visitedDate.year)}>
+      possibleButtonPress={!_.isNil(form.birthdate)}>
       <DateSelector
         headerText="년도"
-        selectedIndex={visitedDate.year}
-        onSelect={(index: number) =>
-          setVisitedDate(pre => ({...pre, year: index}))
-        }
+        selectedIndex={index}
+        onSelect={(index: number) => {
+          setForm(pre => ({...pre, birthdate: yearList[index].value}));
+          setIndex(index);
+        }}
         itemList={yearList}
         iconType={'underline'}
         showConfirmButton
