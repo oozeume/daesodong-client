@@ -269,38 +269,28 @@ const AppNavigator = () => {
         <Stack.Screen
           name="MyReview"
           component={MyReview}
-          options={({navigation}) => ({
+          options={props => ({
             headerShown: true,
-            headerBackground: () => <></>,
-            headerTitleAlign: 'center',
-            headerBackVisible: false,
-            headerStyle: {backgroundColor: 'white'},
-            headerTitle: () => (
-              <Text fontSize={'18px'} fontWeight={'500'}>
-                내가 작성한 리뷰
-              </Text>
-            ),
-            headerLeft: props => (
-              <HeaderLeft {...props} navigation={navigation} />
+            header: () => (
+              <Header
+                title={'내가 작성한 리뷰'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
             ),
           })}
         />
         <Stack.Screen
           name="MyReviewDetail"
           component={MyReviewDetail}
-          options={({navigation}) => ({
+          options={() => ({
             headerShown: true,
-            headerBackground: () => <></>,
-            headerTitleAlign: 'center',
-            headerBackVisible: false,
-            headerStyle: {backgroundColor: 'white'},
-            headerTitle: () => (
-              <Text fontSize={'18px'} fontWeight={'500'}>
-                내가 작성한 리뷰
-              </Text>
-            ),
-            headerLeft: props => (
-              <HeaderLeft {...props} navigation={navigation} />
+            header: ({navigation}) => (
+              <Header
+                title={'내가 작성한 리뷰'}
+                leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+              />
             ),
           })}
         />
@@ -308,19 +298,15 @@ const AppNavigator = () => {
         <Stack.Screen
           name="MyCommunityContent"
           component={MyCommunityContent}
-          options={({navigation}) => ({
+          options={() => ({
             headerShown: true,
-            headerBackground: () => <></>,
-            headerTitleAlign: 'center',
-            headerBackVisible: false,
-            headerStyle: {backgroundColor: 'white'},
-            headerTitle: () => (
-              <Text fontSize={'18px'} fontWeight={'500'}>
-                내가 작성한 게시글
-              </Text>
-            ),
-            headerLeft: props => (
-              <HeaderLeft {...props} navigation={navigation} />
+            header: props => (
+              <Header
+                title={'내가 작성한 게시글'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
             ),
           })}
         />
@@ -328,19 +314,15 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Inquiry"
           component={Inquiry}
-          options={({navigation}) => ({
+          options={() => ({
             headerShown: true,
-            headerBackground: () => <></>,
-            headerTitleAlign: 'center',
-            headerBackVisible: false,
-            headerStyle: {backgroundColor: 'white'},
-            headerTitle: () => (
-              <Text fontSize={'18px'} fontWeight={'500'}>
-                1:1 문의
-              </Text>
-            ),
-            headerLeft: props => (
-              <HeaderLeft {...props} navigation={navigation} />
+            header: props => (
+              <Header
+                title={'1:1 문의'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
             ),
           })}
         />

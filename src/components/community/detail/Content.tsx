@@ -8,26 +8,26 @@ import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
 
 interface Props {
-  visibleUserInfo?: boolean;
-  visibleLike?: boolean;
+  isVisibleUserInfo?: boolean;
+  isVisibleLike?: boolean;
   userInfo?: JSX.Element;
-  visibleTag?: boolean;
+  isVisibleTag?: boolean;
   viewAllButton?: JSX.Element;
   viewMode?: 'default' | 'simple';
-  visibleTime?: boolean;
+  isVisibleTime?: boolean;
 }
 
 /**
  *@description 커뮤니티 게시글 내용
  */
 const CommunityContent = ({
-  visibleUserInfo = false,
-  visibleLike = false,
-  visibleTag = false,
+  isVisibleUserInfo = false,
+  isVisibleLike = false,
+  isVisibleTag = false,
   viewAllButton,
   userInfo,
   viewMode = 'default',
-  visibleTime,
+  isVisibleTime,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -40,7 +40,7 @@ const CommunityContent = ({
       }
       borderRadius={viewMode === 'simple' ? '16px' : undefined}>
       {/* 글쓴이 정보 */}
-      {visibleUserInfo && (
+      {isVisibleUserInfo && (
         <HStack
           pt="8px"
           pb="20px"
@@ -126,7 +126,7 @@ const CommunityContent = ({
             까닭입니다
           </Text>
 
-          {visibleTime && (
+          {isVisibleTime && (
             <Text fontSize={'12px'} color={colors.grayScale['60']}>
               3시간 전
             </Text>
@@ -149,7 +149,7 @@ const CommunityContent = ({
           <Box bgColor={colors.grayScale['20']} w={imageWidth} h={imageWidth} />
         )}
 
-        {visibleTag && (
+        {isVisibleTag && (
           <HStack mt={'20px'}>
             <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
               <Text color={colors.fussYellow['30']}>태그1</Text>
@@ -179,7 +179,7 @@ const CommunityContent = ({
             : colors.grayScale['10']
         }>
         {userInfo}
-        {visibleLike && (
+        {isVisibleLike && (
           <HStack alignItems={'center'}>
             <HeartFillIcon fill={colors.grayScale['30']} />
 

@@ -6,6 +6,7 @@ import AvatarIcon from '~/assets/icons/avartar.svg';
 import {colors} from '~/theme/theme';
 import ListFilterHeader from '~/components/common/ListFilterHeader';
 import ContentsCategoryHeader from '~/components/common/ContentsCategoryHeader';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 /**
  *@description 내 계정 - 내가 작성한 게시글
@@ -13,7 +14,7 @@ import ContentsCategoryHeader from '~/components/common/ContentsCategoryHeader';
 
 function MyCommunityContent() {
   return (
-    <Stack>
+    <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         stickyHeaderIndices={[0]}
@@ -26,7 +27,7 @@ function MyCommunityContent() {
         data={['', '']}
         renderItem={({item}) => (
           <CommunityContent
-            visibleTime
+            isVisibleTime
             userInfo={
               <HStack>
                 <AvatarIcon
@@ -69,7 +70,7 @@ function MyCommunityContent() {
           />
         )}
       />
-    </Stack>
+    </SafeAreaView>
   );
 }
 

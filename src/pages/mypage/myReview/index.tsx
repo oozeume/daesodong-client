@@ -3,6 +3,8 @@ import React from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import MyReviewItem from '~/components/mypage/myReview/MyReviewItem';
 import ListFilterHeader from '~/components/common/ListFilterHeader';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {colors} from '~/theme/theme';
 
 /**
  *@description 내 계정 - 내가 작성한 리뷰
@@ -10,7 +12,7 @@ import ListFilterHeader from '~/components/common/ListFilterHeader';
 
 function MyReview() {
   return (
-    <Stack flex={1} backgroundColor={'white'}>
+    <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
       <FlatList
         stickyHeaderIndices={[0]}
         ListHeaderComponent={<ListFilterHeader />}
@@ -18,7 +20,7 @@ function MyReview() {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => <MyReviewItem />}
       />
-    </Stack>
+    </SafeAreaView>
   );
 }
 

@@ -20,13 +20,19 @@ function InquiryItem() {
             <Text fontSize={'12px'} color={colors.grayScale['40']}>
               YYYY.MM.DD
             </Text>
-            <Tag
-              height={'16px'}
-              width={'47px'}
-              name={'답변대기'}
-              color={colors.fussOrange['0']}
-              bgColor={colors.fussOrange['-30']}
-            />
+
+            <Stack
+              px={'6px'}
+              py={'1px'}
+              borderRadius={'4px'}
+              backgroundColor={colors.fussOrange['-30']}>
+              <Text
+                fontSize={'10px'}
+                lineHeight={'14px'}
+                color={colors.fussOrange['0']}>
+                답변대기
+              </Text>
+            </Stack>
           </HStack>
 
           <Text mt={'6px'} color={colors.grayScale['70']} noOfLines={2}>
