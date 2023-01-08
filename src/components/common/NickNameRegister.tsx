@@ -36,10 +36,10 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
   ]); // 도움말 검증 결과
 
   const postAuthSignup = usePostAuthEmailSignup();
-  const {data, refetch} = useGetAuthNickname(signupForm.nickname);
+  const {refetch} = useGetAuthNickname(signupForm.nickname);
 
   // 약관 동의 후, 회원가입 api 요청 및 모달창 제어
-  const handleModal = async () => {
+  const onSignup = async () => {
     try {
       const response = await postAuthSignup.mutateAsync(signupForm);
 
@@ -184,7 +184,11 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
         </Box>
       </Box>
 
-      <TermsAgreedModal visible={modalVisible} handleModal={handleModal} />
+      <TermsAgreedModal
+        visible={modalVisible}
+        handleModal={() => setModalVisible(false)}
+        onSignup={onSignup}
+      />
     </>
   );
 }
