@@ -55,8 +55,7 @@ function EmailLogin() {
 
   const onLogin = async () => {
     // 테스트 혹은 토큰 발급 로그인을 위한 로그인 시, 아랫줄을 주석 처리해주세요.
-    // if (__DEV__) return reset({index: 0, routes: [{name: 'PetInfoRegister'}]});
-    // if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
+    if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
 
     if (!loginForm.email) return;
     if (!loginForm.password) return;
@@ -76,8 +75,9 @@ function EmailLogin() {
       await setSecurityData('access_token', response.data.access);
       await setSecurityData('refresh_token', response.data.refresh);
 
-      reset({index: 0, routes: [{name: 'PetInfoRegister'}]});
-      // reset({index: 0, routes: [{name: 'tab'}]});
+      reset({index: 0, routes: [{name: 'tab'}]});
+      // 집사 정보 등록 테스트 시, 아래 주석을 해제하고 tab reset관련해서 주석을 해주세요.
+      // reset({index: 0, routes: [{name: 'PetInfoRegister'}]});
     }
   };
 
