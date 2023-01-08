@@ -7,13 +7,14 @@ interface Props {
   bgColor?: string;
   color?: string;
   width?: string;
+  height?: string;
 }
 
-function Tag({name, bgColor, color, width}: Props) {
+function Tag({name, bgColor, color, width, height}: Props) {
   return (
     <Flex
       w={width ?? '44px'}
-      h={'20px'}
+      h={height ?? '20px'}
       borderRadius={'4px'}
       backgroundColor={bgColor ?? colors.grayScale[20]}
       justifyContent={'center'}

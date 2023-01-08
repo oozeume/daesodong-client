@@ -38,6 +38,10 @@ import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
 import MyPetInfo from '~/pages/mypage/myPetInfo';
+import MyReview from '~/pages/mypage/myReview';
+import MyReviewDetail from '~/pages/mypage/myReviewDetail';
+import MyCommunityContent from '~/pages/mypage/myCommunityContent';
+import Inquiry from '~/pages/mypage/inquiry';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -254,6 +258,85 @@ const AppNavigator = () => {
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 아이정보
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyReview"
+          component={MyReview}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                내가 작성한 리뷰
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyReviewDetail"
+          component={MyReviewDetail}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                내가 작성한 리뷰
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyCommunityContent"
+          component={MyCommunityContent}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                내가 작성한 게시글
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Inquiry"
+          component={Inquiry}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                1:1 문의
               </Text>
             ),
             headerLeft: props => (

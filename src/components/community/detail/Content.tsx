@@ -1,4 +1,4 @@
-import {Box, HStack, Pressable, Text, View, VStack} from 'native-base';
+import {Box, HStack, Pressable, Stack, Text, View, VStack} from 'native-base';
 import React from 'react';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {colors} from '~/theme/theme';
@@ -14,6 +14,7 @@ interface Props {
   visibleTag?: boolean;
   viewAllButton?: JSX.Element;
   viewMode?: 'default' | 'simple';
+  visibleTime?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ const CommunityContent = ({
   viewAllButton,
   userInfo,
   viewMode = 'default',
+  visibleTime,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -114,20 +116,28 @@ const CommunityContent = ({
 
       {/* 내용 */}
       <Box py="20px">
-        <Text
-          noOfLines={viewMode === 'simple' ? 1 : undefined}
-          mb="12px"
-          fontSize={'16px'}
-          color={colors.grayScale['80']}
-          fontWeight={800}>
-          하나의 속의 지나가는 자랑처럼 북간도에 계절이 지나고 슬퍼하는
-          까닭입니다
-        </Text>
+        <Stack space={'2px'} mb={'8px'}>
+          <Text
+            noOfLines={viewMode === 'simple' ? 1 : undefined}
+            fontSize={'16px'}
+            color={colors.grayScale['80']}
+            fontWeight={800}>
+            하나의 속의 지나가는 자랑처럼 북간도에 계절이 지나고 슬퍼하는
+            까닭입니다
+          </Text>
+
+          {visibleTime && (
+            <Text fontSize={'12px'} color={colors.grayScale['60']}>
+              3시간 전
+            </Text>
+          )}
+        </Stack>
 
         <Text
           noOfLines={viewMode === 'simple' ? 2 : undefined}
           fontSize={'14px'}
-          color={colors.grayScale['80']}>
+          color={colors.grayScale['80']}
+          mb={'16px'}>
           이름자를 언덕 봄이 아름다운 어머니 별들을 이런 봅니다. 패, 흙으로
           어머님, 걱정도 쓸쓸함과 새겨지는 있습니다. 그러나 슬퍼하는 이런 애기
           까닭입니다.
