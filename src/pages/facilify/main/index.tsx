@@ -249,6 +249,7 @@ const FacilityMain = () => {
         isOpen={isPetSearchOpen}
         onClose={onPetSearchClose}
         setPetType={setPetType}
+        onPress={() => {}}
       />
 
       <MapFilter

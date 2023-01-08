@@ -4,15 +4,14 @@ import {Stack, Text, useToast} from 'native-base';
 import React, {useState} from 'react';
 import Info from '~/components/mypage/myInfo/Info';
 import InfoChangeBottomSheet from '~/components/mypage/myInfo/InfoChangeBottomSheet';
-import NicknameChange from '~/components/mypage/myInfo/NicknameChange';
 import GenderChange from '~/components/mypage/myInfo/GenderChange';
 import BirthChange from '~/components/mypage/myInfo/BirthChange';
 import AddressChange from '~/components/mypage/myInfo/AddressChange';
-import {colors} from '~/theme/theme';
-import {APP_WIDTH} from '~/utils/dimension';
 import ToastMessage from '~/components/common/toast/ToastMessage';
+import NameChange from '~/components/mypage/myInfo/NameChange';
+import {colors} from '~/theme/theme';
 
-function Index() {
+function MyInfo() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [nicknameModalOpen, setNicknameModalOpen] = useState(false);
   const [genderModalOpen, setGenderModalOpen] = useState(false);
@@ -53,7 +52,13 @@ function Index() {
         isOpen={nicknameModalOpen}
         onClose={() => setNicknameModalOpen(false)}
         ElementComponent={
-          <NicknameChange
+          <NameChange
+            subText={
+              <Text fontSize={'15px'} color={colors.grayScale[60]}>
+                닉네임은 한 달에 1회 변경할 수 있어요
+              </Text>
+            }
+            value={'봉이네'}
             onClose={() => setNicknameModalOpen(false)}
             onPress={() => {
               setNicknameModalOpen(false);
@@ -117,4 +122,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MyInfo;
