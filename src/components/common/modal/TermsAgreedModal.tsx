@@ -8,7 +8,7 @@ import CheckIcon from '../../../assets/icons/check.svg';
 import RightIcon from '../../../assets/icons/right.svg';
 import BackIcon from '../../../assets/icon/back_icon.svg';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RouteList} from '~/../types/navigator';
+import {NavigationHookProp, RouteList} from '~/../types/navigator';
 
 interface Props {
   visible: boolean;
@@ -16,14 +16,15 @@ interface Props {
 }
 
 function TermsAgreedModal({visible, handleModal}: Props) {
-  const navigation = useNavigation<NavigationProp<RouteList>>();
+  const {navigate} = useNavigation<NavigationHookProp>();
   const [isAgreePrivacyPolicy, setIsAgreePrivacyPolicy] = useState(false);
   const [isAgreeTermsOfService, setIsAgreeTermsOfService] = useState(false);
 
   const handleSignUp = () => handleModal();
-  const moveToTermsDetail = (route: keyof RouteList) => {
-    navigation.navigate(route);
-    handleModal();
+  const moveToTermsDetail = (
+    route: 'TermsOfServicePolicy' | 'PrivacyPolicy',
+  ) => {
+    navigate(route);
   };
 
   return (
@@ -77,7 +78,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 <Pressable
                   w={'5%'}
                   onPress={() => moveToTermsDetail('TermsOfServicePolicy')}>
-                  <RightIcon />
+                  <RightIcon stroke={colors.grayScale[50]} />
                 </Pressable>
               </Flex>
 
@@ -105,7 +106,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 <Pressable
                   w={'5%'}
                   onPress={() => moveToTermsDetail('PrivacyPolicy')}>
-                  <RightIcon />
+                  <RightIcon stroke={colors.grayScale[50]} />
                 </Pressable>
               </Flex>
             </VStack>

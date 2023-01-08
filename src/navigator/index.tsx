@@ -81,7 +81,17 @@ const AppNavigator = () => {
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}
-          options={{animation: 'slide_from_right'}}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title="이메일로 로그인"
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
         />
 
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
