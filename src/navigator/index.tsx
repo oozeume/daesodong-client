@@ -37,6 +37,7 @@ import TabNavigator from './tab/tabNavigator';
 import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
+import MyPetInfo from '~/pages/mypage/myPetInfo';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -233,6 +234,26 @@ const AppNavigator = () => {
             headerTitle: () => (
               <Text fontSize={'18px'} fontWeight={'500'}>
                 내 정보
+              </Text>
+            ),
+            headerLeft: props => (
+              <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyPetInfo"
+          component={MyPetInfo}
+          options={({navigation}) => ({
+            headerShown: true,
+            headerBackground: () => <></>,
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerStyle: {backgroundColor: 'white'},
+            headerTitle: () => (
+              <Text fontSize={'18px'} fontWeight={'500'}>
+                아이정보
               </Text>
             ),
             headerLeft: props => (

@@ -61,6 +61,7 @@ export type RootStackParamList = {
   MyPageSave: undefined;
   MyPageHeart: undefined;
   MyInfo: undefined;
+  MyPetInfo: undefined;
   MyLoginInfo: undefined;
 };
 
