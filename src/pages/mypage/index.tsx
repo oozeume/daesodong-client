@@ -107,7 +107,10 @@ function MyPage() {
           onPress={() => navigation.navigate('MyInfo')}>
           내 정보
         </Text>
-        <Text fontSize={'16px'} py={'14px'}>
+        <Text
+          fontSize={'16px'}
+          py={'14px'}
+          onPress={() => navigation.navigate('MyPetInfo')}>
           아이 정보
         </Text>
         <HStack py={'14px'} space={'10px'}>

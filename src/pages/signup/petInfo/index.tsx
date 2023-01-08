@@ -178,6 +178,7 @@ function PetInfoRegister() {
         onClose={onClose}
         setPetType={setPetType}
         isEnrollPet
+        onPress={() => {}}
       />
     </SafeAreaView>
   );
