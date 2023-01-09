@@ -15,6 +15,7 @@ import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 
 import BackIcon from '../../../assets/icons/back.svg';
+import {usePostAuthMobileVerify} from '~/api/auth';
 
 /**
  * @description 이메일 찾기 페이지
@@ -23,22 +24,58 @@ function FindEmail() {
   const navigation = useNavigation<NavigationHookProp>();
   const [phoneNumber, handlePhoneNumber] = useRegExPhone();
   const [modalVisible, setModalVisible] = useState(false);
+  const postAuthMobileVerify = usePostAuthMobileVerify();
 
   const onMoveBack = () => navigation.goBack();
 
-  const handlePage = () => navigation.navigate('PasswordResetNotFoundAuth');
+  // 인증 성공 결과 처리
+  const handlePage = () =>
+    navigation.navigate('AuthFoundResult', {
+      type: '카카오',
+      previousURL: 'FOUND_EMAIL',
+    });
 
+  // 모달 on/off 이벤트
   const handleModal = () => {
     Keyboard.dismiss();
     setModalVisible(prev => !prev);
   };
+
+  // 인증 재발송 이벤트
+  const onResendVerification = () => {
+    postAuthMobileVerify.mutateAsync({
+      mobile: phoneNumber,
+    });
+  };
+
+  // 인증하기 버튼 이벤트
+  const onSendVerification = () => {
+    postAuthMobileVerify.mutateAsync({
+      mobile: phoneNumber,
+    });
+
+    setModalVisible(prev => !prev);
+  };
+
+  // 인증 실패에 대한 이벤트 로직
+  const onVerificationFail = () => {
+    navigation.navigate('AuthFoundResult', {
+      type: 'NOT_FOUND',
+      previousURL: 'FOUND_EMAIL',
+    });
+  };
+
   return (
     <>
       <VerificationModal
         visible={modalVisible}
         handleModal={handleModal}
         handlePage={handlePage}
+        onResendVerification={onResendVerification}
+        onVerificationFail={onVerificationFail}
+        phoneNumber={phoneNumber.replace(/\-/g, '')}
       />
+
       <TouchableWithoutView onPress={Keyboard.dismiss}>
         <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
           <HStack
@@ -92,7 +129,7 @@ function FindEmail() {
                   }}
                   text={'인증하기'}
                   active={phoneNumber.length === 13}
-                  handlePress={handleModal}
+                  handlePress={onSendVerification}
                 />
               }
               autoFocus

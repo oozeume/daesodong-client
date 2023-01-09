@@ -1,4 +1,8 @@
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
 
@@ -37,7 +41,10 @@ export type RootStackParamList = {
 
   EmailLogin: undefined;
   PasswordReset: undefined;
-  PasswordResetNotFoundAuth: undefined;
+  AuthFoundResult: {
+    type: '이메일' | '카카오' | '구글' | 'Apple' | 'NOT_FOUND';
+    previousURL: 'FOUND_EMAIL' | 'FOUND_PASSWORD';
+  };
   FindEmail: undefined;
 
   TermsOfServicePolicy: undefined;
@@ -74,10 +81,13 @@ export type RouteList = RootTabParamList & RootStackParamList;
  */
 export type NavigationHookProp = NavigationProp<RouteList>;
 
-export type StackProps<T extends keyof RouteList> = NativeStackScreenProps<
-  ParamListBase,
+export type RouteHookProp<T extends keyof RootStackParamList> = RouteProp<
+  RouteList,
   T
 >;
+
+export type StackProps<T extends keyof RootStackParamList> =
+  NativeStackScreenProps<ParamListBase, T>;
 
 // export type TabProps<T extends keyof RootTabParamList> = BottomTabScreenProps<
 // RootTabParamList,

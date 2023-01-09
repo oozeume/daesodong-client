@@ -61,6 +61,8 @@ function PasswordResetPhoneCheck({handlePage}: Props) {
         handlePage={handlePage}
         handleModal={() => setIsModalOpen(prevState => !prevState)}
         visible={isModalOpen}
+        onResendVerification={() => {}}
+        phoneNumber={phoneNumber}
       />
     </>
   );

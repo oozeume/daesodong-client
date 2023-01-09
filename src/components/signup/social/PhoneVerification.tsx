@@ -3,10 +3,10 @@ import {Keyboard} from 'react-native';
 
 import {colors} from '~/theme/theme';
 import Button from '~/components/common/button';
-import useRegExPhone from '~/hooks/useRegExPhone';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 import {SignupForm} from '~/../types/login';
+import {usePostAuthMobileVerify} from '~/api/auth';
 
 interface Props {
   handlePage: () => void;
@@ -20,9 +20,25 @@ interface Props {
  */
 function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
+  const postAuthMobileVerify = usePostAuthMobileVerify();
 
   const handleModal = () => {
     Keyboard.dismiss();
+
+    setModalVisible(prev => !prev);
+  };
+
+  const onResendVerification = () => {
+    postAuthMobileVerify.mutateAsync({
+      mobile: signupForm.mobile,
+    });
+  };
+
+  const onSendVerification = async () => {
+    await postAuthMobileVerify.mutateAsync({
+      mobile: signupForm.mobile,
+    });
+
     setModalVisible(prev => !prev);
   };
 
@@ -35,6 +51,8 @@ function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
         visible={modalVisible}
         handleModal={handleModal}
         handlePage={handlePage}
+        onResendVerification={onResendVerification}
+        phoneNumber={signupForm.mobile}
       />
       <VerificationForm
         keyboardType={'number-pad'}
@@ -62,7 +80,7 @@ function PhoneVerification({handlePage, signupForm, setSignupForm}: Props) {
             }}
             text={'인증하기'}
             active={signupForm.mobile.length > 10}
-            handlePress={handleModal}
+            handlePress={onSendVerification}
           />
         }
         autoFocus

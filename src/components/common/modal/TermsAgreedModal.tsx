@@ -8,21 +8,23 @@ import CheckIcon from '../../../assets/icons/check.svg';
 import RightIcon from '../../../assets/icons/right.svg';
 import BackIcon from '../../../assets/icon/back_icon.svg';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RouteList} from '~/../types/navigator';
+import {NavigationHookProp, RouteList} from '~/../types/navigator';
 
 interface Props {
   visible: boolean;
   handleModal: () => void;
+  onSignup: () => Promise<void>;
 }
 
-function TermsAgreedModal({visible, handleModal}: Props) {
-  const navigation = useNavigation<NavigationProp<RouteList>>();
+function TermsAgreedModal({visible, handleModal, onSignup}: Props) {
+  const {navigate} = useNavigation<NavigationHookProp>();
   const [isAgreePrivacyPolicy, setIsAgreePrivacyPolicy] = useState(false);
   const [isAgreeTermsOfService, setIsAgreeTermsOfService] = useState(false);
 
-  const handleSignUp = () => handleModal();
-  const moveToTermsDetail = (route: keyof RouteList) => {
-    navigation.navigate(route);
+  const moveToTermsDetail = (
+    route: 'TermsOfServicePolicy' | 'PrivacyPolicy',
+  ) => {
+    navigate(route);
     handleModal();
   };
 
@@ -77,7 +79,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 <Pressable
                   w={'5%'}
                   onPress={() => moveToTermsDetail('TermsOfServicePolicy')}>
-                  <RightIcon />
+                  <RightIcon stroke={colors.grayScale[50]} />
                 </Pressable>
               </Flex>
 
@@ -105,7 +107,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 <Pressable
                   w={'5%'}
                   onPress={() => moveToTermsDetail('PrivacyPolicy')}>
-                  <RightIcon />
+                  <RightIcon stroke={colors.grayScale[50]} />
                 </Pressable>
               </Flex>
             </VStack>
@@ -129,7 +131,7 @@ function TermsAgreedModal({visible, handleModal}: Props) {
                 active: colors.grayScale[90],
                 disabled: colors.grayScale[50],
               }}
-              handlePress={handleSignUp}
+              handlePress={onSignup}
               active={isAgreeTermsOfService && isAgreePrivacyPolicy}
             />
           </Box>

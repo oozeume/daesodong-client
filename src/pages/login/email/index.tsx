@@ -1,5 +1,5 @@
 import {HStack, Text, View, VStack} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import Header from '~/components/hospital/review/register/Header';
@@ -13,10 +13,17 @@ import {
 import EmailLoginHelperButton from '~/components/login/email/button';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
-import {Alert, Keyboard} from 'react-native';
+import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {usePostAuthEmailLogin} from '~/api/auth';
 import {NavigationHookProp} from '~/../types/navigator';
+import {ErrorResponseTransform} from '~/../types/api/common';
+import {usePostAuthEmailLogin} from '~/api/auth';
+import {getSecurityData, setSecurityData} from '~/utils/storage';
+
+interface EmailLoginForm {
+  email: string;
+  password: string;
+}
 
 /**
  *@description 이메일로 로그인 페이지
@@ -26,43 +33,69 @@ function EmailLogin() {
 
   const postAuthEmailLogin = usePostAuthEmailLogin();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const initForm = {
+    email: '',
+    password: '',
+  };
+
+  const [loginForm, setLoginForm] = useState<EmailLoginForm>(initForm);
+
+  const [errorForm, setErrorForm] = useState<EmailLoginForm>(initForm);
+
+  useEffect(() => {
+    async function checkIsLogin() {
+      const accessToken = await getSecurityData('access_token');
+
+      if (accessToken) reset({index: 0, routes: [{name: 'tab'}]});
+    }
+
+    // 로그인 가능 여부 체크
+    if (!__DEV__) checkIsLogin();
+  }, []);
 
   const onLogin = async () => {
-    reset({index: 0, routes: [{name: 'tab'}]});
+    // 테스트 혹은 토큰 발급 로그인을 위한 로그인 시, 아랫줄을 주석 처리해주세요.
+    if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
 
-    // const response = await postAuthEmailLogin.mutateAsync({
-    //   email,
-    //   password,
-    // });
+    if (!loginForm.email) return;
+    if (!loginForm.password) return;
 
-    // if (response?.success === 'SUCCESS') Alert.alert('로그인 성공');
-    // else Alert.alert(response?.message || '로그인 실패');
+    const response = await postAuthEmailLogin.mutateAsync(loginForm, {
+      onError: error => {
+        const data = error as unknown as ErrorResponseTransform;
+
+        if (data.message === '존재하지 않는 이메일입니다')
+          setErrorForm(prev => ({...prev, email: data.message}));
+        else if (data.message === '비밀번호가 틀렸습니다')
+          setErrorForm(prev => ({...prev, password: data.message}));
+      },
+    });
+
+    if (response?.success === 'SUCCESS') {
+      await setSecurityData('access_token', response.data.access);
+      await setSecurityData('refresh_token', response.data.refresh);
+
+      reset({index: 0, routes: [{name: 'tab'}]});
+    }
   };
 
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
       <SafeAreaView>
         <VStack bg={colors.grayScale['0']} w="100%" h="100%">
-          <Header
-            title="이메일로 로그인"
-            leftButton={
-              <BackIcon
-                style={{position: 'absolute', left: 18}}
-                onPress={() => navigate('InitialLogin')}
-              />
-            }
-          />
-
           <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
             <VStack>
               <VerificationForm
                 placeholder={'아이디(이메일)'}
                 marginBottom={'12px'}
-                errorMessage="입력하신 계정 정보를 찾을 수 없습니다"
-                onChangeText={setEmail}
-                value={email}
+                errorMessage={errorForm.email}
+                verificationResult={
+                  errorForm?.email.length !== 0 ? 'FAIL' : undefined
+                }
+                onChangeText={text =>
+                  setLoginForm(prev => ({...prev, email: text}))
+                }
+                value={loginForm.email}
                 keyboardType="email-address"
                 autoFocus
               />
@@ -71,8 +104,13 @@ function EmailLogin() {
                 placeholder={'비밀번호'}
                 marginBottom={'36px'}
                 errorMessage="비밀번호를 확인해주세요"
-                onChangeText={setPassword}
-                value={password}
+                verificationResult={
+                  errorForm?.password.length !== 0 ? 'FAIL' : undefined
+                }
+                onChangeText={text =>
+                  setLoginForm(prev => ({...prev, password: text}))
+                }
+                value={loginForm.password}
                 secureTextEntry
               />
 

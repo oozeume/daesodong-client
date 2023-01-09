@@ -9,7 +9,6 @@ import HospitalReviewRegister from '~/pages/hospital/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
-import PasswordResetNotFoundAuth from '~/pages/login/passwordReset/notFoundAuth';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
 import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
 import SignUpEmail from '~/pages/signup/email';
@@ -34,6 +33,7 @@ import NoticeDetail from '~/components/mypage/NoticeDetail';
 import {colors} from '~/theme/theme';
 import MyPageSave from '~/pages/mypage/save';
 import TabNavigator from './tab/tabNavigator';
+import AuthFoundResult from '~/pages/login/authFoundResult';
 import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
@@ -81,15 +81,22 @@ const AppNavigator = () => {
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}
-          options={{animation: 'slide_from_right'}}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title="이메일로 로그인"
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
         />
 
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
         <Stack.Screen name="FindEmail" component={FindEmail} />
-        <Stack.Screen
-          name="PasswordResetNotFoundAuth"
-          component={PasswordResetNotFoundAuth}
-        />
+        <Stack.Screen name="AuthFoundResult" component={AuthFoundResult} />
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
         <Stack.Screen name="CommunityRegister" component={CommunityRegister} />

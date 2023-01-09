@@ -9,8 +9,10 @@ import VerificationForm from '~/components/common/VerificationForm';
 
 import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
 import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
-import {usePostAuthEmailSignup} from '~/api/auth';
 import {SignupForm} from '~/../types/login';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationHookProp} from '~/../types/navigator';
+import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
 
 const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
 
@@ -23,6 +25,7 @@ interface Props {
  * 닉네임 입력 및 중복 체크 컴포넌트
  */
 function NickNameRegister({signupForm, setSignupForm}: Props) {
+  const navigation = useNavigation<NavigationHookProp>();
   const [modalVisible, setModalVisible] = useState(false);
   const [result, setResult] = useState<VerificationResult>(); // 인증 결과
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
@@ -32,13 +35,26 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
   ]); // 도움말 검증 결과
 
   const postAuthSignup = usePostAuthEmailSignup();
+  const {refetch} = useGetAuthNickname(signupForm.nickname);
 
   // 약관 동의 후, 회원가입 api 요청 및 모달창 제어
-  const handleModal = async () => {
-    const response = await postAuthSignup.mutateAsync(signupForm);
+  const onSignup = async () => {
+    try {
+      const response = await postAuthSignup.mutateAsync(signupForm);
 
-    if (response?.success === 'SUCCESS') Alert.alert('회원가입 성공');
-    else Alert.alert(response?.message || '회원가입 실패');
+      /**
+       * @todo 토큰 저장 로직 추가하기
+       */
+
+      if (response?.success === 'SUCCESS')
+        navigation.navigate('PetInfoRegister');
+    } catch (error) {
+      /**
+       * @description 409 이메일 존재 에러 로직 > 휴대폰 번호 확인을 했기때문에 로직 불필요.
+       */
+      console.log(error);
+    }
+
     setModalVisible(false);
   };
 
@@ -47,10 +63,18 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
   };
 
   // 닉네임 중복 검사
-  const checkDuplication = () => {
+  const checkDuplication = async () => {
     // API 연동 시 수정 필요
     Keyboard.dismiss();
-    setResult('SUCCESS');
+
+    try {
+      const response = await refetch();
+
+      if (response.data?.data) setResult('SUCCESS');
+      else setResult('FAIL');
+    } catch (error) {
+      setResult('FAIL');
+    }
   };
 
   // 닉네임 글자수 검사
@@ -155,7 +179,11 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
         </Box>
       </Box>
 
-      <TermsAgreedModal visible={modalVisible} handleModal={handleModal} />
+      <TermsAgreedModal
+        visible={modalVisible}
+        handleModal={() => setModalVisible(false)}
+        onSignup={onSignup}
+      />
     </>
   );
 }
