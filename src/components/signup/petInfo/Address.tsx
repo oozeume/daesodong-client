@@ -40,6 +40,13 @@ function Address({handlePage, onChangeAddress}: Props) {
   >();
   const [sortedDong, setSortedDong] = useState<Hangjungdong[]>();
 
+  const onOK = () => {
+    onChangeAddress(
+      `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`,
+    );
+    handlePage();
+  };
+
   useEffect(() => {
     if (sidoValue) {
       setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
@@ -60,7 +67,7 @@ function Address({handlePage, onChangeAddress}: Props) {
 
   return (
     <LayoutContainer
-      buttonPress={handlePage}
+      buttonPress={onOK}
       possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>
       <Stack space={'10px'}>
         <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />
@@ -100,9 +107,6 @@ function Address({handlePage, onChangeAddress}: Props) {
         isOpen={isDongOpen}
         onClose={onDongClose}
         onPress={() => {
-          onChangeAddress(
-            `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`,
-          );
           onClose();
           onSigugunClose();
           onDongClose();

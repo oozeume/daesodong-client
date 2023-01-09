@@ -6,11 +6,12 @@ export const INIT_SIGNUP_FORM = {
   mobile: '',
 };
 
+// 초기 반려동물 등록 폼값
 export const initPetInfoForm = {
   gender: '',
   birthdate: undefined as number | undefined,
   name: '',
-  speciesName: '햄스터',
+  speciesName: undefined as string | undefined,
   age: undefined as number | undefined,
   sex: undefined as 'Male' | 'Female' | undefined,
   address: '',

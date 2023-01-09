@@ -26,6 +26,8 @@ import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import {initPetInfoForm} from '~/constants/signup';
 import {NavigationHookProp} from '~/../types/navigator';
 import {usePatchUserInfo} from '~/api/user';
+import {SpeciesData} from '~/../types/api/species';
+import {ErrorResponse, ErrorResponseTransform} from '~/../types/api/common';
 
 type Props = NativeStackScreenProps<ParamListBase, 'PetInfoRegister'>;
 
@@ -56,7 +58,8 @@ function PetInfoRegister() {
   const {isOpen, onOpen, onClose} = useDisclose();
   const [currentStage, setCurrentStage] = useState(1);
   const [form, setForm] = useState(initPetInfoForm);
-  const [petType, setPetType] = useState({id: '', title: ''});
+
+  const [petType, setPetType] = useState<SpeciesData>();
   const [onStartPress, setStartPress] = useState(false);
 
   const {mutateAsync} = usePatchUserInfo();
@@ -76,7 +79,7 @@ function PetInfoRegister() {
   const moveToNextPage = () => setCurrentStage(prev => prev + 1);
 
   const onSubmit = async () => {
-    const response = await mutateAsync(form);
+    await mutateAsync(form);
 
     moveToNextPage();
   };
@@ -173,13 +176,21 @@ function PetInfoRegister() {
         <Intro onPress={() => setStartPress(true)} />
       )}
 
-      <PetTypeSelectModal
-        isOpen={isOpen}
-        onClose={onClose}
-        setPetType={setPetType}
-        isEnrollPet
-        onPress={() => {}}
-      />
+      {isOpen && (
+        <PetTypeSelectModal
+          isOpen={isOpen}
+          onClose={onClose}
+          setPetType={petType => {
+            setForm(prev => ({
+              ...prev,
+              speciesName: petType.name,
+            }));
+            setPetType(petType);
+          }}
+          isEnrollPet
+          onPress={() => {}}
+        />
+      )}
     </SafeAreaView>
   );
 }

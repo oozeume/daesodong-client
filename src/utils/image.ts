@@ -18,10 +18,11 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
  * }
  */
 
-export function imagePicker(): Promise<ImageOrVideo> {
+export function imagePicker(multiple?: boolean): Promise<ImageOrVideo> {
   return ImagePicker.openPicker({
     width: 300,
     height: 400,
     cropping: true,
+    multiple,
   });
 }

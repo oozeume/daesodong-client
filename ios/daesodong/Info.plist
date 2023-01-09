@@ -73,10 +73,10 @@
 		<string>Fontisto.ttf</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to the photo library.</string>
+	<string>갤러리를 사용합니다.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Access to the microphone.</string>
+	<string>갤러리를 사용합니다.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Access to the camera.</string>
+	<string>카메라를 사용합니다.</string>
 </dict>
 </plist>

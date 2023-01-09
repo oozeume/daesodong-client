@@ -1,6 +1,5 @@
 import {useMutation} from '@tanstack/react-query';
 import {PatchUserInfoBody, PatchUserInfoResponse} from '~/../types/api/user';
-import {PetInfoForm} from '~/../types/signup';
 import {apiCall} from '../common';
 
 /**

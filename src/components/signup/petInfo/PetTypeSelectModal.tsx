@@ -9,69 +9,48 @@ import SearchIcon from '~/assets/icons/search.svg';
 import Tag from '~/components/common/Tag';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
+import {useGetSpecies} from '~/api/species';
+import {SpeciesData} from '~/../types/api/species';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setPetType: (selectedItem: {id: string; title: string}) => void;
+  setPetType: (selectedItem: SpeciesData) => void;
   isEnrollPet?: boolean;
   onPress: () => void;
   buttonText?: string;
 }
 
-const DATA = [
+const DATA: SpeciesData[] = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: '동물명',
+    created_at: '2023-01-09T08:57:27.664Z',
+    id: '21a692c5-544a-4d5b-8dec-722c8b43c694',
+    kindId: '0706a972-90de-4880-8169-6801ef8b1443',
+    name: '햄스터1',
+    specie: {
+      id: '0706a972-90de-4880-8169-6801ef8b1443',
+      name: '설치류',
+    },
   },
   {
-    id: '3ac68afc-c605-48d3a-a4f8-fbd91aa97f63',
-    title: '동물명',
+    created_at: '2023-01-09T08:57:27.664Z',
+    id: '21a692c5-544a-4d5b-8dec-722c8b43c694',
+    kindId: '0706a972-90de-4880-8169-6801ef8b1443',
+    name: '햄스터2',
+    specie: {
+      id: '0706a972-90de-4880-8169-6801ef8b1443',
+      name: '설치류',
+    },
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e2a9d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145a571e29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0af-3da1-471f-bd96-a145571e29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694aa0f-3da1-471f-bd96-145571e29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96a-145571e29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0f-3da1-471f-bda96-145571e29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0f-3da1-471f-bdaa96-145571e29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0af-3da1-471f-bd96-145571ae29d72',
-    title: '동물명',
-  },
-  {
-    id: '58694a0fa-3da1-471f-bd96-145571ea29d72',
-    title: '동물명',
-  },
-  {
-    id: '5869a4a0f-3da1-471f-bdaa96-145571e29da72',
-    title: '동물명',
-  },
-
-  {
-    id: '58694a0f-a3da1-471f-bd96-1455a71e29d72',
-    title: '동물명',
+    created_at: '2023-01-09T08:57:27.664Z',
+    id: '21a692c5-544a-4d5b-8dec-722c8b43c694',
+    kindId: '0706a972-90de-4880-8169-6801ef8b1443',
+    name: '햄스터3',
+    specie: {
+      id: '0706a972-90de-4880-8169-6801ef8b1443',
+      name: '설치류',
+    },
   },
 ];
 
@@ -90,7 +69,8 @@ function PetTypeSelectModal({
 }: Props) {
   const statusbarHeight = getStatusBarHeight();
   const [isPetTypeEmpty, setPetTypeEmpty] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({id: '', title: ''});
+  const [selectedItem, setSelectedItem] = useState<SpeciesData>();
+  const {data, isSuccess} = useGetSpecies({limit: 10});
 
   return (
     <Actionsheet
@@ -169,15 +149,15 @@ function PetTypeSelectModal({
                     style={{
                       height: APP_HEIGHT - statusbarHeight - 200,
                     }}
-                    data={DATA}
-                    keyExtractor={item => item.id}
+                    data={isSuccess ? data?.data : DATA}
+                    keyExtractor={(_, index) => index.toString()}
                     scrollEnabled
                     renderItem={({item, index}) => (
                       <Actionsheet.Item
                         backgroundColor={colors.grayScale[0]}
                         borderBottomWidth={1}
                         borderBottomColor={
-                          selectedItem.id === item.id
+                          selectedItem?.id === item.id
                             ? colors.fussOrange[0]
                             : colors.grayScale[20]
                         }
@@ -188,7 +168,7 @@ function PetTypeSelectModal({
                           alignItems={'center'}>
                           <HStack alignItems={'center'} space={'10px'}>
                             <Tag
-                              name="설치류"
+                              name={item.specie.name}
                               bgColor={
                                 index === 0 && !isEnrollPet
                                   ? colors.positive[0]
@@ -203,12 +183,12 @@ function PetTypeSelectModal({
                             <Text color={colors.grayScale[60]} fontSize="16px">
                               {index === 0 && !isEnrollPet
                                 ? '우리 아이(친칠라)'
-                                : 'test'}
+                                : item.name}
                             </Text>
                           </HStack>
                           <CheckIcon
                             fill={
-                              selectedItem.id === item.id
+                              selectedItem?.id === item.id
                                 ? colors.fussOrange[0]
                                 : colors.grayScale[40]
                             }
@@ -224,6 +204,7 @@ function PetTypeSelectModal({
             <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
               <Button
                 handlePress={() => {
+                  if (!selectedItem) return;
                   onClose();
                   setPetType(selectedItem);
                   onPress();
