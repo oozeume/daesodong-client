@@ -2,7 +2,7 @@ import {ParamListBase} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import _ from 'lodash';
 import {Box, Center, HStack, Pressable} from 'native-base';
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Keyboard, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackIcon from '~/assets/icon/back_icon.svg';

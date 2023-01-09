@@ -1,12 +1,12 @@
 import {useMutation} from '@tanstack/react-query';
-import {PatchUserInfoResponse} from '~/../types/api/user';
+import {PatchUserInfoBody, PatchUserInfoResponse} from '~/../types/api/user';
 import {PetInfoForm} from '~/../types/signup';
 import {apiCall} from '../common';
 
 /**
- *@description 이메일 로그인 api
+ *@description 유저 정보 수정 api
  */
-const patchUserInfo = (data: PetInfoForm) => {
+const patchUserInfo = (data: PatchUserInfoBody) => {
   return apiCall<PatchUserInfoResponse>({
     method: 'PATCH',
     url: `users/info`,
@@ -15,8 +15,8 @@ const patchUserInfo = (data: PetInfoForm) => {
 };
 
 /**
- *@description 이메일 회원가입 api
+ *@description 유저 정보 수정 api hook
  */
 export const usePatchUserInfo = () => {
-  return useMutation((data: PetInfoForm) => patchUserInfo(data));
+  return useMutation((data: PatchUserInfoBody) => patchUserInfo(data));
 };
