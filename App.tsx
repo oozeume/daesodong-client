@@ -7,6 +7,12 @@ import {theme} from '~/theme/theme';
 
 import AppNavigator from './src/navigator';
 
+if (__DEV__) {
+  import('react-query-native-devtools').then(({addPlugin}) => {
+    addPlugin({queryClient});
+  });
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {queries: {retry: 2}},
 });

@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 
 // 2nd line, add a new apply:
-// apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -144,7 +144,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-        // resValue "string", "build_config_package", "com.daesodong"
+        resValue "string", "build_config_package", "com.daesodong"
         vectorDrawables.useSupportLibrary = true
 
         if (isNewArchitectureEnabled()) {
