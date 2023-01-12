@@ -4,7 +4,7 @@ import {NavigationHookProp} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {colors} from '~/theme/theme';
-import Splash from '~/assets/images/splash2.svg';
+import Splash from '~/assets/images/splash3.svg';
 import Button from '~/components/common/button';
 import {setData} from '~/utils/storage';
 
