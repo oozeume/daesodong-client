@@ -1,4 +1,4 @@
-import {HStack, Pressable, Stack, Text} from 'native-base';
+import {Button, HStack, Pressable, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import Tag from '~/components/common/Tag';
 import {colors} from '~/theme/theme';
@@ -13,7 +13,9 @@ function InquiryItem() {
     <>
       <Pressable onPress={() => setOpen(prev => !prev)}>
         <Stack
-          p={'18px'}
+          px={'18px'}
+          pt={'18px'}
+          pb={'48px'}
           borderBottomWidth={1}
           borderBottomColor={colors.grayScale['10']}>
           <HStack space={'8px'}>
@@ -40,18 +42,21 @@ function InquiryItem() {
             표기합니다.
           </Text>
 
-          <Stack
-            width={'25px'}
+          <Button
+            padding={0}
+            backgroundColor={'transparent'}
+            position={'absolute'}
+            bottom={18}
+            left={18}
             borderBottomWidth={1}
             borderBottomColor={colors.grayScale['60']}>
             <Text
-              width={'25px'}
               lineHeight={'18px'}
               mt={'12px'}
               color={colors.grayScale['60']}>
               삭제
             </Text>
-          </Stack>
+          </Button>
         </Stack>
       </Pressable>
 

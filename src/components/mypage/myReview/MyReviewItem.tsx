@@ -21,7 +21,12 @@ function MyReviewItem() {
         alignItems={'center'}
         justifyContent={'space-between'}>
         <HStack space={'12px'}>
-          <Image w={'70px'} h={'70px'} backgroundColor={colors.grayScale[20]} />
+          <Image
+            w={'70px'}
+            h={'70px'}
+            backgroundColor={colors.grayScale[20]}
+            alt={''}
+          />
           <Stack justifyContent={'space-between'}>
             <Stack>
               <Text color={colors.grayScale[80]} fontSize={'16px'}>

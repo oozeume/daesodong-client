@@ -1,5 +1,6 @@
 import {HStack, Stack, Text, View} from 'native-base';
 import React from 'react';
+import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
 
 /**
@@ -21,21 +22,30 @@ function InquiryHeader() {
           </Text>
         </Stack>
 
-        <Stack
-          alignSelf={'flex-end'}
-          borderRadius={'4px'}
-          borderWidth={1}
-          height={'36px'}
-          backgroundColor={colors.fussOrange['-40']}
-          borderColor={colors.fussOrange[0]}>
-          <Text
-            lineHeight={'20px'}
-            px={'14px'}
-            py={'8px'}
-            color={colors.fussOrange[0]}
-            fontWeight={'500'}>
-            1:1 문의하기
-          </Text>
+        <Stack alignSelf={'flex-end'}>
+          <Button
+            width={'97px'}
+            fontColors={{
+              active: colors.grayScale[90],
+            }}
+            buttonColors={{
+              active: colors.fussYellow[0],
+            }}
+            borderColors={{
+              active: colors.grayScale[90],
+            }}
+            text={'1:1 문의하기'}
+            active
+            buttonStyle={{
+              backgroundColor: colors.fussOrange['-40'],
+              borderColor: colors.fussOrange[0],
+            }}
+            textStyle={{
+              color: colors.fussOrange[0],
+              fontWeight: '500',
+            }}
+            handlePress={() => {}}
+          />
         </Stack>
       </HStack>
       <View
