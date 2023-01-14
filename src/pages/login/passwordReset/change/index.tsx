@@ -9,7 +9,7 @@ import {
   PASSWORD_REGREX,
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
-import {RedActiveLargeButton} from '~/components/login/button';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 interface Props {
   handlePage: () => void;

@@ -1,11 +1,7 @@
 import React from 'react';
-import {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {ActiveButtonProps, LoginButtonProps} from '~/../types/login';
 import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
-
-interface LoginButtonProps {
-  handlePress: () => void;
-}
 
 /**
  *@description 카카오 로그인 버튼
@@ -82,47 +78,6 @@ function EmailLoginButton({handlePress}: LoginButtonProps) {
   );
 }
 
-interface ActiveButtonProps extends LoginButtonProps {
-  active: boolean;
-  buttonStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
-  text: string;
-}
-
-/**
- *@description 활성화/비활성화 빨간색 큰 버튼 (ex. 확인, 가입완료 버튼)
- */
-function RedActiveLargeButton({
-  handlePress,
-  active,
-  buttonStyle,
-  textStyle,
-  text,
-}: ActiveButtonProps) {
-  return (
-    <Button
-      text={text}
-      handlePress={handlePress}
-      buttonColors={{
-        active: colors.fussOrange['0'],
-        disabled: colors.fussOrange['-30'],
-      }}
-      fontColors={{
-        active: colors.grayScale['90'],
-        disabled: colors.grayScale['50'],
-      }}
-      borderColors={{
-        active: colors.grayScale['90'],
-        disabled: colors.grayScale['50'],
-      }}
-      active={active}
-      large
-      buttonStyle={buttonStyle}
-      textStyle={[{fontSize: 14}, textStyle]}
-    />
-  );
-}
-
 /**
  *@description 활성화/비활성화 노란색 작은 버튼 (ex. 폰 인증하기 버튼)
  */
@@ -162,6 +117,5 @@ export {
   AppleLoginButton,
   GoogleLoginButton,
   EmailLoginButton,
-  RedActiveLargeButton,
   YellowActiveSmallButton,
 };
