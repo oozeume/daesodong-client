@@ -13,7 +13,7 @@ function ReviewList() {
       <Stack space={'8px'} backgroundColor={'grayScale.10'}>
         {_.range(0, 6).map((i, index) => (
           <React.Fragment key={i.toString()}>
-            <ReviewItem invisibleBorderTop={index === 0} />
+            <ReviewItem isInvisibleBorderTop={index === 0} />
           </React.Fragment>
         ))}
       </Stack>

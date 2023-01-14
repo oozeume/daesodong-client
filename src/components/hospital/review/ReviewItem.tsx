@@ -9,16 +9,32 @@ import AvatarIcon from '~/assets/icons/avartar.svg';
 import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import ImageContainer from './imageContainer.tsx';
+import {colors} from '~/theme/theme';
 
 interface Props {
-  invisibleBorderTop?: boolean;
+  isInvisibleBorderTop?: boolean;
+  visitDate?: JSX.Element;
+  isInvisibleTag?: boolean;
+  isInvisibleKebabMenu?: boolean;
+  isMyReview?: boolean;
+  isInvisiblePetInfo?: boolean;
+  address?: JSX.Element;
+  name?: string;
 }
 
 /**
  *@description 병원 리뷰
  */
 
-function ReviewItem({invisibleBorderTop}: Props) {
+function ReviewItem({
+  isInvisibleBorderTop,
+  visitDate,
+  isInvisibleTag,
+  isInvisibleKebabMenu,
+  isInvisiblePetInfo,
+  address,
+  name,
+}: Props) {
   const [onKebabClick, setKebabClick] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -30,7 +46,7 @@ function ReviewItem({invisibleBorderTop}: Props) {
       borderTopColor={'grayScale.20'}
       borderBottomColor={'grayScale.20'}
       borderBottomWidth={1}
-      borderTopWidth={invisibleBorderTop ? 0 : 1}
+      borderTopWidth={isInvisibleBorderTop ? 0 : 1}
       position={'relative'}>
       <HStack
         space={'12px'}
@@ -38,51 +54,58 @@ function ReviewItem({invisibleBorderTop}: Props) {
         alignItems={'center'}
         justifyContent={'space-between'}>
         <HStack space={'12px'}>
-          <AvatarIcon />
+          <AvatarIcon fill={colors.grayScale['30']} />
           <Stack>
             <HStack alignItems={'center'} space={'4px'}>
-              <Text>닉네임</Text>
-              <Flex
-                justifyContent={'center'}
-                alignItems={'center'}
-                w={'41px'}
-                h={'18px'}
-                backgroundColor={'positive.-40'}
-                borderRadius={'4px'}>
-                <Text color={'positive.0'} fontSize={'11px'}>
-                  재방문
+              <Text>{name ?? '닉네임'}</Text>
+              {!isInvisibleTag && (
+                <Flex
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  w={'41px'}
+                  h={'18px'}
+                  backgroundColor={'positive.-40'}
+                  borderRadius={'4px'}>
+                  <Text color={'positive.0'} fontSize={'11px'}>
+                    재방문
+                  </Text>
+                </Flex>
+              )}
+            </HStack>
+            {!isInvisiblePetInfo && (
+              <HStack space={'6px'}>
+                <Text color={'grayScale.60'} fontSize={'13px'}>
+                  동물
                 </Text>
-              </Flex>
-            </HStack>
-            <HStack space={'6px'}>
-              <Text color={'grayScale.60'} fontSize={'13px'}>
-                동물
-              </Text>
-              <Text color={'grayScale.60'} fontSize={'13px'}>
-                |
-              </Text>
-              <Text color={'grayScale.60'} fontSize={'13px'}>
-                나이
-              </Text>
-              <Text color={'grayScale.60'} fontSize={'13px'}>
-                |
-              </Text>
-              <Text color={'grayScale.60'} fontSize={'13px'}>
-                성별
-              </Text>
-            </HStack>
+                <Text color={'grayScale.60'} fontSize={'13px'}>
+                  |
+                </Text>
+                <Text color={'grayScale.60'} fontSize={'13px'}>
+                  나이
+                </Text>
+                <Text color={'grayScale.60'} fontSize={'13px'}>
+                  |
+                </Text>
+                <Text color={'grayScale.60'} fontSize={'13px'}>
+                  성별
+                </Text>
+              </HStack>
+            )}
+            {address}
           </Stack>
         </HStack>
-        <Box
-          onTouchStart={() => {
-            if (onKebabClick) {
-              setKebabClick(false);
-            } else {
-              setKebabClick(true);
-            }
-          }}>
-          <KebabMenuIcon />
-        </Box>
+        {!isInvisibleKebabMenu && (
+          <Box
+            onTouchStart={() => {
+              if (onKebabClick) {
+                setKebabClick(false);
+              } else {
+                setKebabClick(true);
+              }
+            }}>
+            <KebabMenuIcon />
+          </Box>
+        )}
       </HStack>
 
       {onKebabClick && (
@@ -150,6 +173,7 @@ function ReviewItem({invisibleBorderTop}: Props) {
       <HStack space={'8px'} pb={'4px'}>
         <HeartFillIcon fill={'#FF6B00'} />
         <Text>재방문 의사 있어요</Text>
+        {visitDate}
       </HStack>
       <Text>
         지나고 그러나 그리워 다 같이 봅니다. 잔디가 나는 위에 무엇인지 아무
