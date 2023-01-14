@@ -74,6 +74,10 @@ export type RootStackParamList = {
   AppIntroFirst: undefined;
   AppIntroSecond: undefined;
   AppIntroThird: undefined;
+  MyReview: undefined;
+  MyReviewDetail: undefined;
+  MyCommunityContent: undefined;
+  Inquiry: undefined;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
