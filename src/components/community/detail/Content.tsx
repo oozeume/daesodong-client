@@ -1,4 +1,4 @@
-import {Box, HStack, Pressable, Text, View, VStack} from 'native-base';
+import {Box, HStack, Pressable, Stack, Text, View, VStack} from 'native-base';
 import React from 'react';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {colors} from '~/theme/theme';
@@ -8,24 +8,26 @@ import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
 
 interface Props {
-  visibleUserInfo?: boolean;
-  visibleLike?: boolean;
+  isVisibleUserInfo?: boolean;
+  isVisibleLike?: boolean;
   userInfo?: JSX.Element;
-  visibleTag?: boolean;
+  isVisibleTag?: boolean;
   viewAllButton?: JSX.Element;
   viewMode?: 'default' | 'simple';
+  isVisibleTime?: boolean;
 }
 
 /**
  *@description 커뮤니티 게시글 내용
  */
 const CommunityContent = ({
-  visibleUserInfo = false,
-  visibleLike = false,
-  visibleTag = false,
+  isVisibleUserInfo = false,
+  isVisibleLike = false,
+  isVisibleTag = false,
   viewAllButton,
   userInfo,
   viewMode = 'default',
+  isVisibleTime,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -38,7 +40,7 @@ const CommunityContent = ({
       }
       borderRadius={viewMode === 'simple' ? '16px' : undefined}>
       {/* 글쓴이 정보 */}
-      {visibleUserInfo && (
+      {isVisibleUserInfo && (
         <HStack
           pt="8px"
           pb="20px"
@@ -114,20 +116,28 @@ const CommunityContent = ({
 
       {/* 내용 */}
       <Box py="20px">
-        <Text
-          noOfLines={viewMode === 'simple' ? 1 : undefined}
-          mb="12px"
-          fontSize={'16px'}
-          color={colors.grayScale['80']}
-          fontWeight={800}>
-          하나의 속의 지나가는 자랑처럼 북간도에 계절이 지나고 슬퍼하는
-          까닭입니다
-        </Text>
+        <Stack space={'2px'} mb={'8px'}>
+          <Text
+            noOfLines={viewMode === 'simple' ? 1 : undefined}
+            fontSize={'16px'}
+            color={colors.grayScale['80']}
+            fontWeight={800}>
+            하나의 속의 지나가는 자랑처럼 북간도에 계절이 지나고 슬퍼하는
+            까닭입니다
+          </Text>
+
+          {isVisibleTime && (
+            <Text fontSize={'12px'} color={colors.grayScale['60']}>
+              3시간 전
+            </Text>
+          )}
+        </Stack>
 
         <Text
           noOfLines={viewMode === 'simple' ? 2 : undefined}
           fontSize={'14px'}
-          color={colors.grayScale['80']}>
+          color={colors.grayScale['80']}
+          mb={'16px'}>
           이름자를 언덕 봄이 아름다운 어머니 별들을 이런 봅니다. 패, 흙으로
           어머님, 걱정도 쓸쓸함과 새겨지는 있습니다. 그러나 슬퍼하는 이런 애기
           까닭입니다.
@@ -139,7 +149,7 @@ const CommunityContent = ({
           <Box bgColor={colors.grayScale['20']} w={imageWidth} h={imageWidth} />
         )}
 
-        {visibleTag && (
+        {isVisibleTag && (
           <HStack mt={'20px'}>
             <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
               <Text color={colors.fussYellow['30']}>태그1</Text>
@@ -169,7 +179,7 @@ const CommunityContent = ({
             : colors.grayScale['10']
         }>
         {userInfo}
-        {visibleLike && (
+        {isVisibleLike && (
           <HStack alignItems={'center'}>
             <HeartFillIcon fill={colors.grayScale['30']} />
 

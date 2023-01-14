@@ -85,7 +85,7 @@ const CommunityDetail = () => {
           />
 
           {/* 컨텐츠 */}
-          <CommunityContent visibleUserInfo visibleLike visibleTag />
+          <CommunityContent isVisibleUserInfo isVisibleLike isVisibleTag />
 
           <Box height="8px" bgColor={colors.grayScale['10']}></Box>
 

@@ -38,6 +38,10 @@ import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
 import MyPetInfo from '~/pages/mypage/myPetInfo';
+import MyReview from '~/pages/mypage/myReview';
+import MyReviewDetail from '~/pages/mypage/myReviewDetail';
+import MyCommunityContent from '~/pages/mypage/myCommunityContent';
+import Inquiry from '~/pages/mypage/inquiry';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -265,6 +269,67 @@ const AppNavigator = () => {
             ),
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyReview"
+          component={MyReview}
+          options={props => ({
+            headerShown: true,
+            header: () => (
+              <Header
+                title={'내가 작성한 리뷰'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="MyReviewDetail"
+          component={MyReviewDetail}
+          options={() => ({
+            headerShown: true,
+            header: ({navigation}) => (
+              <Header
+                title={'내가 작성한 리뷰'}
+                leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="MyCommunityContent"
+          component={MyCommunityContent}
+          options={() => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'내가 작성한 게시글'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Inquiry"
+          component={Inquiry}
+          options={() => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'1:1 문의'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
             ),
           })}
         />
