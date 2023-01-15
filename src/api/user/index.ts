@@ -5,7 +5,16 @@ import {apiCall} from '../common';
 /**
  *@description 유저 정보 수정 api
  */
-const patchUserInfo = (data: PatchUserInfoBody) => {
+const patchUserInfo = (_data: PatchUserInfoBody) => {
+  const data = {
+    ..._data,
+    birthdate: _data.birthDate,
+    pet_picture_url: _data.petPictureUrl,
+  };
+
+  delete data.birthDate;
+  delete data.petPictureUrl;
+
   return apiCall<PatchUserInfoResponse>({
     method: 'PATCH',
     url: `users/info`,

@@ -9,12 +9,14 @@ export const INIT_SIGNUP_FORM = {
 // 초기 반려동물 등록 폼값
 export const initPetInfoForm = {
   gender: '',
-  birthdate: undefined as number | undefined,
+  // 서버 key: birthdate
+  birthDate: undefined as number | undefined,
   name: '',
   speciesName: undefined as string | undefined,
   age: undefined as number | undefined,
   sex: undefined as 'Male' | 'Female' | undefined,
   address: '',
   concern: '',
-  pet_picture_url: '',
+  // 서버 key: pet_picture_url
+  petPictureUrl: '' as string | undefined,
 };
