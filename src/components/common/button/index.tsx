@@ -60,7 +60,11 @@ function Button({
       borderColor={active ? borderColors.active : borderColors.disabled}
       disabled={!active}
       style={[
-        shadow && {shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.15},
+        shadow && {
+          shadowOffset: {width: 0, height: 3},
+          shadowOpacity: 0.15,
+          elevation: 1,
+        },
         buttonStyle,
       ]}
       onPress={handlePress}>

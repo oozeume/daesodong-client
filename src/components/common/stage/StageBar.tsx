@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {Box, HStack} from 'native-base';
 
 import {colors} from '~/theme/theme';
+import {STAGE_BAR_HEIGHT} from '~/constants/heights';
 
 interface Props {
   totalStage: number;
@@ -21,7 +22,7 @@ function StageBar({totalStage, currentStage}: Props) {
         <Box
           key={`stage_${stage}`}
           w={`${100 / totalStage}%`}
-          h={'1px'}
+          h={`${STAGE_BAR_HEIGHT}px`}
           backgroundColor={
             stage + 1 <= currentStage
               ? colors.fussOrange[0]

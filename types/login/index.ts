@@ -12,7 +12,7 @@ export interface LoginButtonProps {
 
 // 소셜 로그인 및 RedActiveLargeButton 컴포넌트 공통 props
 export interface ActiveButtonProps extends LoginButtonProps {
-  active: boolean;
+  active?: boolean;
   buttonStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   text: string;

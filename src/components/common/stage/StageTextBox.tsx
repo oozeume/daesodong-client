@@ -17,7 +17,7 @@ interface Props {
  */
 function StageTextBox({totalStage, currentStage, stageTextList}: Props) {
   return (
-    <VStack space={2}>
+    <VStack space={2} mb="60px">
       <Center>
         <Text fontSize={13} fontWeight={'400'} color={colors.grayScale[50]}>
           {currentStage} / {totalStage}

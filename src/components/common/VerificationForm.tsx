@@ -83,7 +83,7 @@ function VerificationForm({
         borderBottomWidth={noBorderBottom ? 0 : '1px'}
         borderBottomColor={colors.grayScale[30]}>
         {/* 인풋창 왼쪽 TextInput */}
-        <View w={'70%'}>
+        <View w={'100%'}>
           <TextInput
             value={value}
             placeholder={placeholder}
@@ -99,7 +99,7 @@ function VerificationForm({
         </View>
 
         {/* 인풋창 오른쪽에 들어올 element (Anything) */}
-        <View w={'25%'} alignItems={'flex-end'}>
+        <View alignItems={'flex-end'} position="absolute" right={0} zIndex={1}>
           {inputRightElement}
         </View>
       </Flex>

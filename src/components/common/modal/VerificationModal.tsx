@@ -19,6 +19,7 @@ import {VerificationResult} from '~/../types/verification';
 import BackIcon from '../../../assets/icons/back.svg';
 import {usePostAuthMobileVerifyCode} from '~/api/auth';
 import {ErrorResponseTransform} from '~/../types/api/common';
+import RedActiveLargeButton from '../button/RedActiveLargeButton';
 
 // 숫자만 받을 수 있는 정규식
 const regex = /^[0-9]+$/;
@@ -162,27 +163,13 @@ function VerificationModal({
 
             {/* 인증번호 확인 버튼 */}
             <Box h={'144px'} mt={'12px'}>
-              <Button
-                large
-                shadow
-                text={isTimeOver ? '닫기' : '확인'}
-                fontColors={{
-                  active: colors.grayScale[90],
-                  disabled: colors.grayScale[50],
-                }}
-                buttonColors={{
-                  active: colors.fussOrange[0],
-                  disabled: colors.fussOrange['-30'],
-                }}
-                borderColors={{
-                  active: colors.grayScale[90],
-                  disabled: colors.grayScale[50],
-                }}
-                handlePress={checkVerificationNumber}
+              <RedActiveLargeButton
                 active={
                   verificationNumber.length === VERIFICATION_CODE_DIGITS ||
                   isTimeOver
                 }
+                text={isTimeOver ? '닫기' : '확인'}
+                handlePress={checkVerificationNumber}
               />
 
               <Center mt={'20px'}>

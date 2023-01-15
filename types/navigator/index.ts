@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
+import {SignupForm} from '../login';
 
 /**
  * @description script 설명
@@ -24,7 +25,6 @@ export type RootTabParamList = {
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
-  DeveloperMenu: undefined;
 };
 
 /**
@@ -50,7 +50,7 @@ export type RootStackParamList = {
   TermsOfServicePolicy: undefined;
   PrivacyPolicy: undefined;
   SignupSocial: undefined;
-  SignUpEmail: undefined;
+  SignUpEmailNavigator: undefined;
   PetInfoRegister: undefined;
 
   Community: undefined;
@@ -74,6 +74,11 @@ export type RootStackParamList = {
   AppIntroFirst: undefined;
   AppIntroSecond: undefined;
   AppIntroThird: undefined;
+
+  PhoneVerification: undefined;
+  EmailRegister: SignupForm;
+  PasswordRegister: SignupForm;
+  NicknameRegister: SignupForm;
 };
 
 export type RouteList = RootTabParamList & RootStackParamList;
