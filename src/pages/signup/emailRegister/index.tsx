@@ -4,7 +4,11 @@ import {Box, Center, Text, VStack} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 import {SignupForm} from '~/../types/login';
-import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
+import {
+  NavigationHookProp,
+  RouteHookProp,
+  SignupNavigatorRouteList,
+} from '~/../types/navigator';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
@@ -19,37 +23,49 @@ import {APP_HEIGHT} from '~/utils/dimension';
 
 interface Props {
   onChangeStage: () => void;
+  setPreviousURL: React.Dispatch<
+    React.SetStateAction<SignupNavigatorRouteList[]>
+  >;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
  *@description 아이디(이메일) 입력
  */
 
-function EmailRegister({onChangeStage}: Props) {
+function EmailRegister({
+  onChangeStage,
+  setPreviousURL,
+  signupForm,
+  setSignupForm,
+}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  const {params} = useRoute<RouteHookProp<'EmailRegister'>>();
+  const [email, setEmail] = useState('');
+  // const {params} = useRoute<RouteHookProp<'EmailRegister'>>();
 
-  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
+  // const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT - STAGE_BAR_HEIGHT;
-  console.log('@@@ signupForm');
-  console.log(signupForm);
 
   const onEmailChange = (text: string) => {
-    setSignupForm(prev => ({...prev, email: text}));
+    setEmail(text);
   };
 
   const onMovePage = async () => {
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'EmailRegister']);
+    setSignupForm(prev => ({...prev, email}));
     navigate('PasswordRegister', signupForm);
   };
 
-  useEffect(() => {
-    if (params) {
-      const _signupForm = params as SignupForm;
-      setSignupForm(_signupForm);
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   if (params) {
+  //     const _signupForm = params as SignupForm;
+  //     setSignupForm(_signupForm);
+  //   }
+  // }, []);
+  console.log('@@@ signupForm');
+  console.log(signupForm);
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -69,7 +85,7 @@ function EmailRegister({onChangeStage}: Props) {
 
               <VerificationForm
                 placeholder={'아이디 (이메일)'}
-                value={signupForm.email}
+                value={email}
                 onChangeText={onEmailChange}
               />
             </Center>

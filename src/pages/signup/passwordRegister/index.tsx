@@ -14,29 +14,45 @@ import {
   INIT_SIGNUP_FORM,
 } from '~/constants/signup';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
+import {
+  NavigationHookProp,
+  RouteHookProp,
+  SignupNavigatorRouteList,
+} from '~/../types/navigator';
 import {
   INCLUDE_ENGLISH_REGREX,
   INCLUDE_NUMBER_REGREX,
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
 import {VerificationResult} from '~/../types/verification';
+import {SignupForm} from '~/../types/login';
 
 interface Props {
   onChangeStage: () => void;
+  setPreviousURL: React.Dispatch<
+    React.SetStateAction<SignupNavigatorRouteList[]>
+  >;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
  * 휴대폰 인증 스테이지 컴포넌트
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
-function PasswordRegister({onChangeStage}: Props) {
+function PasswordRegister({
+  onChangeStage,
+  setPreviousURL,
+  signupForm,
+  setSignupForm,
+}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
-  const {params} = useRoute<RouteHookProp<'PasswordRegister'>>();
+  // const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
+  // const {params} = useRoute<RouteHookProp<'PasswordRegister'>>();
 
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT;
 
+  const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
@@ -57,7 +73,7 @@ function PasswordRegister({onChangeStage}: Props) {
       : 'FAIL';
 
     setHelpResults([isIncludeEnglish, isIncludeNumber, isProperLength]);
-    setSignupForm(prevState => ({...prevState, password: text}));
+    setPassword(text);
   };
 
   const helpList = ['영문 포함', '숫자 포함', '8-20자 이내'];
@@ -67,24 +83,25 @@ function PasswordRegister({onChangeStage}: Props) {
   };
 
   const isButtonActive =
-    !_.isEmpty(signupForm.password) &&
+    !_.isEmpty(password) &&
     !_.isEmpty(passwordConfirm) &&
-    signupForm.password === passwordConfirm;
+    password === passwordConfirm;
 
   const onMovePage = async () => {
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'PasswordRegister']);
+    setSignupForm(prevState => ({...prevState, password}));
     navigate('NicknameRegister', signupForm);
   };
 
-  useEffect(() => {
-    if (params) {
-      setSignupForm(params);
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   if (params) {
+  //     setSignupForm(params);
+  //   }
+  // }, []);
   console.log('@@@ signupForm');
   console.log(signupForm);
-
+  console.log('');
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -104,7 +121,7 @@ function PasswordRegister({onChangeStage}: Props) {
 
               <VerificationForm
                 placeholder={'비밀번호 입력'}
-                value={signupForm.password}
+                value={password}
                 onChangeText={handlePasswordChange}
                 helpList={helpList}
                 marginBottom={'20px'}
@@ -119,8 +136,8 @@ function PasswordRegister({onChangeStage}: Props) {
                 successMessage={'비밀번호가 일치합니다'}
                 errorMessage={'비밀번호를 확인해주세요'}
                 verificationResult={
-                  signupForm.password.length > 0
-                    ? signupForm.password === passwordConfirm
+                  password.length > 0
+                    ? password === passwordConfirm
                       ? 'SUCCESS'
                       : 'FAIL'
                     : undefined

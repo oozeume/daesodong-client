@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {Box, Center, VStack} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
+import {SignupForm} from '~/../types/login';
 import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
 import {VerificationResult} from '~/../types/verification';
 import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
@@ -21,19 +22,24 @@ import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 import {setSecurityData} from '~/utils/storage';
 
+interface Props {
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
+}
+
 /**
- *@description 아이디(이메일) 입력
+ *@description 닉네임 입력
  */
 
-function NicknameRegister() {
+function NicknameRegister({signupForm, setSignupForm}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  const {params} = useRoute<RouteHookProp<'NicknameRegister'>>();
+  // const {params} = useRoute<RouteHookProp<'NicknameRegister'>>();
 
-  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT - STAGE_BAR_HEIGHT;
   const helpList = ['영문 포함', '숫자 포함', '8-20자 이내'];
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [nickname, setNickname] = useState('');
   const [result, setResult] = useState<VerificationResult>(); // 인증 결과
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
     'WARNING',
@@ -118,10 +124,8 @@ function NicknameRegister() {
 
   const hadleNickname = (text: string) => {
     const textWithRemovedEmoji = text.replace(EMOJI_REGEX, '');
-    setSignupForm(prevState => ({
-      ...prevState,
-      nickname: textWithRemovedEmoji,
-    }));
+    setNickname(text);
+
     setUpHelpResults(textWithRemovedEmoji);
   };
 
@@ -129,11 +133,11 @@ function NicknameRegister() {
     setResult('WARNING');
   }, [signupForm.nickname]);
 
-  useEffect(() => {
-    if (params) {
-      setSignupForm(params);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (params) {
+  //     setSignupForm(params);
+  //   }
+  // }, []);
 
   console.log('@@@ signupForm');
   console.log(signupForm);
@@ -162,7 +166,7 @@ function NicknameRegister() {
                 errorMessage={'이미 사용 중인 닉네임입니다'}
                 helpList={helpList}
                 helpVerificationResults={helpResults}
-                value={signupForm.nickname}
+                value={nickname}
                 marginBottom={'20px'}
                 onChangeText={hadleNickname}
               />
@@ -173,7 +177,12 @@ function NicknameRegister() {
                 // active={signupForm.mobile.length > 10}
                 active
                 text={'가입 완료'}
-                handlePress={() => {}}
+                handlePress={() => {
+                  setSignupForm(prevState => ({
+                    ...prevState,
+                    nickname,
+                  }));
+                }}
               />
             </VStack>
           </VStack>

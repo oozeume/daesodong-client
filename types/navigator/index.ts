@@ -81,6 +81,12 @@ export type RootStackParamList = {
   NicknameRegister: SignupForm;
 };
 
+export type SignupNavigatorRouteList =
+  | 'PhoneVerification'
+  | 'EmailRegister'
+  | 'PasswordRegister'
+  | 'EmailLogin';
+
 export type RouteList = RootTabParamList & RootStackParamList;
 
 /**

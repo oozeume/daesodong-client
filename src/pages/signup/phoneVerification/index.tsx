@@ -14,23 +14,38 @@ import {
   EMAIL_SIGNUP_STAGE_TEXT_LIST,
   INIT_SIGNUP_FORM,
 } from '~/constants/signup';
-import {useNavigation} from '@react-navigation/native';
-import {NavigationHookProp} from '~/../types/navigator';
+import {ParamListBase, useNavigation} from '@react-navigation/native';
+import {
+  NavigationHookProp,
+  SignupNavigatorRouteList,
+} from '~/../types/navigator';
 import useRegExPhone from '~/hooks/useRegExPhone';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {SignupForm} from '~/../types/login';
 
 interface Props {
   onChangeStage: () => void;
+  setPreviousURL: React.Dispatch<
+    React.SetStateAction<SignupNavigatorRouteList[]>
+  >;
+  signupForm: SignupForm;
+  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
  * 회원 가입 > 휴대폰 인증 페이지
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
-function PhoneVerification({onChangeStage}: Props) {
+function PhoneVerification({
+  onChangeStage,
+  setPreviousURL,
+  signupForm,
+  setSignupForm,
+}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT - STAGE_BAR_HEIGHT;
 
-  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
+  // const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
   const [phoneNumber, setPhoneNumber] = useRegExPhone();
   const [modalVisible, setModalVisible] = useState(false);
   const postAuthMobileVerify = usePostAuthMobileVerify();
@@ -44,7 +59,6 @@ function PhoneVerification({onChangeStage}: Props) {
   // 페이지 제어
   const onHandlePage = () => {
     onChangeStage();
-    navigate('EmailRegister', signupForm);
   };
 
   const onResendVerification = () => {
@@ -52,6 +66,9 @@ function PhoneVerification({onChangeStage}: Props) {
       mobile: signupForm.mobile,
     });
   };
+
+  console.log('@@@ signupForm');
+  console.log(signupForm);
 
   /**
    *@description 인증 번호 발송 및 인증 모달창 오픈
@@ -67,12 +84,9 @@ function PhoneVerification({onChangeStage}: Props) {
     // setModalVisible(prev => !prev);
 
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'PhoneVerification']);
     navigate('EmailRegister', {...signupForm, mobile: replacePhoneNumber});
   };
-
-  console.log('@@ FORM');
-  console.log(signupForm.mobile);
-  console.log(phoneNumber);
 
   const onChangeText = (text: string) => {
     setPhoneNumber(text);
