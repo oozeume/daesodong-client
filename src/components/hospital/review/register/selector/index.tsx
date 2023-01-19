@@ -66,7 +66,7 @@ function Selector({
           alignItems="center">
           <Text fontSize={15} color={colors.grayScale[80]}>
             {itemList && selectedIndex !== undefined
-              ? itemList[selectedIndex].txt
+              ? itemList[selectedIndex]?.txt
               : ''}
           </Text>
 

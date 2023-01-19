@@ -8,13 +8,14 @@ import _ from 'lodash';
 
 interface Props {
   handlePage: () => void;
+  onChangeAddress: (address: string) => void;
 }
 
 /**
  *@description 집사정보등록 - 주소
  */
 
-function Address({handlePage}: Props) {
+function Address({handlePage, onChangeAddress}: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
   const {sido, sigugun, dong} = hangjungdong;
 
@@ -39,6 +40,13 @@ function Address({handlePage}: Props) {
   >();
   const [sortedDong, setSortedDong] = useState<Hangjungdong[]>();
 
+  const onOK = () => {
+    onChangeAddress(
+      `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`,
+    );
+    handlePage();
+  };
+
   useEffect(() => {
     if (sidoValue) {
       setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
@@ -59,7 +67,7 @@ function Address({handlePage}: Props) {
 
   return (
     <LayoutContainer
-      buttonPress={handlePage}
+      buttonPress={onOK}
       possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>
       <Stack space={'10px'}>
         <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />

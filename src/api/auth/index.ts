@@ -70,7 +70,7 @@ const postAuthMobileVerifyCode = async (data: PostAuthMobileVerifyCodeBody) => {
 };
 
 /**
- *@description 닉네임 확인 api
+ *@description 닉네임 확인 api hook
  */
 export const useGetAuthNickname = (nickname: string) => {
   return useQuery(['nickname', nickname], () => getAuthNickname(nickname), {
@@ -79,7 +79,7 @@ export const useGetAuthNickname = (nickname: string) => {
 };
 
 /**
- *@description 이메일 로그인 api
+ *@description 이메일 로그인 api hook
  */
 export const usePostAuthEmailLogin = () => {
   return useMutation((data: PostAuthEmailLoginBody) =>
@@ -88,14 +88,14 @@ export const usePostAuthEmailLogin = () => {
 };
 
 /**
- *@description 이메일 회원가입 api
+ *@description 이메일 회원가입 api hook
  */
 export const usePostAuthEmailSignup = () => {
   return useMutation((data: PostAuthSignupBody) => postAuthEmailSignup(data));
 };
 
 /**
- *@description 전화 번호 인증 코드 발송 api
+ *@description 전화 번호 인증 코드 발송 api hook
  */
 export const usePostAuthMobileVerify = () => {
   return useMutation((body: PostAuthMobileVerifyBody) =>
@@ -104,7 +104,7 @@ export const usePostAuthMobileVerify = () => {
 };
 
 /**
- *@description 전화 번호 인증 코드 확인 api
+ *@description 전화 번호 인증 코드 확인 api hook
  */
 export const usePostAuthMobileVerifyCode = () => {
   return useMutation((body: PostAuthMobileVerifyCodeBody) =>

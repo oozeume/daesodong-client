@@ -24,6 +24,7 @@ import PositionPopup from '~/components/facility/main/PositionPopup';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import ListViewChangeButton from '~/components/facility/main/ListViewChangeButton';
 import {FormState} from '~/../types/facility';
+import {SpeciesData} from '~/../types/api/species';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -88,7 +89,7 @@ const FacilityMain = () => {
   const [isFacilityListExpand, setFacilityListExpand] = useState(false);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [petType, setPetType] = useState({id: '', title: ''});
+  const [petType, setPetType] = useState<SpeciesData>();
 
   const onInitMap = () => {
     ref.current?.postMessage(

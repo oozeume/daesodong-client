@@ -1,23 +1,27 @@
 import {Stack, Text, TextArea} from 'native-base';
-import React, {useState} from 'react';
+import React from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import {colors} from '~/theme/theme';
 import LayoutContainer from './LayoutContainer';
 
 interface Props {
   handlePage: () => void;
+  form: PetInfoForm;
+  setForm: SetPetInfoForm;
 }
 
 /**
  *@description 집사정보등록 - 고민되는 점
  */
 
-function AnyQuestion({handlePage}: Props) {
-  const [question, setQuestion] = useState('');
+function AnyQuestion({handlePage, form, setForm}: Props) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Stack>
-        <LayoutContainer buttonPress={handlePage} possibleButtonPress={false}>
+        <LayoutContainer
+          buttonPress={handlePage}
+          possibleButtonPress={form.concern.length > 4}>
           {/* <Stack> */}
           <TextArea
             _focus={{
@@ -27,8 +31,8 @@ function AnyQuestion({handlePage}: Props) {
             borderRadius={'8px'}
             width={'100%'}
             h={240}
-            value={question}
-            onChangeText={setQuestion}
+            value={form.concern}
+            onChangeText={text => setForm(prev => ({...prev, concern: text}))}
             placeholderTextColor={colors.grayScale[40]}
             autoCompleteType={''}
             fontSize={'15px'}

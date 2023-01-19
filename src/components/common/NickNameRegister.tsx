@@ -13,6 +13,7 @@ import {SignupForm} from '~/../types/login';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
+import {setSecurityData} from '~/utils/storage';
 
 const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
 
@@ -46,8 +47,12 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
        * @todo 토큰 저장 로직 추가하기
        */
 
-      if (response?.success === 'SUCCESS')
+      if (response?.success === 'SUCCESS') {
+        await setSecurityData('access_token', response.data.access);
+        await setSecurityData('refresh_token', response.data.refresh);
+
         navigation.navigate('PetInfoRegister');
+      }
     } catch (error) {
       /**
        * @description 409 이메일 존재 에러 로직 > 휴대폰 번호 확인을 했기때문에 로직 불필요.

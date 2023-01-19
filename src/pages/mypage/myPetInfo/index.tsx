@@ -1,5 +1,6 @@
 import {Center, HStack, Image, Stack, Text, useToast} from 'native-base';
 import React, {useState} from 'react';
+import {SpeciesData} from '~/../types/api/species';
 import CameraIcon from '~/assets/icons/camera.svg';
 import Tag from '~/components/common/Tag';
 import ToastMessage from '~/components/common/toast/ToastMessage';
@@ -18,7 +19,7 @@ function MyPetInfo() {
 
   const toast = useToast();
 
-  const [petType, setPetType] = useState({id: '', title: ''});
+  const [petType, setPetType] = useState<SpeciesData>();
 
   return (
     <Stack backgroundColor={'white'} flex={1}>

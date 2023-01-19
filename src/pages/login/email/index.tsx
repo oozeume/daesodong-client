@@ -2,8 +2,6 @@ import {HStack, Text, View, VStack} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
-import Header from '~/components/hospital/review/register/Header';
-import BackIcon from '~/assets/icons/back.svg';
 import {
   RedActiveLargeButton,
   AppleLoginButton,
@@ -75,7 +73,9 @@ function EmailLogin() {
       await setSecurityData('access_token', response.data.access);
       await setSecurityData('refresh_token', response.data.refresh);
 
+      // 집사 정보 등록 테스트 시, 아래 주석을 해제하고 tab reset관련해서 주석을 해주세요.
       reset({index: 0, routes: [{name: 'tab'}]});
+      // reset({index: 0, routes: [{name: 'PetInfoRegister'}]});
     }
   };
 
