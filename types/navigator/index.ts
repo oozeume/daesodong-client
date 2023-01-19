@@ -79,6 +79,10 @@ export type RootStackParamList = {
   EmailRegister: SignupForm;
   PasswordRegister: SignupForm;
   NicknameRegister: SignupForm;
+  MyReview: undefined;
+  MyReviewDetail: undefined;
+  MyCommunityContent: undefined;
+  Inquiry: undefined;
 };
 
 export type SignupNavigatorRouteList =

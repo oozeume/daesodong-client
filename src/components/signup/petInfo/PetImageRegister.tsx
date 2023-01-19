@@ -27,14 +27,14 @@ function PetImageRegister({handlePage, form, setForm}: Props) {
     const tmp = imageInfo.path.split('/');
     const fileName = tmp[tmp.length - 1];
 
-    const form = {
+    const imageUploadForm = {
       uri: Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
       type: imageInfo.mime,
       name: Platform.OS === 'android' ? fileName : imageInfo.filename,
     };
 
     const data = new FormData();
-    data.append('file', form);
+    data.append('file', imageUploadForm);
 
     const response = await mutateAsync(
       {data, fileName},
@@ -50,8 +50,8 @@ function PetImageRegister({handlePage, form, setForm}: Props) {
     );
 
     if (response.success === 'SUCCESS') {
-      setImage(form.uri || '');
-      setForm(prev => ({...prev, pet_picture_url: fileName}));
+      setImage(imageUploadForm.uri || '');
+      setForm(prev => ({...prev, petPictureUrl: fileName}));
     }
   };
 

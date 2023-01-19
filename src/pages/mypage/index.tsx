@@ -1,4 +1,4 @@
-import {HStack, Stack, Text, View} from 'native-base';
+import {HStack, Pressable, Stack, Text, View} from 'native-base';
 import React from 'react';
 import {colors} from '~/theme/theme';
 import Notice from '~/assets/icons/notice_30.svg';
@@ -113,18 +113,23 @@ function MyPage() {
           onPress={() => navigation.navigate('MyPetInfo')}>
           아이 정보
         </Text>
-        <HStack py={'14px'} space={'10px'}>
-          <Text fontSize={'16px'}>내가 작성한 리뷰</Text>
-          <Text fontSize={'16px'} color={colors.fussOrange[0]}>
-            100
-          </Text>
-        </HStack>
-        <HStack py={'14px'} space={'10px'}>
-          <Text fontSize={'16px'}>내가 작성한 게시글</Text>
-          <Text fontSize={'16px'} color={colors.fussOrange[0]}>
-            100
-          </Text>
-        </HStack>
+        <Pressable onPress={() => navigation.navigate('MyReview')}>
+          <HStack py={'14px'} space={'10px'}>
+            <Text fontSize={'16px'}>내가 작성한 리뷰</Text>
+            <Text fontSize={'16px'} color={colors.fussOrange[0]}>
+              100
+            </Text>
+          </HStack>
+        </Pressable>
+
+        <Pressable onPress={() => navigation.navigate('MyCommunityContent')}>
+          <HStack py={'14px'} space={'10px'}>
+            <Text fontSize={'16px'}>내가 작성한 게시글</Text>
+            <Text fontSize={'16px'} color={colors.fussOrange[0]}>
+              100
+            </Text>
+          </HStack>
+        </Pressable>
 
         {/* 서비스 문의 */}
         <Text
@@ -134,9 +139,12 @@ function MyPage() {
           mt={'28px'}>
           서비스 문의
         </Text>
-        <Text fontSize={'16px'} py={'14px'}>
-          1:1 문의
-        </Text>
+
+        <Pressable onPress={() => navigation.navigate('Inquiry')}>
+          <Text flex={1} fontSize={'16px'} py={'14px'}>
+            1:1 문의
+          </Text>
+        </Pressable>
         <HStack
           py={'14px'}
           alignItems={'center'}

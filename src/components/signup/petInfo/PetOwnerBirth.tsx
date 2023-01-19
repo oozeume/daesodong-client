@@ -40,12 +40,12 @@ function PetOwnerBirth({handlePage, form, setForm}: Props) {
   return (
     <LayoutContainer
       buttonPress={handlePage}
-      possibleButtonPress={!_.isNil(form.birthdate)}>
+      possibleButtonPress={!_.isNil(form.birthDate)}>
       <DateSelector
         headerText="년도"
         selectedIndex={index}
         onSelect={(index: number) => {
-          setForm(pre => ({...pre, birthdate: yearList[index].value}));
+          setForm(pre => ({...pre, birthDate: yearList[index].value}));
           setIndex(index);
         }}
         itemList={yearList}
