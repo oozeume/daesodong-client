@@ -8,6 +8,8 @@ import {
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import {SignupForm} from '~/../types/signup';
+import {VerificationResult} from '~/../types/verification';
+import {usePostAuthEmailCheck} from '~/api/auth';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
@@ -39,18 +41,30 @@ function EmailRegister({
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const [email, setEmail] = useState('');
+  const [verificationResult, setVerificationResult] =
+    useState<VerificationResult>();
 
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT - STAGE_BAR_HEIGHT;
+  const postAuthEmailCheck = usePostAuthEmailCheck();
 
   const onEmailChange = (text: string) => {
     setEmail(text);
   };
 
   const onMovePage = async () => {
-    onChangeStage();
-    setPreviousURL(prev => [...prev, 'EmailRegister']);
-    setSignupForm(prev => ({...prev, email}));
-    navigate('PasswordRegister');
+    try {
+      const response = await postAuthEmailCheck.mutateAsync({email});
+
+      if (response.data) {
+        onChangeStage();
+        setPreviousURL(prev => [...prev, 'EmailRegister']);
+        setSignupForm(prev => ({...prev, email}));
+        navigate('PasswordRegister');
+      } else {
+        // 이메일 중복 처리
+        setVerificationResult('FAIL');
+      }
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -78,6 +92,8 @@ function EmailRegister({
                 placeholder={'아이디 (이메일)'}
                 value={email}
                 onChangeText={onEmailChange}
+                errorMessage="이미 가입된 이메일입니다"
+                verificationResult={verificationResult}
               />
             </Center>
 

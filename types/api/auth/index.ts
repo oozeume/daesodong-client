@@ -13,6 +13,15 @@ export interface PostAuthEmailLoginBody {
   password: string;
 }
 
+export interface PostAuthNicknameCheckBody {
+  nickname: string;
+}
+
+// 이메일 확인 api 전송 바디
+export interface PostAuthEmailCheckBody {
+  email: string;
+}
+
 // 전화번호 인증 코드 발송 api 전송 바디
 export interface PostAuthMobileVerifyBody {
   mobile: string;

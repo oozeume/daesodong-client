@@ -6,7 +6,7 @@ import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {SignupForm} from '~/../types/signup';
 import {VerificationResult} from '~/../types/verification';
-import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
+import {usePostAuthEmailSignup, usePostAuthNicknameCheck} from '~/api/auth';
 
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
@@ -43,7 +43,7 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
   ]); // 도움말 검증 결과
 
   const postAuthSignup = usePostAuthEmailSignup();
-  const {refetch} = useGetAuthNickname(nickname);
+  const postAuthNicknameCheck = usePostAuthNicknameCheck();
 
   const isSigunupComplete =
     helpResults[0] === 'SUCCESS' &&
@@ -126,11 +126,13 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
       debounce(async text => {
         try {
           if (text.length >= 2 && text.length <= 10) {
-            const response = await refetch();
+            const response = await postAuthNicknameCheck.mutateAsync({
+              nickname: text,
+            });
 
             console.log('@@@ DEBOUNCE');
             console.log(response);
-            if (response.data?.data) setResult('SUCCESS');
+            if (response.data) setResult('SUCCESS');
             else setResult('FAIL');
           } else {
             setResult(undefined);

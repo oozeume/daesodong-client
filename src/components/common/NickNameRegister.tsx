@@ -11,7 +11,7 @@ import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
 import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
-import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
+import {usePostAuthNicknameCheck, usePostAuthEmailSignup} from '~/api/auth';
 import {setSecurityData} from '~/utils/storage';
 import {SignupForm} from '~/../types/signup';
 
@@ -36,7 +36,7 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
   ]); // 도움말 검증 결과
 
   const postAuthSignup = usePostAuthEmailSignup();
-  const {refetch} = useGetAuthNickname(signupForm.nickname);
+  const postAuthNicknameCheck = usePostAuthNicknameCheck();
 
   // 약관 동의 후, 회원가입 api 요청 및 모달창 제어
   const onSignup = async () => {
@@ -73,9 +73,11 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
     Keyboard.dismiss();
 
     try {
-      const response = await refetch();
+      const response = await postAuthNicknameCheck.mutateAsync({
+        nickname: signupForm.nickname,
+      });
 
-      if (response.data?.data) setResult('SUCCESS');
+      if (response.data) setResult('SUCCESS');
       else setResult('FAIL');
     } catch (error) {
       setResult('FAIL');

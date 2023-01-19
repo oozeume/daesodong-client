@@ -1,5 +1,7 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {
+  PostAuthNicknameCheckBody,
+  PostAuthEmailCheckBody,
   PostAuthEmailLoginBody,
   PostAuthEmailLoginResponse,
   PostAuthMobileVerifyBody,
@@ -11,10 +13,22 @@ import {apiCall} from '../common';
 /**
  *@description 닉네임 확인 api
  */
-const getAuthNickname = (nickname: string) => {
+const postAuthNicknameCheck = (data: PostAuthNicknameCheckBody) => {
   return apiCall<boolean>({
-    method: 'GET',
-    url: `auth/${nickname}`,
+    method: 'POST',
+    url: `auth/nickname`,
+    data,
+  });
+};
+
+/**
+ *@description 이메일 확인 api
+ */
+const postAuthEmailCheck = (data: PostAuthEmailCheckBody) => {
+  return apiCall<boolean>({
+    method: 'POST',
+    url: `auth/email`,
+    data,
   });
 };
 
@@ -72,10 +86,19 @@ const postAuthMobileVerifyCode = async (data: PostAuthMobileVerifyCodeBody) => {
 /**
  *@description 닉네임 확인 api hook
  */
-export const useGetAuthNickname = (nickname: string) => {
-  return useQuery(['nickname', nickname], () => getAuthNickname(nickname), {
-    enabled: false,
-  });
+export const usePostAuthNicknameCheck = () => {
+  return useMutation((data: PostAuthNicknameCheckBody) =>
+    postAuthNicknameCheck(data),
+  );
+};
+
+/**
+ *@description 이메일 확인 api hook
+ */
+export const usePostAuthEmailCheck = () => {
+  return useMutation((data: PostAuthEmailCheckBody) =>
+    postAuthEmailCheck(data),
+  );
 };
 
 /**
