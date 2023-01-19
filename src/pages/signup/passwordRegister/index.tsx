@@ -21,7 +21,7 @@ import {
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
 import {VerificationResult} from '~/../types/verification';
-import {SignupForm} from '~/../types/login';
+import {SignupForm} from '~/../types/signup';
 
 interface Props {
   onChangeStage: () => void;
@@ -33,7 +33,7 @@ interface Props {
 }
 
 /**
- * 회원가입 휴대폰 인증 스테이지 컴포넌트
+ * 회원가입 > 비밀번호 등록 페이지
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
 function PasswordRegister({
@@ -83,7 +83,7 @@ function PasswordRegister({
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PasswordRegister']);
     setSignupForm(prevState => ({...prevState, password}));
-    navigate('NicknameRegister', signupForm);
+    navigate('NicknameRegister');
   };
 
   console.log('@@@ signupForm');

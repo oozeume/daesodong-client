@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator<RouteList>();
  *@description 이메일 회원가입 페이지
  */
 function SignUpEmailNavigator() {
-  const {goBack, navigate} = useNavigation<NavigationHookProp>();
+  const {navigate} = useNavigation<NavigationHookProp>();
   const [currentStage, setCurrentStage] = useState(1);
   const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
 

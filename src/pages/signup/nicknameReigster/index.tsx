@@ -1,10 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
-import _ from 'lodash';
+import _, {debounce} from 'lodash';
 import {Box, Center, VStack} from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
-import {SignupForm} from '~/../types/login';
 import {NavigationHookProp} from '~/../types/navigator';
+import {SignupForm} from '~/../types/signup';
 import {VerificationResult} from '~/../types/verification';
 import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
 
@@ -26,7 +26,7 @@ interface Props {
 }
 
 /**
- *@description 닉네임 입력
+ *@description 회원가입 > 닉네임 입력
  */
 function NicknameRegister({signupForm, setSignupForm}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
@@ -44,6 +44,12 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
 
   const postAuthSignup = usePostAuthEmailSignup();
   const {refetch} = useGetAuthNickname(nickname);
+
+  const isSigunupComplete =
+    helpResults[0] === 'SUCCESS' &&
+    helpResults[1] === 'SUCCESS' &&
+    helpResults[2] === 'SUCCESS' &&
+    result === 'SUCCESS';
 
   // 약관 동의 후, 회원가입 api 요청 및 모달창 제어
   const onSignup = async () => {
@@ -77,27 +83,6 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
     setModalVisible(true);
   };
 
-  useEffect(() => {
-    async function test() {
-      try {
-        if (nickname.length >= 2 && nickname.length <= 10) {
-          const response = await refetch();
-          console.log('nick response');
-          console.log(response);
-
-          if (response.data?.data) setResult('SUCCESS');
-          else setResult('FAIL');
-        } else {
-          setResult(undefined);
-        }
-      } catch (error) {
-        setResult('FAIL');
-      }
-    }
-
-    test();
-  }, [nickname]);
-
   // 닉네임 글자수 검사
   const checkNicknameLength = (text: string): VerificationResult => {
     return text.length > 1 && text.length <= 10 ? 'SUCCESS' : 'FAIL';
@@ -126,15 +111,36 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
     setHelpResults(['WARNING', 'WARNING', 'WARNING']);
   };
 
+  // 닉네임 입력 핸들러
   const onChangeNickname = (text: string) => {
     const textWithRemovedEmoji = text.replace(EMOJI_REGEX, '');
     setNickname(text);
     setUpHelpResults(textWithRemovedEmoji);
+
+    checkNickname(text);
   };
 
-  // useEffect(() => {
-  //   setResult('WARNING');
-  // }, [signupForm.nickname]);
+  // debounce 최적화
+  const checkNickname = useMemo(
+    () =>
+      debounce(async text => {
+        try {
+          if (text.length >= 2 && text.length <= 10) {
+            const response = await refetch();
+
+            console.log('@@@ DEBOUNCE');
+            console.log(response);
+            if (response.data?.data) setResult('SUCCESS');
+            else setResult('FAIL');
+          } else {
+            setResult(undefined);
+          }
+        } catch (error) {
+          setResult('FAIL');
+        }
+      }, 500),
+    [],
+  );
 
   return (
     <>
@@ -169,8 +175,7 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
 
               <VStack px="18px" mb={'56px'}>
                 <RedActiveLargeButton
-                  // active={signupForm.mobile.length > 10}
-                  active
+                  active={isSigunupComplete}
                   text={'가입 완료'}
                   handlePress={openModal}
                 />

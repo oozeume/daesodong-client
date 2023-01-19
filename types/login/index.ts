@@ -1,10 +1,11 @@
 import {INIT_SIGNUP_FORM} from '~/constants/signup';
 import {StyleProp, TextStyle, ViewStyle} from 'react-native';
 
-type initSignupForm = typeof INIT_SIGNUP_FORM;
-
-// 이메일 회원가입 폼 초기값 타입
-export interface SignupForm extends initSignupForm {}
+// 이메일 로그인 폼
+export interface EmailLoginForm {
+  email: string;
+  password: string;
+}
 
 export interface LoginButtonProps {
   handlePress: () => void;

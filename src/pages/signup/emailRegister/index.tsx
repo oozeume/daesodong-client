@@ -3,16 +3,17 @@ import _ from 'lodash';
 import {Box, Center, Text, VStack} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
-import {SignupForm} from '~/../types/login';
 import {
   NavigationHookProp,
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
+import {SignupForm} from '~/../types/signup';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import VerificationForm from '~/components/common/VerificationForm';
 import {HEADER_HEIGHT, STAGE_BAR_HEIGHT} from '~/constants/heights';
+import {EMAIL_REGREX} from '~/constants/regEx';
 import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
@@ -27,7 +28,7 @@ interface Props {
 }
 
 /**
- *@description 아이디(이메일) 입력
+ *@description 회원가입 > 이메일 입력 페이지
  */
 
 function EmailRegister({
@@ -49,15 +50,13 @@ function EmailRegister({
     onChangeStage();
     setPreviousURL(prev => [...prev, 'EmailRegister']);
     setSignupForm(prev => ({...prev, email}));
-    navigate('PasswordRegister', signupForm);
+    navigate('PasswordRegister');
   };
 
   useEffect(() => {
     if (signupForm.email) setEmail(signupForm.email);
   }, []);
 
-  console.log('@@@ signupForm');
-  console.log(signupForm);
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
@@ -99,8 +98,7 @@ function EmailRegister({
               </Box>
 
               <RedActiveLargeButton
-                // active={signupForm.mobile.length > 10}
-                active
+                active={EMAIL_REGREX.test(email)}
                 text={'다음'}
                 handlePress={onMovePage}
               />

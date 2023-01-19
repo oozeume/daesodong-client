@@ -17,7 +17,7 @@ import {
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import useRegExPhone from '~/hooks/useRegExPhone';
-import {SignupForm} from '~/../types/login';
+import {SignupForm} from '~/../types/signup';
 
 interface Props {
   onChangeStage: () => void;
@@ -41,7 +41,6 @@ function PhoneVerification({
   const {navigate} = useNavigation<NavigationHookProp>();
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT - STAGE_BAR_HEIGHT;
 
-  // const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
   const [phoneNumber, setPhoneNumber] = useRegExPhone();
   const [modalVisible, setModalVisible] = useState(false);
   const postAuthMobileVerify = usePostAuthMobileVerify();
@@ -52,19 +51,22 @@ function PhoneVerification({
     setModalVisible(prev => !prev);
   };
 
-  // 페이지 제어
+  // 모달 컴포넌트에서 페이지 제어 핸들러
   const onHandlePage = () => {
+    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+
     onChangeStage();
+    setSignupForm(prev => ({...prev, mobile: replacePhoneNumber}));
+    setPreviousURL(prev => [...prev, 'PhoneVerification']);
+    navigate('EmailRegister');
   };
 
+  // 인증 메세지 재전송 핸들러
   const onResendVerification = () => {
     postAuthMobileVerify.mutateAsync({
       mobile: signupForm.mobile,
     });
   };
-
-  console.log('@@@ signupForm');
-  console.log(signupForm);
 
   /**
    *@description 인증 번호 발송 및 인증 모달창 오픈
@@ -72,11 +74,12 @@ function PhoneVerification({
   const onSendVerification = async () => {
     let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
 
-    setSignupForm(prev => ({...prev, mobile: replacePhoneNumber}));
+    await postAuthMobileVerify.mutateAsync({
+      mobile: replacePhoneNumber,
+    });
 
-    onChangeStage();
-    setPreviousURL(prev => [...prev, 'PhoneVerification']);
-    navigate('EmailRegister', {...signupForm, mobile: replacePhoneNumber});
+    setModalVisible(prev => !prev);
+    // onHandlePage();
   };
 
   const onChangeText = (text: string) => {
@@ -131,7 +134,7 @@ function PhoneVerification({
             handleModal={onHandleModal}
             handlePage={onHandlePage}
             onResendVerification={onResendVerification}
-            phoneNumber={signupForm.mobile}
+            phoneNumber={phoneNumber.replace(/\-/g, '')}
           />
         </Box>
       </KeyboardAvoidingView>

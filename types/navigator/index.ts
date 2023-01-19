@@ -5,7 +5,6 @@ import {
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
-import {SignupForm} from '../login';
 
 /**
  * @description script 설명
@@ -76,9 +75,9 @@ export type RootStackParamList = {
   AppIntroThird: undefined;
 
   PhoneVerification: undefined;
-  EmailRegister: SignupForm;
-  PasswordRegister: SignupForm;
-  NicknameRegister: SignupForm;
+  EmailRegister: undefined;
+  PasswordRegister: undefined;
+  NicknameRegister: undefined;
   MyReview: undefined;
   MyReviewDetail: undefined;
   MyCommunityContent: undefined;

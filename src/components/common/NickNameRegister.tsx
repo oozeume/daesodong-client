@@ -9,11 +9,11 @@ import VerificationForm from '~/components/common/VerificationForm';
 
 import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
 import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
-import {SignupForm} from '~/../types/login';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useGetAuthNickname, usePostAuthEmailSignup} from '~/api/auth';
 import {setSecurityData} from '~/utils/storage';
+import {SignupForm} from '~/../types/signup';
 
 const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
 

@@ -27,7 +27,6 @@ function InitialLogin() {
   const onMove = () => navigate('EmailLogin');
 
   useEffect(() => {
-    // removeData('firstOpen');
     async function checkFirstOpen() {
       const data = await getData('firstOpen');
 

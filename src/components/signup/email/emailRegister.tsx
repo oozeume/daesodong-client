@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {Box} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
-import {SignupForm} from '~/../types/login';
+import {SignupForm} from '~/../types/signup';
 
 import Button from '~/components/common/button';
 import VerificationForm from '~/components/common/VerificationForm';

@@ -17,11 +17,7 @@ import {ErrorResponseTransform} from '~/../types/api/common';
 import {usePostAuthEmailLogin} from '~/api/auth';
 import {getSecurityData, setSecurityData} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-
-interface EmailLoginForm {
-  email: string;
-  password: string;
-}
+import {EmailLoginForm} from '~/../types/login';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -37,7 +33,6 @@ function EmailLogin() {
   };
 
   const [loginForm, setLoginForm] = useState<EmailLoginForm>(initForm);
-
   const [errorForm, setErrorForm] = useState<EmailLoginForm>(initForm);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
-import {SignupForm} from '../../login';
-
 /**
  * @@@ api 전송 바디
  */
+
+import {SignupForm} from '../../signup';
 
 // 이메일 회원가입 api 전송 바디
 export type PostAuthSignupBody = SignupForm;
