@@ -9,14 +9,10 @@ import {HEADER_HEIGHT} from '~/constants/heights';
 import {Box, Center, VStack} from 'native-base';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {
-  EMAIL_SIGNUP_STAGE_TEXT_LIST,
-  INIT_SIGNUP_FORM,
-} from '~/constants/signup';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
+import {useNavigation} from '@react-navigation/native';
 import {
   NavigationHookProp,
-  RouteHookProp,
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import {
@@ -37,7 +33,7 @@ interface Props {
 }
 
 /**
- * 휴대폰 인증 스테이지 컴포넌트
+ * 회원가입 휴대폰 인증 스테이지 컴포넌트
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
 function PasswordRegister({
@@ -47,14 +43,10 @@ function PasswordRegister({
   setSignupForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  // const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
-  // const {params} = useRoute<RouteHookProp<'PasswordRegister'>>();
-
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT;
 
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-
   const [helpResults, setHelpResults] = useState<VerificationResult[]>([
     'WARNING',
     'WARNING',
@@ -94,14 +86,14 @@ function PasswordRegister({
     navigate('NicknameRegister', signupForm);
   };
 
-  // useEffect(() => {
-  //   if (params) {
-  //     setSignupForm(params);
-  //   }
-  // }, []);
   console.log('@@@ signupForm');
   console.log(signupForm);
   console.log('');
+
+  useEffect(() => {
+    setPassword('');
+  }, []);
+
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView

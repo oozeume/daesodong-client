@@ -1,4 +1,4 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import _ from 'lodash';
 import {Box, Center, Text, VStack} from 'native-base';
 import React, {useEffect, useState} from 'react';
@@ -6,7 +6,6 @@ import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 import {SignupForm} from '~/../types/login';
 import {
   NavigationHookProp,
-  RouteHookProp,
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
@@ -14,10 +13,7 @@ import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import VerificationForm from '~/components/common/VerificationForm';
 import {HEADER_HEIGHT, STAGE_BAR_HEIGHT} from '~/constants/heights';
-import {
-  EMAIL_SIGNUP_STAGE_TEXT_LIST,
-  INIT_SIGNUP_FORM,
-} from '~/constants/signup';
+import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 
@@ -42,9 +38,7 @@ function EmailRegister({
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const [email, setEmail] = useState('');
-  // const {params} = useRoute<RouteHookProp<'EmailRegister'>>();
 
-  // const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
   const pageHeight = APP_HEIGHT - HEADER_HEIGHT - STAGE_BAR_HEIGHT;
 
   const onEmailChange = (text: string) => {
@@ -58,12 +52,10 @@ function EmailRegister({
     navigate('PasswordRegister', signupForm);
   };
 
-  // useEffect(() => {
-  //   if (params) {
-  //     const _signupForm = params as SignupForm;
-  //     setSignupForm(_signupForm);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (signupForm.email) setEmail(signupForm.email);
+  }, []);
+
   console.log('@@@ signupForm');
   console.log(signupForm);
   return (

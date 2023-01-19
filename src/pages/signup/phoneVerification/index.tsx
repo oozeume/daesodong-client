@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
@@ -10,17 +10,13 @@ import {HEADER_HEIGHT, STAGE_BAR_HEIGHT} from '~/constants/heights';
 import {Box, Center, VStack} from 'native-base';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {
-  EMAIL_SIGNUP_STAGE_TEXT_LIST,
-  INIT_SIGNUP_FORM,
-} from '~/constants/signup';
-import {ParamListBase, useNavigation} from '@react-navigation/native';
+import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
+import {useNavigation} from '@react-navigation/native';
 import {
   NavigationHookProp,
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import useRegExPhone from '~/hooks/useRegExPhone';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SignupForm} from '~/../types/login';
 
 interface Props {
@@ -76,12 +72,7 @@ function PhoneVerification({
   const onSendVerification = async () => {
     let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
 
-    // await postAuthMobileVerify.mutateAsync({
-    //   mobile: replacePhoneNumber,
-    // });
-
     setSignupForm(prev => ({...prev, mobile: replacePhoneNumber}));
-    // setModalVisible(prev => !prev);
 
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PhoneVerification']);
@@ -91,6 +82,10 @@ function PhoneVerification({
   const onChangeText = (text: string) => {
     setPhoneNumber(text);
   };
+
+  useEffect(() => {
+    if (signupForm.mobile) setPhoneNumber(signupForm.mobile);
+  }, []);
 
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>

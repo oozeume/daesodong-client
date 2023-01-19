@@ -53,7 +53,7 @@ function EmailLogin() {
 
   const onLogin = async () => {
     // 테스트 혹은 토큰 발급 로그인을 위한 로그인 시, 아랫줄을 주석 처리해주세요.
-    // if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
+    if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
 
     if (!loginForm.email) return;
     if (!loginForm.password) return;

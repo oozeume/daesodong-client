@@ -63,7 +63,9 @@ function SignUpEmailNavigator() {
     />
   );
 
-  const NicknameRegisterComponent = () => <NicknameRegister />;
+  const NicknameRegisterComponent = () => (
+    <NicknameRegister signupForm={signupForm} setSignupForm={setSignupForm} />
+  );
 
   return (
     <Box h={APP_HEIGHT}>
