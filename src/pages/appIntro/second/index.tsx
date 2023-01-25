@@ -5,7 +5,7 @@ import AppIntroLayout from '~/components/appIntro/AppIntroLayout';
 import IntroImage from '~/assets/images/init_intro2.svg';
 
 /**
- *@description 초기 앱 인트로 설명 둘째 페이지
+ *@description 초기 앱 인트로 설명 두번째 페이지
  */
 function AppIntroSecond() {
   const {navigate} = useNavigation<NavigationHookProp>();
