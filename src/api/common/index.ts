@@ -2,7 +2,8 @@ import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import {ErrorResponse} from '~/../types/api/common';
 
 // 임시 베이스 URL, 추후 env 파일 적용 시, development, production으로 나눌 예정
-export const BASE_URL = 'http://127.0.0.1:3754/';
+// export const BASE_URL = 'http://127.0.0.1:3754/';
+export const BASE_URL = 'http://1.229.174.185:3000/';
 
 /**
  *@description api 공통 호출 모듈

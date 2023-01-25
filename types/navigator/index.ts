@@ -29,7 +29,10 @@ export type RootTabParamList = {
  * { ... Hospital: { id: string; }; ... }
  */
 export type RootStackParamList = {
-  Hospital: undefined;
+  Hospital: {
+    facilityId: any;
+    facilityName: any;
+  };
   tab: undefined;
   HospitalReviewRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
