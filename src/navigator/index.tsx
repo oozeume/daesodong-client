@@ -52,7 +52,19 @@ const AppNavigator = () => {
         screenOptions={{headerShown: false}}
         initialRouteName="InitialLogin">
         <Stack.Screen name="tab" component={TabNavigator} />
-        <Stack.Screen name="Hospital" component={Hospital} />
+        <Stack.Screen
+          name="Hospital"
+          component={Hospital}
+          options={({navigation, route}) => ({
+            headerShown: true,
+            header: () => (
+              <Header
+                title={route.params?.facilityName ?? '병원이름'}
+                leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+              />
+            ),
+          })}
+        />
 
         <Stack.Screen
           name="HospitalReviewRegister"
