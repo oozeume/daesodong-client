@@ -6,6 +6,12 @@ export const INIT_SIGNUP_FORM = {
   mobile: '',
 };
 
+// 이메일 회원가입 약관 조건 초기값 상수
+export const INIT_SIGNUP_TERM = {
+  isServicePolicyCheck: false, // 이용약관
+  isPersonalInformationPolicyCheck: false, // 개인 정보 처리 방침 체크
+};
+
 // 초기 반려동물 등록 폼값
 export const initPetInfoForm = {
   gender: '',

@@ -46,8 +46,6 @@ export type RootStackParamList = {
   };
   FindEmail: undefined;
 
-  TermsOfServicePolicy: undefined;
-  PrivacyPolicy: undefined;
   SignupSocial: undefined;
   SignUpEmailNavigator: undefined;
   PetInfoRegister: undefined;

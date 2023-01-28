@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, KeyboardAvoidingView, Platform} from 'react-native';
+import {Keyboard, Platform} from 'react-native';
 import _ from 'lodash';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {APP_HEIGHT} from '~/utils/dimension';
-import {HEADER_HEIGHT} from '~/constants/heights';
 import {Box, Center, VStack} from 'native-base';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
@@ -43,7 +41,6 @@ function PasswordRegister({
   setSignupForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  const pageHeight = APP_HEIGHT - HEADER_HEIGHT;
 
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -86,68 +83,60 @@ function PasswordRegister({
     navigate('NicknameRegister');
   };
 
-  console.log('@@@ signupForm');
-  console.log(signupForm);
-  console.log('');
-
   useEffect(() => {
     setPassword('');
   }, []);
 
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 60}>
-        <Box>
-          <VStack
-            bgColor={colors.grayScale[0]}
-            justifyContent="space-between"
-            h={pageHeight}>
-            <Center mt={'60px'} px="18px">
-              <StageTextBox
-                totalStage={4}
-                currentStage={3}
-                stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST[2]}
-              />
+      <Box pb="40px" flex={1}>
+        <VStack
+          bgColor={colors.grayScale[0]}
+          justifyContent="space-between"
+          flex={1}>
+          <Center mt={'60px'} px="18px">
+            <StageTextBox
+              totalStage={4}
+              currentStage={3}
+              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST[2]}
+            />
 
-              <VerificationForm
-                placeholder={'비밀번호 입력'}
-                value={password}
-                onChangeText={handlePasswordChange}
-                helpList={helpList}
-                marginBottom={'20px'}
-                helpVerificationResults={helpResults}
-                secureTextEntry
-              />
+            <VerificationForm
+              placeholder={'비밀번호 입력'}
+              value={password}
+              onChangeText={handlePasswordChange}
+              helpList={helpList}
+              marginBottom={'20px'}
+              helpVerificationResults={helpResults}
+              secureTextEntry
+            />
 
-              <VerificationForm
-                placeholder={'비밀번호 확인'}
-                value={passwordConfirm}
-                onChangeText={handlePasswordConfirmChange}
-                successMessage={'비밀번호가 일치합니다'}
-                errorMessage={'비밀번호를 확인해주세요'}
-                verificationResult={
-                  password.length > 0
-                    ? password === passwordConfirm
-                      ? 'SUCCESS'
-                      : 'FAIL'
-                    : undefined
-                }
-                secureTextEntry
-              />
-            </Center>
+            <VerificationForm
+              placeholder={'비밀번호 확인'}
+              value={passwordConfirm}
+              onChangeText={handlePasswordConfirmChange}
+              successMessage={'비밀번호가 일치합니다'}
+              errorMessage={'비밀번호를 확인해주세요'}
+              verificationResult={
+                password.length > 0
+                  ? password === passwordConfirm
+                    ? 'SUCCESS'
+                    : 'FAIL'
+                  : undefined
+              }
+              secureTextEntry
+            />
+          </Center>
 
-            <VStack px="18px" mb={'56px'}>
-              <RedActiveLargeButton
-                active={isButtonActive}
-                text={'다음'}
-                handlePress={onMovePage}
-              />
-            </VStack>
+          <VStack px="18px" mb={Platform.OS === 'android' ? '56px' : '82px'}>
+            <RedActiveLargeButton
+              active={isButtonActive}
+              text={'다음'}
+              handlePress={onMovePage}
+            />
           </VStack>
-        </Box>
-      </KeyboardAvoidingView>
+        </VStack>
+      </Box>
     </TouchableWithoutView>
   );
 }

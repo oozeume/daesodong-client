@@ -76,7 +76,7 @@ function EmailLogin() {
 
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
-      <SafeAreaView>
+      <SafeAreaView style={{backgroundColor: colors.grayScale['0']}}>
         <VStack bg={colors.grayScale['0']} w="100%" h="100%">
           <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
             <VStack>

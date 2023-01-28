@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TextInput} from 'react-native';
+import {Platform, TextInput} from 'react-native';
 import {
   Box,
   Center,
@@ -118,7 +118,9 @@ function VerificationModal({
 
   return (
     <Modal isOpen={visible} size={'full'}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={0}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
         <Modal.Content
           w={'100%'}
           maxH={'284'}
