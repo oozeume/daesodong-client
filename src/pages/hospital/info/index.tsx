@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Linking, Pressable} from 'react-native';
 import {
   AspectRatio,
@@ -8,48 +8,24 @@ import {
   HStack,
   Image,
   ScrollView,
+  Spinner,
   Stack,
   Text,
   VStack,
 } from 'native-base';
 import Swiper from 'react-native-swiper';
 import {colors} from '~/theme/theme';
-import TextEllipsis from '../../../components/common/TextEllipsis';
-import VisitedAnimals from '../../../components/hospital/info/VisitedAnimals';
-import HospitalInfoContents from '../../../components/hospital/info/HospitalInfoContents';
-import HospitalOpeningHours from '../../../components/hospital/info/HospitalOpeningHours';
-import RecordVisitedExperience from '../../../components/hospital/info/RecordVisitedExperience';
-import ArrowDownIcon from '../../../assets/icon/_down.svg';
-import {useQuery} from '@tanstack/react-query';
+import TextEllipsis from '~/components/common/TextEllipsis';
+import VisitedAnimals from '~/components/hospital/info/VisitedAnimals';
+import HospitalInfoContents from '~/components/hospital/info/HospitalInfoContents';
+import HospitalOpeningHours from '~/components/hospital/info/HospitalOpeningHours';
+import RecordVisitedExperience from '~/components/hospital/info/RecordVisitedExperience';
+import ArrowDownIcon from '~/assets/icon/_down.svg';
+import { useGetFacilityInfo } from '~/api/facility/queries';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootTabParamList } from '~/../types/navigator';
 
-interface Props {
-  route: any;
-}
-
-// 임시 타입 생성 및 mock data
-type ImageListType = {uri: string};
-
-export type OpeningHoursType = {
-  date: string;
-  totalHour: string;
-  break: string | undefined;
-};
-
-const IMAGE_LIST: ImageListType[] = [
-  {uri: 'https://wallpaperaccess.com/full/317501.jpg'},
-  {uri: 'https://www.w3schools.com/css/img_lights.jpg'},
-];
-
-const OPENING_HOURS: OpeningHoursType[] = [
-  {date: '월 - 금', totalHour: '10:00 ~ 19:00', break: '12:30 ~ 14:00'},
-  {date: '토', totalHour: '10:00 ~ 17:00', break: '12:30 ~ 14:00'},
-  {date: '일', totalHour: '정기휴무', break: undefined},
-  {date: '공휴일', totalHour: '휴무', break: undefined},
-];
-//
-
-// 임시 인사말 변수
-const hospitalGreetings = `어울림 동물병원 대표원장 김용석입니다. 수의사의 역할은 반려인과 반려동물이 오랜시간 조화롭게 살도록 하는 것에 있다고 생각합니다. 그 역할을 잘 수행하기 위해`;
+type Props = NativeStackScreenProps<RootTabParamList, 'Facility'>;
 
 /**
  * 병원 시설 정보 탭
@@ -60,38 +36,44 @@ function HospitalInfo({route}: Props) {
   const {facilityId} = route.params;
   const [textOpen, setTextOpen] = useState(false);
 
-  console.log(facilityId);
-  const {isLoading, isError, error} = useQuery('hospital', GET_FACILITY_INFO, {
-    onSuccess: data => {
-      console.log('success', data);
-    },
-    onError: e => {
-      console.log('error', e);
-    },
-  });
+  const {data, isLoading} = useGetFacilityInfo(facilityId);
+
+  const OPENING_HOURS = useMemo(() => {
+      if(data) {
+        return [
+          {date: '월 - 금', totalHour: data?.data.sch_mon, break: undefined},
+          {date: '토', totalHour: data.data.sch_sat, break: undefined},
+          {date: '일', totalHour: data.data.sch_sun, break: undefined},
+          {date: '공휴일', totalHour: data.data.sch_holy, break: undefined},
+        ]
+      }
+  }, [data])
 
   const handleTextOpen = () => setTextOpen(prev => !prev);
 
   if(isLoading) {
-    
+    return <Spinner />
   }
 
   return (
     <Stack style={{flex: 1}}>
-      <VStack alignItems="center" backgroundColor={colors.grayScale[0]}>
-        <ScrollView>
-          <Center w="375" h="250" backgroundColor={colors.grayScale[20]}>
+      <VStack alignItems="center" 
+      flex={1}
+      backgroundColor={'white'}
+      >
+        {data && <ScrollView>
+          <Center  h="250" backgroundColor={colors.grayScale[20]}>
             <Swiper
               dotColor={colors.scrim[60]}
               activeDotColor={colors.fussOrange[0]}
               loop={false}>
-              {IMAGE_LIST.map(image => (
-                <AspectRatio key={image.uri} ratio={375 / 250}>
+              {data.data.hospital_picture.map(image => (
+                <AspectRatio key={image.picture_url} ratio={375 / 250}>
                   <Image
-                    source={{uri: image.uri}}
+                    source={{uri: image.picture_url}}
                     width={375}
                     height={250}
-                    alt=""
+                    alt={image.picture_url}
                   />
                 </AspectRatio>
               ))}
@@ -100,8 +82,8 @@ function HospitalInfo({route}: Props) {
 
           {/* 병원 방문 기록 */}
           <Center>
-            <RecordVisitedExperience />
-            <VisitedAnimals />
+            <RecordVisitedExperience facilityId={facilityId} />
+            <VisitedAnimals facilityId={facilityId}/>
             <Divider
               my="2"
               style={[{marginTop: 24}]}
@@ -115,12 +97,12 @@ function HospitalInfo({route}: Props) {
           <HospitalInfoContents iconName="chat_fill">
             <VStack space={3}>
               <TextEllipsis
-                text={hospitalGreetings}
+                text={data.data.intro}
                 width={299}
                 textAlign={'left'}
                 numberOfLines={textOpen ? 0 : 3}
               />
-              {hospitalGreetings.length > 87 && (
+              {data.data.intro.length > 87 && (
                 <Pressable onPress={handleTextOpen}>
                   <HStack space={1}>
                     <Text style={{fontSize: 13, color: colors.grayScale[60]}}>
@@ -139,7 +121,7 @@ function HospitalInfo({route}: Props) {
           {/* 병원 영업 시간 */}
           <HospitalInfoContents iconName="clock_fill">
             <VStack space={4} width={229}>
-              {OPENING_HOURS.map(openingHours => (
+              {OPENING_HOURS?.map(openingHours => (
                 <HospitalOpeningHours
                   key={openingHours.date}
                   openingHours={openingHours}
@@ -162,7 +144,7 @@ function HospitalInfo({route}: Props) {
                 textDecoration={'solid'}
                 textDecorationLine={'underline'}
                 textDecorationColor={colors.positive[0]}>
-                02-305-4242
+                {data.data.phone}
               </Text>
             </Pressable>
           </HospitalInfoContents>
@@ -175,7 +157,7 @@ function HospitalInfo({route}: Props) {
               fontWeight={'400'}
               color={colors.grayScale[70]}
               textAlign={'left'}>
-              첫 방문 시 예약이 불가합니다.
+              {data?.data.info}
             </Text>
           </HospitalInfoContents>
 
@@ -189,7 +171,8 @@ function HospitalInfo({route}: Props) {
                 fontWeight={'400'}
                 color={colors.grayScale[70]}
                 textAlign={'left'}>
-                서울 서대문구 남가좌동 385 DMC 파크뷰자이 104동 1층 102A호
+                {data?.data.address1}
+                {data?.data.address2}
               </Text>
               <Box
                 w={299}
@@ -199,7 +182,7 @@ function HospitalInfo({route}: Props) {
               />
             </VStack>
           </HospitalInfoContents>
-        </ScrollView>
+        </ScrollView>}
       </VStack>
     </Stack>
   );

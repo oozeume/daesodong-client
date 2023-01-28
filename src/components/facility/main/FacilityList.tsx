@@ -45,7 +45,8 @@ function FacilityList({
   // 시설 리스트 뷰 확장 여부
   const onPress = () => {
     navigation.navigate('Hospital', {
-      facilityId: 'ed433ddf-c14d-4df4-83e9-8ae4228fdf51',
+      // 임시 TODO: 아래 string 제거 후 swagger에서 시설 생성 후에 만들어진 id 입력 후 확인
+      facilityId: 'd21e0177-591e-4843-8b48-a792fee9937b',
     });
   };
 
