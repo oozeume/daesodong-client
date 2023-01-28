@@ -12,8 +12,8 @@ class Facility {
     return this.facility.intro;
   }
 
-  get phone() {
-    return this.facility.phone;
+  get phoneNumber() {
+    return Number(this.facility.phone);
   }
 
   get openingHours() {
@@ -23,6 +23,22 @@ class Facility {
       {date:'일', time : this.facility.sch_sun},
       {date:'공휴일', time : this.facility.sch_holy},
     ]
+  }
+
+  get address() {
+    return this.facility.address1 + '\n' + this.facility.address2 
+  }
+
+  get latitude() {
+    return this.facility.latitude;
+  }
+
+  get longitude() {
+    return this.facility.longitude;
+  }
+
+  get thanksCount() {
+    return this.facility.thanks
   }
 }
 

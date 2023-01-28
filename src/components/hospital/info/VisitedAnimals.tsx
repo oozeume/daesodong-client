@@ -7,6 +7,8 @@ import DownIcon from '~/assets/icon/down.svg';
 import { useGetVisitedPetsFacility } from '~/api/facility/queries';
 import Species from '~/model/species';
 import _ from 'lodash';
+import { APP_WIDTH } from '~/utils/dimension';
+import { MARGIN_X } from '~/pages/hospital/info';
 
 interface Props {
   facilityId: string;
@@ -40,10 +42,10 @@ function VisitedAnimals({facilityId}: Props) {
   }
 
   return (
-    <Pressable onPress={handleOpen}>
+    <Pressable onPress={handleOpen} flex={1}>
       <Box
-        w={339}
-        px={'12px'}
+        flex={1}
+        width={APP_WIDTH - MARGIN_X * 2}
         py={'16px'}
         mt={'12px'}
         borderRadius={8}

@@ -6,12 +6,15 @@ import {
   Flex,
   Pressable,
   Spinner,
+  Stack,
   Text,
   useToast,
 } from 'native-base';
 import {colors} from '~/theme/theme';
 import { useGetVisitedFacility, useGetVisitedPetsFacility } from '~/api/facility/queries';
 import { useMutationVisitedFacility } from '~/api/facility/mutations';
+import { APP_WIDTH } from '~/utils/dimension';
+import { MARGIN_X } from '~/pages/hospital/info';
 
 interface Props {
   facilityId: string
@@ -19,7 +22,6 @@ interface Props {
 
 /**
  * 병원 시설 방문 기록 체크 및 확인 할 수 있는 컴포넌트
- * @TODO API 연동 후 이벤트 핸들링 수정
  */
 
 function RecordVisitedExperience({facilityId}: Props) {
@@ -93,19 +95,18 @@ function RecordVisitedExperience({facilityId}: Props) {
   }
 
   return (
-    <>
+    <Stack flex={1}  >
       {visited ? (
         <Box
-          w={'339px'}
+          flex={1}
+          w={APP_WIDTH - MARGIN_X * 2}
           h={'52px'}
           borderRadius={8}
-          mt={'12px'}
-          px={'12px'}
-          py={'16px'}
+          mt={'24px'}
           backgroundColor={colors.fussOrange['-40']}>
-          <Center>
+          <Center flex={1}>
             <Text color={colors.fussOrange[0]}>
-              {petName}이와 함께 방문한 병원이에요
+              {petName}(이)와 함께 방문한 병원이에요
             </Text>
           </Center>
         </Box>
@@ -146,7 +147,7 @@ function RecordVisitedExperience({facilityId}: Props) {
           </Center>
         </Box>
       )}
-    </>
+    </Stack>
   );
 }
 
