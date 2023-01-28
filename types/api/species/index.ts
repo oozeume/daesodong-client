@@ -23,7 +23,7 @@ export type SpeciesData = {
  *@description species 기본 type
  */
 
-export type PetSpecies = {
+export type SpeciesType = {
   id: string,
   name: string,
   kindId: string,

@@ -1,7 +1,7 @@
-import { PetSpecies } from "~/../types/api/species";
+import { SpeciesType } from "~/../types/api/species";
 
 class Species {
-  constructor (private readonly species: PetSpecies) {
+  constructor (private readonly species: SpeciesType) {
   }
 
   get id() {

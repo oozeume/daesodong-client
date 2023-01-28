@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
-import { Facility } from "~/../types/api/facility"
-import { PetSpecies } from "~/../types/api/species"
+import { FacilityType } from "~/../types/api/facility"
+import { SpeciesType } from "~/../types/api/species"
 import { apiCall } from "~/api/common"
 import QueryKeys from "~/constants/queryKeys"
 
 const GET_FACILITY_INFO = (id: string) => {
-  return apiCall<Facility>({
+  return apiCall<FacilityType>({
     method: 'GET',
     url: `/hospitals/${id}`,
   })
@@ -27,7 +27,7 @@ export const useGetVisitedFacility = (id: string) => {
 }
 
 const GET_FACILITY_VISIT_PETS = (facilityId: string) => {
-  return apiCall<PetSpecies[]>({
+  return apiCall<SpeciesType[]>({
     method: 'GET',
     url: `/hospitals/${facilityId}/visits/species`
   })

@@ -1,4 +1,4 @@
-export type Facility = {
+export type FacilityType = {
     id: string,
     hospitalCategoryId: string,
     name: string,

@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Linking, Pressable} from 'react-native';
 import {
   AspectRatio,
@@ -24,6 +24,7 @@ import ArrowDownIcon from '~/assets/icon/_down.svg';
 import { useGetFacilityInfo } from '~/api/facility/queries';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from '~/../types/navigator';
+import Facility from '~/model/facility';
 
 type Props = NativeStackScreenProps<RootTabParamList, 'Facility'>;
 
@@ -35,21 +36,17 @@ type Props = NativeStackScreenProps<RootTabParamList, 'Facility'>;
 function HospitalInfo({route}: Props) {
   const {facilityId} = route.params;
   const [textOpen, setTextOpen] = useState(false);
+  const [facilityInfo, setFacilityInfo] = useState<Facility>();
 
   const {data, isLoading} = useGetFacilityInfo(facilityId);
 
-  const OPENING_HOURS = useMemo(() => {
-      if(data) {
-        return [
-          {date: '월 - 금', totalHour: data?.data.sch_mon, break: undefined},
-          {date: '토', totalHour: data.data.sch_sat, break: undefined},
-          {date: '일', totalHour: data.data.sch_sun, break: undefined},
-          {date: '공휴일', totalHour: data.data.sch_holy, break: undefined},
-        ]
-      }
-  }, [data])
+  const handleIntroOpen = () => setTextOpen(prev => !prev);
 
-  const handleTextOpen = () => setTextOpen(prev => !prev);
+  useEffect(() => {
+    if(data) {
+      setFacilityInfo(new Facility(data.data));
+    }
+  }, [data])
 
   if(isLoading) {
     return <Spinner />
@@ -61,19 +58,19 @@ function HospitalInfo({route}: Props) {
       flex={1}
       backgroundColor={'white'}
       >
-        {data && <ScrollView>
+        {facilityInfo && <ScrollView>
           <Center  h="250" backgroundColor={colors.grayScale[20]}>
             <Swiper
               dotColor={colors.scrim[60]}
               activeDotColor={colors.fussOrange[0]}
               loop={false}>
-              {data.data.hospital_picture.map(image => (
-                <AspectRatio key={image.picture_url} ratio={375 / 250}>
+              {facilityInfo.images.map(image => (
+                <AspectRatio key={image} ratio={375 / 250}>
                   <Image
-                    source={{uri: image.picture_url}}
+                    source={{uri: image}}
                     width={375}
                     height={250}
-                    alt={image.picture_url}
+                    alt={image}
                   />
                 </AspectRatio>
               ))}
@@ -97,13 +94,13 @@ function HospitalInfo({route}: Props) {
           <HospitalInfoContents iconName="chat_fill">
             <VStack space={3}>
               <TextEllipsis
-                text={data.data.intro}
+                text={facilityInfo.intro}
                 width={299}
                 textAlign={'left'}
                 numberOfLines={textOpen ? 0 : 3}
               />
-              {data.data.intro.length > 87 && (
-                <Pressable onPress={handleTextOpen}>
+              {facilityInfo.intro.length > 87 && (
+                <Pressable onPress={handleIntroOpen}>
                   <HStack space={1}>
                     <Text style={{fontSize: 13, color: colors.grayScale[60]}}>
                       {textOpen ? '닫기' : '전체보기'}
@@ -121,7 +118,7 @@ function HospitalInfo({route}: Props) {
           {/* 병원 영업 시간 */}
           <HospitalInfoContents iconName="clock_fill">
             <VStack space={4} width={229}>
-              {OPENING_HOURS?.map(openingHours => (
+              {facilityInfo.openingHours.map(openingHours => (
                 <HospitalOpeningHours
                   key={openingHours.date}
                   openingHours={openingHours}
@@ -144,7 +141,7 @@ function HospitalInfo({route}: Props) {
                 textDecoration={'solid'}
                 textDecorationLine={'underline'}
                 textDecorationColor={colors.positive[0]}>
-                {data.data.phone}
+                {facilityInfo.phone}
               </Text>
             </Pressable>
           </HospitalInfoContents>
