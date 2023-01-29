@@ -7,6 +7,7 @@ import {
   PostAuthMobileVerifyBody,
   PostAuthMobileVerifyCodeBody,
   PostAuthSignupBody,
+  PostAuthSocialLoginBody,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
 
@@ -19,6 +20,15 @@ const postAuthNicknameCheck = (data: PostAuthNicknameCheckBody) => {
     url: `auth/nickname`,
     data,
   });
+};
+
+/**
+ *@description 닉네임 확인 api hook
+ */
+export const usePostAuthNicknameCheck = () => {
+  return useMutation((data: PostAuthNicknameCheckBody) =>
+    postAuthNicknameCheck(data),
+  );
 };
 
 /**
@@ -41,6 +51,26 @@ const postAuthEmailLogin = (data: PostAuthEmailLoginBody) => {
     url: `auth/login`,
     data,
   });
+};
+
+/**
+ *@description 소셜 로그인 api
+ */
+const postAuthSocialLogin = (data: PostAuthSocialLoginBody) => {
+  return apiCall<string>({
+    method: 'POST',
+    url: `auth/social/login`,
+    data,
+  });
+};
+
+/**
+ *@description 소셜 로그인 api hook
+ */
+export const usePostAuthSocialLogin = () => {
+  return useMutation((data: PostAuthSocialLoginBody) =>
+    postAuthSocialLogin(data),
+  );
 };
 
 /**
@@ -81,15 +111,6 @@ const postAuthMobileVerifyCode = async (data: PostAuthMobileVerifyCodeBody) => {
     url: `auth/verify/code`,
     data,
   });
-};
-
-/**
- *@description 닉네임 확인 api hook
- */
-export const usePostAuthNicknameCheck = () => {
-  return useMutation((data: PostAuthNicknameCheckBody) =>
-    postAuthNicknameCheck(data),
-  );
 };
 
 /**

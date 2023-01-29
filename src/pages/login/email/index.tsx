@@ -14,17 +14,21 @@ import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {usePostAuthEmailLogin} from '~/api/auth';
+import {usePostAuthEmailLogin, usePostAuthSocialLogin} from '~/api/auth';
 import {getSecurityData, setSecurityData} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {EmailLoginForm} from '~/../types/login';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 /**
  *@description 이메일로 로그인 페이지
  */
 function EmailLogin() {
   const {navigate, reset} = useNavigation<NavigationHookProp>();
-
+  const postAuthSocialLogin = usePostAuthSocialLogin();
   const postAuthEmailLogin = usePostAuthEmailLogin();
 
   const initForm = {
@@ -71,6 +75,31 @@ function EmailLogin() {
       // 집사 정보 등록 테스트 시, 아래 주석을 해제하고 tab reset관련해서 주석을 해주세요.
       reset({index: 0, routes: [{name: 'tab'}]});
       // reset({index: 0, routes: [{name: 'PetInfoRegister'}]});
+    }
+  };
+
+  const onGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {idToken: token} = await GoogleSignin.signIn();
+
+      if (token) {
+        const res = await postAuthSocialLogin.mutateAsync({
+          social: 'Google',
+          token,
+        });
+      }
+    } catch (_error) {
+      const error = _error as any;
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
     }
   };
 
@@ -154,7 +183,7 @@ function EmailLogin() {
 
               <KakaoLoginButton handlePress={() => {}} />
               <AppleLoginButton handlePress={() => {}} />
-              <GoogleLoginButton handlePress={() => {}} />
+              <GoogleLoginButton handlePress={onGoogleLogin} />
             </VStack>
           </VStack>
         </VStack>
