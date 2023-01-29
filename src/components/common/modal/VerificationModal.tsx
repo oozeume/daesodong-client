@@ -17,9 +17,9 @@ import VerificationForm from '../VerificationForm';
 import {VerificationResult} from '~/../types/verification';
 
 import BackIcon from '../../../assets/icons/back.svg';
-import {usePostAuthMobileVerifyCode} from '~/api/auth';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import RedActiveLargeButton from '../button/RedActiveLargeButton';
+import {usePostAuthMobileVerifyCode} from '~/api/auth/mutations';
 
 // 숫자만 받을 수 있는 정규식
 const regex = /^[0-9]+$/;

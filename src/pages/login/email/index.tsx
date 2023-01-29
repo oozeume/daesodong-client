@@ -14,7 +14,6 @@ import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {usePostAuthEmailLogin} from '~/api/auth';
 import {getSecurityData, setSecurityData} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {EmailLoginForm} from '~/../types/login';
@@ -22,7 +21,10 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {usePostAuthSocialLogin} from '~/api/auth/mutations';
+import {
+  usePostAuthEmailLogin,
+  usePostAuthSocialLogin,
+} from '~/api/auth/mutations';
 
 /**
  *@description 이메일로 로그인 페이지

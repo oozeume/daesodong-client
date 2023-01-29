@@ -6,7 +6,10 @@ import {Keyboard, Platform} from 'react-native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {SignupForm} from '~/../types/signup';
 import {VerificationResult} from '~/../types/verification';
-import {usePostAuthEmailSignup, usePostAuthNicknameCheck} from '~/api/auth';
+import {
+  usePostAuthEmailSignup,
+  usePostAuthNicknameCheck,
+} from '~/api/auth/mutations';
 
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import PrivacyPolicyModal from '~/components/common/modal/PrivacyPolicyModal';

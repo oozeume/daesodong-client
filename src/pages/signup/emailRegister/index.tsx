@@ -9,7 +9,7 @@ import {
 } from '~/../types/navigator';
 import {SignupForm} from '~/../types/signup';
 import {VerificationResult} from '~/../types/verification';
-import {usePostAuthEmailCheck} from '~/api/auth';
+import {usePostAuthEmailCheck} from '~/api/auth/mutations';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';

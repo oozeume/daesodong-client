@@ -5,8 +5,8 @@ import {colors} from '~/theme/theme';
 import Button from '~/components/common/button';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
-import {usePostAuthMobileVerify} from '~/api/auth';
 import {SignupForm} from '~/../types/signup';
+import {usePostAuthMobileVerify} from '~/api/auth/mutations';
 
 interface Props {
   handlePage: () => void;
