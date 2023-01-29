@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Box, KeyboardAvoidingView} from 'native-base';
+import {Box} from 'native-base';
 import React, {useState} from 'react';
 import BackIcon from '~/assets/icon/back_icon.svg';
 import StageBar from '~/components/common/stage/StageBar';
@@ -17,12 +17,11 @@ import EmailRegister from '../emailRegister';
 import NicknameRegister from '../nicknameReigster';
 import {INIT_SIGNUP_FORM} from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
 /**
- *@description 이메일 회원가입 페이지
+ *@description 이메일 회원가입 페이지 네비게이터
  */
 function SignUpEmailNavigator() {
   const {navigate} = useNavigation<NavigationHookProp>();

@@ -1,4 +1,3 @@
-import {INIT_SIGNUP_FORM} from '~/constants/signup';
 import {StyleProp, TextStyle, ViewStyle} from 'react-native';
 
 // 이메일 로그인 폼
