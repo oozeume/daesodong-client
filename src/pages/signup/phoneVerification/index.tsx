@@ -3,7 +3,6 @@ import {Keyboard, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
-import {usePostAuthMobileVerify} from '~/api/auth';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {Box, Center, VStack} from 'native-base';
 import StageTextBox from '~/components/common/stage/StageTextBox';
@@ -16,6 +15,7 @@ import {
 } from '~/../types/navigator';
 import useRegExPhone from '~/hooks/useRegExPhone';
 import {SignupForm} from '~/../types/signup';
+import {usePostAuthMobileVerify} from '~/api/auth/mutations';
 
 interface Props {
   onChangeStage: () => void;

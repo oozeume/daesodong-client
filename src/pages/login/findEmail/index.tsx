@@ -15,7 +15,7 @@ import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 
 import BackIcon from '../../../assets/icons/back.svg';
-import {usePostAuthMobileVerify} from '~/api/auth';
+import {usePostAuthMobileVerify} from '~/api/auth/mutations';
 
 /**
  * @description 이메일 찾기 페이지
