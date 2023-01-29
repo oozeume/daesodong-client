@@ -17,7 +17,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {usePostAuthSocialLogin} from '~/api/auth';
+import {usePostAuthSocialLogin} from '~/api/auth/mutations';
 
 // console.log();
 /**

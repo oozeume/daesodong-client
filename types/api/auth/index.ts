@@ -13,8 +13,8 @@ export interface PostAuthEmailLoginBody {
   password: string;
 }
 
-// 소셜 로그인 api 전송 바디
-export interface PostAuthSocialLoginBody {
+// 소셜 로그인 api 전송 데이터
+export interface PostAuthSocialLoginData {
   social: 'Apple' | 'Kakao' | 'Google';
   token: string;
 }

@@ -7,7 +7,6 @@ import {
   PostAuthMobileVerifyBody,
   PostAuthMobileVerifyCodeBody,
   PostAuthSignupBody,
-  PostAuthSocialLoginBody,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
 
@@ -51,26 +50,6 @@ const postAuthEmailLogin = (data: PostAuthEmailLoginBody) => {
     url: `auth/login`,
     data,
   });
-};
-
-/**
- *@description 소셜 로그인 api
- */
-const postAuthSocialLogin = (data: PostAuthSocialLoginBody) => {
-  return apiCall<string>({
-    method: 'POST',
-    url: `auth/social/login`,
-    data,
-  });
-};
-
-/**
- *@description 소셜 로그인 api hook
- */
-export const usePostAuthSocialLogin = () => {
-  return useMutation((data: PostAuthSocialLoginBody) =>
-    postAuthSocialLogin(data),
-  );
 };
 
 /**
