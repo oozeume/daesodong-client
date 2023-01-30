@@ -131,7 +131,7 @@ function VerificationModal({
           <VStack h={'100%'} mx={'28px'}>
             <Box maxH={'164px'}>
               {/* 인증 모달 타이틀 */}
-              <Center mt={'28px'} mb={'12px'}>
+              <Center mt={'28px'} mb={'24px'}>
                 <Pressable position={'absolute'} left={0} onPress={handleModal}>
                   <BackIcon />
                 </Pressable>
@@ -164,7 +164,7 @@ function VerificationModal({
             </Box>
 
             {/* 인증번호 확인 버튼 */}
-            <Box h={'144px'} mt={'12px'}>
+            <Box h={'144px'} mt={'28px'}>
               <RedActiveLargeButton
                 active={
                   verificationNumber.length === VERIFICATION_CODE_DIGITS ||

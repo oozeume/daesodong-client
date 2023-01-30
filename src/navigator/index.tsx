@@ -94,7 +94,21 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
-        <Stack.Screen name="FindEmail" component={FindEmail} />
+        <Stack.Screen
+          name="FindEmail"
+          component={FindEmail}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title="이메일 찾기"
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
         <Stack.Screen name="AuthFoundResult" component={AuthFoundResult} />
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />

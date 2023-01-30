@@ -1,21 +1,17 @@
 import React, {useState} from 'react';
-import {HStack, Text, VStack} from 'native-base';
-import {Keyboard, Platform, Pressable} from 'react-native';
+import {Center, Text, VStack} from 'native-base';
+import {Keyboard, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {colors} from '~/theme/theme';
 import useRegExPhone from '~/hooks/useRegExPhone';
 import {NavigationHookProp} from '~/../types/navigator';
-
-import Header from '~/components/hospital/review/register/Header';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import Button from '~/components/common/button';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
-
-import BackIcon from '../../../assets/icons/back.svg';
 import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 /**
  * @description 이메일 찾기 페이지
@@ -26,14 +22,14 @@ function FindEmail() {
   const [modalVisible, setModalVisible] = useState(false);
   const postAuthMobileVerify = usePostAuthMobileVerify();
 
-  const onMoveBack = () => navigation.goBack();
-
   // 인증 성공 결과 처리
-  const handlePage = () =>
+  const handlePage = async () => {
     navigation.navigate('AuthFoundResult', {
-      type: '카카오',
+      type: 'FOUND',
       previousURL: 'FOUND_EMAIL',
+      phoneNumber: phoneNumber.replace(/\-/g, ''),
     });
+  };
 
   // 모달 on/off 이벤트
   const handleModal = () => {
@@ -43,15 +39,19 @@ function FindEmail() {
 
   // 인증 재발송 이벤트
   const onResendVerification = () => {
+    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+
     postAuthMobileVerify.mutateAsync({
-      mobile: phoneNumber,
+      mobile: replacePhoneNumber,
     });
   };
 
   // 인증하기 버튼 이벤트
   const onSendVerification = () => {
+    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+
     postAuthMobileVerify.mutateAsync({
-      mobile: phoneNumber,
+      mobile: replacePhoneNumber,
     });
 
     setModalVisible(prev => !prev);
@@ -66,40 +66,15 @@ function FindEmail() {
   };
 
   return (
-    <>
-      <VerificationModal
-        visible={modalVisible}
-        handleModal={handleModal}
-        handlePage={handlePage}
-        onResendVerification={onResendVerification}
-        onVerificationFail={onVerificationFail}
-        phoneNumber={phoneNumber.replace(/\-/g, '')}
-      />
-
-      <TouchableWithoutView onPress={Keyboard.dismiss}>
-        <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
-          <HStack
-            space={3}
-            h={Platform.OS === 'android' ? '10%' : '8%'}
-            justifyContent={'space-between'}
-            backgroundColor={colors.grayScale[0]}>
-            <Header
-              title={'이메일 찾기'}
-              leftButton={
-                <Pressable
-                  style={{position: 'absolute', left: 18, zIndex: 1}}
-                  onPress={() => onMoveBack()}>
-                  <BackIcon />
-                </Pressable>
-              }
-            />
-          </HStack>
-          <VStack
-            h={Platform.OS === 'android' ? '90%' : '92%'}
-            pt={'60px'}
-            paddingX={'18px'}>
+    <TouchableWithoutView onPress={Keyboard.dismiss}>
+      <SafeAreaView style={{backgroundColor: colors.grayScale[0], flex: 1}}>
+        <VStack
+          pt={'60px'}
+          justifyContent="space-between"
+          flex={1}
+          paddingX={'18px'}>
+          <Center>
             <Text
-              w={'339px'}
               mb={'60px'}
               fontSize="20px"
               fontWeight={'500'}
@@ -107,37 +82,35 @@ function FindEmail() {
               textAlign="center">
               회원여부 및 계정 정보를 확인할게요
             </Text>
+
             <VerificationForm
               keyboardType={'number-pad'}
               placeholder={'휴대폰 번호'}
               value={phoneNumber}
               onChangeText={handlePhoneNumber}
-              inputRightElement={
-                <Button
-                  width={'77px'}
-                  fontColors={{
-                    active: colors.grayScale[90],
-                    disabled: colors.grayScale[40],
-                  }}
-                  buttonColors={{
-                    active: colors.fussYellow[0],
-                    disabled: colors.fussYellow['-30'],
-                  }}
-                  borderColors={{
-                    active: colors.grayScale[90],
-                    disabled: colors.grayScale[40],
-                  }}
-                  text={'인증하기'}
-                  active={phoneNumber.length === 13}
-                  handlePress={onSendVerification}
-                />
-              }
               autoFocus
             />
+          </Center>
+
+          <VStack px="18px" mb={Platform.OS === 'android' ? '56px' : '82px'}>
+            <RedActiveLargeButton
+              active={phoneNumber.length > 12}
+              text={'인증번호 발송'}
+              handlePress={onSendVerification}
+            />
           </VStack>
-        </SafeAreaView>
-      </TouchableWithoutView>
-    </>
+        </VStack>
+
+        <VerificationModal
+          visible={modalVisible}
+          handleModal={handleModal}
+          handlePage={handlePage}
+          onResendVerification={onResendVerification}
+          onVerificationFail={onVerificationFail}
+          phoneNumber={phoneNumber.replace(/\-/g, '')}
+        />
+      </SafeAreaView>
+    </TouchableWithoutView>
   );
 }
 
