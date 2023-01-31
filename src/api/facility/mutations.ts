@@ -1,7 +1,11 @@
 import { useMutation } from "@tanstack/react-query"
 import { apiCall } from "~/api/common"
 
-const MUTATION_FACILITY_VISIT = (id: string) => {
+/**
+ *@description 병원 방문 API
+ */
+
+const mutationVisitedFacility = (id: string) => {
     return apiCall<any>({
         method: 'POST',
         url: `/hospitals/${id}/visits`
@@ -9,5 +13,5 @@ const MUTATION_FACILITY_VISIT = (id: string) => {
 }
 
 export const useMutationVisitedFacility = () => {
-    return useMutation((id: string) => MUTATION_FACILITY_VISIT(id))
+    return useMutation((id: string) => mutationVisitedFacility(id))
 }

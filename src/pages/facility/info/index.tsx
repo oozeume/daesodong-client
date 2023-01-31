@@ -27,16 +27,19 @@ import { RootTabParamList } from '~/../types/navigator';
 import Facility from '~/model/facility';
 import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
+import { imageHeight } from '~/utils/imageHeight';
+import { APP_WIDTH } from '~/utils/dimension';
 
 type Props = NativeStackScreenProps<RootTabParamList, 'Facility'>;
 
-export const MARGIN_X = 18;
+
+const IMAGE_RATIO = 375 / 250;
 
 /**
- * 병원 시설 정보 탭
+ * 시설 정보 탭
  */
 
-function HospitalInfo({route}: Props) {
+function FacilityInfo({route}: Props) {
   const {facilityId} = route.params;
   const [textOpen, setTextOpen] = useState(false);
   const [facilityInfo, setFacilityInfo] = useState<Facility>();
@@ -65,6 +68,7 @@ function HospitalInfo({route}: Props) {
     }
   }, [data])
 
+
   if(isLoading) {
     return <Spinner />
   }
@@ -75,17 +79,16 @@ function HospitalInfo({route}: Props) {
         <Stack flex={1}>
           <VStack alignItems="center" flex={1} backgroundColor={'white'}>
             <ScrollView>
-              <Center h="250" backgroundColor={colors.grayScale[20]}>
+              <Center backgroundColor={colors.grayScale[20]}>
                 <Swiper
                   dotColor={colors.scrim[60]}
                   activeDotColor={colors.fussOrange[0]}
                   loop={false}>
                   {facilityInfo.images.map(image => (
-                    <AspectRatio key={image} ratio={375 / 250}>
+                    <AspectRatio key={image} ratio={IMAGE_RATIO}>
                       <Image
                         source={{uri: image}}
-                        width={375}
-                        height={250}
+                        height={imageHeight(IMAGE_RATIO, APP_WIDTH)}
                         alt={image}
                       />
                     </AspectRatio>
@@ -93,7 +96,7 @@ function HospitalInfo({route}: Props) {
                 </Swiper>
               </Center>
 
-              {/* 병원 방문 기록 */}
+              {/* 시설 방문 기록 */}
               <Center flex={1}>
                 <RecordVisitedExperience facilityId={facilityId} />
                 <VisitedAnimals facilityId={facilityId} />
@@ -106,7 +109,7 @@ function HospitalInfo({route}: Props) {
                 />
               </Center>
 
-              {/* 병원 인사말 */}
+              {/* 시설 인사말 */}
               <HospitalInfoContents iconName="chat_fill">
                 <VStack flex={1} space={3}>
                   <TextEllipsis
@@ -130,9 +133,9 @@ function HospitalInfo({route}: Props) {
                 </VStack>
               </HospitalInfoContents>
 
-              {/* 병원 영업 시간 */}
+              {/* 시설 영업 시간 */}
               <HospitalInfoContents iconName="clock_fill">
-                <VStack space={4} width={229}>
+                <VStack space={4} flex={1} >
                   {facilityInfo.openingHours.map(openingHours => (
                     <HospitalOpeningHours
                       key={openingHours.date}
@@ -142,14 +145,13 @@ function HospitalInfo({route}: Props) {
                 </VStack>
               </HospitalInfoContents>
 
-              {/* 병원 전화번호 */}
+              {/* 시설 전화번호 */}
               <HospitalInfoContents iconName="call_fill">
                 <Pressable
                   onPress={() => {
                     Linking.openURL('tel:02-305-4242');
                   }}>
                   <Text
-                    w={299}
                     fontSize={13}
                     textAlign={'left'}
                     color={colors.positive[0]}
@@ -161,10 +163,9 @@ function HospitalInfo({route}: Props) {
                 </Pressable>
               </HospitalInfoContents>
 
-              {/* 병원 정보 */}
+              {/* 시설 정보 */}
               <HospitalInfoContents iconName="info_fill">
                 <Text
-                  w={299}
                   fontSize={14}
                   fontWeight={'400'}
                   color={colors.grayScale[70]}
@@ -173,8 +174,7 @@ function HospitalInfo({route}: Props) {
                 </Text>
               </HospitalInfoContents>
 
-              {/* 병원 주소 */}
-              {/* Box위치에 지도 API 추가 예정 */}
+              {/* 시설 주소 */}
               <HospitalInfoContents iconName="location_fill">
                 <VStack flex={1}>
                   <Text
@@ -218,4 +218,4 @@ function HospitalInfo({route}: Props) {
   );
 }
 
-export default HospitalInfo;
+export default FacilityInfo;

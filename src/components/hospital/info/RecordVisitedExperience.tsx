@@ -14,7 +14,8 @@ import {colors} from '~/theme/theme';
 import { useGetVisitedFacility, useGetVisitedPetsFacility } from '~/api/facility/queries';
 import { useMutationVisitedFacility } from '~/api/facility/mutations';
 import { APP_WIDTH } from '~/utils/dimension';
-import { MARGIN_X } from '~/pages/hospital/info';
+import { MARGIN_X } from '~/constants/facility/detail';
+
 
 interface Props {
   facilityId: string
@@ -43,7 +44,7 @@ function RecordVisitedExperience({facilityId}: Props) {
 
   useEffect(()=> {
     if(data) {
-      setPetName(data.data.pet.name)
+      setPetName(data.data.pet.name ?? '')
       setIsVisited(true)
     }
   }, [data, setPetName])

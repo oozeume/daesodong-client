@@ -4,7 +4,11 @@ import { SpeciesType } from "~/../types/api/species"
 import { apiCall } from "~/api/common"
 import QueryKeys from "~/constants/queryKeys"
 
-const GET_FACILITY_INFO = (id: string) => {
+/**
+ *@description 시설 정보 API
+ */
+
+const getFacilityInfo = (id: string) => {
   return apiCall<FacilityType>({
     method: 'GET',
     url: `/hospitals/${id}`,
@@ -12,10 +16,14 @@ const GET_FACILITY_INFO = (id: string) => {
 }
 
 export const useGetFacilityInfo = (id: string) => {
-  return useQuery([QueryKeys.Facility.Info, id], () => GET_FACILITY_INFO(id))
+  return useQuery([QueryKeys.facility.info, id], () => getFacilityInfo(id))
 }
 
-const GET_FACILITY_VISIT = (id: string) => {
+/**
+ *@description 시설 방문 API
+ */
+
+const getVisitedFacility = (id: string) => {
   return apiCall<any>({
     method: 'GET',
     url: `/hospitals/${id}/visits`
@@ -23,10 +31,14 @@ const GET_FACILITY_VISIT = (id: string) => {
 }
 
 export const useGetVisitedFacility = (id: string) => {
-  return useQuery([QueryKeys.Facility.VisitedUser], () => GET_FACILITY_VISIT(id))
+  return useQuery([QueryKeys.facility.visitedUser], () => getVisitedFacility(id))
 }
 
-const GET_FACILITY_VISIT_PETS = (facilityId: string) => {
+/**
+ *@description 시설 방문한 동물 리스트 API
+ */
+
+const getVisitedPetsFacility = (facilityId: string) => {
   return apiCall<SpeciesType[]>({
     method: 'GET',
     url: `/hospitals/${facilityId}/visits/species`
@@ -34,5 +46,5 @@ const GET_FACILITY_VISIT_PETS = (facilityId: string) => {
 }
 
 export const useGetVisitedPetsFacility = (facilityId: string) => {
-  return useQuery([QueryKeys.Facility.VisitedPets], () => GET_FACILITY_VISIT_PETS(facilityId))
+  return useQuery([QueryKeys.facility.visitedPets], () => getVisitedPetsFacility(facilityId))
 }

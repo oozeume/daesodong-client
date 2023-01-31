@@ -5,7 +5,7 @@ import {colors} from '~/theme/theme';
 import {IconNameType} from '~/../types/hospital';
 import IconView from './IconView';
 import { APP_WIDTH } from '~/utils/dimension';
-import { MARGIN_X } from '~/pages/hospital/info';
+import { MARGIN_X } from '~/constants/facility/detail';
 
 interface Props {
   iconName: IconNameType;

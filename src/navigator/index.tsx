@@ -3,10 +3,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
-import Hospital from '../pages/hospital';
+import Facility from '../pages/facility';
 import SignupSocial from '~/pages/signup/social';
-import HospitalReviewRegister from '~/pages/hospital/review/register';
-import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
+import HospitalReviewRegister from '~/pages/facility/review/register';
+import HospitalReviewRegisterPrecaution from '~/pages/facility/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
@@ -54,7 +54,7 @@ const AppNavigator = () => {
         <Stack.Screen name="tab" component={TabNavigator} />
         <Stack.Screen
           name="Hospital"
-          component={Hospital}
+          component={Facility}
           options={({navigation, route}) => ({
             headerShown: true,
             header: () => (

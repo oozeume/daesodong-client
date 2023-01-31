@@ -8,7 +8,8 @@ import { useGetVisitedPetsFacility } from '~/api/facility/queries';
 import Species from '~/model/species';
 import _ from 'lodash';
 import { APP_WIDTH } from '~/utils/dimension';
-import { MARGIN_X } from '~/pages/hospital/info';
+import { MARGIN_X } from '~/constants/facility/detail';
+
 
 interface Props {
   facilityId: string;
