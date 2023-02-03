@@ -2,25 +2,71 @@ import {Text, VStack} from 'native-base';
 import React, {useState} from 'react';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
-import {YellowActiveSmallButton} from '~/components/login/button';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 import useRegExPhone from '~/hooks/useRegExPhone';
+import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationHookProp} from '~/../types/navigator';
+import {Keyboard, Platform} from 'react-native';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 interface Props {
   handlePage: () => void;
+  setEmailForm: React.Dispatch<React.SetStateAction<string>>;
 }
 
 /**
  *@description 비밀번호 재설정 휴대폰 인증
  */
-function PasswordResetPhoneCheck({handlePage}: Props) {
+function PasswordResetPhoneCheck({handlePage, setEmailForm}: Props) {
+  const navigation = useNavigation<NavigationHookProp>();
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useRegExPhone();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const postAuthMobileVerify = usePostAuthMobileVerify();
+
+  // 모달 on/off 이벤트
+  const handleModal = () => {
+    Keyboard.dismiss();
+    setModalOpen(prev => !prev);
+  };
+
+  const onSuccessHandlePage = () => {
+    setEmailForm(email);
+    handlePage();
+  };
+
+  // 인증 재발송 이벤트
+  const onResendVerification = () => {
+    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+
+    postAuthMobileVerify.mutateAsync({
+      mobile: replacePhoneNumber,
+    });
+  };
+
+  // 인증하기 버튼 이벤트
+  const onSendVerification = () => {
+    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+
+    postAuthMobileVerify.mutateAsync({
+      mobile: replacePhoneNumber,
+    });
+
+    setModalOpen(prev => !prev);
+  };
+
+  // 인증 실패에 대한 이벤트 로직
+  const onVerificationFail = () => {
+    navigation.navigate('AuthFoundResult', {
+      type: 'NOT_FOUND',
+      previousURL: 'CHANGE_PASSWORD',
+    });
+  };
 
   return (
     <>
-      <VStack mt={'77px'} flex={1} justifyContent={'space-between'} pb="40px">
+      <VStack pt={'60px'} flex={1} justifyContent={'space-between'}>
         <VStack>
           <Text
             pb="60px"
@@ -45,24 +91,23 @@ function PasswordResetPhoneCheck({handlePage}: Props) {
             onChangeText={setPhoneNumber}
             value={phoneNumber}
             keyboardType="number-pad"
-            autoFocus
-            inputRightElement={
-              <YellowActiveSmallButton
-                active={email.length > 4 && phoneNumber.length > 4}
-                text={'인증하기'}
-                handlePress={() => setIsModalOpen(true)}
-              />
-            }
           />
         </VStack>
+
+        <RedActiveLargeButton
+          active={phoneNumber.length > 12}
+          text={'인증번호 전송'}
+          handlePress={onSendVerification}
+        />
       </VStack>
 
       <VerificationModal
-        handlePage={handlePage}
-        handleModal={() => setIsModalOpen(prevState => !prevState)}
+        handlePage={onSuccessHandlePage}
+        handleModal={handleModal}
         visible={isModalOpen}
-        onResendVerification={() => {}}
-        phoneNumber={phoneNumber}
+        onResendVerification={onResendVerification}
+        onVerificationFail={onVerificationFail}
+        phoneNumber={phoneNumber.replace(/\-/g, '')}
       />
     </>
   );

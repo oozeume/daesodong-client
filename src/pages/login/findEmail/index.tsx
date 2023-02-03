@@ -18,8 +18,8 @@ import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButto
  */
 function FindEmail() {
   const navigation = useNavigation<NavigationHookProp>();
-  const [phoneNumber, handlePhoneNumber] = useRegExPhone();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useRegExPhone();
+  const [isModalOpen, setModalOpen] = useState(false);
   const postAuthMobileVerify = usePostAuthMobileVerify();
 
   // 인증 성공 결과 처리
@@ -34,7 +34,7 @@ function FindEmail() {
   // 모달 on/off 이벤트
   const handleModal = () => {
     Keyboard.dismiss();
-    setModalVisible(prev => !prev);
+    setModalOpen(prev => !prev);
   };
 
   // 인증 재발송 이벤트
@@ -54,7 +54,7 @@ function FindEmail() {
       mobile: replacePhoneNumber,
     });
 
-    setModalVisible(prev => !prev);
+    setModalOpen(prev => !prev);
   };
 
   // 인증 실패에 대한 이벤트 로직
@@ -87,7 +87,7 @@ function FindEmail() {
               keyboardType={'number-pad'}
               placeholder={'휴대폰 번호'}
               value={phoneNumber}
-              onChangeText={handlePhoneNumber}
+              onChangeText={setPhoneNumber}
               autoFocus
             />
           </Center>
@@ -95,14 +95,14 @@ function FindEmail() {
           <VStack px="18px" mb={Platform.OS === 'android' ? '56px' : '82px'}>
             <RedActiveLargeButton
               active={phoneNumber.length > 12}
-              text={'인증번호 발송'}
+              text={'인증번호 전송'}
               handlePress={onSendVerification}
             />
           </VStack>
         </VStack>
 
         <VerificationModal
-          visible={modalVisible}
+          visible={isModalOpen}
           handleModal={handleModal}
           handlePage={handlePage}
           onResendVerification={onResendVerification}

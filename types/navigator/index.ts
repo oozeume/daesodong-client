@@ -40,10 +40,11 @@ export type RootStackParamList = {
 
   EmailLogin: undefined;
   PasswordReset: undefined;
+  PasswordResetSuccess: undefined;
   AuthFoundResult: {
     type: 'FOUND' | 'NOT_FOUND';
     phoneNumber?: string;
-    previousURL: 'FOUND_EMAIL' | 'FOUND_PASSWORD';
+    previousURL: 'FOUND_EMAIL' | 'CHANGE_PASSWORD';
   };
   FindEmail: undefined;
 

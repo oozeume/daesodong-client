@@ -43,6 +43,7 @@ import MyReview from '~/pages/mypage/myReview';
 import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
+import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -93,7 +94,40 @@ const AppNavigator = () => {
           }}
         />
 
-        <Stack.Screen name="PasswordReset" component={PasswordReset} />
+        <Stack.Screen
+          name="PasswordReset"
+          component={PasswordReset}
+          options={({route}) => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'비밀번호 재설정'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="PasswordResetSuccess"
+          component={PasswordResetSuccess}
+          options={({route}) => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={''}
+                leftButton={
+                  <BackIcon
+                    onPress={() => props.navigation.navigate('EmailLogin')}
+                  />
+                }
+              />
+            ),
+          })}
+        />
+
         <Stack.Screen
           name="FindEmail"
           component={FindEmail}

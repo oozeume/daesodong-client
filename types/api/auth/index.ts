@@ -40,3 +40,9 @@ export interface PostAuthMobileVerifyCodeData {
   code: string;
   mobile: string;
 }
+
+// 비밀번호 변경 api 전송 데이터
+export interface PostAuthResetPasswordData {
+  email: string;
+  password: string;
+}
