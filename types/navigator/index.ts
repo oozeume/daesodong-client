@@ -78,6 +78,7 @@ export type RootStackParamList = {
   EmailRegister: undefined;
   PasswordRegister: undefined;
   NicknameRegister: undefined;
+
   MyReview: undefined;
   MyReviewDetail: undefined;
   MyCommunityContent: undefined;
