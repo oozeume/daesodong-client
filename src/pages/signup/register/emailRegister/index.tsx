@@ -29,6 +29,8 @@ interface Props {
 
 /**
  *@description 회원가입 > 이메일 입력 페이지
+ * @param onChangeStage - 회원가입 스테이지 count 변경 핸들러
+ * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
 
 function EmailRegister({
