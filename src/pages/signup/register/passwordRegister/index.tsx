@@ -26,18 +26,17 @@ interface Props {
   setPreviousURL: React.Dispatch<
     React.SetStateAction<SignupNavigatorRouteList[]>
   >;
-  signupForm: SignupForm;
   setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
  * 회원가입 > 비밀번호 등록 페이지
- * @param {() => void} handlePage - 페이지 이동 핸들러
+ * @param onChangeStage - 회원가입 스테이지 count 변경 핸들러
+ * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
 function PasswordRegister({
   onChangeStage,
   setPreviousURL,
-  signupForm,
   setSignupForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
