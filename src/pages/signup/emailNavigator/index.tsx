@@ -10,13 +10,14 @@ import {
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import Header from '~/components/common/header/Header';
-import PhoneVerification from '../phoneVerification';
-import PasswordRegister from '../passwordRegister';
+import PhoneVerification from '../register/phoneVerification';
+import PasswordRegister from '../register/passwordRegister';
 import {APP_HEIGHT} from '~/utils/dimension';
-import EmailRegister from '../emailRegister';
-import NicknameRegister from '../nicknameReigster';
+import EmailRegister from '../register/emailRegister';
+import NicknameRegister from '../register/nicknameReigster';
 import {INIT_SIGNUP_FORM} from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -81,7 +82,7 @@ function SignUpEmailNavigator() {
 
   return (
     <SafeAreaView style={{backgroundColor: '#fff'}}>
-      <Box h={APP_HEIGHT}>
+      <Box h={Platform.OS === 'android' ? APP_HEIGHT + 14 : APP_HEIGHT}>
         <Box>
           <Header
             isRemoveTopPosition
