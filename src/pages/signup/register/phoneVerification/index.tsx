@@ -95,9 +95,8 @@ function PhoneVerification({
           flex={1}>
           <Center mt={'60px'} px="18px">
             <StageTextBox
-              totalStage={4}
               currentStage={1}
-              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST[0]}
+              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
             />
 
             <VerificationForm
