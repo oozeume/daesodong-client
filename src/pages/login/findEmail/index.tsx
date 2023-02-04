@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Center, Text, VStack} from 'native-base';
-import {Keyboard, Platform} from 'react-native';
+import {Center, KeyboardAvoidingView, Text, VStack} from 'native-base';
+import {Keyboard} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -68,38 +68,43 @@ function FindEmail() {
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
       <SafeAreaView style={{backgroundColor: colors.grayScale[0], flex: 1}}>
-        <VStack
-          pt={'60px'}
-          justifyContent="space-between"
+        <KeyboardAvoidingView
           flex={1}
-          paddingX={'18px'}>
-          <Center>
-            <Text
-              mb={'60px'}
-              fontSize="20px"
-              fontWeight={'500'}
-              color={colors.grayScale['80']}
-              textAlign="center">
-              회원여부 및 계정 정보를 확인할게요
-            </Text>
+          behavior={'padding'}
+          keyboardVerticalOffset={40}>
+          <VStack
+            pt={'60px'}
+            justifyContent="space-between"
+            flex={1}
+            px={'18px'}>
+            <Center>
+              <Text
+                mb={'60px'}
+                fontSize="20px"
+                fontWeight={'500'}
+                color={colors.grayScale['80']}
+                textAlign="center">
+                회원여부 및 계정 정보를 확인할게요
+              </Text>
 
-            <VerificationForm
-              keyboardType={'number-pad'}
-              placeholder={'휴대폰 번호'}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              autoFocus
-            />
-          </Center>
+              <VerificationForm
+                keyboardType={'number-pad'}
+                placeholder={'휴대폰 번호'}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                autoFocus
+              />
+            </Center>
 
-          <VStack px="18px" mb={Platform.OS === 'android' ? '56px' : '82px'}>
-            <RedActiveLargeButton
-              active={phoneNumber.length > 12}
-              text={'인증번호 전송'}
-              handlePress={onSendVerification}
-            />
+            <VStack mb={'40px'}>
+              <RedActiveLargeButton
+                active={phoneNumber.length > 12}
+                text={'인증번호 전송'}
+                handlePress={onSendVerification}
+              />
+            </VStack>
           </VStack>
-        </VStack>
+        </KeyboardAvoidingView>
 
         <VerificationModal
           visible={isModalOpen}

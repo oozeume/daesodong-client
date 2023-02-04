@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import {Box} from 'native-base';
+import {Box, KeyboardAvoidingView} from 'native-base';
 import React, {useState} from 'react';
-import {Keyboard} from 'react-native';
+import {Keyboard, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 
@@ -32,22 +32,27 @@ function PasswordReset() {
           backgroundColor: colors.grayScale[0],
           flex: 1,
         }}>
-        <Box
+        <KeyboardAvoidingView
           flex={1}
-          marginX={'18px'}
-          pb="40px"
-          backgroundColor={colors.grayScale[0]}>
-          <CurrentComponentOfArray index={currentStage}>
-            <PasswordResetPhoneCheck
-              handlePage={moveToNextPage}
-              setEmailForm={setEmailForm}
-            />
-            <PasswordResetChange
-              handlePage={onMoveSuccessPage}
-              emailForm={emailForm}
-            />
-          </CurrentComponentOfArray>
-        </Box>
+          behavior={'padding'}
+          keyboardVerticalOffset={40}>
+          <Box
+            flex={1}
+            marginX={'18px'}
+            pb="40px"
+            backgroundColor={colors.grayScale[0]}>
+            <CurrentComponentOfArray index={currentStage}>
+              <PasswordResetPhoneCheck
+                handlePage={moveToNextPage}
+                setEmailForm={setEmailForm}
+              />
+              <PasswordResetChange
+                handlePage={onMoveSuccessPage}
+                emailForm={emailForm}
+              />
+            </CurrentComponentOfArray>
+          </Box>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </TouchableWithoutView>
   );
