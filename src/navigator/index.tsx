@@ -37,6 +37,9 @@ import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
 import MyPetInfo from '~/pages/mypage/myPetInfo';
+import AppIntroFirst from '~/pages/appIntro/first';
+import AppIntroSecond from '~/pages/appIntro/second';
+import AppIntroThird from '~/pages/appIntro/third';
 import MyReview from '~/pages/mypage/myReview';
 import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
@@ -50,7 +53,7 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="InitialLogin">
+        initialRouteName={'InitialLogin'}>
         <Stack.Screen name="tab" component={TabNavigator} />
         <Stack.Screen
           name="FacilityDetail"
@@ -363,6 +366,32 @@ const AppNavigator = () => {
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
             ),
+          })}
+        />
+
+        <Stack.Screen
+          name="AppIntroFirst"
+          component={AppIntroFirst}
+          options={() => ({
+            headerShown: false,
+          })}
+        />
+
+        <Stack.Screen
+          name="AppIntroSecond"
+          component={AppIntroSecond}
+          options={() => ({
+            headerShown: false,
+            animation: 'slide_from_right',
+          })}
+        />
+
+        <Stack.Screen
+          name="AppIntroThird"
+          component={AppIntroThird}
+          options={() => ({
+            headerShown: false,
+            animation: 'slide_from_right',
           })}
         />
       </Stack.Navigator>

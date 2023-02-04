@@ -3,7 +3,7 @@ import React from 'react';
 import {RouteList} from '~/../types/navigator';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {colors} from '~/theme/theme';
-import {RedActiveLargeButton} from '~/components/login/button';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 /**
  *@description 비밀번호 변경 성공 페이지

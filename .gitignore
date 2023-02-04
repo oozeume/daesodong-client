@@ -64,7 +64,7 @@ buck-out/
 /vendor/bundle/
 
 .env 
-.env.dev  
-.env.stage
+.env.development  
+.env.staging
 .env.production 
 .vscode/settings.json

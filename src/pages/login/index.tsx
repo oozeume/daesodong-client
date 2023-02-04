@@ -1,5 +1,5 @@
 import {Center, Text, VStack} from 'native-base';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {RouteList} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -12,21 +12,33 @@ import {
 } from '~/components/login/button';
 import {Dimensions} from 'react-native';
 import {colors} from '~/theme/theme';
+import {getData, removeData} from '~/utils/storage';
 
 /**
  *@description 초기 소셜 로그인 선택 페이지
  */
 function InitialLogin() {
-  const navigation = useNavigation<NavigationProp<RouteList>>();
-
-  const onMove = (stack: keyof RouteList) => {
-    navigation.navigate(stack);
-  };
-
+  const {navigate, reset} = useNavigation<NavigationProp<RouteList>>();
   const {height: appHeight} = Dimensions.get('screen');
 
   // 디바이스 높이에 따른 페이지 padding top, bottom 설정
   const containerPaddingTop = `${Math.floor((78 * appHeight) / 812)}px`;
+
+  const onMove = () => navigate('EmailLogin');
+
+  useEffect(() => {
+    // removeData('firstOpen');
+    async function checkFirstOpen() {
+      const data = await getData('firstOpen');
+
+      if (!data) {
+        // 저장된 데이터가 없으면 처음으로 앱을 킨 상태를 가리킴
+        reset({index: 0, routes: [{name: 'AppIntroFirst'}]});
+      }
+    }
+
+    checkFirstOpen();
+  }, []);
 
   return (
     <SafeAreaView>
@@ -59,7 +71,7 @@ function InitialLogin() {
           <KakaoLoginButton handlePress={() => {}} />
           <AppleLoginButton handlePress={() => {}} />
           <GoogleLoginButton handlePress={() => {}} />
-          <EmailLoginButton handlePress={() => onMove('EmailLogin')} />
+          <EmailLoginButton handlePress={onMove} />
         </VStack>
       </VStack>
     </SafeAreaView>
