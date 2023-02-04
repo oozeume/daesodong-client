@@ -116,7 +116,7 @@ function PhoneVerification({
             <RedActiveLargeButton
               active={phoneNumber.length > 12}
               text={'인증번호 발송'}
-              handlePress={onHandlePage}
+              handlePress={onSendVerification}
             />
           </VStack>
         </VStack>
