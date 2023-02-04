@@ -18,7 +18,7 @@ function StageTextBox({currentStage, stageTextList}: Props) {
     <VStack space={2} mb="60px">
       <Center>
         <Text fontSize={13} fontWeight={'400'} color={colors.grayScale[50]}>
-          {currentStage} / {stageTextList.length + 1}
+          {currentStage} / {stageTextList.length}
         </Text>
       </Center>
 

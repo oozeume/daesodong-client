@@ -48,38 +48,6 @@ function SignUpEmailNavigator() {
     navigate(previousURL[previousURL.length - 1] as any);
   };
 
-  // inline error 방지 (바로 인라인 형태로 넣으면 waring 발생)
-  const PhoneVerificationComponent = () => (
-    <PhoneVerification
-      onChangeStage={onChangeStage}
-      setPreviousURL={setPreviousURL}
-      signupForm={signupForm}
-      setSignupForm={setSignupForm}
-    />
-  );
-
-  const EmailRegisterComponent = () => (
-    <EmailRegister
-      onChangeStage={onChangeStage}
-      setPreviousURL={setPreviousURL}
-      signupForm={signupForm}
-      setSignupForm={setSignupForm}
-    />
-  );
-
-  const PasswordRegisterComponent = () => (
-    <PasswordRegister
-      onChangeStage={onChangeStage}
-      setPreviousURL={setPreviousURL}
-      signupForm={signupForm}
-      setSignupForm={setSignupForm}
-    />
-  );
-
-  const NicknameRegisterComponent = () => (
-    <NicknameRegister signupForm={signupForm} setSignupForm={setSignupForm} />
-  );
-
   return (
     <SafeAreaView style={{backgroundColor: '#fff'}}>
       <Box h={Platform.OS === 'android' ? APP_HEIGHT + 14 : APP_HEIGHT}>
@@ -95,38 +63,58 @@ function SignUpEmailNavigator() {
         <Stack.Navigator>
           <Stack.Screen
             name="PhoneVerification"
-            component={PhoneVerificationComponent}
             options={{
               headerShown: false,
-            }}
-          />
+            }}>
+            {() => (
+              <PhoneVerification
+                onChangeStage={onChangeStage}
+                setPreviousURL={setPreviousURL}
+                signupForm={signupForm}
+                setSignupForm={setSignupForm}
+              />
+            )}
+          </Stack.Screen>
 
           <Stack.Screen
             name="EmailRegister"
-            component={EmailRegisterComponent}
             options={{
               animation: 'slide_from_right',
               headerShown: false,
-            }}
-          />
+            }}>
+            {() => (
+              <EmailRegister
+                onChangeStage={onChangeStage}
+                setPreviousURL={setPreviousURL}
+                signupForm={signupForm}
+                setSignupForm={setSignupForm}
+              />
+            )}
+          </Stack.Screen>
 
           <Stack.Screen
             name="PasswordRegister"
-            component={PasswordRegisterComponent}
             options={{
               animation: 'slide_from_right',
               headerShown: false,
-            }}
-          />
+            }}>
+            {() => (
+              <PasswordRegister
+                onChangeStage={onChangeStage}
+                setPreviousURL={setPreviousURL}
+                setSignupForm={setSignupForm}
+              />
+            )}
+          </Stack.Screen>
 
           <Stack.Screen
             name="NicknameRegister"
-            component={NicknameRegisterComponent}
             options={{
               animation: 'slide_from_right',
               headerShown: false,
-            }}
-          />
+            }}>
+            {() => <NicknameRegister signupForm={signupForm} />}
+          </Stack.Screen>
         </Stack.Navigator>
       </Box>
     </SafeAreaView>

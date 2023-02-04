@@ -16,7 +16,7 @@ import _ from 'lodash';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 /**
- *@description 휴대폰 인증 확인 시, 계정 없음 페이지
+ *@description 계정 찾기 결과 페이지
  */
 function AuthFoundResult() {
   const {navigate} = useNavigation<NavigationHookProp>();
@@ -26,6 +26,7 @@ function AuthFoundResult() {
   const [mainText, setMainText] = useState('');
   const [subText, setSubText] = useState('');
 
+  // 이메일 가입 유저인지 유무 state
   const [isEmailUser, setEmailUser] = useState(false);
   const {height: appHeight} = Dimensions.get('screen');
 
