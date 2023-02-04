@@ -11,14 +11,18 @@ import {
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import Header from '~/components/common/header/Header';
-import PhoneVerification from '../phoneVerification';
-import PasswordRegister from '../passwordRegister';
 import {APP_HEIGHT} from '~/utils/dimension';
-import EmailRegister from '../emailRegister';
-import NicknameRegister from '../nicknameReigster';
 import {INIT_SIGNUP_FORM, initPetInfoForm} from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ChoiceGenderRegister from '../petInfoRegister/choiceGender';
+import PetOwnerBirthRegister from '../petInfoRegister/petOwnerBirth';
+import PetNameRegister from '../petInfoRegister/petName';
+import PetTypeRegister from '../petInfoRegister/petType';
+import PetBirthRegister from '../petInfoRegister/petBirth';
+import PetGenderRegister from '../petInfoRegister/petGender';
+import AddressRegister from '../petInfoRegister/address';
+import AnyQuestionRegister from '../petInfoRegister/anyQuestion';
+import PetImageRegister from '../petInfoRegister/petImage';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -59,6 +63,78 @@ function SignupPetInfoNavigator() {
     />
   );
 
+  const PetOwnerBirthRegisterComponent = () => (
+    <PetOwnerBirthRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const PetNameRegisterComponent = () => (
+    <PetNameRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const PetTypeRegisterComponent = () => (
+    <PetTypeRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const PetBirthRegisterComponent = () => (
+    <PetBirthRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const PetGenderRegisterComponent = () => (
+    <PetGenderRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const AddressRegisterComponent = () => (
+    <AddressRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const AnyQuestionRegisterComponent = () => (
+    <AnyQuestionRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
+  const PetImageRegisterComponent = () => (
+    <PetImageRegister
+      onChangeStage={onChangeStage}
+      setPreviousURL={setPreviousURL}
+      form={form}
+      setForm={setForm}
+    />
+  );
+
   return (
     <SafeAreaView style={{backgroundColor: '#fff'}}>
       <Box h={APP_HEIGHT}>
@@ -75,6 +151,78 @@ function SignupPetInfoNavigator() {
           <Stack.Screen
             name="ChoiceGenderRegister"
             component={ChoiceGenderRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="PetOwnerBirthRegister"
+            component={PetOwnerBirthRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="PetNameRegister"
+            component={PetNameRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="PetTypeRegister"
+            component={PetTypeRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="PetBirthRegister"
+            component={PetBirthRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="PetGenderRegister"
+            component={PetGenderRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="AddressRegister"
+            component={AddressRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="AnyQuestionRegister"
+            component={AnyQuestionRegisterComponent}
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="PetImageRegister"
+            component={PetImageRegisterComponent}
             options={{
               animation: 'slide_from_right',
               headerShown: false,

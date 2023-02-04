@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform} from 'react-native';
+import {Keyboard, Platform, StyleSheet, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
@@ -20,6 +20,9 @@ import {usePostAuthMobileVerify} from '~/api/auth/mutations';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
+import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
+import dayjs from 'dayjs';
+import DateSelector from '~/components/hospital/review/register/selector';
 
 interface Props {
   onChangeStage: () => void;
@@ -31,51 +34,53 @@ interface Props {
 }
 
 /**
- * 회원 가입 > 휴대폰 인증 페이지
- * @param {() => void} handlePage - 페이지 이동 핸들러
+ *@description 집사정보등록 - 반려동물 이름
  */
-function ChoiceGenderRegister({
+function PetNameRegister({
   onChangeStage,
   setPreviousURL,
   form,
   setForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
+  console.log('@@@ FORM');
+  console.log(form);
 
-  const [gender, setGender] = useState(form.gender);
+  const [name, setName] = useState<string>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
+    if (!name) return;
+
+    setForm(pre => ({...pre, name}));
     onChangeStage();
-    navigate('PetOwnerBirthRegister');
+    navigate('PetTypeRegister');
   };
 
-  console.log('@@@ form');
-  console.log(form);
-  console.log(!_.isNil(form.gender));
-
-  // useEffect(() => {
-  //   if (signupForm.mobile) setPhoneNumber(signupForm.mobile);
-  // }, []);
+  useEffect(() => {}, []);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      possibleButtonPress={!_.isNil(form.gender)}>
-      <Stack w="100%" space={'10px'}>
-        <ChoiceButton
-          buttonName={'여성'}
-          onPress={() => setForm(prev => ({...prev, gender: 'Female'}))}
-          active={form.gender === 'Female'}
-        />
-
-        <ChoiceButton
-          buttonName={'남성'}
-          onPress={() => setForm(prev => ({...prev, gender: 'Male'}))}
-          active={form.gender === 'Male'}
-        />
-      </Stack>
+      currentStage={3}
+      possibleButtonPress={!_.isNil(name)}>
+      <TextInput
+        style={styles.input}
+        onChangeText={name => setName(name)}
+        value={name}
+        placeholder={'이름을 입력해주세요'}
+      />
     </LayoutContainer>
   );
 }
 
-export default ChoiceGenderRegister;
+const styles = StyleSheet.create({
+  input: {
+    width: '100%',
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomColor: colors.grayScale[30],
+    borderBottomWidth: 1,
+  },
+});
+
+export default PetNameRegister;

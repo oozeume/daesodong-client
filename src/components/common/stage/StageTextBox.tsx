@@ -28,6 +28,7 @@ function StageTextBox({currentStage, stageTextList}: Props) {
             key={`stage_text_${currentStage}`}
             fontSize={20}
             fontWeight={'500'}
+            textAlign={'center'}
             color={colors.grayScale[80]}>
             {text}
           </Text>

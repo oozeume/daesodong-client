@@ -34,7 +34,7 @@ interface Props {
  * 회원 가입 > 휴대폰 인증 페이지
  * @param {() => void} handlePage - 페이지 이동 핸들러
  */
-function ChoiceGenderRegister({
+function PetGenderRegister({
   onChangeStage,
   setPreviousURL,
   form,
@@ -42,16 +42,14 @@ function ChoiceGenderRegister({
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
-  const [gender, setGender] = useState(form.gender);
-
   const onMovePage = async () => {
     onChangeStage();
-    navigate('PetOwnerBirthRegister');
+    navigate('AddressRegister');
   };
 
   console.log('@@@ form');
   console.log(form);
-  console.log(!_.isNil(form.gender));
+  console.log(!_.isNil(form.sex));
 
   // useEffect(() => {
   //   if (signupForm.mobile) setPhoneNumber(signupForm.mobile);
@@ -60,22 +58,23 @@ function ChoiceGenderRegister({
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      possibleButtonPress={!_.isNil(form.gender)}>
+      currentStage={6}
+      possibleButtonPress={!_.isNil(form.sex)}>
       <Stack w="100%" space={'10px'}>
         <ChoiceButton
-          buttonName={'여성'}
-          onPress={() => setForm(prev => ({...prev, gender: 'Female'}))}
-          active={form.gender === 'Female'}
+          buttonName={'여아'}
+          onPress={() => setForm(prev => ({...prev, sex: 'Female'}))}
+          active={form.sex === 'Female'}
         />
 
         <ChoiceButton
-          buttonName={'남성'}
-          onPress={() => setForm(prev => ({...prev, gender: 'Male'}))}
-          active={form.gender === 'Male'}
+          buttonName={'남아'}
+          onPress={() => setForm(prev => ({...prev, sex: 'Male'}))}
+          active={form.sex === 'Male'}
         />
       </Stack>
     </LayoutContainer>
   );
 }
 
-export default ChoiceGenderRegister;
+export default PetGenderRegister;

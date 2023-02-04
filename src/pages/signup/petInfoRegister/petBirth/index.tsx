@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform} from 'react-native';
+import {Keyboard, Platform, StyleSheet, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {Box, Center, Stack, VStack} from 'native-base';
+import {Box, Center, HStack, Stack, Text, VStack} from 'native-base';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
@@ -20,6 +20,9 @@ import {usePostAuthMobileVerify} from '~/api/auth/mutations';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
+import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
+import dayjs from 'dayjs';
+import DateSelector from '~/components/hospital/review/register/selector';
 
 interface Props {
   onChangeStage: () => void;
@@ -31,51 +34,64 @@ interface Props {
 }
 
 /**
- * 회원 가입 > 휴대폰 인증 페이지
- * @param {() => void} handlePage - 페이지 이동 핸들러
+ *@description 집사정보등록 - 반려동물 이름
  */
-function ChoiceGenderRegister({
+function PetBirthRegister({
   onChangeStage,
   setPreviousURL,
   form,
   setForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
+  console.log('@@@ FORM');
+  console.log(form);
 
-  const [gender, setGender] = useState(form.gender);
+  const [birthDate, setBirthDate] = useState<number>();
 
-  const onMovePage = async () => {
+  console.log(birthDate);
+  const onMovePage = () => {
+    if (!birthDate) return;
+
+    setForm(pre => ({...pre, birthDate}));
     onChangeStage();
-    navigate('PetOwnerBirthRegister');
+    navigate('PetGenderRegister');
   };
 
-  console.log('@@@ form');
-  console.log(form);
-  console.log(!_.isNil(form.gender));
-
-  // useEffect(() => {
-  //   if (signupForm.mobile) setPhoneNumber(signupForm.mobile);
-  // }, []);
+  useEffect(() => {}, []);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      possibleButtonPress={!_.isNil(form.gender)}>
-      <Stack w="100%" space={'10px'}>
-        <ChoiceButton
-          buttonName={'여성'}
-          onPress={() => setForm(prev => ({...prev, gender: 'Female'}))}
-          active={form.gender === 'Female'}
+      currentStage={5}
+      possibleButtonPress={!_.isNil(birthDate)}>
+      <HStack
+        mx="18px"
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        borderBottomColor={colors.grayScale[30]}
+        borderBottomWidth={1}>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setBirthDate(Number(text))}
+          value={birthDate?.toString()}
+          onSubmitEditing={Keyboard.dismiss}
+          keyboardType={'number-pad'}
+          placeholder={'숫자만 입력해주세요'}
+          autoFocus
         />
-
-        <ChoiceButton
-          buttonName={'남성'}
-          onPress={() => setForm(prev => ({...prev, gender: 'Male'}))}
-          active={form.gender === 'Male'}
-        />
-      </Stack>
+        <Text fontSize={'15px'} color={colors.grayScale[70]}>
+          개월
+        </Text>
+      </HStack>
     </LayoutContainer>
   );
 }
 
-export default ChoiceGenderRegister;
+const styles = StyleSheet.create({
+  input: {
+    width: '100%',
+    paddingVertical: 15,
+  },
+});
+
+export default PetBirthRegister;

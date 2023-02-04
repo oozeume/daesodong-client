@@ -86,6 +86,15 @@ export type RootStackParamList = {
 
   SignupPetInfoNavigator: undefined;
   ChoiceGenderRegister: undefined;
+  PetOwnerBirthRegister: undefined;
+  PetNameRegister: undefined;
+  PetTypeRegister: undefined;
+  PetBirthRegister: undefined;
+  PetGenderRegister: undefined;
+  AddressRegister: undefined;
+  AnyQuestionRegister: undefined;
+  PetImageRegister: undefined;
+  PetInfoRegisterOutro: undefined;
 };
 
 export type SignupNavigatorRouteList =

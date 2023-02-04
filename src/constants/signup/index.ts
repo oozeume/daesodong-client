@@ -14,7 +14,7 @@ export const INIT_SIGNUP_TERM = {
 
 // 초기 반려동물 등록 폼값
 export const initPetInfoForm = {
-  gender: '',
+  gender: undefined as 'Male' | 'Female' | undefined,
   // 서버 key: birthdate
   birthDate: undefined as number | undefined,
   name: '',

@@ -43,6 +43,9 @@ function Selector({
 }: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
 
+  console.log('@@@ selectedIndex');
+  console.log(selectedIndex);
+
   /**
    *@description 아이템 클릭 이벤트 핸들러
    */
@@ -64,10 +67,12 @@ function Selector({
           paddingBottom="15px"
           justifyContent="space-between"
           alignItems="center">
-          <Text fontSize={15} color={colors.grayScale[80]}>
+          <Text
+            fontSize={15}
+            color={colors.grayScale[selectedIndex !== undefined ? 80 : 40]}>
             {itemList && selectedIndex !== undefined
               ? itemList[selectedIndex]?.txt
-              : ''}
+              : '년도 선택'}
           </Text>
 
           <DownIcon

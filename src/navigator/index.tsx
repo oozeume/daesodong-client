@@ -45,6 +45,7 @@ import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
 import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 import SignupPetInfoNavigator from '~/pages/signup/petInfoNavigator';
+import PetInfoRegisterOutro from '~/pages/signup/petInfoRegister/outro';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -81,6 +82,12 @@ const AppNavigator = () => {
           name="SignupPetInfoNavigator"
           component={SignupPetInfoNavigator}
           options={{animation: 'slide_from_right'}}
+        />
+
+        <Stack.Screen
+          name="PetInfoRegisterOutro"
+          component={PetInfoRegisterOutro}
+          options={{animation: 'slide_from_right', headerShown: false}}
         />
 
         <Stack.Screen name="SignupSocial" component={SignupSocial} />
