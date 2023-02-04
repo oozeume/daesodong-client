@@ -11,7 +11,7 @@ import {
   INCLUDE_NUMBER_REGREX,
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
-import {SignupForm} from '~/../types/login';
+import {SignupForm} from '~/../types/signup';
 
 interface Props {
   handlePage: () => void;

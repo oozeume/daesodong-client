@@ -30,6 +30,7 @@ function RedActiveLargeButton({
       }}
       active={active}
       large
+      shadow
       buttonStyle={buttonStyle}
       textStyle={[{fontSize: 14, lineHeight: 52}, textStyle]}
     />

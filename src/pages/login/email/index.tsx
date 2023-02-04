@@ -14,14 +14,10 @@ import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {usePostAuthEmailLogin} from '~/api/auth';
 import {getSecurityData, setSecurityData} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-
-interface EmailLoginForm {
-  email: string;
-  password: string;
-}
+import {EmailLoginForm} from '~/../types/login';
+import {usePostAuthEmailLogin} from '~/api/auth/mutations';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -37,7 +33,6 @@ function EmailLogin() {
   };
 
   const [loginForm, setLoginForm] = useState<EmailLoginForm>(initForm);
-
   const [errorForm, setErrorForm] = useState<EmailLoginForm>(initForm);
 
   useEffect(() => {
@@ -81,7 +76,7 @@ function EmailLogin() {
 
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
-      <SafeAreaView>
+      <SafeAreaView style={{backgroundColor: colors.grayScale['0']}}>
         <VStack bg={colors.grayScale['0']} w="100%" h="100%">
           <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
             <VStack>
@@ -137,7 +132,7 @@ function EmailLogin() {
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() => navigate('SignUpEmail')}
+                  onPress={() => navigate('SignUpEmailNavigator')}
                   name="회원가입"
                 />
               </HStack>
