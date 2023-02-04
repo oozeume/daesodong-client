@@ -1,9 +1,10 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import {ErrorResponse} from '~/../types/api/common';
+import {config} from '~/utils/config';
 import {getSecurityData} from '~/utils/storage';
 
 // 임시 베이스 URL, 추후 env 파일 적용 시, development, production으로 나눌 예정
-export const BASE_URL = 'http://192.168.99.166:3754/';
+export const BASE_URL = config.BASE_URL;
 
 const axiosInstance = axios.create();
 

@@ -70,6 +70,10 @@ export type RootStackParamList = {
   MyInfo: undefined;
   MyPetInfo: undefined;
   MyLoginInfo: undefined;
+
+  AppIntroFirst: undefined;
+  AppIntroSecond: undefined;
+  AppIntroThird: undefined;
   MyReview: undefined;
   MyReviewDetail: undefined;
   MyCommunityContent: undefined;

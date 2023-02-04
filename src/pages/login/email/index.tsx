@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {
-  RedActiveLargeButton,
   AppleLoginButton,
   GoogleLoginButton,
   KakaoLoginButton,
@@ -17,6 +16,7 @@ import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import {usePostAuthEmailLogin} from '~/api/auth';
 import {getSecurityData, setSecurityData} from '~/utils/storage';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 interface EmailLoginForm {
   email: string;
