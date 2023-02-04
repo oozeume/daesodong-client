@@ -82,6 +82,9 @@ export type RootStackParamList = {
   MyReviewDetail: undefined;
   MyCommunityContent: undefined;
   Inquiry: undefined;
+
+  SignupPetInfoNavigator: undefined;
+  ChoiceGenderRegister: undefined;
 };
 
 export type SignupNavigatorRouteList =
@@ -89,6 +92,8 @@ export type SignupNavigatorRouteList =
   | 'EmailRegister'
   | 'PasswordRegister'
   | 'EmailLogin';
+
+export type PetInfoRegisterNavigatorRouteList = 'ChoiceGenderRegister';
 
 export type RouteList = RootTabParamList & RootStackParamList;
 

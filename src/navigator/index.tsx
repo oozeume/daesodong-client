@@ -10,7 +10,7 @@ import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/p
 
 import EmailLogin from '~/pages/login/email';
 import SignUpEmailNavigator from '~/pages/signup/emailNavigator';
-import PetInfoRegister from '~/pages/signup/petInfo';
+import PetInfoRegister from '~/pages/signup/petInfoRegister';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
 import CommunityDetail from '~/pages/community/detail';
@@ -44,6 +44,7 @@ import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
 import PasswordResetSuccess from '~/pages/login/passwordReset/success';
+import SignupPetInfoNavigator from '~/pages/signup/petInfoNavigator';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -73,6 +74,12 @@ const AppNavigator = () => {
         <Stack.Screen
           name="SignUpEmailNavigator"
           component={SignUpEmailNavigator}
+          options={{animation: 'slide_from_right'}}
+        />
+
+        <Stack.Screen
+          name="SignupPetInfoNavigator"
+          component={SignupPetInfoNavigator}
           options={{animation: 'slide_from_right'}}
         />
 
