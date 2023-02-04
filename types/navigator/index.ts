@@ -20,8 +20,8 @@ import {FormType} from '../community';
  * { ... Home: { id: string; }; ... }
  */
 export type RootTabParamList = {
-  Facility: {
-    facilityId: string;
+  FacilityInfo: {
+    id: string;
   };
   Contents: undefined;
   Commuity: undefined;
@@ -35,9 +35,9 @@ export type RootTabParamList = {
  * { ... Hospital: { id: string; }; ... }
  */
 export type RootStackParamList = {
-  Hospital: {
-    facilityId: any;
-    facilityName: any;
+  FacilityDetail: {
+    id: string;
+    facilityName: string;
   };
   tab: undefined;
   HospitalReviewRegister: undefined;

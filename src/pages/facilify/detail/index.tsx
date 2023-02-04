@@ -3,22 +3,22 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import FacilityInfo from './info';
-import HospitalReview from './review';
+import FacilityReview from './review';
 import {RootStackParamList} from '~/../types/navigator';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Hospital'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'FacilityDetail'>;
 
-const HostpitalTab = createMaterialTopTabNavigator();
+const FaciltiyTab = createMaterialTopTabNavigator();
 
 /**
- * 시설 정보, 후기 페이지
+ * 시설 상세 페이지
  */
 
-function Facility({route}: Props) {
-  const {facilityId} = route.params;
+function FacilityDetail({route}: Props) {
+  const {id} = route.params;
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <HostpitalTab.Navigator
+      <FaciltiyTab.Navigator
         screenOptions={{
           tabBarLabelStyle: {fontSize: 16},
           tabBarIndicatorStyle: {
@@ -36,22 +36,20 @@ function Facility({route}: Props) {
         }}
         tabBarPosition={'top'}
         initialRouteName="Facility">
-        <HostpitalTab.Screen
-          name={'Facility'}
-          initialParams={{facilityId: facilityId}}
+        <FaciltiyTab.Screen
+          name={'FacilityInfo'}
+          initialParams={{id: id}}
           component={FacilityInfo}
           options={{title: '시설 정보'}}
         />
-        <HostpitalTab.Screen
-          name={'Review'}
-          component={HospitalReview}
-          options={{
-            title: '후기',
-          }}
+        <FaciltiyTab.Screen
+          name={'FacilityReview'}
+          component={FacilityReview}
+          options={{title: '후기'}}
         />
-      </HostpitalTab.Navigator>
+      </FaciltiyTab.Navigator>
     </SafeAreaView>
   );
 }
 
-export default Facility;
+export default FacilityDetail;

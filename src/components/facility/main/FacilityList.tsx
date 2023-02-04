@@ -15,7 +15,6 @@ import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import MapIcon from '~/assets/icons/map.svg';
-import {NavigationHookProp} from '~/../types/navigator';
 import {useNavigation} from '@react-navigation/native';
 import ListViewChangeButton from './ListViewChangeButton';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -40,13 +39,12 @@ function FacilityList({
   setListExpand,
   isListExpand,
 }: Props) {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const {navigate} = useNavigation<NativeStackNavigationProp<any>>();
 
-  // 시설 리스트 뷰 확장 여부
   const onPress = () => {
-    navigation.navigate('Hospital', {
+    navigate('FacilityDetail', {
       // 임시 TODO: 아래 string 제거 후 swagger에서 시설 생성 후에 만들어진 id 입력 후 확인
-      facilityId: 'd21e0177-591e-4843-8b48-a792fee9937b',
+      id: '',
     });
   };
 

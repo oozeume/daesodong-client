@@ -3,10 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
-import Facility from '../pages/facility';
 import SignupSocial from '~/pages/signup/social';
-import HospitalReviewRegister from '~/pages/facility/review/register';
-import HospitalReviewRegisterPrecaution from '~/pages/facility/review/register/precaution';
+import HospitalReviewRegister from '~/pages/facilify/detail/review/register';
+import HospitalReviewRegisterPrecaution from '~/pages/facilify/detail/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
 import PrivacyPolicy from '~/components/signup/privacyPolicy';
@@ -42,6 +41,7 @@ import MyReview from '~/pages/mypage/myReview';
 import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
+import FacilityDetail from '../pages/facilify/detail';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -53,8 +53,8 @@ const AppNavigator = () => {
         initialRouteName="InitialLogin">
         <Stack.Screen name="tab" component={TabNavigator} />
         <Stack.Screen
-          name="Hospital"
-          component={Facility}
+          name="FacilityDetail"
+          component={FacilityDetail}
           options={({navigation, route}) => ({
             headerShown: true,
             header: () => (

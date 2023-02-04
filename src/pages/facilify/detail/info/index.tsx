@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Linking, Pressable} from 'react-native';
 import {
   AspectRatio,
@@ -21,16 +21,16 @@ import HospitalInfoContents from '~/components/hospital/info/HospitalInfoContent
 import HospitalOpeningHours from '~/components/hospital/info/HospitalOpeningHours';
 import RecordVisitedExperience from '~/components/hospital/info/RecordVisitedExperience';
 import ArrowDownIcon from '~/assets/icon/_down.svg';
-import { useGetFacilityInfo } from '~/api/facility/queries';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootTabParamList } from '~/../types/navigator';
+import {useGetFacilityInfo} from '~/api/facility/queries';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootTabParamList} from '~/../types/navigator';
 import Facility from '~/model/facility';
 import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
-import { imageHeight } from '~/utils/imageHeight';
-import { APP_WIDTH } from '~/utils/dimension';
+import {imageHeight} from '~/utils/imageHeight';
+import {APP_WIDTH} from '~/utils/dimension';
 
-type Props = NativeStackScreenProps<RootTabParamList, 'Facility'>;
+type Props = NativeStackScreenProps<RootTabParamList, 'FacilityInfo'>;
 
 
 const IMAGE_RATIO = 375 / 250;
@@ -40,13 +40,13 @@ const IMAGE_RATIO = 375 / 250;
  */
 
 function FacilityInfo({route}: Props) {
-  const {facilityId} = route.params;
+  const {id} = route.params;
   const [textOpen, setTextOpen] = useState(false);
   const [facilityInfo, setFacilityInfo] = useState<Facility>();
 
   const mapRef = useRef<WebView | null>(null);
 
-  const {data, isLoading} = useGetFacilityInfo(facilityId);
+  const {data, isLoading} = useGetFacilityInfo(id);
 
   const handleIntroOpen = () => setTextOpen(prev => !prev);
 
@@ -59,18 +59,16 @@ function FacilityInfo({route}: Props) {
         data: coordinates,
       }),
     );
-
   };
 
   useEffect(() => {
-    if(data) {
+    if (data) {
       setFacilityInfo(new Facility(data.data));
     }
-  }, [data])
+  }, [data]);
 
-
-  if(isLoading) {
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -81,6 +79,7 @@ function FacilityInfo({route}: Props) {
             <ScrollView>
               <Center backgroundColor={colors.grayScale[20]}>
                 <Swiper
+                  height={imageHeight(IMAGE_RATIO, APP_WIDTH)}
                   dotColor={colors.scrim[60]}
                   activeDotColor={colors.fussOrange[0]}
                   loop={false}>
@@ -98,8 +97,8 @@ function FacilityInfo({route}: Props) {
 
               {/* 시설 방문 기록 */}
               <Center flex={1}>
-                <RecordVisitedExperience facilityId={facilityId} />
-                <VisitedAnimals facilityId={facilityId} />
+                <RecordVisitedExperience facilityId={id} />
+                <VisitedAnimals facilityId={id} />
                 <Divider
                   my="2"
                   style={[{marginTop: 24}]}
@@ -135,7 +134,7 @@ function FacilityInfo({route}: Props) {
 
               {/* 시설 영업 시간 */}
               <HospitalInfoContents iconName="clock_fill">
-                <VStack space={4} flex={1} >
+                <VStack space={4} flex={1}>
                   {facilityInfo.openingHours.map(openingHours => (
                     <HospitalOpeningHours
                       key={openingHours.date}

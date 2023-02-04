@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
  *@description 병원 리뷰 페이지
  */
 
-const HospitalReview = () => {
+function FacilityReview() {
   const navigation = useNavigation<NavigationHookProp>();
 
   const onMoveReviewRegisterPage = () => {
@@ -57,4 +57,4 @@ const HospitalReview = () => {
   );
 };
 
-export default HospitalReview;
+export default FacilityReview;
