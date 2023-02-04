@@ -178,9 +178,8 @@ function NicknameRegister({signupForm, setSignupForm}: Props) {
           flex={1}>
           <Center mt={'60px'} px="18px">
             <StageTextBox
-              totalStage={4}
               currentStage={4}
-              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST[3]}
+              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
             />
 
             <VerificationForm
