@@ -28,13 +28,12 @@ import {setSecurityData} from '~/utils/storage';
 
 interface Props {
   signupForm: SignupForm;
-  setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
 /**
  *@description 회원가입 > 닉네임 입력
  */
-function NicknameRegister({signupForm, setSignupForm}: Props) {
+function NicknameRegister({signupForm}: Props) {
   const {navigate, getState} = useNavigation<NavigationHookProp>();
   const helpList = ['공백 미포함', '기호 미포함', '2-10자 이내'];
   const [term, setTerm] = useState(INIT_SIGNUP_TERM);
