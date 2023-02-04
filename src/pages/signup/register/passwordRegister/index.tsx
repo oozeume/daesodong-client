@@ -26,7 +26,6 @@ interface Props {
   setPreviousURL: React.Dispatch<
     React.SetStateAction<SignupNavigatorRouteList[]>
   >;
-  signupForm: SignupForm;
   setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
 }
 
@@ -38,7 +37,6 @@ interface Props {
 function PasswordRegister({
   onChangeStage,
   setPreviousURL,
-  signupForm,
   setSignupForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();

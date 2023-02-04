@@ -63,7 +63,10 @@ function SignUpEmailNavigator() {
         <Stack.Navigator>
           <Stack.Screen
             name="PhoneVerification"
-            component={() => (
+            options={{
+              headerShown: false,
+            }}>
+            {() => (
               <PhoneVerification
                 onChangeStage={onChangeStage}
                 setPreviousURL={setPreviousURL}
@@ -71,14 +74,15 @@ function SignUpEmailNavigator() {
                 setSignupForm={setSignupForm}
               />
             )}
-            options={{
-              headerShown: false,
-            }}
-          />
+          </Stack.Screen>
 
           <Stack.Screen
             name="EmailRegister"
-            component={() => (
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}>
+            {() => (
               <EmailRegister
                 onChangeStage={onChangeStage}
                 setPreviousURL={setPreviousURL}
@@ -86,36 +90,31 @@ function SignUpEmailNavigator() {
                 setSignupForm={setSignupForm}
               />
             )}
-            options={{
-              animation: 'slide_from_right',
-              headerShown: false,
-            }}
-          />
+          </Stack.Screen>
 
           <Stack.Screen
             name="PasswordRegister"
-            component={() => (
+            options={{
+              animation: 'slide_from_right',
+              headerShown: false,
+            }}>
+            {() => (
               <PasswordRegister
                 onChangeStage={onChangeStage}
                 setPreviousURL={setPreviousURL}
-                signupForm={signupForm}
                 setSignupForm={setSignupForm}
               />
             )}
-            options={{
-              animation: 'slide_from_right',
-              headerShown: false,
-            }}
-          />
+          </Stack.Screen>
 
           <Stack.Screen
             name="NicknameRegister"
-            component={() => <NicknameRegister signupForm={signupForm} />}
             options={{
               animation: 'slide_from_right',
               headerShown: false,
-            }}
-          />
+            }}>
+            {() => <NicknameRegister signupForm={signupForm} />}
+          </Stack.Screen>
         </Stack.Navigator>
       </Box>
     </SafeAreaView>
