@@ -13,6 +13,9 @@ import Tag from '~/components/common/Tag';
 import DownIcon from '~/assets/icons/down.svg';
 import {SpeciesData} from '~/../types/api/species';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
+import {useGetSpecies} from '~/api/species';
+import {setData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -21,6 +24,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -33,15 +37,16 @@ function PetTypeRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  console.log('@@@ FORM');
-  console.log(form);
+
+  const {data, isSuccess} = useGetSpecies({limit: 10});
 
   const {isOpen, onOpen, onClose} = useDisclose();
   const [petType, setPetType] = useState<SpeciesData>();
 
-  const onMovePage = () => {
+  const onMovePage = async () => {
     if (!petType) return;
 
     setForm(prev => ({
@@ -51,15 +56,37 @@ function PetTypeRegister({
 
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetTypeRegister']);
+
+    await setData(storageKeys.petInfoRegister.form, {
+      ...form,
+      speciesName: petType.name,
+    });
+    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetBirthRegister');
   };
 
-  useEffect(() => {}, []);
+  console.log('@@@ FORM');
+  console.log(form);
+
+  useEffect(() => {
+    // 이전 페이지로 이동하거나 등록 중 앱 이탈할 경우, 이전 폼 값 등록 로직
+    if (form.name && isSuccess) {
+      let _petType = null;
+
+      data.data.map(item => {
+        if (form.speciesName === item.name) {
+          _petType = item;
+        }
+      });
+
+      if (_petType) setPetType(_petType);
+    }
+  }, []);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      currentStage={4}
+      currentStage={currentStage}
       possibleButtonPress={!_.isNil(petType)}>
       <Pressable
         borderColor={colors.grayScale[30]}

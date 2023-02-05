@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Box} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import BackIcon from '~/assets/icon/back_icon.svg';
 import StageBar from '~/components/common/stage/StageBar';
 import {
@@ -11,7 +11,10 @@ import {
 } from '~/../types/navigator';
 import Header from '~/components/common/header/Header';
 import {APP_HEIGHT} from '~/utils/dimension';
-import {initPetInfoForm} from '~/constants/signup';
+import {
+  PET_INFO_NAVIGATOR_ROUTE_LIST,
+  initPetInfoForm,
+} from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ChoiceGenderRegister from '../petInfoRegister/choiceGender';
 import PetOwnerBirthRegister from '../petInfoRegister/petOwnerBirth';
@@ -24,6 +27,8 @@ import AnyQuestionRegister from '../petInfoRegister/anyQuestion';
 import PetImageRegister from '../petInfoRegister/petImage';
 import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
+import {getData, removeData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -34,6 +39,7 @@ function SignupPetInfoNavigator() {
   const {navigate} = useNavigation<NavigationHookProp>();
   const [currentStage, setCurrentStage] = useState(1);
   const [form, setForm] = useState(initPetInfoForm);
+  const totalStage = 9;
 
   // 네비게이터 안에 네비게이터라서 이전 URL를 따로 받아야함
   const [previousURL, setPreviousURL] = useState<
@@ -54,6 +60,36 @@ function SignupPetInfoNavigator() {
     navigate(previousURL[previousURL.length - 1] as any);
   };
 
+  useEffect(() => {
+    async function loadFormData() {
+      // await removeData(storageKeys.petInfoRegister.form);
+      // await removeData(storageKeys.petInfoRegister.state);
+
+      const loadForm = await getData(storageKeys.petInfoRegister.form);
+      const loadState = await getData(storageKeys.petInfoRegister.state);
+
+      if (loadForm && loadState) {
+        setForm(JSON.parse(loadForm));
+        setCurrentStage(Number(loadState));
+
+        const _routeList = PET_INFO_NAVIGATOR_ROUTE_LIST.slice(
+          0,
+          Number(loadState) + 1,
+        );
+
+        console.log('@@@ NAVIGATOR');
+        console.log(loadState);
+        console.log(loadForm);
+        console.log(_routeList);
+
+        setPreviousURL(_routeList);
+        navigate(_routeList[_routeList.length - 1]);
+      }
+    }
+
+    loadFormData();
+  }, []);
+
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={{backgroundColor: '#fff'}}>
@@ -64,7 +100,7 @@ function SignupPetInfoNavigator() {
               leftButton={<BackIcon onPress={onBack} />}
             />
 
-            <StageBar totalStage={9} currentStage={currentStage} />
+            <StageBar totalStage={totalStage} currentStage={currentStage} />
           </Box>
 
           <Stack.Navigator>
@@ -80,6 +116,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={1}
                 />
               )}
             </Stack.Screen>
@@ -96,6 +133,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={2}
                 />
               )}
             </Stack.Screen>
@@ -112,6 +150,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={3}
                 />
               )}
             </Stack.Screen>
@@ -128,6 +167,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={4}
                 />
               )}
             </Stack.Screen>
@@ -144,6 +184,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={5}
                 />
               )}
             </Stack.Screen>
@@ -160,6 +201,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={6}
                 />
               )}
             </Stack.Screen>
@@ -176,6 +218,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={7}
                 />
               )}
             </Stack.Screen>
@@ -192,6 +235,7 @@ function SignupPetInfoNavigator() {
                   setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={8}
                 />
               )}
             </Stack.Screen>
@@ -205,9 +249,9 @@ function SignupPetInfoNavigator() {
               {() => (
                 <PetImageRegister
                   onChangeStage={onChangeStage}
-                  setPreviousURL={setPreviousURL}
                   form={form}
                   setForm={setForm}
+                  currentStage={9}
                 />
               )}
             </Stack.Screen>

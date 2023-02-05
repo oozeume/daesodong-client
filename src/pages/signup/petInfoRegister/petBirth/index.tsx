@@ -10,6 +10,8 @@ import {
 import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
+import {setData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -18,6 +20,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -30,6 +33,7 @@ function PetBirthRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   console.log('@@@ FORM');
@@ -37,17 +41,21 @@ function PetBirthRegister({
 
   const [birthDate, setBirthDate] = useState<number>();
 
-  console.log(birthDate);
-  const onMovePage = () => {
+  const onMovePage = async () => {
     if (!birthDate) return;
 
     setForm(pre => ({...pre, birthDate}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetBirthRegister']);
+
+    await setData(storageKeys.petInfoRegister.form, {...form, birthDate});
+    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetGenderRegister');
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (form.birthDate) setBirthDate(form.birthDate);
+  }, []);
 
   return (
     <LayoutContainer

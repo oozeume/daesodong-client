@@ -1,28 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform} from 'react-native';
-import {colors} from '~/theme/theme';
-import VerificationForm from '~/components/common/VerificationForm';
-import VerificationModal from '~/components/common/modal/VerificationModal';
-import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {Box, Center, Stack, VStack} from 'native-base';
-import StageTextBox from '~/components/common/stage/StageTextBox';
-import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
 import {useNavigation} from '@react-navigation/native';
 import {
   NavigationHookProp,
   PetInfoRegisterNavigatorRouteList,
-  SignupNavigatorRouteList,
 } from '~/../types/navigator';
-import useRegExPhone from '~/hooks/useRegExPhone';
-import {PetInfoForm, SetPetInfoForm, SignupForm} from '~/../types/signup';
-import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
-import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
 import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
 import dayjs from 'dayjs';
 import DateSelector from '~/components/hospital/review/register/selector';
+import {setData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -31,6 +20,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -43,22 +33,30 @@ function PetOwnerBirthRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  console.log('@@@ FORM');
-  console.log(form);
 
   const [index, setIndex] = useState<number>();
   const [yearList, setYearList] = useState<DateList[]>([]);
 
-  const onMovePage = () => {
+  const onMovePage = async () => {
     if (_.isUndefined(index)) return;
 
     setForm(pre => ({...pre, age: yearList[index].value}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetOwnerBirthRegister']);
+
+    await setData(storageKeys.petInfoRegister.form, {
+      ...form,
+      age: yearList[index].value,
+    });
+    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetNameRegister');
   };
+
+  console.log('@@@ FORM');
+  console.log(form);
 
   useEffect(() => {
     const curYear = dayjs().year();
@@ -81,8 +79,8 @@ function PetOwnerBirthRegister({
 
   return (
     <LayoutContainer
-      buttonPress={onMovePage}
       currentStage={2}
+      buttonPress={onMovePage}
       possibleButtonPress={!_.isNil(index)}>
       <DateSelector
         headerText="년도"

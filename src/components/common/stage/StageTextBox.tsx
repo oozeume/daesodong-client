@@ -25,7 +25,6 @@ function StageTextBox({currentStage, stageTextList}: Props) {
       <VStack space={1}>
         <Center>
           <Text
-            key={`stage_text_${currentStage}`}
             fontSize={20}
             fontWeight={'500'}
             textAlign={'center'}

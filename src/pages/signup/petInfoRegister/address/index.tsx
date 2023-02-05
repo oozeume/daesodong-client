@@ -13,6 +13,8 @@ import AddressDrawer, {
 } from '~/components/signup/petInfo/AddressDrawer';
 import {hangjungdong} from '~/utils/hangjungdong';
 import SelectButtonForm from '~/components/signup/petInfo/SelectButtonForm';
+import {setData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -21,6 +23,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -33,6 +36,7 @@ function AddressRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const {isOpen, onOpen, onClose} = useDisclose();
@@ -54,19 +58,26 @@ function AddressRegister({
   const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>();
   const [dongValue, setDongValue] = useState<Hangjungdong>();
 
+  // 시도 선택 후, 필터된 군구 state
   const [sortedSigugun, setSortedSigugun] = useState<
     Partial<Hangjungdong>[] | undefined
   >();
+
+  // 시도, 군 선택 후, 필터된 동 state
   const [sortedDong, setSortedDong] = useState<Hangjungdong[]>();
 
   const onMovePage = async () => {
+    const address = `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`;
     setForm(() => ({
       ...form,
-      address: `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`,
+      address,
     }));
 
     onChangeStage();
     setPreviousURL(prev => [...prev, 'AddressRegister']);
+
+    await setData(storageKeys.petInfoRegister.form, {...form, address});
+    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('AnyQuestionRegister');
   };
 
@@ -88,13 +99,46 @@ function AddressRegister({
     }
   }, [sigugunValue, dong]);
 
-  console.log('@@@ form');
-  console.log(form);
+  useEffect(() => {
+    // 이전 페이지로 이동하거나 등록 중 앱 이탈할 경우, 이전 폼 값 등록 로직
+    // setSidoValue()
+    if (form.address) {
+      const [_sidoName, _sigugunName, _dongName] = form.address.split(' ');
+      let _sidoValue;
+      let _sigugunValue;
+      let _dongValue;
+
+      sido.forEach(item => {
+        if (item.name === _sidoName) {
+          _sidoValue = item;
+          return;
+        }
+      });
+
+      sigugun.forEach(item => {
+        if (item.name === _sigugunName) {
+          _sigugunValue = item;
+          return;
+        }
+      });
+
+      dong.forEach(item => {
+        if (item.name === _dongName) {
+          _dongValue = item;
+          return;
+        }
+      });
+
+      setSidoValue(_sidoValue);
+      setSigugunValue(_sigugunValue);
+      setDongValue(_dongValue);
+    }
+  }, []);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      currentStage={7}
+      currentStage={currentStage}
       possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>
       <Stack w="100%" space={'10px'}>
         <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />

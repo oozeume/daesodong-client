@@ -9,6 +9,8 @@ import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
+import {setData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -17,6 +19,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -29,12 +32,16 @@ function ChoiceGenderRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const onMovePage = async () => {
     onChangeStage();
     setPreviousURL(prev => [...prev, 'ChoiceGenderRegister']);
+
+    await setData(storageKeys.petInfoRegister.form, form);
+    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetOwnerBirthRegister');
   };
 
@@ -43,6 +50,7 @@ function ChoiceGenderRegister({
 
   return (
     <LayoutContainer
+      currentStage={currentStage}
       buttonPress={onMovePage}
       possibleButtonPress={!_.isNil(form.gender)}>
       <Stack w="100%" space={'10px'}>

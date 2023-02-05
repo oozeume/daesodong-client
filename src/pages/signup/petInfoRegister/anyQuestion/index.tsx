@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {colors} from '~/theme/theme';
 import {TextArea} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
@@ -9,6 +9,8 @@ import {
 import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
+import {setData} from '~/utils/storage';
+import StorageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -17,6 +19,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -29,17 +32,21 @@ function AnyQuestionRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const [concern, setConcern] = useState<string>();
 
-  const onMovePage = () => {
+  const onMovePage = async () => {
     if (!concern) return;
 
     setForm(pre => ({...pre, concern}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'AnyQuestionRegister']);
+
+    await setData(StorageKeys.petInfoRegister.form, {...form, concern});
+    await setData(StorageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetImageRegister');
   };
 
@@ -48,13 +55,17 @@ function AnyQuestionRegister({
     navigate('PetImageRegister');
   };
 
+  useEffect(() => {
+    if (form.concern) setConcern(form.concern);
+  }, []);
+
   console.log('@@@ FORM');
   console.log(form);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      currentStage={8}
+      currentStage={currentStage}
       isSkipPage
       onSkipPage={onSkipPage}
       possibleButtonPress={!_.isNil(concern)}>

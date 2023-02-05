@@ -9,6 +9,8 @@ import {
 import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
+import {setData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
@@ -17,6 +19,7 @@ interface Props {
   >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -27,28 +30,35 @@ function PetNameRegister({
   setPreviousURL,
   form,
   setForm,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  console.log('@@@ FORM');
-  console.log(form);
 
   const [name, setName] = useState<string>();
 
-  const onMovePage = () => {
+  const onMovePage = async () => {
     if (!name) return;
 
     setForm(pre => ({...pre, name}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetNameRegister']);
+
+    await setData(storageKeys.petInfoRegister.form, {...form, name});
+    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetTypeRegister');
   };
 
-  useEffect(() => {}, []);
+  console.log('@@@ FORM');
+  console.log(form);
+
+  useEffect(() => {
+    if (form.name) setName(form.name);
+  }, []);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
-      currentStage={3}
+      currentStage={currentStage}
       possibleButtonPress={!_.isNil(name)}>
       <TextInput
         style={styles.input}

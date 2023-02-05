@@ -33,3 +33,16 @@ export const EMAIL_SIGNUP_STAGE_TEXT_LIST = [
   '비밀번호를 입력해주세요',
   '닉네임을 입력해주세요',
 ];
+
+export const PET_INFO_NAVIGATOR_ROUTE_LIST = [
+  'EmailLogin',
+  'ChoiceGenderRegister',
+  'PetOwnerBirthRegister',
+  'PetNameRegister',
+  'PetTypeRegister',
+  'PetBirthRegister',
+  'PetGenderRegister',
+  'AddressRegister',
+  'AnyQuestionRegister',
+  'PetImageRegister',
+] as const;

@@ -1,26 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Alert, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
 import {Circle, HStack, Image, Pressable, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
+import {NavigationHookProp} from '~/../types/navigator';
 import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import {usePostImageUpload} from '~/api/image';
 import {imagePicker} from '~/utils/image';
 import {ErrorResponseTransform} from '~/../types/api/common';
+import {usePatchUserInfo} from '~/api/user';
+import {removeData} from '~/utils/storage';
+import storageKeys from '~/constants/storageKeys';
 
 interface Props {
   onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
   form: PetInfoForm;
   setForm: SetPetInfoForm;
+  currentStage: number;
 }
 
 /**
@@ -28,34 +26,45 @@ interface Props {
  * @param onChangeStage - 집사정보등록 스테이지 count 변경 핸들러
  * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
-function PetImageRegister({
-  onChangeStage,
-  setPreviousURL,
-  form,
-  setForm,
-}: Props) {
-  const {navigate} = useNavigation<NavigationHookProp>();
+function PetImageRegister({onChangeStage, form, setForm, currentStage}: Props) {
+  const {navigate, reset} = useNavigation<NavigationHookProp>();
   const {mutateAsync} = usePostImageUpload();
+  const patchUserInfo = usePatchUserInfo();
 
+  // 내부 앱 이미지 경로
   const [image, setImage] = useState<string>();
+
+  // 이미지명
   const [_filename, setFilename] = useState<string>();
 
-  const onMovePage = () => {
-    if (!image) return;
+  const onMovePage = async (isSkip: boolean) => {
+    if (!image && !_filename && !isSkip) return;
 
-    setForm(pre => ({...pre, petPictureUrl: image}));
-    setForm(prev => ({...prev, petPictureUrl: _filename}));
+    const petPictureUrl = isSkip ? undefined : _filename;
 
-    onChangeStage();
-    setPreviousURL(prev => [...prev, 'PetImageRegister']);
-    navigate('PetInfoRegisterOutro');
+    setForm(prev => ({...prev, petPictureUrl}));
+
+    try {
+      const response = await patchUserInfo.mutateAsync({
+        ...form,
+        petPictureUrl,
+      });
+
+      if (response.data) {
+        await removeData(storageKeys.petInfoRegister.form);
+        await removeData(storageKeys.petInfoRegister.state);
+        reset({index: 0, routes: [{name: 'PetInfoRegisterOutro'}]});
+      }
+    } catch (error) {
+      const _error = error as ErrorResponseTransform;
+
+      // 이미 등록된 유저가 있을 경우
+      if (_error.statusCode === 409)
+        reset({index: 0, routes: [{name: 'InitialLogin'}]});
+    }
   };
 
-  const onSkipPage = () => {
-    onChangeStage();
-    navigate('PetInfoRegisterOutro');
-  };
-
+  // 이미지 선택 핸들러
   const onImagePicker = async () => {
     const imageInfo = await imagePicker();
 
@@ -84,9 +93,6 @@ function PetImageRegister({
       },
     );
 
-    console.log('@@@ imageUploadForm');
-    console.log(imageUploadForm);
-
     if (response.success === 'SUCCESS') {
       setImage(imageUploadForm.uri || '');
       setFilename(fileName);
@@ -95,16 +101,13 @@ function PetImageRegister({
 
   console.log('@@@ FORM');
   console.log(form);
-  console.log(image);
-
-  useEffect(() => {}, []);
 
   return (
     <LayoutContainer
-      buttonPress={onMovePage}
+      buttonPress={() => onMovePage(false)}
       currentStage={9}
       isSkipPage
-      onSkipPage={onSkipPage}
+      onSkipPage={() => onMovePage(true)}
       possibleButtonPress={!_.isNil(image)}>
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
         {image ? (
