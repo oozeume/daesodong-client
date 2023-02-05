@@ -1,4 +1,13 @@
-import {Box, Center, HStack, Pressable, Stack, useDisclose} from 'native-base';
+import {
+  Box,
+  Center,
+  HStack,
+  KeyboardAvoidingView,
+  Pressable,
+  Stack,
+  VStack,
+  useDisclose,
+} from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';
@@ -27,21 +36,25 @@ import {initPetInfoForm} from '~/constants/signup';
 import {NavigationHookProp} from '~/../types/navigator';
 import {usePatchUserInfo} from '~/api/user';
 import {SpeciesData} from '~/../types/api/species';
-import {ErrorResponse, ErrorResponseTransform} from '~/../types/api/common';
+import TouchableWithoutView from '~/components/common/TouchableWithoutView';
+import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
+import {Keyboard, StyleSheet, TextInput} from 'react-native';
+import _ from 'lodash';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
 type Props = NativeStackScreenProps<ParamListBase, 'PetInfoRegister'>;
 
 const STAGE_TEXT_LIST = [
-  ['집사님의 성별을 알려주세요'],
-  ['집사님이 태어난 년도를 알려주세요'],
-  ['집사님과 함께하는', '반려아이의 이름을 알려주세요'],
-  ['귀여운 봉식이!', '봉식이는 어떤 동물인가요?'],
-  ['봉식이 나이는요?'],
-  ['봉식이 성별은 무엇인가요?'],
-  ['봉식이와 어디서 함께 살고 계세요?'],
-  ['봉식이를 키우면서', '고민되는 점이 있으신가요?'],
-  ['아주 좋아요!', '마지막으로 우리 봉삼이', '예쁜 모습 자랑해주실까요?'],
-  [''],
+  '집사님의 성별을 알려주세요',
+  '집사님이 태어난 년도를 알려주세요',
+  '집사님과 함께하는\n반려아이의 이름을 알려주세요',
+  '귀여운 봉식이!\n봉식이는 어떤 동물인가요?',
+  '봉식이 나이는요?',
+  '봉식이 성별은 무엇인가요?',
+  '봉식이와 어디서 함께 살고 계세요?',
+  '봉식이를 키우면서\n고민되는 점이 있으신가요?',
+  '아주 좋아요!\n마지막으로 우리 봉삼이\n예쁜 모습 자랑해주실까요?',
+  '',
 ];
 
 export const STAGE_TEXT_BOX_HEIGHT = 172;
@@ -85,114 +98,52 @@ function PetInfoRegister() {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
-      <HStack
-        space={3}
-        h={`${HEADER_HEIGHT}px`}
-        justifyContent={'space-between'}
-        paddingX={'18px'}
-        backgroundColor={colors.grayScale[0]}>
-        <Center h="60" w="30">
-          <Pressable onPress={onPressBack}>
-            <BackIcon />
-          </Pressable>
-        </Center>
-      </HStack>
+    <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={{flex: 1, backgroundColor: colors.grayScale[0]}}>
+        <KeyboardAvoidingView
+          flex={1}
+          behavior={'padding'}
+          keyboardVerticalOffset={40}>
+          <HStack
+            h={`${HEADER_HEIGHT}px`}
+            paddingX={'18px'}
+            backgroundColor={colors.grayScale[0]}>
+            <Center h="60" w="30">
+              <Pressable onPress={onPressBack}>
+                <BackIcon />
+              </Pressable>
+            </Center>
+          </HStack>
 
-      {onStartPress ? (
-        <Stack
-          position={'relative'}
-          backgroundColor={colors.grayScale[0]}
-          h={APP_HEIGHT - HEADER_HEIGHT - statusbarHeight}
-          alignItems={'center'}
-          justifyContent={'space-between'}>
-          <Stack>
-            {currentStage !== STAGE_TEXT_LIST.length && (
-              <StageBar totalStage={9} currentStage={currentStage} />
-            )}
+          <VStack flex={1} justifyContent={'space-between'} paddingX={'18px'}>
+            <TextInput
+              style={styles.input}
+              onChangeText={name => setForm(prev => ({...prev, name}))}
+              value={form.name}
+              placeholder={'이름을 입력해주세요'}
+            />
 
-            <Box backgroundColor={colors.grayScale[0]} px={'18px'}>
-              {currentStage !== STAGE_TEXT_LIST.length && (
-                <Center py={'60px'} height={STAGE_TEXT_BOX_HEIGHT}>
-                  <StageTextBox
-                    totalStage={9}
-                    currentStage={currentStage}
-                    stageTextList={STAGE_TEXT_LIST[currentStage - 1]}
-                  />
-                </Center>
-              )}
-
-              <CurrentComponentOfArray index={currentStage}>
-                <ChoiceGender
-                  handlePage={moveToNextPage}
-                  form={form}
-                  setForm={setForm}
-                />
-                <PetOwnerBirth
-                  handlePage={moveToNextPage}
-                  form={form}
-                  setForm={setForm}
-                />
-                <PetName
-                  handlePage={moveToNextPage}
-                  form={form}
-                  setForm={setForm}
-                />
-                <PetTypeSelector
-                  handlePage={moveToNextPage}
-                  onPress={onOpen}
-                  petType={petType}
-                />
-                <PetBirth
-                  handlePage={moveToNextPage}
-                  form={form}
-                  setForm={setForm}
-                />
-                <ChoicePetGender
-                  handlePage={moveToNextPage}
-                  form={form}
-                  setForm={setForm}
-                />
-                <Address
-                  handlePage={moveToNextPage}
-                  onChangeAddress={onChangeAddress}
-                />
-                <AnyQuestion
-                  handlePage={moveToNextPage}
-                  form={form}
-                  setForm={setForm}
-                />
-                <PetImageRegister
-                  handlePage={onSubmit}
-                  form={form}
-                  setForm={setForm}
-                />
-                <Outro handlePage={() => navigate('tab')} />
-              </CurrentComponentOfArray>
-            </Box>
-          </Stack>
-        </Stack>
-      ) : (
-        <Intro onPress={() => setStartPress(true)} />
-      )}
-
-      {isOpen && (
-        <PetTypeSelectModal
-          isOpen={isOpen}
-          onClose={onClose}
-          setPetType={petType => {
-            setForm(prev => ({
-              ...prev,
-              speciesName: petType.name,
-            }));
-            setPetType(petType);
-          }}
-          isEnrollPet
-          onPress={() => {}}
-        />
-      )}
-    </SafeAreaView>
+            <VStack mb={'40px'}>
+              <RedActiveLargeButton
+                active={true}
+                text={'인증번호 전송'}
+                handlePress={() => {}}
+              />
+            </VStack>
+          </VStack>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </TouchableWithoutView>
   );
 }
+
+const styles = StyleSheet.create({
+  input: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomColor: colors.grayScale[30],
+    borderBottomWidth: 1,
+  },
+});
 
 export default PetInfoRegister;

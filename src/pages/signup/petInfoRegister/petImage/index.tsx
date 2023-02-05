@@ -1,39 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Keyboard, Platform, StyleSheet, TextInput} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
-import VerificationForm from '~/components/common/VerificationForm';
-import VerificationModal from '~/components/common/modal/VerificationModal';
-import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {
-  Box,
-  Center,
-  Circle,
-  HStack,
-  Image,
-  Pressable,
-  Stack,
-  Text,
-  TextArea,
-  VStack,
-} from 'native-base';
-import StageTextBox from '~/components/common/stage/StageTextBox';
-import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
+import {Circle, HStack, Image, Pressable, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {
   NavigationHookProp,
   PetInfoRegisterNavigatorRouteList,
-  SignupNavigatorRouteList,
 } from '~/../types/navigator';
-import useRegExPhone from '~/hooks/useRegExPhone';
-import {PetInfoForm, SetPetInfoForm, SignupForm} from '~/../types/signup';
-import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
-import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
-import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
-import dayjs from 'dayjs';
-import DateSelector from '~/components/hospital/review/register/selector';
 import {usePostImageUpload} from '~/api/image';
 import {imagePicker} from '~/utils/image';
 import {ErrorResponseTransform} from '~/../types/api/common';
@@ -48,7 +24,9 @@ interface Props {
 }
 
 /**
- *@description 집사정보등록 - 반려동물 이름
+ *@description 집사정보등록 - 반려동물 사진 등록
+ * @param onChangeStage - 집사정보등록 스테이지 count 변경 핸들러
+ * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
 function PetImageRegister({
   onChangeStage,
@@ -57,15 +35,11 @@ function PetImageRegister({
   setForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  console.log('@@@ FORM');
-  console.log(form);
   const {mutateAsync} = usePostImageUpload();
 
   const [image, setImage] = useState<string>();
   const [_filename, setFilename] = useState<string>();
 
-  console.log('@@@ image');
-  console.log(image);
   const onMovePage = () => {
     if (!image) return;
 
@@ -73,6 +47,7 @@ function PetImageRegister({
     setForm(prev => ({...prev, petPictureUrl: _filename}));
 
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'PetImageRegister']);
     navigate('PetInfoRegisterOutro');
   };
 
@@ -118,12 +93,18 @@ function PetImageRegister({
     }
   };
 
+  console.log('@@@ FORM');
+  console.log(form);
+  console.log(image);
+
   useEffect(() => {}, []);
 
   return (
     <LayoutContainer
       buttonPress={onMovePage}
       currentStage={9}
+      isSkipPage
+      onSkipPage={onSkipPage}
       possibleButtonPress={!_.isNil(image)}>
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
         {image ? (
@@ -157,12 +138,6 @@ function PetImageRegister({
         onPress={onImagePicker}>
         <Text>사진 선택</Text>
       </Pressable>
-
-      <Stack position={'absolute'} bottom={120} alignSelf={'center'}>
-        <Text onPress={onSkipPage} color={colors.grayScale[60]}>
-          건너뛰기
-        </Text>
-      </Stack>
     </LayoutContainer>
   );
 }

@@ -17,7 +17,8 @@ import EmailRegister from '../register/emailRegister';
 import NicknameRegister from '../register/nicknameReigster';
 import {INIT_SIGNUP_FORM} from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Platform} from 'react-native';
+import {Keyboard, Platform} from 'react-native';
+import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -49,75 +50,77 @@ function SignUpEmailNavigator() {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: '#fff'}}>
-      <Box h={Platform.OS === 'android' ? APP_HEIGHT + 14 : APP_HEIGHT}>
-        <Box>
-          <Header
-            isRemoveTopPosition
-            leftButton={<BackIcon onPress={onBack} />}
-          />
+    <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={{backgroundColor: '#fff'}}>
+        <Box h={Platform.OS === 'android' ? APP_HEIGHT + 14 : APP_HEIGHT}>
+          <Box>
+            <Header
+              isRemoveTopPosition
+              leftButton={<BackIcon onPress={onBack} />}
+            />
 
-          <StageBar totalStage={4} currentStage={currentStage} />
+            <StageBar totalStage={4} currentStage={currentStage} />
+          </Box>
+
+          <Stack.Navigator>
+            <Stack.Screen
+              name="PhoneVerification"
+              options={{
+                headerShown: false,
+              }}>
+              {() => (
+                <PhoneVerification
+                  onChangeStage={onChangeStage}
+                  setPreviousURL={setPreviousURL}
+                  signupForm={signupForm}
+                  setSignupForm={setSignupForm}
+                />
+              )}
+            </Stack.Screen>
+
+            <Stack.Screen
+              name="EmailRegister"
+              options={{
+                animation: 'slide_from_right',
+                headerShown: false,
+              }}>
+              {() => (
+                <EmailRegister
+                  onChangeStage={onChangeStage}
+                  setPreviousURL={setPreviousURL}
+                  signupForm={signupForm}
+                  setSignupForm={setSignupForm}
+                />
+              )}
+            </Stack.Screen>
+
+            <Stack.Screen
+              name="PasswordRegister"
+              options={{
+                animation: 'slide_from_right',
+                headerShown: false,
+              }}>
+              {() => (
+                <PasswordRegister
+                  onChangeStage={onChangeStage}
+                  setPreviousURL={setPreviousURL}
+                  setSignupForm={setSignupForm}
+                />
+              )}
+            </Stack.Screen>
+
+            <Stack.Screen
+              name="NicknameRegister"
+              options={{
+                animation: 'slide_from_right',
+                headerShown: false,
+              }}>
+              {() => <NicknameRegister signupForm={signupForm} />}
+            </Stack.Screen>
+          </Stack.Navigator>
         </Box>
-
-        <Stack.Navigator>
-          <Stack.Screen
-            name="PhoneVerification"
-            options={{
-              headerShown: false,
-            }}>
-            {() => (
-              <PhoneVerification
-                onChangeStage={onChangeStage}
-                setPreviousURL={setPreviousURL}
-                signupForm={signupForm}
-                setSignupForm={setSignupForm}
-              />
-            )}
-          </Stack.Screen>
-
-          <Stack.Screen
-            name="EmailRegister"
-            options={{
-              animation: 'slide_from_right',
-              headerShown: false,
-            }}>
-            {() => (
-              <EmailRegister
-                onChangeStage={onChangeStage}
-                setPreviousURL={setPreviousURL}
-                signupForm={signupForm}
-                setSignupForm={setSignupForm}
-              />
-            )}
-          </Stack.Screen>
-
-          <Stack.Screen
-            name="PasswordRegister"
-            options={{
-              animation: 'slide_from_right',
-              headerShown: false,
-            }}>
-            {() => (
-              <PasswordRegister
-                onChangeStage={onChangeStage}
-                setPreviousURL={setPreviousURL}
-                setSignupForm={setSignupForm}
-              />
-            )}
-          </Stack.Screen>
-
-          <Stack.Screen
-            name="NicknameRegister"
-            options={{
-              animation: 'slide_from_right',
-              headerShown: false,
-            }}>
-            {() => <NicknameRegister signupForm={signupForm} />}
-          </Stack.Screen>
-        </Stack.Navigator>
-      </Box>
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutView>
   );
 }
 

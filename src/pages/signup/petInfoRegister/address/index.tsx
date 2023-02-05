@@ -1,24 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform} from 'react-native';
-import {colors} from '~/theme/theme';
-import VerificationForm from '~/components/common/VerificationForm';
-import VerificationModal from '~/components/common/modal/VerificationModal';
-import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {Box, Center, Stack, VStack, useDisclose} from 'native-base';
-import StageTextBox from '~/components/common/stage/StageTextBox';
-import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
+import {Stack, useDisclose} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {
   NavigationHookProp,
   PetInfoRegisterNavigatorRouteList,
-  SignupNavigatorRouteList,
 } from '~/../types/navigator';
-import useRegExPhone from '~/hooks/useRegExPhone';
-import {PetInfoForm, SetPetInfoForm, SignupForm} from '~/../types/signup';
-import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
-import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
 import AddressDrawer, {
   Hangjungdong,
@@ -36,8 +24,9 @@ interface Props {
 }
 
 /**
- * 회원 가입 > 휴대폰 인증 페이지
- * @param {() => void} handlePage - 페이지 이동 핸들러
+ *@description 집사정보등록 - 주소 등록
+ * @param onChangeStage - 집사정보등록 스테이지 count 변경 핸들러
+ * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
 function AddressRegister({
   onChangeStage,
@@ -46,7 +35,6 @@ function AddressRegister({
   setForm,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-
   const {isOpen, onOpen, onClose} = useDisclose();
   const {sido, sigugun, dong} = hangjungdong;
 
@@ -78,6 +66,7 @@ function AddressRegister({
     }));
 
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'AddressRegister']);
     navigate('AnyQuestionRegister');
   };
 
@@ -101,11 +90,6 @@ function AddressRegister({
 
   console.log('@@@ form');
   console.log(form);
-  console.log(!_.isNil(form.sex));
-
-  // useEffect(() => {
-  //   if (signupForm.mobile) setPhoneNumber(signupForm.mobile);
-  // }, []);
 
   return (
     <LayoutContainer

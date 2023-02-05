@@ -98,6 +98,7 @@ function Selector({
                 left: '2%',
               }}
             />
+
             <Text
               fontSize="18px"
               color={colors.grayScale[80]}
@@ -183,7 +184,12 @@ function Selector({
           </ScrollView>
 
           {showConfirmButton && (
-            <HStack space={'10px'}>
+            <HStack
+              w="100%"
+              pt="12px"
+              px="6px"
+              space={'10px'}
+              justifyContent={'space-between'}>
               <Button
                 width={'80px'}
                 active
@@ -194,8 +200,9 @@ function Selector({
                 buttonColors={{active: colors.grayScale[10]}}
                 fontColors={{active: colors.grayScale[90]}}
               />
+
               <Button
-                width={'249px'}
+                buttonStyle={{flex: 1}}
                 large
                 handlePress={() => onClose()}
                 shadow

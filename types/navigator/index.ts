@@ -103,7 +103,17 @@ export type SignupNavigatorRouteList =
   | 'PasswordRegister'
   | 'EmailLogin';
 
-export type PetInfoRegisterNavigatorRouteList = 'ChoiceGenderRegister';
+export type PetInfoRegisterNavigatorRouteList =
+  | 'ChoiceGenderRegister'
+  | 'EmailLogin'
+  | 'PetNameRegister'
+  | 'PetTypeRegister'
+  | 'PetBirthRegister'
+  | 'PetGenderRegister'
+  | 'AddressRegister'
+  | 'AnyQuestionRegister'
+  | 'PetImageRegister'
+  | 'PetOwnerBirthRegister';
 
 export type RouteList = RootTabParamList & RootStackParamList;
 

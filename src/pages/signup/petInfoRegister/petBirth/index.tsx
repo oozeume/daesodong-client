@@ -1,28 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, Platform, StyleSheet, TextInput} from 'react-native';
+import {Keyboard, StyleSheet, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
-import VerificationForm from '~/components/common/VerificationForm';
-import VerificationModal from '~/components/common/modal/VerificationModal';
-import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {Box, Center, HStack, Stack, Text, VStack} from 'native-base';
-import StageTextBox from '~/components/common/stage/StageTextBox';
-import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {EMAIL_SIGNUP_STAGE_TEXT_LIST} from '~/constants/signup';
+import {HStack, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {
   NavigationHookProp,
   PetInfoRegisterNavigatorRouteList,
-  SignupNavigatorRouteList,
 } from '~/../types/navigator';
-import useRegExPhone from '~/hooks/useRegExPhone';
-import {PetInfoForm, SetPetInfoForm, SignupForm} from '~/../types/signup';
-import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
-import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
-import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
-import dayjs from 'dayjs';
-import DateSelector from '~/components/hospital/review/register/selector';
 
 interface Props {
   onChangeStage: () => void;
@@ -34,7 +21,9 @@ interface Props {
 }
 
 /**
- *@description 집사정보등록 - 반려동물 이름
+ *@description 집사정보등록 - 반려동물 나이
+ * @param onChangeStage - 집사정보등록 스테이지 count 변경 핸들러
+ * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
 function PetBirthRegister({
   onChangeStage,
@@ -54,6 +43,7 @@ function PetBirthRegister({
 
     setForm(pre => ({...pre, birthDate}));
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'PetBirthRegister']);
     navigate('PetGenderRegister');
   };
 
@@ -65,7 +55,6 @@ function PetBirthRegister({
       currentStage={5}
       possibleButtonPress={!_.isNil(birthDate)}>
       <HStack
-        mx="18px"
         justifyContent={'space-between'}
         alignItems={'center'}
         borderBottomColor={colors.grayScale[30]}
@@ -89,7 +78,7 @@ function PetBirthRegister({
 
 const styles = StyleSheet.create({
   input: {
-    width: '100%',
+    flex: 1,
     paddingVertical: 15,
   },
 });

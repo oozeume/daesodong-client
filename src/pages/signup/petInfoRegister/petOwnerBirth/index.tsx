@@ -34,8 +34,9 @@ interface Props {
 }
 
 /**
- * 회원 가입 > 휴대폰 인증 페이지
- * @param {() => void} handlePage - 페이지 이동 핸들러
+ *@description 집사정보등록 - 집사 생년월일
+ * @param onChangeStage - 집사정보등록 스테이지 count 변경 핸들러
+ * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
 function PetOwnerBirthRegister({
   onChangeStage,
@@ -49,13 +50,13 @@ function PetOwnerBirthRegister({
 
   const [index, setIndex] = useState<number>();
   const [yearList, setYearList] = useState<DateList[]>([]);
-  console.log(index);
 
   const onMovePage = () => {
-    if (!index) return;
+    if (_.isUndefined(index)) return;
 
     setForm(pre => ({...pre, age: yearList[index].value}));
     onChangeStage();
+    setPreviousURL(prev => [...prev, 'PetOwnerBirthRegister']);
     navigate('PetNameRegister');
   };
 
