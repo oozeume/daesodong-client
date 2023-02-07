@@ -14,7 +14,7 @@ import MypageTabIcon from '~/assets/icons/mypage_tab.svg';
 
 import ContentsMain from '~/pages/contents/main';
 import {colors} from '~/theme/theme';
-import FacilityMain from '~/pages/facilify/main';
+import FacilityMain from '~/pages/facility/main';
 import MyPage from '~/pages/mypage';
 import CommunityMain from '~/pages/community';
 

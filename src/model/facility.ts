@@ -1,44 +1,43 @@
-import { FacilityType } from "~/../types/api/facility";
+import {FacilityResponse} from '~/../types/api/facility';
 
 class Facility {
-  constructor (private readonly facility: FacilityType) {
-  }
+  constructor(private readonly facility: FacilityResponse) {}
 
   get images() {
-    return this.facility.hospital_picture.map((i) => i.picture_url)
+    return this.facility.hospital_picture?.map(i => i.picture_url) ?? [];
   }
 
   get intro() {
-    return this.facility.intro;
+    return this.facility.intro ?? '';
   }
 
   get phoneNumber() {
-    return Number(this.facility.phone);
+    return this.facility.phone ? Number(this.facility.phone) : 0;
   }
 
   get openingHours() {
     return [
-      {date:'월 - 금', time : this.facility.sch_mon},
-      {date:'토', time : this.facility.sch_sat},
-      {date:'일', time : this.facility.sch_sun},
-      {date:'공휴일', time : this.facility.sch_holy},
-    ]
+      {date: '월 - 금', time: this.facility.sch_mon ?? ''},
+      {date: '토', time: this.facility.sch_sat ?? ''},
+      {date: '일', time: this.facility.sch_sun ?? ''},
+      {date: '공휴일', time: this.facility.sch_holy ?? ''},
+    ];
   }
 
   get address() {
-    return this.facility.address1 + '\n' + this.facility.address2 
+    return this.facility.address1 ?? '' + '\n' + this.facility.address2 ?? '';
   }
 
   get latitude() {
-    return this.facility.latitude;
+    return this.facility.latitude ?? '';
   }
 
   get longitude() {
-    return this.facility.longitude;
+    return this.facility.longitude ?? '';
   }
 
   get thanksCount() {
-    return this.facility.thanks
+    return this.facility.thanks ?? '';
   }
 }
 

@@ -1,4 +1,4 @@
-export type FacilityType = {
+export type FacilityResponse = {
   id: string;
   hospitalCategoryId: string;
   name: string;
@@ -29,37 +29,31 @@ export type FacilityType = {
     id: string;
     name: string;
   };
-  hospital_picture: [
-    {
-      hospitalId: string;
-      picture_url: string;
-    },
-    {
-      hospitalId: string;
-      picture_url: string;
-    },
-    {
-      hospitalId: string;
-      picture_url: string;
-    },
-  ];
+  hospital_picture: {
+    hospitalId: string;
+    picture_url: string;
+  }[];
   _count: {
     hospital_user_visit: number;
     hospital_review: number;
   };
 };
 
-// TODO: 네이밍 통일
-export type FacilityReviewForm = {
-  visit_date: string;
-  cost: number;
-  thoughts: string;
-  score_treatment: number;
-  score_price: number;
-  score_facilities: number;
-  score_kindness: number;
-  expect_revisit: boolean;
-  already_reviesit: boolean;
-  hospital_review_picture?: string[];
-  tags: string[];
+export type VisitedFacilityResponse = {
+  created_at: string;
+  hospitalId: string;
+  pet: {
+    age: number;
+    concern: string;
+    created_at: string;
+    id: string;
+    name: string;
+    pet_picture_url: string;
+    sex: string;
+    specieId: string;
+    updated_at: string;
+    userId: string;
+  };
+  petId: string;
+  userId: string;
 };
