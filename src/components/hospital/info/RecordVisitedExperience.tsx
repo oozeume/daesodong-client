@@ -11,14 +11,13 @@ import {
   useToast,
 } from 'native-base';
 import {colors} from '~/theme/theme';
-import { useGetVisitedFacility, useGetVisitedPetsFacility } from '~/api/facility/queries';
-import { useMutationVisitedFacility } from '~/api/facility/mutations';
-import { APP_WIDTH } from '~/utils/dimension';
-import { MARGIN_X } from '~/constants/facility/detail';
-
+import {useGetVisitedFacility} from '~/api/facility/queries';
+import {useMutationVisitedFacility} from '~/api/facility/mutations';
+import {APP_WIDTH} from '~/utils/dimension';
+import {MARGIN_X} from '~/constants/facility/detail';
 
 interface Props {
-  facilityId: string
+  facilityId: string;
 }
 
 /**
@@ -36,18 +35,24 @@ function RecordVisitedExperience({facilityId}: Props) {
   const {mutateAsync} = useMutationVisitedFacility();
 
   const onPress = () => {
-    mutateAsync(facilityId).then(() => {
-      setIsVisited(true);
-      showToast();
-    }).catch(error => console.log('error', error))
-  }
+    mutateAsync(facilityId)
+      .then(() => {
+        setIsVisited(true);
+        showToast();
+      })
+      .catch(error =>
+        // TODO: 에러처리
+        console.log('error', error),
+      );
+  };
 
-  useEffect(()=> {
-    if(data) {
-      setPetName(data.data.pet.name ?? '')
-      setIsVisited(true)
+  useEffect(() => {
+    if (data) {
+      console.log('확인---->', data.data);
+      setPetName(data.data.pet?.name ?? '');
+      setIsVisited(true);
     }
-  }, [data, setPetName])
+  }, [data, setPetName]);
 
   const closeToast = () => {
     if (toastIdRef.current) {
@@ -91,12 +96,12 @@ function RecordVisitedExperience({facilityId}: Props) {
     });
   };
 
-  if(isLoading) {
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
-    <Stack flex={1}  >
+    <Stack flex={1}>
       {visited ? (
         <Box
           flex={1}
