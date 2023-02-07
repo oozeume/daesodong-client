@@ -19,13 +19,17 @@ import {
 import HospitalName from '~/components/hospital/review/register/HospitalName';
 import DateSelector from '~/components/hospital/review/register/selector';
 import dayjs from 'dayjs';
-import {NavigationHookProp} from '~/../types/navigator';
+import {NavigationHookProp, RootStackParamList} from '~/../types/navigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {VISIT_REVIEW_TEXT} from '~/constants/hospital/review/register';
 import Label from '~/components/hospital/review/register/label';
 import {useNavigation} from '@react-navigation/native';
 import VerificationForm from '~/components/common/VerificationForm';
 import {colors} from '~/theme/theme';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {FacilityReviewForm} from '~/../types/api/facility';
+import {useMutationReviewRegister} from '~/api/facility/mutations';
+import _ from 'lodash';
 
 // 셀렉터 state 타입
 interface DateList {
@@ -33,18 +37,18 @@ interface DateList {
   txt: string;
 }
 
+type Props = NativeStackScreenProps<
+  RootStackParamList,
+  'FacilityReviewRegister'
+>;
+
 /**
  *@description 병원 리뷰 등록 페이지
  */
-function HospitalReviewRegister() {
+function FacilityReviewRegister({route}: Props) {
+  const {id, facilityName} = route.params;
+
   const navigation = useNavigation<NavigationHookProp>();
-
-  // 다시 방문하는지 여부 state
-  const [isRevisit, setIsRevisit] = useState(false);
-
-  // 여러번 방문 여부 state
-  const [isMoreVisit, setIsMoreVisit] = useState(false);
-
   // 방문 날짜 state
   const [visitedDate, setVisitedDate] = useState({
     year: 0,
@@ -54,7 +58,6 @@ function HospitalReviewRegister() {
   const [yearList, setYearList] = useState<DateList[]>([]); // 방문 날짜 연 리스트
   const [monthList, setMonthList] = useState<DateList[]>([]); // 방문 날짜 월 리스트
 
-  const [medicalPrice, setMedicalPrice] = useState(''); // 진료비 state
   const [diagnostic, setDiagnostic] = useState(''); // 진단 내용
 
   // 후기 작성 시, 주의사항 페이지 이동 함수
@@ -85,10 +88,34 @@ function HospitalReviewRegister() {
     setMonthList(_monthList);
   }, []);
 
+  const [reviewForm, setReviewForm] = useState<FacilityReviewForm>({
+    visit_date: '',
+    cost: 0,
+    thoughts: '',
+    score_treatment: 0,
+    score_price: 0,
+    score_facilities: 0,
+    score_kindness: 0,
+    expect_revisit: false,
+    already_reviesit: false,
+    hospital_review_picture: [''],
+    tags: [''],
+  });
+
+  const {mutateAsync} = useMutationReviewRegister(id);
+
+  const onSubmit = async () => {
+    // TODO: API 변경되면 다시 진행
+    mutateAsync(reviewForm).then().catch();
+  };
+
   return (
     <SafeAreaView>
       <ScrollView backgroundColor={colors.grayScale['0']}>
-        <HospitalName text={'어울림동물병원'} onPress={onMoveBack} />
+        <HospitalName
+          text={facilityName ?? '어울림 동물병원'}
+          onPress={onMoveBack}
+        />
 
         <VStack p={'18px'} pb="40px">
           <FormControl>
@@ -98,10 +125,31 @@ function HospitalReviewRegister() {
               px="24px"
               borderRadius={8}
               mb="36px">
-              <StarReviewLine text="진료" />
-              <StarReviewLine text="비용" />
-              <StarReviewLine text="시설" />
-              <StarReviewLine text="친절" lineStyle={{marginBottom: 0}} />
+              <StarReviewLine
+                text="진료"
+                rateName={'score_treatment'}
+                reviewForm={reviewForm}
+                setReviewForm={setReviewForm}
+              />
+              <StarReviewLine
+                text="비용"
+                rateName={'score_price'}
+                reviewForm={reviewForm}
+                setReviewForm={setReviewForm}
+              />
+              <StarReviewLine
+                text="시설"
+                rateName={'score_facilities'}
+                reviewForm={reviewForm}
+                setReviewForm={setReviewForm}
+              />
+              <StarReviewLine
+                text="친절"
+                rateName={'score_kindness'}
+                reviewForm={reviewForm}
+                setReviewForm={setReviewForm}
+                lineStyle={{marginBottom: 0}}
+              />
             </VStack>
 
             <HStack mb={'15px'}>
@@ -114,9 +162,18 @@ function HospitalReviewRegister() {
                 <DateSelector
                   headerText="년도"
                   selectedIndex={visitedDate.year}
-                  onSelect={(index: number) =>
-                    setVisitedDate(pre => ({...pre, year: index}))
-                  }
+                  onSelect={(index: number) => {
+                    setVisitedDate(pre => ({
+                      ...pre,
+                      year: index,
+                    }));
+                    setReviewForm({
+                      ...reviewForm,
+                      visit_date: `${yearList[index].value}-${
+                        monthList[visitedDate.month].value
+                      }`,
+                    });
+                  }}
                   itemList={yearList}
                 />
               </Box>
@@ -125,9 +182,18 @@ function HospitalReviewRegister() {
                 <DateSelector
                   headerText="월"
                   selectedIndex={visitedDate.month}
-                  onSelect={(index: number) =>
-                    setVisitedDate(pre => ({...pre, month: index}))
-                  }
+                  onSelect={(index: number) => {
+                    setVisitedDate(pre => ({
+                      ...pre,
+                      month: index,
+                    }));
+                    setReviewForm({
+                      ...reviewForm,
+                      visit_date: `${yearList[visitedDate.year].value}-${
+                        monthList[index].value
+                      }`,
+                    });
+                  }}
                   itemList={monthList}
                 />
               </Box>
@@ -141,8 +207,13 @@ function HospitalReviewRegister() {
             <VerificationForm
               placeholder={'숫자만 입력할 수 있어요'}
               marginBottom={'8px'}
-              onChangeText={setMedicalPrice}
-              value={medicalPrice}
+              onChangeText={price =>
+                setReviewForm({
+                  ...reviewForm,
+                  cost: Number(price),
+                })
+              }
+              value={String(reviewForm.cost)}
               keyboardType="number-pad"
               inputRightElement={
                 <Text color={colors.grayScale['60']} fontSize="15px">
@@ -165,6 +236,11 @@ function HospitalReviewRegister() {
               marginBottom={'8px'}
               onChangeText={setDiagnostic}
               value={diagnostic}
+              onBlur={() => {
+                const arr = diagnostic.split(' ').map(i => `#${i}`);
+                setDiagnostic(arr.join(' '));
+                setReviewForm({...reviewForm, tags: diagnostic.split(' ')});
+              }}
             />
 
             <Text color={colors.grayScale['50']} fontSize="13px" mb={'36px'}>
@@ -184,6 +260,13 @@ function HospitalReviewRegister() {
               lineHeight="22px"
               placeholder={VISIT_REVIEW_TEXT}
               autoCompleteType
+              value={reviewForm.thoughts}
+              onChangeText={contents => {
+                setReviewForm({
+                  ...reviewForm,
+                  thoughts: contents,
+                });
+              }}
               placeholderTextColor={'#C6C8CD'}
             />
 
@@ -202,19 +285,20 @@ function HospitalReviewRegister() {
 
             <HStack mb={'52px'}>
               <RevisitCheckButton
-                active={isRevisit}
-                handlePress={() => setIsRevisit(prevState => !prevState)}
+                setReviewForm={setReviewForm}
+                reviewForm={reviewForm}
               />
             </HStack>
 
             {/* '이 병원을 여러번 방문했어요.' 버튼 */}
             <MoreVisitCheckButton
-              isChecked={isMoreVisit}
-              setCheck={setIsMoreVisit}
+              setReviewForm={setReviewForm}
+              reviewForm={reviewForm}
             />
 
             {/* 리뷰 등록 버튼 */}
-            <ReviewRegisterButton handlePress={() => {}} active={false} />
+            {/* TODO: active 조건 추가 */}
+            <ReviewRegisterButton handlePress={onSubmit} active={true} />
           </FormControl>
         </VStack>
       </ScrollView>
@@ -222,4 +306,4 @@ function HospitalReviewRegister() {
   );
 }
 
-export default HospitalReviewRegister;
+export default FacilityReviewRegister;

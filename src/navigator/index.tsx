@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
 import SignupSocial from '~/pages/signup/social';
-import HospitalReviewRegister from '~/pages/facilify/detail/review/register';
+import FacilityReviewRegister from '~/pages/facilify/detail/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/facilify/detail/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
@@ -70,8 +70,8 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen
-          name="HospitalReviewRegister"
-          component={HospitalReviewRegister}
+          name="FacilityReviewRegister"
+          component={FacilityReviewRegister}
         />
         <Stack.Screen
           name="HospitalReviewRegisterPrecaution"

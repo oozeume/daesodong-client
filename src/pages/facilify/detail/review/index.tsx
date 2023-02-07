@@ -1,21 +1,27 @@
 import React from 'react';
 import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
-
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import ReviewList from '~/components/hospital/review/ReviewList';
-import {NavigationHookProp} from '~/../types/navigator';
+import {NavigationHookProp, RootTabParamList} from '~/../types/navigator';
 import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+type Props = NativeStackScreenProps<RootTabParamList, 'FacilityReview'>;
 
 /**
  *@description 병원 리뷰 페이지
  */
 
-function FacilityReview() {
+function FacilityReview({route}: Props) {
+  const {id, facilityName} = route.params;
   const navigation = useNavigation<NavigationHookProp>();
 
   const onMoveReviewRegisterPage = () => {
-    navigation.navigate('HospitalReviewRegister');
+    navigation.navigate('FacilityReviewRegister', {
+      id,
+      facilityName,
+    });
   };
 
   return (
@@ -55,6 +61,6 @@ function FacilityReview() {
       <ReviewList />
     </ScrollView>
   );
-};
+}
 
 export default FacilityReview;

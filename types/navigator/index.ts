@@ -23,6 +23,10 @@ export type RootTabParamList = {
   FacilityInfo: {
     id: string;
   };
+  FacilityReview: {
+    id: string;
+    facilityName: string;
+  };
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
@@ -40,7 +44,10 @@ export type RootStackParamList = {
     facilityName: string;
   };
   tab: undefined;
-  HospitalReviewRegister: undefined;
+  FacilityReviewRegister: {
+    id: string;
+    facilityName: string;
+  };
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;
 

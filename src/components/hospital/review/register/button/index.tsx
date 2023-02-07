@@ -1,5 +1,5 @@
 import {Center, Pressable, Text} from 'native-base';
-import React from 'react';
+import React, {useState} from 'react';
 import {GestureResponderEvent, StyleProp} from 'react-native';
 import CircleCheckIcon from '~/assets/icons/circle_check.svg';
 import BackIcon from '~/assets/icons/back.svg';
@@ -7,6 +7,7 @@ import DeleteIcon from '~/assets/icons/delete.svg';
 import {ViewStyle} from 'react-native';
 import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
+import {FacilityReviewForm} from '~/../types/api/facility';
 
 interface IconButtonProps {
   buttonStyle?: StyleProp<ViewStyle>;
@@ -38,7 +39,7 @@ function BackButton({buttonStyle, iconStyle, onPress}: IconButtonProps) {
  *@description 페이지 닫기 버튼
  *@param {ViewStyle} buttonStyle - 버튼 추가 스타일
  *@param {ViewStyle} iconStyle - 아이콘 추가 스타일
- *@param {() => void)} onPress - 클릭 이벤트 함수
+ *@param {() => void} onPress - 클릭 이벤트 함수
  */
 function CloseButton({buttonStyle, iconStyle, onPress}: IconButtonProps) {
   return (
@@ -79,36 +80,46 @@ function ReviewPrecautionButton({onPress}: ReviewPrecautionButtonProps) {
   );
 }
 
-interface CheckedButtonProps<T extends number | boolean> {
-  isChecked: T;
-  setCheck: (isChecked: T) => void;
+interface CheckedButtonProps {
+  setReviewForm: React.Dispatch<React.SetStateAction<any>>;
+  reviewForm: FacilityReviewForm;
 }
 
 interface RevisitCheckButtonProps {
-  handlePress: () => void;
-  active: boolean;
+  setReviewForm: React.Dispatch<React.SetStateAction<any>>;
+  reviewForm: FacilityReviewForm;
 }
 
 /**
  *@description 이 병원을 다시 방문하시겠습니까? 체크 버튼
  *@param {boolean} active - 버튼 활성화 여부
  */
-const RevisitCheckButton = ({active, handlePress}: RevisitCheckButtonProps) => {
+const RevisitCheckButton = ({
+  reviewForm,
+  setReviewForm,
+}: RevisitCheckButtonProps) => {
+  const [isRevisit, setIsRevisit] = useState(false);
+
+  const onPress = () => {
+    setIsRevisit(prev => !prev);
+    setReviewForm({...reviewForm, expect_revisit: !isRevisit});
+  };
+
   return (
     <Pressable
       w={'100%'}
       h={'50px'}
       backgroundColor={
-        active ? colors.fussOrange['-40'] : colors.grayScale['0']
+        isRevisit ? colors.fussOrange['-40'] : colors.grayScale['0']
       }
       borderWidth={'1px'}
       borderRadius={'8px'}
-      borderColor={active ? colors.fussOrange['0'] : colors.grayScale['30']}
-      onPress={handlePress}>
+      borderColor={isRevisit ? colors.fussOrange['0'] : colors.grayScale['30']}
+      onPress={onPress}>
       <Text
         lineHeight={'50px'}
         textAlign={'center'}
-        color={active ? colors.fussOrange['0'] : colors.grayScale['50']}
+        color={isRevisit ? colors.fussOrange['0'] : colors.grayScale['50']}
         fontSize="14px">
         네, 방문할래요!
       </Text>
@@ -119,25 +130,21 @@ const RevisitCheckButton = ({active, handlePress}: RevisitCheckButtonProps) => {
 /**
  *@description 이 병원을 여러번 방문할지 여부에 대한 버튼
  */
-function MoreVisitCheckButton({
-  isChecked,
-  setCheck,
-}: CheckedButtonProps<boolean>) {
-  const ICON_STYLE = {
-    marginRight: 10,
+function MoreVisitCheckButton({setReviewForm, reviewForm}: CheckedButtonProps) {
+  const [isChecked, setCheck] = useState(false);
+
+  const onPress = () => {
+    setCheck(!isChecked);
+    setReviewForm({...reviewForm, already_reviesit: !isChecked});
   };
 
   return (
-    <Pressable
-      variant={'unstyled'}
-      mb="24px"
-      onPress={() => setCheck(!isChecked)}>
+    <Pressable variant={'unstyled'} mb="24px" onPress={onPress}>
       <Center flexDirection={'row'}>
-        {isChecked ? (
-          <CircleCheckIcon style={ICON_STYLE} fill={colors.fussOrange['0']} />
-        ) : (
-          <CircleCheckIcon style={ICON_STYLE} fill={colors.grayScale['30']} />
-        )}
+        <CircleCheckIcon
+          style={{marginRight: 10}}
+          fill={isChecked ? colors.fussOrange['0'] : colors.grayScale['30']}
+        />
         <Text
           fontSize="15px"
           color={isChecked ? colors.grayScale['80'] : colors.grayScale['60']}>

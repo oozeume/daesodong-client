@@ -44,6 +44,7 @@ function FacilityDetail({route}: Props) {
         />
         <FaciltiyTab.Screen
           name={'FacilityReview'}
+          initialParams={{id: id}}
           component={FacilityReview}
           options={{title: '후기'}}
         />
