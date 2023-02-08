@@ -2,25 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {colors} from '~/theme/theme';
 import {TextArea} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {NavigationHookProp} from '~/../types/navigator';
+import {PetInfoRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import {setData} from '~/utils/storage';
 import StorageKeys from '~/constants/storageKeys';
-
-interface Props {
-  onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
 
 /**
  *@description 집사정보등록 - 고민되는 점
@@ -33,7 +20,7 @@ function AnyQuestionRegister({
   form,
   setForm,
   currentStage,
-}: Props) {
+}: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const [concern, setConcern] = useState<string>();
@@ -58,9 +45,6 @@ function AnyQuestionRegister({
   useEffect(() => {
     if (form.concern) setConcern(form.concern);
   }, []);
-
-  console.log('@@@ FORM');
-  console.log(form);
 
   return (
     <LayoutContainer

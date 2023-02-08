@@ -56,12 +56,14 @@ function SignupPetInfoNavigator() {
 
       return prev - 1;
     });
+
     setPreviousURL(prev => prev.slice(0, prev.length - 1));
-    navigate(previousURL[previousURL.length - 1] as any);
+    if (previousURL.length > 1) navigate(previousURL[previousURL.length - 2]);
   };
 
   useEffect(() => {
     async function loadFormData() {
+      // 입력한 집사 정보 스토리지 제거 로직 주석처리
       // await removeData(storageKeys.petInfoRegister.form);
       // await removeData(storageKeys.petInfoRegister.state);
 
@@ -76,11 +78,6 @@ function SignupPetInfoNavigator() {
           0,
           Number(loadState) + 1,
         );
-
-        console.log('@@@ NAVIGATOR');
-        console.log(loadState);
-        console.log(loadForm);
-        console.log(_routeList);
 
         setPreviousURL(_routeList);
         navigate(_routeList[_routeList.length - 1]);
@@ -248,7 +245,6 @@ function SignupPetInfoNavigator() {
               }}>
               {() => (
                 <PetImageRegister
-                  onChangeStage={onChangeStage}
                   form={form}
                   setForm={setForm}
                   currentStage={9}

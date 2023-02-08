@@ -38,6 +38,9 @@ export const apiCall = async <ResponseType = any>(
     .then(({data, status}: {data: ResponseType; status: number}) => {
       if (__DEV__) {
         console.log('@ API SUCCESS RESPONSE @');
+        console.log(`1. METHOD : ${props.method}`);
+        console.log(`2. PATH : ${BASE_URL}${props.url}`);
+        console.log(`3. DATA : `);
         console.log(data);
       }
 

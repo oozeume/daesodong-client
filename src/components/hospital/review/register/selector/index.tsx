@@ -43,9 +43,6 @@ function Selector({
 }: Props) {
   const {isOpen, onOpen, onClose} = useDisclose();
 
-  console.log('@@@ selectedIndex');
-  console.log(selectedIndex);
-
   /**
    *@description 아이템 클릭 이벤트 핸들러
    */

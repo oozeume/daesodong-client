@@ -1,22 +1,22 @@
+import {useNavigation} from '@react-navigation/native';
 import {Center, Image, Stack, Text} from 'native-base';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
-import Button from '~/components/common/button';
-import {HEADER_HEIGHT} from '~/constants/heights';
+import {NavigationHookProp} from '~/../types/navigator';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
-
-interface Props {
-  handlePage: () => void;
-}
 
 /**
  *@description 집사정보등록 - 마지막 페이지
  */
 
 function PetInfoRegisterOutro() {
-  const statusbarHeight = getStatusBarHeight();
+  const {reset} = useNavigation<NavigationHookProp>();
+
+  const onMovePage = () => {
+    reset({index: 0, routes: [{name: 'tab'}]});
+  };
   return (
     <SafeAreaView>
       <Stack
@@ -55,24 +55,10 @@ function PetInfoRegisterOutro() {
         </Center>
 
         <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
-          <Button
-            handlePress={() => {}}
-            large
+          <RedActiveLargeButton
             active
-            shadow
             text={'대소동 입장'}
-            fontColors={{
-              active: colors.grayScale[90],
-              disabled: colors.grayScale[50],
-            }}
-            buttonColors={{
-              active: colors.fussOrange[0],
-              disabled: colors.fussOrange['-30'],
-            }}
-            borderColors={{
-              active: colors.grayScale[90],
-              disabled: colors.grayScale[50],
-            }}
+            handlePress={onMovePage}
           />
         </Stack>
       </Stack>

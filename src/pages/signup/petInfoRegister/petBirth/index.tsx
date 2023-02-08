@@ -36,8 +36,6 @@ function PetBirthRegister({
   currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
-  console.log('@@@ FORM');
-  console.log(form);
 
   const [birthDate, setBirthDate] = useState<number>();
 

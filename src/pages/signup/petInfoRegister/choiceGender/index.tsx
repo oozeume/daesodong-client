@@ -1,26 +1,13 @@
 import React from 'react';
 import {Stack} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {NavigationHookProp} from '~/../types/navigator';
+import {PetInfoRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import ChoiceButton from '~/components/signup/petInfo/ChoiceButton';
 import _ from 'lodash';
 import {setData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
-
-interface Props {
-  onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
 
 /**
  *@description 집사정보등록 - 집사 성 등록 페이지
@@ -33,7 +20,7 @@ function ChoiceGenderRegister({
   form,
   setForm,
   currentStage,
-}: Props) {
+}: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const onMovePage = async () => {
@@ -44,9 +31,6 @@ function ChoiceGenderRegister({
     await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetOwnerBirthRegister');
   };
-
-  console.log('@@@ form');
-  console.log(form);
 
   return (
     <LayoutContainer

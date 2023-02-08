@@ -2,25 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import {colors} from '~/theme/theme';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {NavigationHookProp} from '~/../types/navigator';
+import {PetInfoRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import {setData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
-
-interface Props {
-  onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
 
 /**
  *@description 집사정보등록 - 반려동물 이름
@@ -31,7 +18,7 @@ function PetNameRegister({
   form,
   setForm,
   currentStage,
-}: Props) {
+}: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const [name, setName] = useState<string>();
@@ -47,9 +34,6 @@ function PetNameRegister({
     await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetTypeRegister');
   };
-
-  console.log('@@@ FORM');
-  console.log(form);
 
   useEffect(() => {
     if (form.name) setName(form.name);

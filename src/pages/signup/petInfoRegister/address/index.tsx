@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Stack, useDisclose} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {NavigationHookProp} from '~/../types/navigator';
+import {PetInfoRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import AddressDrawer, {
@@ -15,16 +12,6 @@ import {hangjungdong} from '~/utils/hangjungdong';
 import SelectButtonForm from '~/components/signup/petInfo/SelectButtonForm';
 import {setData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
-
-interface Props {
-  onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
 
 /**
  *@description 집사정보등록 - 주소 등록
@@ -37,7 +24,7 @@ function AddressRegister({
   form,
   setForm,
   currentStage,
-}: Props) {
+}: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const {isOpen, onOpen, onClose} = useDisclose();
   const {sido, sigugun, dong} = hangjungdong;

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Alert, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
-import {Circle, HStack, Image, Pressable, Text} from 'native-base';
+import {Circle, HStack, Image, Pressable, Spinner, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {PetInfoImageRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import {usePostImageUpload} from '~/api/image';
@@ -14,20 +14,15 @@ import {usePatchUserInfo} from '~/api/user';
 import {removeData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
 
-interface Props {
-  onChangeStage: () => void;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
-
 /**
  *@description 집사정보등록 - 반려동물 사진 등록
- * @param onChangeStage - 집사정보등록 스테이지 count 변경 핸들러
- * @param setPreviousURL - 이중 네비게이터 구조에서 이전 url 변경 함수
  */
-function PetImageRegister({onChangeStage, form, setForm, currentStage}: Props) {
-  const {navigate, reset} = useNavigation<NavigationHookProp>();
+function PetImageRegister({
+  form,
+  setForm,
+  currentStage,
+}: PetInfoImageRegisterProps) {
+  const {reset} = useNavigation<NavigationHookProp>();
   const {mutateAsync} = usePostImageUpload();
   const patchUserInfo = usePatchUserInfo();
 
@@ -99,16 +94,15 @@ function PetImageRegister({onChangeStage, form, setForm, currentStage}: Props) {
     }
   };
 
-  console.log('@@@ FORM');
-  console.log(form);
-
   return (
     <LayoutContainer
       buttonPress={() => onMovePage(false)}
-      currentStage={9}
+      currentStage={currentStage}
       isSkipPage
       onSkipPage={() => onMovePage(true)}
       possibleButtonPress={!_.isNil(image)}>
+      {patchUserInfo.isLoading && <Spinner size="lg" />}
+
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
         {image ? (
           <Image

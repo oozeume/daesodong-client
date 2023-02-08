@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {NavigationHookProp} from '~/../types/navigator';
+import {PetInfoRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
@@ -12,16 +9,6 @@ import dayjs from 'dayjs';
 import DateSelector from '~/components/hospital/review/register/selector';
 import {setData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
-
-interface Props {
-  onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
 
 /**
  *@description 집사정보등록 - 집사 생년월일
@@ -34,7 +21,7 @@ function PetOwnerBirthRegister({
   form,
   setForm,
   currentStage,
-}: Props) {
+}: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const [index, setIndex] = useState<number>();
@@ -54,9 +41,6 @@ function PetOwnerBirthRegister({
     await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetNameRegister');
   };
-
-  console.log('@@@ FORM');
-  console.log(form);
 
   useEffect(() => {
     const curYear = dayjs().year();

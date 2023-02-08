@@ -2,11 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {colors} from '~/theme/theme';
 import {HStack, Pressable, Text, useDisclose} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {
-  NavigationHookProp,
-  PetInfoRegisterNavigatorRouteList,
-} from '~/../types/navigator';
-import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
+import {NavigationHookProp} from '~/../types/navigator';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
 import Tag from '~/components/common/Tag';
@@ -16,16 +12,7 @@ import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import {useGetSpecies} from '~/api/species';
 import {setData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
-
-interface Props {
-  onChangeStage: () => void;
-  setPreviousURL: React.Dispatch<
-    React.SetStateAction<PetInfoRegisterNavigatorRouteList[]>
-  >;
-  form: PetInfoForm;
-  setForm: SetPetInfoForm;
-  currentStage: number;
-}
+import {PetInfoRegisterProps} from '~/../types/signup';
 
 /**
  *@description 집사정보등록 - 반려동물 종 선택
@@ -38,7 +25,7 @@ function PetTypeRegister({
   form,
   setForm,
   currentStage,
-}: Props) {
+}: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
   const {data, isSuccess} = useGetSpecies({limit: 10});
@@ -64,9 +51,6 @@ function PetTypeRegister({
     await setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetBirthRegister');
   };
-
-  console.log('@@@ FORM');
-  console.log(form);
 
   useEffect(() => {
     // 이전 페이지로 이동하거나 등록 중 앱 이탈할 경우, 이전 폼 값 등록 로직
