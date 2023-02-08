@@ -13,6 +13,7 @@ import {ErrorResponseTransform} from '~/../types/api/common';
 import {usePatchUserInfo} from '~/api/user';
 import {removeData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 /**
  *@description 집사정보등록 - 반려동물 사진 등록
@@ -23,32 +24,58 @@ function PetImageRegister({
   currentStage,
 }: PetInfoImageRegisterProps) {
   const {reset} = useNavigation<NavigationHookProp>();
-  const {mutateAsync} = usePostImageUpload();
+  const {mutateAsync, isLoading} = usePostImageUpload();
   const patchUserInfo = usePatchUserInfo();
 
   // 내부 앱 이미지 경로
-  const [image, setImage] = useState<string>();
+  const [imagePath, setImagePath] = useState<string>();
+  const [imageInfo, setImageInfo] = useState<ImageOrVideo>();
 
   // 이미지명
-  const [_filename, setFilename] = useState<string>();
+  const [fileName, setFilename] = useState<string>();
 
   const onMovePage = async (isSkip: boolean) => {
-    if (!image && !_filename && !isSkip) return;
+    if (!imagePath || !imageInfo || !fileName) return;
 
-    const petPictureUrl = isSkip ? undefined : _filename;
+    const petPictureUrl = isSkip ? undefined : fileName;
 
-    setForm(prev => ({...prev, petPictureUrl}));
+    setForm(prev => ({...prev}));
 
     try {
-      const response = await patchUserInfo.mutateAsync({
-        ...form,
-        petPictureUrl,
-      });
+      const imageUploadForm = {
+        uri: Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
+        type: imageInfo.mime,
+        name: Platform.OS === 'android' ? fileName : imageInfo.filename,
+      };
 
-      if (response.data) {
-        await removeData(storageKeys.petInfoRegister.form);
-        await removeData(storageKeys.petInfoRegister.state);
-        reset({index: 0, routes: [{name: 'PetInfoRegisterOutro'}]});
+      const data = new FormData();
+      data.append('file', imageUploadForm);
+
+      // 이미지 업로드 api 호출
+      const imageUploadResponse = await mutateAsync(
+        {data, fileName},
+        {
+          onError: error => {
+            const errorResponse = error as ErrorResponseTransform;
+
+            if (errorResponse?.message && errorResponse?.message !== '') {
+              Alert.alert(errorResponse.message);
+            }
+          },
+        },
+      );
+
+      if (imageUploadResponse.statusCode === 201) {
+        const response = await patchUserInfo.mutateAsync({
+          ...form,
+          petPictureUrl,
+        });
+
+        if (response.data) {
+          await removeData(storageKeys.petInfoRegister.form);
+          await removeData(storageKeys.petInfoRegister.state);
+          reset({index: 0, routes: [{name: 'PetInfoRegisterOutro'}]});
+        }
       }
     } catch (error) {
       const _error = error as ErrorResponseTransform;
@@ -61,36 +88,21 @@ function PetImageRegister({
 
   // 이미지 선택 핸들러
   const onImagePicker = async () => {
-    const imageInfo = await imagePicker();
+    // 이미지가 업로드 중이면 핸들러 반환
+    if (isLoading) return;
 
-    const tmp = imageInfo.path.split('/');
-    const fileName = tmp[tmp.length - 1];
+    try {
+      const imageInfo = await imagePicker();
+      const tmp = imageInfo.path.split('/');
+      const fileName = tmp[tmp.length - 1];
 
-    const imageUploadForm = {
-      uri: Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
-      type: imageInfo.mime,
-      name: Platform.OS === 'android' ? fileName : imageInfo.filename,
-    };
-
-    const data = new FormData();
-    data.append('file', imageUploadForm);
-
-    const response = await mutateAsync(
-      {data, fileName},
-      {
-        onError: error => {
-          const errorResponse = error as ErrorResponseTransform;
-
-          if (errorResponse?.message && errorResponse?.message !== '') {
-            Alert.alert(errorResponse.message);
-          }
-        },
-      },
-    );
-
-    if (response.success === 'SUCCESS') {
-      setImage(imageUploadForm.uri || '');
+      setImageInfo(imageInfo);
+      setImagePath(
+        Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
+      );
       setFilename(fileName);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -100,13 +112,13 @@ function PetImageRegister({
       currentStage={currentStage}
       isSkipPage
       onSkipPage={() => onMovePage(true)}
-      possibleButtonPress={!_.isNil(image)}>
+      possibleButtonPress={!_.isNil(imagePath)}>
       {patchUserInfo.isLoading && <Spinner size="lg" />}
 
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
-        {image ? (
+        {imagePath ? (
           <Image
-            source={{uri: image}}
+            source={{uri: imagePath}}
             alt="pet_img"
             w={'165px'}
             h={'165px'}
