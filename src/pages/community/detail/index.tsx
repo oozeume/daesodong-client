@@ -17,21 +17,27 @@ import Button from '~/components/common/button';
 import CommunityContent from '~/components/community/detail/Content';
 import Header from '~/components/hospital/review/register/Header';
 import {Platform} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {NavigationHookProp} from '~/../types/navigator';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import Popup from '~/components/common/popup/Popup';
 import Comment from '~/components/common/comment';
+import {useGetCommunityPost} from '~/api/community/queries';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
  */
 const CommunityDetail = () => {
+  const {params} = useRoute<RouteHookProp<'CommunityDetail'>>();
+
+  const getCommunityPost = useGetCommunityPost(params.id);
   const navigation = useNavigation<NavigationHookProp>();
   const [comment, setComment] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
 
   const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
+
+  console.log(getCommunityPost);
 
   return (
     <KeyboardAvoidingView
@@ -85,7 +91,12 @@ const CommunityDetail = () => {
           />
 
           {/* 컨텐츠 */}
-          <CommunityContent isVisibleUserInfo isVisibleLike isVisibleTag />
+          <CommunityContent
+            isVisibleUserInfo
+            isVisibleLike
+            isVisibleTag
+            contentData={getCommunityPost.data?.data}
+          />
 
           <Box height="8px" bgColor={colors.grayScale['10']}></Box>
 

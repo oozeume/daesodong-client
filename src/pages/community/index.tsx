@@ -8,12 +8,19 @@ import DownIcon from '~/assets/icons/down.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {FlatList} from 'react-native-gesture-handler';
 import CommunityContents from '../../components/community/main/CommunityContents';
+import {useGetCommunityPostList} from '~/api/community/queries';
 
 /**
  *@description 커뮤니티 메인페이지
  */
 
 const CommunityMain = () => {
+  const getCommunityPostList = useGetCommunityPostList({
+    limit: 10,
+    sort: 'latest',
+  });
+
+  console.log(getCommunityPostList);
   const data = [
     <BestContents />,
     <PetType />,
@@ -49,7 +56,7 @@ const CommunityMain = () => {
         handleSecondButton={() => {}}
       />
     </HStack>,
-    <CommunityContents />,
+    <CommunityContents contentsList={getCommunityPostList.data?.data} />,
   ];
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>
