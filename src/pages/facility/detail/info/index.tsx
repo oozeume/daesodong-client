@@ -22,16 +22,15 @@ import HospitalOpeningHours from '~/components/hospital/info/HospitalOpeningHour
 import RecordVisitedExperience from '~/components/hospital/info/RecordVisitedExperience';
 import ArrowDownIcon from '~/assets/icon/_down.svg';
 import {useGetFacilityInfo} from '~/api/facility/queries';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootTabParamList} from '~/../types/navigator';
 import Facility from '~/model/facility';
 import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
 import {imageHeight} from '~/utils/imageHeight';
 import {APP_WIDTH} from '~/utils/dimension';
 
-type Props = NativeStackScreenProps<RootTabParamList, 'FacilityInfo'>;
-
+interface Props {
+  id: string;
+}
 
 const IMAGE_RATIO = 375 / 250;
 
@@ -39,8 +38,7 @@ const IMAGE_RATIO = 375 / 250;
  * 시설 정보 탭
  */
 
-function FacilityInfo({route}: Props) {
-  const {id} = route.params;
+function FacilityInfo({id}: Props) {
   const [textOpen, setTextOpen] = useState(false);
   const [facilityInfo, setFacilityInfo] = useState<Facility>();
 

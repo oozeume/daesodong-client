@@ -38,8 +38,7 @@ function FacilityDetail({route}: Props) {
         initialRouteName="Facility">
         <FaciltiyTab.Screen
           name={'FacilityInfo'}
-          initialParams={{id: id}}
-          component={FacilityInfo}
+          component={() => <FacilityInfo id={id} />}
           options={{title: '시설 정보'}}
         />
         <FaciltiyTab.Screen
