@@ -16,6 +16,7 @@ function KakaoLoginButton({handlePress}: LoginButtonProps) {
       borderColors={{active: '#ffffffff'}}
       active
       large
+      shadow
       textStyle={{fontSize: 16}}
     />
   );
@@ -34,6 +35,7 @@ function AppleLoginButton({handlePress}: LoginButtonProps) {
       borderColors={{active: '#ffffffff'}}
       active
       large
+      shadow
       buttonStyle={{marginTop: 10}}
       textStyle={{fontSize: 16}}
     />
@@ -53,6 +55,7 @@ function GoogleLoginButton({handlePress}: LoginButtonProps) {
       borderColors={{active: colors.grayScale['90']}}
       active
       large
+      shadow
       buttonStyle={{marginTop: 10}}
       textStyle={{fontSize: 16}}
     />
@@ -72,6 +75,7 @@ function EmailLoginButton({handlePress}: LoginButtonProps) {
       borderColors={{active: colors.grayScale['90']}}
       active
       large
+      shadow
       buttonStyle={{marginTop: 10}}
       textStyle={{fontSize: 16}}
     />

@@ -1,33 +1,42 @@
-import React, {useState} from 'react';
-import {Box, Center, Flex, Modal, Pressable, Text, VStack} from 'native-base';
+import React from 'react';
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Modal,
+  Pressable,
+  Text,
+  VStack,
+} from 'native-base';
 
 import {colors} from '~/theme/theme';
 import Button from '../button';
-
 import CheckIcon from '../../../assets/icons/check.svg';
 import RightIcon from '../../../assets/icons/right.svg';
 import BackIcon from '../../../assets/icon/back_icon.svg';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {NavigationHookProp, RouteList} from '~/../types/navigator';
+import {SignupTerm} from '~/../types/signup';
 
 interface Props {
   visible: boolean;
   handleModal: () => void;
   onSignup: () => Promise<void>;
+  term: SignupTerm;
+  setTerm: React.Dispatch<React.SetStateAction<SignupTerm>>;
+  onPolicyModalOpen: (
+    modalName: 'ServicePolicy' | 'PrivacyPolicy',
+    isOpen: boolean,
+  ) => void;
 }
 
-function TermsAgreedModal({visible, handleModal, onSignup}: Props) {
-  const {navigate} = useNavigation<NavigationHookProp>();
-  const [isAgreePrivacyPolicy, setIsAgreePrivacyPolicy] = useState(false);
-  const [isAgreeTermsOfService, setIsAgreeTermsOfService] = useState(false);
-
-  const moveToTermsDetail = (
-    route: 'TermsOfServicePolicy' | 'PrivacyPolicy',
-  ) => {
-    navigate(route);
-    handleModal();
-  };
-
+function TermsAgreedModal({
+  visible,
+  handleModal,
+  onSignup,
+  setTerm,
+  term,
+  onPolicyModalOpen,
+}: Props) {
   return (
     <Modal w={'100%'} isOpen={visible} size={'full'}>
       <Modal.Content
@@ -58,27 +67,39 @@ function TermsAgreedModal({visible, handleModal, onSignup}: Props) {
               {/* 이용약관 */}
               <Flex flexDirection={'row'} justifyContent={'space-between'}>
                 <Pressable
-                  w={'5%'}
+                  w={'90%'}
                   justifyContent={'center'}
-                  onPress={() => setIsAgreeTermsOfService(prev => !prev)}>
-                  <CheckIcon
-                    fill={
-                      isAgreeTermsOfService
-                        ? colors.fussOrange[0]
-                        : colors.grayScale[30]
-                    }
-                  />
+                  onPress={() =>
+                    setTerm(prev => ({
+                      ...prev,
+                      isServicePolicyCheck: !prev.isServicePolicyCheck,
+                    }))
+                  }>
+                  <HStack alignItems={'center'}>
+                    <CheckIcon
+                      fill={
+                        term.isServicePolicyCheck
+                          ? colors.fussOrange[0]
+                          : colors.grayScale[30]
+                      }
+                    />
+
+                    <Text
+                      ml="8px"
+                      w={'85%'}
+                      fontSize={16}
+                      fontWeight={'400'}
+                      color={colors.grayScale[80]}>
+                      (필수) 이용약관 동의
+                    </Text>
+                  </HStack>
                 </Pressable>
-                <Text
-                  w={'85%'}
-                  fontSize={16}
-                  fontWeight={'400'}
-                  color={colors.grayScale[80]}>
-                  (필수) 이용약관 동의
-                </Text>
+
                 <Pressable
-                  w={'5%'}
-                  onPress={() => moveToTermsDetail('TermsOfServicePolicy')}>
+                  justifyContent={'center'}
+                  alignItems={'flex-end'}
+                  w={'10%'}
+                  onPress={() => onPolicyModalOpen('ServicePolicy', true)}>
                   <RightIcon stroke={colors.grayScale[50]} />
                 </Pressable>
               </Flex>
@@ -86,27 +107,40 @@ function TermsAgreedModal({visible, handleModal, onSignup}: Props) {
               {/* 개인정보 처리방침 */}
               <Flex flexDirection={'row'} justifyContent={'space-between'}>
                 <Pressable
-                  w={'5%'}
+                  w={'90%'}
                   justifyContent={'center'}
-                  onPress={() => setIsAgreePrivacyPolicy(prev => !prev)}>
-                  <CheckIcon
-                    fill={
-                      isAgreePrivacyPolicy
-                        ? colors.fussOrange[0]
-                        : colors.grayScale[30]
-                    }
-                  />
+                  onPress={() =>
+                    setTerm(prev => ({
+                      ...prev,
+                      isPersonalInformationPolicyCheck:
+                        !prev.isPersonalInformationPolicyCheck,
+                    }))
+                  }>
+                  <HStack alignItems={'center'}>
+                    <CheckIcon
+                      fill={
+                        term.isPersonalInformationPolicyCheck
+                          ? colors.fussOrange[0]
+                          : colors.grayScale[30]
+                      }
+                    />
+
+                    <Text
+                      ml="8px"
+                      w={'85%'}
+                      fontSize={16}
+                      fontWeight={'400'}
+                      color={colors.grayScale[80]}>
+                      (필수) 개인정보 처리방침 동의
+                    </Text>
+                  </HStack>
                 </Pressable>
-                <Text
-                  w={'85%'}
-                  fontSize={16}
-                  fontWeight={'400'}
-                  color={colors.grayScale[80]}>
-                  (필수) 개인정보 처리방침 동의
-                </Text>
+
                 <Pressable
-                  w={'5%'}
-                  onPress={() => moveToTermsDetail('PrivacyPolicy')}>
+                  justifyContent={'center'}
+                  alignItems={'flex-end'}
+                  w={'10%'}
+                  onPress={() => onPolicyModalOpen('PrivacyPolicy', true)}>
                   <RightIcon stroke={colors.grayScale[50]} />
                 </Pressable>
               </Flex>
@@ -132,7 +166,10 @@ function TermsAgreedModal({visible, handleModal, onSignup}: Props) {
                 disabled: colors.grayScale[50],
               }}
               handlePress={onSignup}
-              active={isAgreeTermsOfService && isAgreePrivacyPolicy}
+              active={
+                term.isServicePolicyCheck &&
+                term.isPersonalInformationPolicyCheck
+              }
             />
           </Box>
         </VStack>

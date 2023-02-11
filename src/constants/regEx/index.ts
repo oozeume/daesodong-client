@@ -29,3 +29,9 @@ export const RANGE_TEXT_8_20_REGREX = /^.{8,20}$/;
  * 패스워드 정규식 (영문, 숫자 포함, 8~20자 길이 이내)
  */
 export const PASSWORD_REGREX = /^[A-Za-z0-9]{8,20}$/;
+
+/**
+ * 이메일 정규식
+ */
+export const EMAIL_REGREX =
+  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;

@@ -8,9 +8,7 @@ import HospitalReviewRegister from '~/pages/facility/detail/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/facility/detail/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
-import PrivacyPolicy from '~/components/signup/privacyPolicy';
-import TermsOfServicePolicy from '~/components/signup/termsOfServicePolicy';
-import SignUpEmail from '~/pages/signup/email';
+import SignUpEmailNavigator from '~/pages/signup/emailNavigator';
 import PetInfoRegister from '~/pages/signup/petInfo';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
@@ -84,15 +82,9 @@ const AppNavigator = () => {
           options={{animation: 'slide_from_right'}}
         />
         <Stack.Screen
-          name="SignUpEmail"
-          component={SignUpEmail}
+          name="SignUpEmailNavigator"
+          component={SignUpEmailNavigator}
           options={{animation: 'slide_from_right'}}
-        />
-
-        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
-        <Stack.Screen
-          name="TermsOfServicePolicy"
-          component={TermsOfServicePolicy}
         />
 
         <Stack.Screen name="SignupSocial" component={SignupSocial} />

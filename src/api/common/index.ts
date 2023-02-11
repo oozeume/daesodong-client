@@ -18,8 +18,10 @@ export const apiCall = async <ResponseType = any>(
   const accessToken = await getSecurityData('access_token');
   if (__DEV__) {
     console.log('@ API CALL PREVIOUS @');
-    console.log(`accessToken : ${accessToken}`);
-    console.log(`path : ${BASE_URL}${props.url}`);
+    console.log(`1. accessToken : ${accessToken}`);
+    console.log(`2. METHOD : ${props.method}`);
+    console.log(`3. PATH : ${BASE_URL}${props.url}`);
+    console.log(`4. DATA: ${JSON.stringify(props.data)}`);
     console.log('');
   }
 
