@@ -1,5 +1,5 @@
 import {useMutation} from '@tanstack/react-query';
-import {FacilityReviewForm} from '~/../types/api/facility';
+import {FacilityReviewData} from '~/../types/api/facility';
 import {apiCall} from '~/api/common';
 
 /**
@@ -21,8 +21,8 @@ export const useMutationVisitedFacility = () => {
  *@description 시설 리뷰 작성 API
  */
 
-const mutationReviewRegister = (data: FacilityReviewForm, id: string) => {
-  return apiCall<FacilityReviewForm>({
+const mutationReviewRegister = (data: FacilityReviewData, id: string) => {
+  return apiCall<FacilityReviewData>({
     method: 'POST',
     url: `hospitals/${id}/reviews`,
     data,

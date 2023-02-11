@@ -27,8 +27,10 @@ import {useNavigation} from '@react-navigation/native';
 import VerificationForm from '~/components/common/VerificationForm';
 import {colors} from '~/theme/theme';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {FacilityReviewForm} from '~/../types/api/facility';
+import {FacilityReviewData} from '~/../types/api/facility';
 import {useMutationReviewRegister} from '~/api/facility/mutations';
+import Popup from '~/components/common/popup/Popup';
+import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import _ from 'lodash';
 
 // 셀렉터 state 타입
@@ -48,8 +50,9 @@ type Props = NativeStackScreenProps<
 function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
 
+  const [active, setActive] = useState(false);
+
   const navigation = useNavigation<NavigationHookProp>();
-  // 방문 날짜 state
   const [visitedDate, setVisitedDate] = useState({
     year: 0,
     month: dayjs().month(),
@@ -60,13 +63,8 @@ function FacilityReviewRegister({route}: Props) {
 
   const [diagnostic, setDiagnostic] = useState(''); // 진단 내용
 
-  // 후기 작성 시, 주의사항 페이지 이동 함수
   const onMovePrecaution = () => {
     navigation.navigate('HospitalReviewRegisterPrecaution');
-  };
-
-  const onMoveBack = () => {
-    navigation.goBack();
   };
 
   useEffect(() => {
@@ -88,33 +86,60 @@ function FacilityReviewRegister({route}: Props) {
     setMonthList(_monthList);
   }, []);
 
-  const [reviewForm, setReviewForm] = useState<FacilityReviewForm>({
-    visit_date: '',
-    cost: 0,
-    thoughts: '',
-    score_treatment: 0,
-    score_price: 0,
-    score_facilities: 0,
-    score_kindness: 0,
-    expect_revisit: false,
-    already_reviesit: false,
-    hospital_review_picture: [''],
-    tags: [''],
-  });
+  const defaultFacilityReviewDate = React.useMemo(() => {
+    return {
+      visit_date: '',
+      cost: 0,
+      thoughts: '',
+      score_treatment: 0,
+      score_price: 0,
+      score_facilities: 0,
+      score_kindness: 0,
+      expect_revisit: false,
+      already_reviesit: false,
+      hospital_review_picture: ['aaa,png', 'bbb.png'],
+      tags: [''],
+    };
+  }, []);
+
+  const [reviewForm, setReviewForm] = useState<FacilityReviewData>(
+    defaultFacilityReviewDate,
+  );
+
+  useEffect(() => {
+    if (
+      reviewForm.score_facilities !== 0 &&
+      reviewForm.score_kindness !== 0 &&
+      reviewForm.score_price !== 0 &&
+      reviewForm.score_treatment !== 0 &&
+      reviewForm.cost !== 0 &&
+      reviewForm.thoughts !== '' &&
+      !_.isEmpty(reviewForm.tags)
+    ) {
+      setActive(true);
+    }
+  }, [reviewForm]);
 
   const {mutateAsync} = useMutationReviewRegister(id);
+  const setIsReviewRegisterComplete = useReviewRegister();
 
   const onSubmit = async () => {
-    // TODO: API 변경되면 다시 진행
-    mutateAsync(reviewForm).then().catch();
+    mutateAsync(reviewForm)
+      .then(() => {
+        navigation.goBack();
+        setIsReviewRegisterComplete(true);
+      })
+      .catch(e => console.log(e));
   };
+
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   return (
     <SafeAreaView>
       <ScrollView backgroundColor={colors.grayScale['0']}>
         <HospitalName
           text={facilityName ?? '어울림 동물병원'}
-          onPress={onMoveBack}
+          onPress={() => setIsOpenPopup(true)}
         />
 
         <VStack p={'18px'} pb="40px">
@@ -298,10 +323,26 @@ function FacilityReviewRegister({route}: Props) {
 
             {/* 리뷰 등록 버튼 */}
             {/* TODO: active 조건 추가 */}
-            <ReviewRegisterButton handlePress={onSubmit} active={true} />
+            <ReviewRegisterButton handlePress={onSubmit} active={active} />
           </FormControl>
         </VStack>
       </ScrollView>
+
+      <Popup
+        title={'정말 작성을 취소하시나요?'}
+        subText={'입력하신 내용은 삭제되며 복구할 수 없습니다.'}
+        isVisible={isOpenPopup}
+        setIsVisible={setIsOpenPopup}
+        cancelButtonName={'작성 취소'}
+        successButtonName={'이어서 작성하기'}
+        cancelButtonStyle={{flex: 1}}
+        successButtonStyle={{
+          flex: 2,
+          backgroundColor: colors.fussOrange[0],
+        }}
+        onCancel={() => navigation.goBack()}
+        onSuccess={() => setIsOpenPopup(false)}
+      />
     </SafeAreaView>
   );
 }
