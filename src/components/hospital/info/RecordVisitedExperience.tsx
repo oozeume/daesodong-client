@@ -48,7 +48,6 @@ function RecordVisitedExperience({facilityId}: Props) {
 
   useEffect(() => {
     if (data) {
-      console.log('확인---->', data.data);
       setPetName(data.data.pet?.name ?? '');
       setIsVisited(true);
     }

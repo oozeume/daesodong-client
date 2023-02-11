@@ -7,7 +7,7 @@ import DeleteIcon from '~/assets/icons/delete.svg';
 import {ViewStyle} from 'react-native';
 import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
-import {FacilityReviewForm} from '~/../types/api/facility';
+import {FacilityReviewData} from '~/../types/api/facility';
 
 interface IconButtonProps {
   buttonStyle?: StyleProp<ViewStyle>;
@@ -82,12 +82,12 @@ function ReviewPrecautionButton({onPress}: ReviewPrecautionButtonProps) {
 
 interface CheckedButtonProps {
   setReviewForm: React.Dispatch<React.SetStateAction<any>>;
-  reviewForm: FacilityReviewForm;
+  reviewForm: FacilityReviewData;
 }
 
 interface RevisitCheckButtonProps {
   setReviewForm: React.Dispatch<React.SetStateAction<any>>;
-  reviewForm: FacilityReviewForm;
+  reviewForm: FacilityReviewData;
 }
 
 /**

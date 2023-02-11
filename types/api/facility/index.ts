@@ -57,3 +57,17 @@ export type VisitedFacilityResponse = {
   petId: string;
   userId: string;
 };
+
+export type FacilityReviewData = {
+  visit_date: string;
+  cost: number;
+  thoughts: string;
+  score_treatment: number;
+  score_price: number;
+  score_facilities: number;
+  score_kindness: number;
+  expect_revisit: boolean;
+  already_reviesit: boolean;
+  hospital_review_picture?: string[];
+  tags: string[];
+};

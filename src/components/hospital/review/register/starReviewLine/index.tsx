@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {HStack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {ViewStyle} from 'react-native';
-import {FacilityReviewForm} from '~/../types/api/facility';
+import {FacilityReviewData} from '~/../types/api/facility';
 import StarRatingIcon from '~/assets/icons/star_rating.svg';
 import {colors} from '~/theme/theme';
 
@@ -11,8 +11,8 @@ const STAR_RATE_COUNT = 5;
 interface Props {
   text: string;
   lineStyle?: ViewStyle;
-  setReviewForm: (form: FacilityReviewForm) => void;
-  reviewForm: FacilityReviewForm;
+  setReviewForm: (form: FacilityReviewData) => void;
+  reviewForm: FacilityReviewData;
   rateName?: string;
 }
 
