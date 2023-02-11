@@ -5,7 +5,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
-import DeveloperMenu from '~/pages/developerMenu';
 
 import FacilityTabIcon from '~/assets/icons/facility_tab.svg';
 import ContentsTabIcon from '~/assets/icons/contents_tab.svg';
@@ -87,17 +86,6 @@ const TabNavigator = () => {
           headerShown: false,
           unmountOnBlur: true,
           tabBarIcon: ({color}) => <MypageTabIcon fill={color} />,
-        }}
-      />
-
-      <Tab.Screen
-        name="DeveloperMenu"
-        component={DeveloperMenu}
-        options={{
-          tabBarLabel: '개발',
-          headerShown: false,
-          unmountOnBlur: true,
-          tabBarIcon: ({color}) => <FacilityTabIcon fill={color} />,
         }}
       />
     </Tab.Navigator>

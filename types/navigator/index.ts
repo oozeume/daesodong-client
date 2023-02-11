@@ -30,7 +30,6 @@ export type RootTabParamList = {
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
-  DeveloperMenu: undefined;
 };
 
 /**
@@ -59,10 +58,8 @@ export type RootStackParamList = {
   };
   FindEmail: undefined;
 
-  TermsOfServicePolicy: undefined;
-  PrivacyPolicy: undefined;
   SignupSocial: undefined;
-  SignUpEmail: undefined;
+  SignUpEmailNavigator: undefined;
   PetInfoRegister: undefined;
 
   Community: undefined;
@@ -86,11 +83,23 @@ export type RootStackParamList = {
   AppIntroFirst: undefined;
   AppIntroSecond: undefined;
   AppIntroThird: undefined;
+
+  PhoneVerification: undefined;
+  EmailRegister: undefined;
+  PasswordRegister: undefined;
+  NicknameRegister: undefined;
+
   MyReview: undefined;
   MyReviewDetail: undefined;
   MyCommunityContent: undefined;
   Inquiry: undefined;
 };
+
+export type SignupNavigatorRouteList =
+  | 'PhoneVerification'
+  | 'EmailRegister'
+  | 'PasswordRegister'
+  | 'EmailLogin';
 
 export type RouteList = RootTabParamList & RootStackParamList;
 

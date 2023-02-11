@@ -14,21 +14,24 @@ import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {usePostAuthEmailLogin} from '~/api/auth';
 import {getSecurityData, setSecurityData} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-
-interface EmailLoginForm {
-  email: string;
-  password: string;
-}
+import {EmailLoginForm} from '~/../types/login';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {
+  usePostAuthEmailLogin,
+  usePostAuthSocialLogin,
+} from '~/api/auth/mutations';
 
 /**
  *@description 이메일로 로그인 페이지
  */
 function EmailLogin() {
   const {navigate, reset} = useNavigation<NavigationHookProp>();
-
+  const postAuthSocialLogin = usePostAuthSocialLogin();
   const postAuthEmailLogin = usePostAuthEmailLogin();
 
   const initForm = {
@@ -37,7 +40,6 @@ function EmailLogin() {
   };
 
   const [loginForm, setLoginForm] = useState<EmailLoginForm>(initForm);
-
   const [errorForm, setErrorForm] = useState<EmailLoginForm>(initForm);
 
   useEffect(() => {
@@ -79,9 +81,34 @@ function EmailLogin() {
     }
   };
 
+  const onGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {idToken: token} = await GoogleSignin.signIn();
+
+      if (token) {
+        const res = await postAuthSocialLogin.mutateAsync({
+          social: 'Google',
+          token,
+        });
+      }
+    } catch (_error) {
+      const error = _error as any;
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
-      <SafeAreaView>
+      <SafeAreaView style={{backgroundColor: colors.grayScale['0']}}>
         <VStack bg={colors.grayScale['0']} w="100%" h="100%">
           <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
             <VStack>
@@ -137,7 +164,7 @@ function EmailLogin() {
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() => navigate('SignUpEmail')}
+                  onPress={() => navigate('SignUpEmailNavigator')}
                   name="회원가입"
                 />
               </HStack>
@@ -159,7 +186,7 @@ function EmailLogin() {
 
               <KakaoLoginButton handlePress={() => {}} />
               <AppleLoginButton handlePress={() => {}} />
-              <GoogleLoginButton handlePress={() => {}} />
+              <GoogleLoginButton handlePress={onGoogleLogin} />
             </VStack>
           </VStack>
         </VStack>

@@ -37,6 +37,7 @@ function RecordVisitedExperience({facilityId}: Props) {
   const onPress = () => {
     mutateAsync(facilityId)
       .then(() => {
+        // TODO : response으로 pet name 받아서 petName 업데이트
         setIsVisited(true);
         showToast();
       })
@@ -48,8 +49,10 @@ function RecordVisitedExperience({facilityId}: Props) {
 
   useEffect(() => {
     if (data) {
-      setPetName(data.data.pet?.name ?? '');
-      setIsVisited(true);
+      if (data.data.pet) {
+        setPetName(data.data.pet.name ?? '');
+        setIsVisited(true);
+      }
     }
   }, [data, setPetName]);
 
