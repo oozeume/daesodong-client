@@ -7,6 +7,7 @@ import {
   PostAuthMobileVerifyData,
   PostAuthMobileVerifyCodeData,
   PostAuthSignupBody,
+  PostAuthSocialLoginData,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
 
@@ -132,5 +133,25 @@ const postAuthMobileVerifyCode = async (data: PostAuthMobileVerifyCodeData) => {
 export const usePostAuthMobileVerifyCode = () => {
   return useMutation((body: PostAuthMobileVerifyCodeData) =>
     postAuthMobileVerifyCode(body),
+  );
+};
+
+/**
+ *@description 소셜 로그인 api
+ */
+const postAuthSocialLogin = (data: PostAuthSocialLoginData) => {
+  return apiCall<string>({
+    method: 'POST',
+    url: `auth/social/login`,
+    data,
+  });
+};
+
+/**
+ *@description 소셜 로그인 api hook
+ */
+export const usePostAuthSocialLogin = () => {
+  return useMutation((data: PostAuthSocialLoginData) =>
+    postAuthSocialLogin(data),
   );
 };

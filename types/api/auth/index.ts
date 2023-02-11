@@ -9,6 +9,12 @@ export interface PostAuthEmailLoginData {
   password: string;
 }
 
+// 소셜 로그인 api 전송 데이터
+export interface PostAuthSocialLoginData {
+  social: 'Apple' | 'Kakao' | 'Google';
+  token: string;
+}
+
 // 이메일 로그인 api 응답
 export interface PostAuthEmailLoginResponse {
   access: string;

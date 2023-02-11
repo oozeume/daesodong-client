@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "895583511596",
+    "project_id": "daesodong-36d09",
+    "storage_bucket": "daesodong-36d09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895583511596:android:f1c11aa4e520604b191d89",
+        "android_client_info": {
+          "package_name": "com.daesodong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895583511596-h28k4d6cl4g5srs0c0o3ege5jeo840qg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlkbx4cWJCiUyfHDkMiiK5VhnB9NZzMWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895583511596-h28k4d6cl4g5srs0c0o3ege5jeo840qg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "895583511596-4ruesc2deufa07jsr5raat557aq80g34.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.daesodong"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
