@@ -1,5 +1,5 @@
 import {HStack, Stack, Text} from 'native-base';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BestContents from '~/components/community/main/BestContents';
 import PetType from '~/components/community/main/PetType';
@@ -9,21 +9,62 @@ import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {FlatList} from 'react-native-gesture-handler';
 import CommunityContents from '../../components/community/main/CommunityContents';
 import {useGetCommunityPostList} from '~/api/community/queries';
+import {usePostCoummunityPostCount} from '~/api/community/mutation';
+import {GetCommunityPostResponse} from '~/../types/api/community';
 
 /**
  *@description 커뮤니티 메인페이지
  */
 
 const CommunityMain = () => {
-  const getCommunityPostList = useGetCommunityPostList({
+  const [petType, setPetType] = useState('전체');
+  const [totalCount, setTotalCount] = useState(10);
+  const postCoummunityPostCount = usePostCoummunityPostCount();
+
+  const {
+    data: postList,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useGetCommunityPostList({
     limit: 10,
     sort: 'latest',
+    community: petType === '전체' ? undefined : petType,
   });
 
-  console.log(getCommunityPostList);
+  // 실제 랜더링 되는 컨텐츠 리스트 구하는 로직
+  let contentsList: GetCommunityPostResponse[] = [];
+  postList?.pages.forEach(item => {
+    contentsList = [...contentsList, ...item.data];
+  });
+
+  /**
+   *@description 스크롤이 하단에 도달하면 다음 스크롤 내용 조회 핸들러
+   */
+  const onExpandList = () => {
+    // 다음 페이지 조회 중이 아니고 전체 포스트 카운트보다 현재 포스트 카운트가 적을 때만 패치.
+    if (
+      hasNextPage &&
+      !isFetchingNextPage &&
+      totalCount > contentsList.length
+    ) {
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    // 전체 게시글 숫자 조회
+    const getPostTotalCount = async () => {
+      const {data: _totalCount} = await postCoummunityPostCount.mutateAsync();
+      setTotalCount(_totalCount);
+    };
+
+    getPostTotalCount();
+  }, []);
+
   const data = [
     <BestContents />,
-    <PetType />,
+    <PetType setPetType={setPetType} petType={petType} />,
     <HStack
       zIndex={1}
       mb={'8px'}
@@ -56,14 +97,18 @@ const CommunityMain = () => {
         handleSecondButton={() => {}}
       />
     </HStack>,
-    <CommunityContents contentsList={getCommunityPostList.data?.data} />,
+    <CommunityContents contentsList={contentsList} />,
   ];
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>
       <FlatList
+        disableVirtualization={false}
+        bounces={false}
         keyExtractor={(item, index) => index.toString()}
         data={data}
         stickyHeaderIndices={[2]}
+        onEndReached={onExpandList}
+        onEndReachedThreshold={1}
         renderItem={({item}) => {
           return (
             <Stack position={'relative'}>

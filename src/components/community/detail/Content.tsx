@@ -6,8 +6,8 @@ import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
-import {GetCommunityPostResponse} from '~/api/community/queries';
 import dayjs from 'dayjs';
+import {GetCommunityPostResponse} from '~/../types/api/community';
 
 interface Props {
   isVisibleUserInfo?: boolean;

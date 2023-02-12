@@ -1,44 +1,16 @@
-import {useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import {apiCall} from '../common';
 import QueryKeys from '~/constants/queryKeys';
 import queryString from 'query-string';
-
-interface GetCommunityPostListQuery {
-  limit: number;
-  coummunity?: string;
-  // latest or view
-  sort: string;
-  cursor?: string;
-}
-
-export type GetCommunityPostResponse = {
-  content?: string | null;
-  created_at: string;
-  delete_at: string;
-  id: string;
-  kind: {id: string; name: string};
-  kindId: string;
-  post_picture: {
-    postId: string;
-    picture_url?: string | null;
-  }[];
-  post_tag_join: {
-    post_tag: {
-      id: string;
-      name?: string | null;
-    };
-  }[];
-  thanks: number;
-  title?: string | null;
-  updated_at: string;
-  userId: string;
-  views: 0;
-};
+import {
+  GetCommunityPostListQuery,
+  GetCommunityPostResponse,
+} from '~/../types/api/community';
 
 /**
  *@description 커뮤니티 게시글 리스트 조회 api
  */
-const getCommunityPostList = async (query: GetCommunityPostListQuery) => {
+const getCommunityPostList = (query: GetCommunityPostListQuery) => {
   const _query = queryString.stringify(query);
 
   return apiCall<GetCommunityPostResponse[]>({
@@ -48,16 +20,26 @@ const getCommunityPostList = async (query: GetCommunityPostListQuery) => {
 };
 
 export const useGetCommunityPostList = (query: GetCommunityPostListQuery) => {
-  return useQuery(
+  return useInfiniteQuery(
     [QueryKeys.community.getPosts, query],
-    ({queryKey}) => {
-      const _query = queryKey[1] as GetCommunityPostListQuery;
-      return getCommunityPostList(_query);
+    param => {
+      const initQuery = param.queryKey[1] as GetCommunityPostListQuery;
+
+      return getCommunityPostList(param.pageParam ?? initQuery);
     },
     {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      // enabled: !_.isUndefined(mobile),
+      getNextPageParam: (lastPage, allPages) => {
+        const lastDataLength = lastPage.data.length;
+        return {
+          limit: 10,
+          sort: 'latest',
+          cursor:
+            lastDataLength === 0
+              ? undefined
+              : lastPage.data[lastDataLength - 1].id,
+        };
+      },
+      keepPreviousData: true,
     },
   );
 };

@@ -1,21 +1,11 @@
 import {useMutation} from '@tanstack/react-query';
 import {apiCall} from '../common';
-
-interface PostCummunityPostData {
-  //
-}
-
-interface PostCummunityPostResponse {
-  //
-}
-
-interface PatchCommunityPost {
-  //
-}
-
-interface PatchCommunityResponse {
-  //
-}
+import {
+  PatchCommunityPost,
+  PatchCommunityResponse,
+  PostCummunityPostData,
+  PostCummunityPostResponse,
+} from '~/../types/api/community';
 
 /**
  *@description 커뮤니티 게시글 등록
@@ -45,4 +35,18 @@ const patchCummunityPost = (data: PatchCommunityPost) => {
 
 export const usePatchCommunityPost = () => {
   return useMutation((data: PatchCommunityPost) => patchCummunityPost(data));
+};
+
+/**
+ *@description 커뮤니티 게시글 총 숫자 조회
+ */
+const postCoummunityPostCount = () => {
+  return apiCall<number>({
+    method: 'POST',
+    url: `posts/conut`,
+  });
+};
+
+export const usePostCoummunityPostCount = () => {
+  return useMutation(() => postCoummunityPostCount());
 };

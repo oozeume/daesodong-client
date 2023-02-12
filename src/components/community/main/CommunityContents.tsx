@@ -6,7 +6,7 @@ import CommunityContent from '~/components/community/detail/Content';
 import {colors} from '~/theme/theme';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {FlatList} from 'react-native-gesture-handler';
-import {GetCommunityPostResponse} from '~/api/community/queries';
+import {GetCommunityPostResponse} from '~/../types/api/community';
 
 interface Props {
   contentsList?: GetCommunityPostResponse[];
