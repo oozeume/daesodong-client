@@ -35,6 +35,7 @@ import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import _ from 'lodash';
 import {setMonths, setYears} from '~/utils/dateList';
 import {useTagContext, useTagRegister} from '~/store/useTagContext';
+import {INIT_REVIEW_FORM} from '~/constants/facility/detail';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -47,7 +48,7 @@ type Props = NativeStackScreenProps<
 function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const navigation = useNavigation<NavigationHookProp>();
@@ -67,25 +68,8 @@ function FacilityReviewRegister({route}: Props) {
   const setTags = useTagRegister();
   const [tagList, setTagList] = useState<string[]>([]);
 
-  const defaultFacilityReviewDate = React.useMemo(() => {
-    return {
-      visit_date: `${yearList[visitedDate.year].value}-${visitedDate.month}`,
-      cost: 0,
-      thoughts: '',
-      score_treatment: 0,
-      score_price: 0,
-      score_facilities: 0,
-      score_kindness: 0,
-      expect_revisit: false,
-      already_reviesit: false,
-      hospital_review_picture: ['aaa,png', 'bbb.png'],
-      tags: [''],
-    };
-  }, []);
-
-  const [reviewForm, setReviewForm] = useState<PostFacilityReviewData>(
-    defaultFacilityReviewDate,
-  );
+  const [reviewForm, setReviewForm] =
+    useState<PostFacilityReviewData>(INIT_REVIEW_FORM);
 
   const {mutateAsync} = useMutationReviewRegister(id);
   const setIsReviewRegisterComplete = useReviewRegister();
@@ -93,6 +77,8 @@ function FacilityReviewRegister({route}: Props) {
   const onSubmit = () => {
     mutateAsync(reviewForm)
       .then(() => {
+        setTagList([]);
+        setTags([]);
         navigation.goBack();
         setIsReviewRegisterComplete(true);
       })
@@ -101,10 +87,16 @@ function FacilityReviewRegister({route}: Props) {
 
   useEffect(() => {
     setTagList(tags);
+
+    setReviewForm({
+      ...reviewForm,
+      tags: tags,
+    });
   }, [tags]);
 
   useEffect(() => {
     if (
+      // TODO : 코드 간소화
       reviewForm.score_facilities !== 0 &&
       reviewForm.score_kindness !== 0 &&
       reviewForm.score_price !== 0 &&
@@ -308,6 +300,7 @@ function FacilityReviewRegister({route}: Props) {
               <Label text="사진 첨부(최대 5개)" />
             </HStack>
 
+            {/* TODO : 이미지 업로드 */}
             <ImageUploader />
 
             <HStack mb="12px">
@@ -350,9 +343,7 @@ function FacilityReviewRegister({route}: Props) {
           setTags(['']);
           navigation.goBack();
         }}
-        onSuccess={() => {
-          setIsOpenPopup(false);
-        }}
+        onSuccess={() => setIsOpenPopup(false)}
       />
     </SafeAreaView>
   );

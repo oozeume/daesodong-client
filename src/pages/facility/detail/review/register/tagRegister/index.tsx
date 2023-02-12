@@ -21,7 +21,7 @@ function TagRegister() {
 
   const [open, setOpen] = useState(false);
 
-  const tags = useTagContext(['']);
+  const tags = useTagContext([]);
   const setTags = useTagRegister();
   const [tagList, setTagList] = useState<string[]>(tags);
 

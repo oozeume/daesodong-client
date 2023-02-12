@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
+import {FacilityReviewParams} from '../facility';
 
 /**
  * @description script 설명
@@ -38,15 +39,9 @@ export type RootTabParamList = {
  * { ... Hospital: { id: string; }; ... }
  */
 export type RootStackParamList = {
-  FacilityDetail: {
-    id: string;
-    facilityName: string;
-  };
+  FacilityDetail: FacilityReviewParams;
   tab: undefined;
-  FacilityReviewRegister: {
-    id: string;
-    facilityName: string;
-  };
+  FacilityReviewRegister: FacilityReviewParams;
   TagRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;
