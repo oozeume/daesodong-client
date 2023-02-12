@@ -27,17 +27,12 @@ import {useNavigation} from '@react-navigation/native';
 import VerificationForm from '~/components/common/VerificationForm';
 import {colors} from '~/theme/theme';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {FacilityReviewData} from '~/../types/api/facility';
+import {PostFacilityReviewData} from '~/../types/api/facility';
 import {useMutationReviewRegister} from '~/api/facility/mutations';
 import Popup from '~/components/common/popup/Popup';
 import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import _ from 'lodash';
-
-// 셀렉터 state 타입
-interface DateList {
-  value: number;
-  txt: string;
-}
+import {setMonths, setYears} from '~/utils/dateList';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -58,8 +53,8 @@ function FacilityReviewRegister({route}: Props) {
     month: dayjs().month(),
   });
 
-  const [yearList, setYearList] = useState<DateList[]>([]); // 방문 날짜 연 리스트
-  const [monthList, setMonthList] = useState<DateList[]>([]); // 방문 날짜 월 리스트
+  const [yearList, setYearList] = useState(setYears());
+  const [monthList, setMonthList] = useState(setMonths());
 
   const [diagnostic, setDiagnostic] = useState(''); // 진단 내용
 
@@ -67,28 +62,9 @@ function FacilityReviewRegister({route}: Props) {
     navigation.navigate('HospitalReviewRegisterPrecaution');
   };
 
-  useEffect(() => {
-    const curYear = dayjs().year();
-    const refYear = 2015;
-
-    let _yearList = [];
-    let _monthList = [];
-
-    for (let i = curYear; i >= refYear; i--) {
-      _yearList.push({value: i, txt: `${i}년`});
-    }
-
-    for (let i = 1; i < 13; i++) {
-      _monthList.push({value: i, txt: `${i}월`});
-    }
-
-    setYearList(_yearList);
-    setMonthList(_monthList);
-  }, []);
-
   const defaultFacilityReviewDate = React.useMemo(() => {
     return {
-      visit_date: '',
+      visit_date: `${yearList[visitedDate.year].value}-${visitedDate.month}`,
       cost: 0,
       thoughts: '',
       score_treatment: 0,
@@ -102,7 +78,7 @@ function FacilityReviewRegister({route}: Props) {
     };
   }, []);
 
-  const [reviewForm, setReviewForm] = useState<FacilityReviewData>(
+  const [reviewForm, setReviewForm] = useState<PostFacilityReviewData>(
     defaultFacilityReviewDate,
   );
 
@@ -123,7 +99,7 @@ function FacilityReviewRegister({route}: Props) {
   const {mutateAsync} = useMutationReviewRegister(id);
   const setIsReviewRegisterComplete = useReviewRegister();
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     mutateAsync(reviewForm)
       .then(() => {
         navigation.goBack();

@@ -58,7 +58,7 @@ export type VisitedFacilityResponse = {
   userId: string;
 };
 
-export type FacilityReviewData = {
+export type PostFacilityReviewData = {
   visit_date: string;
   cost: number;
   thoughts: string;
