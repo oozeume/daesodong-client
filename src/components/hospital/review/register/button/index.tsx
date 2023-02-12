@@ -80,15 +80,13 @@ function ReviewPrecautionButton({onPress}: ReviewPrecautionButtonProps) {
   );
 }
 
-interface CheckedButtonProps {
+interface CheckButtonProps {
   setReviewForm: React.Dispatch<React.SetStateAction<any>>;
   reviewForm: PostFacilityReviewData;
 }
 
-interface RevisitCheckButtonProps {
-  setReviewForm: React.Dispatch<React.SetStateAction<any>>;
-  reviewForm: PostFacilityReviewData;
-}
+interface CheckedButtonProps extends CheckButtonProps {}
+interface RevisitCheckButtonProps extends CheckButtonProps {}
 
 /**
  *@description 이 병원을 다시 방문하시겠습니까? 체크 버튼
