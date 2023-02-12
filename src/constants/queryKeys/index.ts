@@ -1,7 +1,5 @@
 const QueryKeys = {
-  auth: {
-    getAuthMobile: 'get auth mobile',
-  },
+  auth: {},
 } as const;
 
 export default QueryKeys;

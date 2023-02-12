@@ -9,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {Keyboard, Platform} from 'react-native';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
+import {deleteHypen} from '~/utils/text';
 
 interface Props {
   handlePage: () => void;
@@ -38,7 +39,7 @@ function PasswordResetPhoneCheck({handlePage, setEmailForm}: Props) {
 
   // 인증 재발송 이벤트
   const onResendVerification = () => {
-    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+    let replacePhoneNumber = deleteHypen(phoneNumber);
 
     postAuthMobileVerify.mutateAsync({
       mobile: replacePhoneNumber,
@@ -47,7 +48,7 @@ function PasswordResetPhoneCheck({handlePage, setEmailForm}: Props) {
 
   // 인증하기 버튼 이벤트
   const onSendVerification = () => {
-    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+    let replacePhoneNumber = deleteHypen(phoneNumber);
 
     postAuthMobileVerify.mutateAsync({
       mobile: replacePhoneNumber,
@@ -107,7 +108,7 @@ function PasswordResetPhoneCheck({handlePage, setEmailForm}: Props) {
         visible={isModalOpen}
         onResendVerification={onResendVerification}
         onVerificationFail={onVerificationFail}
-        phoneNumber={phoneNumber.replace(/\-/g, '')}
+        phoneNumber={deleteHypen(phoneNumber)}
       />
     </>
   );
