@@ -7,7 +7,6 @@ import {
   TextArea,
   VStack,
 } from 'native-base';
-
 import React, {useEffect, useState} from 'react';
 import StarReviewLine from '~/components/hospital/review/register/starReviewLine';
 import ImageUploader from '~/components/hospital/review/register/imageUploader';

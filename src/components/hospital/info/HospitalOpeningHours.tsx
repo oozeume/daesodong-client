@@ -1,17 +1,13 @@
 import React from 'react';
 import {HStack, Text, VStack} from 'native-base';
-
 import {colors} from '~/theme/theme';
-import {OpeningHoursType} from '../../../pages/hospital/info';
 
 interface Props {
-  openingHours: OpeningHoursType;
+  openingHours: {date: string, time: string};
 }
 
 /**
  * 영업 시간 가로 배치를 위한 컴포넌트
- * @param {OpeningHoursType} openingHour 임시 타입으로 영업 요일, 총 영업 시간, 휴게 시간
- * @TODO API 연동 후 타입 및 데이터 변경
  */
 
 function HospitalOpeningHours({openingHours}: Props) {
@@ -31,17 +27,8 @@ function HospitalOpeningHours({openingHours}: Props) {
           color={colors.grayScale[70]}
           fontWeight={'400'}
           textAlign={'left'}>
-          {openingHours.totalHour}
+          {openingHours.time}
         </Text>
-        {openingHours.break && (
-          <Text
-            fontSize={14}
-            color={colors.grayScale[70]}
-            fontWeight={'400'}
-            textAlign={'left'}>
-            {openingHours.break} 휴게시간
-          </Text>
-        )}
       </VStack>
     </HStack>
   );
