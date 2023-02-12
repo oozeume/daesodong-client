@@ -43,6 +43,7 @@ import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
 import FacilityDetail from '../pages/facility/detail';
+import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -70,6 +71,19 @@ const AppNavigator = () => {
         <Stack.Screen
           name="FacilityReviewRegister"
           component={FacilityReviewRegister}
+        />
+        <Stack.Screen
+          name="TagRegister"
+          component={TagRegister}
+          options={({navigation}) => ({
+            headerShown: true,
+            header: () => (
+              <Header
+                title={'진단 내용'}
+                leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+              />
+            ),
+          })}
         />
         <Stack.Screen
           name="HospitalReviewRegisterPrecaution"

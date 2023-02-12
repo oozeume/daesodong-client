@@ -2,6 +2,7 @@ import {
   Box,
   FormControl,
   HStack,
+  Pressable,
   ScrollView,
   Text,
   TextArea,
@@ -33,6 +34,7 @@ import Popup from '~/components/common/popup/Popup';
 import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import _ from 'lodash';
 import {setMonths, setYears} from '~/utils/dateList';
+import {useTagContext, useTagRegister} from '~/store/useTagContext';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -46,6 +48,7 @@ function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
 
   const [active, setActive] = useState(false);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const navigation = useNavigation<NavigationHookProp>();
   const [visitedDate, setVisitedDate] = useState({
@@ -56,11 +59,13 @@ function FacilityReviewRegister({route}: Props) {
   const [yearList, setYearList] = useState(setYears());
   const [monthList, setMonthList] = useState(setMonths());
 
-  const [diagnostic, setDiagnostic] = useState(''); // 진단 내용
-
   const onMovePrecaution = () => {
     navigation.navigate('HospitalReviewRegisterPrecaution');
   };
+
+  const tags = useTagContext([]);
+  const setTags = useTagRegister();
+  const [tagList, setTagList] = useState<string[]>([]);
 
   const defaultFacilityReviewDate = React.useMemo(() => {
     return {
@@ -82,6 +87,22 @@ function FacilityReviewRegister({route}: Props) {
     defaultFacilityReviewDate,
   );
 
+  const {mutateAsync} = useMutationReviewRegister(id);
+  const setIsReviewRegisterComplete = useReviewRegister();
+
+  const onSubmit = () => {
+    mutateAsync(reviewForm)
+      .then(() => {
+        navigation.goBack();
+        setIsReviewRegisterComplete(true);
+      })
+      .catch(e => console.log(e));
+  };
+
+  useEffect(() => {
+    setTagList(tags);
+  }, [tags]);
+
   useEffect(() => {
     if (
       reviewForm.score_facilities !== 0 &&
@@ -95,20 +116,6 @@ function FacilityReviewRegister({route}: Props) {
       setActive(true);
     }
   }, [reviewForm]);
-
-  const {mutateAsync} = useMutationReviewRegister(id);
-  const setIsReviewRegisterComplete = useReviewRegister();
-
-  const onSubmit = () => {
-    mutateAsync(reviewForm)
-      .then(() => {
-        navigation.goBack();
-        setIsReviewRegisterComplete(true);
-      })
-      .catch(e => console.log(e));
-  };
-
-  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   return (
     <SafeAreaView>
@@ -232,17 +239,40 @@ function FacilityReviewRegister({route}: Props) {
               <Label text=" (필수)" color={colors.negative['-10']} />
             </HStack>
 
-            <VerificationForm
-              placeholder={'#피부병 #각질 #건강검진'}
-              marginBottom={'8px'}
-              onChangeText={setDiagnostic}
-              value={diagnostic}
-              onBlur={() => {
-                const arr = diagnostic.split(' ').map(i => `#${i}`);
-                setDiagnostic(arr.join(' '));
-                setReviewForm({...reviewForm, tags: diagnostic.split(' ')});
-              }}
-            />
+            <Pressable
+              onPress={() => {
+                navigation.navigate('TagRegister');
+              }}>
+              <HStack
+                height={'52px'}
+                flex={1}
+                space={'10px'}
+                borderBottomWidth={1}
+                py={'15px'}
+                mb={'8px'}
+                borderBottomColor={colors.grayScale[30]}>
+                {_.isEmpty(tagList) ? (
+                  <>
+                    {['피부병', '각질', '건강검진'].map(tag => (
+                      <Text
+                        key={tag}
+                        fontSize={'15px'}
+                        color={colors.grayScale[40]}>
+                        #{tag}
+                      </Text>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {tagList.map(tag => (
+                      <Text key={tag} fontSize={'15px'}>
+                        {tag}
+                      </Text>
+                    ))}
+                  </>
+                )}
+              </HStack>
+            </Pressable>
 
             <Text color={colors.grayScale['50']} fontSize="13px" mb={'36px'}>
               진단받은 내용은 태그로 추가할 수 있습니다
@@ -316,8 +346,13 @@ function FacilityReviewRegister({route}: Props) {
           flex: 2,
           backgroundColor: colors.fussOrange[0],
         }}
-        onCancel={() => navigation.goBack()}
-        onSuccess={() => setIsOpenPopup(false)}
+        onCancel={() => {
+          setTags(['']);
+          navigation.goBack();
+        }}
+        onSuccess={() => {
+          setIsOpenPopup(false);
+        }}
       />
     </SafeAreaView>
   );

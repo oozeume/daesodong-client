@@ -47,6 +47,7 @@ export type RootStackParamList = {
     id: string;
     facilityName: string;
   };
+  TagRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;
 

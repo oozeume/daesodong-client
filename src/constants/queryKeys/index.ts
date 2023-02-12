@@ -7,6 +7,7 @@ const QueryKeys = {
       registerComplete: ['facility review register complete'],
     },
   },
+  tags: ['tags'],
 } as const;
 
 export default QueryKeys;
