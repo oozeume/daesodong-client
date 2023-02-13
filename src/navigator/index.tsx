@@ -3,10 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
-import Hospital from '../pages/hospital';
 import SignupSocial from '~/pages/signup/social';
-import HospitalReviewRegister from '~/pages/hospital/review/register';
-import HospitalReviewRegisterPrecaution from '~/pages/hospital/review/register/precaution';
+import HospitalReviewRegister from '~/pages/facility/detail/review/register';
+import HospitalReviewRegisterPrecaution from '~/pages/facility/detail/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
 import SignUpEmailNavigator from '~/pages/signup/emailNavigator';
@@ -44,6 +43,7 @@ import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
 import PasswordResetSuccess from '~/pages/login/passwordReset/success';
+import FacilityDetail from '../pages/facility/detail';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -54,7 +54,19 @@ const AppNavigator = () => {
         screenOptions={{headerShown: false}}
         initialRouteName={'InitialLogin'}>
         <Stack.Screen name="tab" component={TabNavigator} />
-        <Stack.Screen name="Hospital" component={Hospital} />
+        <Stack.Screen
+          name="FacilityDetail"
+          component={FacilityDetail}
+          options={({navigation, route}) => ({
+            headerShown: true,
+            header: () => (
+              <Header
+                title={route.params?.facilityName ?? '병원이름'}
+                leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+              />
+            ),
+          })}
+        />
 
         <Stack.Screen
           name="HospitalReviewRegister"
