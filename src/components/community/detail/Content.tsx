@@ -8,6 +8,7 @@ import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
 import dayjs from 'dayjs';
 import {GetCommunityPostResponse} from '~/../types/api/community';
+import {getProgressTime} from '~/utils/time';
 
 interface Props {
   isVisibleUserInfo?: boolean;
@@ -131,7 +132,7 @@ const CommunityContent = ({
 
           {isVisibleTime && (
             <Text fontSize={'12px'} color={colors.grayScale['60']}>
-              3시간 전
+              {getProgressTime(contentData?.created_at)}
             </Text>
           )}
         </Stack>

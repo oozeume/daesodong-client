@@ -1,15 +1,19 @@
+import _ from 'lodash';
 import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
+import {GetCommentListResponse} from '~/api/comment/queries';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {colors} from '~/theme/theme';
+import {getProgressTime} from '~/utils/time';
 
 interface Props {
   commentType?: 'default' | 'reply' | 'delete';
   onRegisterRecomment?: () => void;
   isBest?: boolean;
+  data?: GetCommentListResponse;
 }
 
 /**
@@ -20,6 +24,7 @@ interface Props {
 const Comment = ({
   onRegisterRecomment,
   isBest,
+  data,
   commentType = 'default',
 }: Props) => {
   return (
@@ -50,7 +55,7 @@ const Comment = ({
             {/* 닉네임, 이름, 동물, 나이 뷰 라인 */}
             <HStack alignItems="center">
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                닉네임
+                {data?.user?.nickname || ''}
               </Text>
 
               <View
@@ -61,7 +66,8 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                이름
+                {(!_.isEmpty(data?.user?.pets) && data?.user?.pets[0]?.name) ||
+                  ''}
               </Text>
 
               <View
@@ -72,7 +78,9 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                동물
+                {(!_.isEmpty(data?.user?.pets) &&
+                  data?.user?.pets[0]?.specie?.name) ||
+                  ''}
               </Text>
 
               <View
@@ -83,7 +91,8 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                나이
+                {(!_.isEmpty(data?.user?.pets) && data?.user?.pets[0]?.age) ||
+                  ''}
               </Text>
             </HStack>
           </HStack>
@@ -99,13 +108,13 @@ const Comment = ({
         {/* 최초 작성 시간 / 수정됨 뷰 라인 */}
         <HStack mb="8px" ml="28px" alignItems={'center'}>
           <Text fontSize={'12px'} color={colors.grayScale['50']}>
-            최초 작성 시간
+            {getProgressTime(data?.created_at, data?.updated_at || undefined)}
           </Text>
 
           <Text color={colors.grayScale['30']}>{' ∙ '}</Text>
 
           <Text fontSize={'12px'} color={colors.grayScale['50']}>
-            수정됨
+            {data?.created_at === data?.updated_at ? '' : '수정됨'}
           </Text>
         </HStack>
 

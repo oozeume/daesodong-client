@@ -17,7 +17,6 @@ interface Props {
 function PetType({setPetType, petType}: Props) {
   const {data} = useGetPetKinds();
 
-  console.log(data);
   return (
     <ScrollView
       horizontal

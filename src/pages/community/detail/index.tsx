@@ -23,6 +23,7 @@ import KekabMenu from '~/components/common/kekab/KekabMenu';
 import Popup from '~/components/common/popup/Popup';
 import Comment from '~/components/common/comment';
 import {useGetCommunityPost} from '~/api/community/queries';
+import {useGetCommentList} from '~/api/comment/queries';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -31,13 +32,19 @@ const CommunityDetail = () => {
   const {params} = useRoute<RouteHookProp<'CommunityDetail'>>();
 
   const getCommunityPost = useGetCommunityPost(params.id);
+  const {data: commentList} = useGetCommentList(params.id);
   const navigation = useNavigation<NavigationHookProp>();
   const [comment, setComment] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
 
   const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
-
+  console.log('');
+  console.log('@@@ getCommunityPost');
   console.log(getCommunityPost);
+  console.log('');
+  console.log('@@@ getCommentList');
+  console.log(commentList);
+  console.log('');
 
   return (
     <KeyboardAvoidingView
@@ -102,10 +109,19 @@ const CommunityDetail = () => {
 
           {/* 댓글 리스트 */}
           <Box>
-            <Comment />
-            <Comment commentType="reply" />
+            {commentList?.data.map((comment, i) => (
+              <React.Fragment key={i.toString()}>
+                <Comment data={comment} />
+
+                {comment.comment2.map((recomment, k) => (
+                  <React.Fragment key={k.toString()}>
+                    <Comment commentType="reply" data={recomment} />
+                  </React.Fragment>
+                ))}
+              </React.Fragment>
+            ))}
+
             <Comment commentType="delete" />
-            <Comment commentType="reply" />
 
             {comment.length !== 0 && (
               <HStack

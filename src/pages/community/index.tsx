@@ -18,6 +18,7 @@ import {GetCommunityPostResponse} from '~/../types/api/community';
 
 const CommunityMain = () => {
   const [petType, setPetType] = useState('전체');
+  const [sort, setSort] = useState<'latest' | 'view'>('latest');
   const [totalCount, setTotalCount] = useState(10);
   const postCoummunityPostCount = usePostCoummunityPostCount();
 
@@ -28,7 +29,7 @@ const CommunityMain = () => {
     hasNextPage,
   } = useGetCommunityPostList({
     limit: 10,
-    sort: 'latest',
+    sort,
     community: petType === '전체' ? undefined : petType,
   });
 
@@ -93,8 +94,8 @@ const CommunityMain = () => {
         top={'16px'}
         firstButtonName={'최신순'}
         secondButtonName={'인기순'}
-        handleFirstButton={() => {}}
-        handleSecondButton={() => {}}
+        handleFirstButton={() => setSort('latest')}
+        handleSecondButton={() => setSort('view')}
       />
     </HStack>,
     <CommunityContents contentsList={contentsList} />,
