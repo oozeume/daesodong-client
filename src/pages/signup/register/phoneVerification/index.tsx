@@ -16,6 +16,8 @@ import {
 import useRegExPhone from '~/hooks/useRegExPhone';
 import {SignupForm} from '~/../types/signup';
 import {usePostAuthMobileVerify} from '~/api/auth/mutations';
+import {deleteHypen} from '~/utils/text';
+import {PostAuthMobileVerifyCodeResponse} from '~/../types/api/auth';
 
 interface Props {
   onChangeStage: () => void;
@@ -50,8 +52,17 @@ function PhoneVerification({
   };
 
   // 모달 컴포넌트에서 페이지 제어 핸들러
-  const onHandlePage = () => {
-    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+  const onHandlePage = (data?: PostAuthMobileVerifyCodeResponse) => {
+    navigate('AuthFoundResult', {
+      data,
+      type: 'FOUND',
+      previousURL: 'SIGNUP',
+      phoneNumber: deleteHypen(phoneNumber),
+    });
+  };
+
+  const onVerificationFail = () => {
+    let replacePhoneNumber = deleteHypen(phoneNumber);
 
     onChangeStage();
     setSignupForm(prev => ({...prev, mobile: replacePhoneNumber}));
@@ -70,7 +81,7 @@ function PhoneVerification({
    *@description 인증 번호 발송 및 인증 모달창 오픈
    */
   const onSendVerification = async () => {
-    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+    let replacePhoneNumber = deleteHypen(phoneNumber);
 
     await postAuthMobileVerify.mutateAsync({
       mobile: replacePhoneNumber,
@@ -127,7 +138,8 @@ function PhoneVerification({
           handleModal={onHandleModal}
           handlePage={onHandlePage}
           onResendVerification={onResendVerification}
-          phoneNumber={phoneNumber.replace(/\-/g, '')}
+          onVerificationFail={onVerificationFail}
+          phoneNumber={deleteHypen(phoneNumber)}
         />
       </Box>
     </TouchableWithoutView>

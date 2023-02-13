@@ -25,6 +25,7 @@ import {
   usePostAuthEmailLogin,
   usePostAuthSocialLogin,
 } from '~/api/auth/mutations';
+import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -106,6 +107,19 @@ function EmailLogin() {
     }
   };
 
+  const onKakaoLogin = async () => {
+    try {
+      const {accessToken: token} = (await login()) as KakaoOAuthToken;
+
+      if (token) {
+        const res = await postAuthSocialLogin.mutateAsync({
+          social: 'Kakao',
+          token,
+        });
+      }
+    } catch (error) {}
+  };
+
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss}>
       <SafeAreaView style={{backgroundColor: colors.grayScale['0']}}>
@@ -184,7 +198,7 @@ function EmailLogin() {
                 <View flex={1} h="1px" bg={colors.grayScale['20']} />
               </HStack>
 
-              <KakaoLoginButton handlePress={() => {}} />
+              <KakaoLoginButton handlePress={onKakaoLogin} />
               <AppleLoginButton handlePress={() => {}} />
               <GoogleLoginButton handlePress={onGoogleLogin} />
             </VStack>
