@@ -1,6 +1,6 @@
 import {ScrollView, Text, VStack} from 'native-base';
 import React from 'react';
-import {NavigationHookProp, StackProps} from '~/../types/navigator';
+import {NavigationHookProp} from '~/../types/navigator';
 import Header from '~/components/hospital/review/register/Header';
 import {CloseButton} from '~/components/hospital/review/register/button';
 import {SafeAreaView} from 'react-native-safe-area-context';

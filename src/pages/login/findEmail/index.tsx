@@ -12,6 +12,8 @@ import VerificationForm from '~/components/common/VerificationForm';
 import VerificationModal from '~/components/common/modal/VerificationModal';
 import {usePostAuthMobileVerify} from '~/api/auth/mutations';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
+import {deleteHypen} from '~/utils/text';
+import {PostAuthMobileVerifyCodeResponse} from '~/../types/api/auth';
 
 /**
  * @description 이메일 찾기 페이지
@@ -23,11 +25,12 @@ function FindEmail() {
   const postAuthMobileVerify = usePostAuthMobileVerify();
 
   // 인증 성공 결과 처리
-  const handlePage = async () => {
+  const handlePage = (data?: PostAuthMobileVerifyCodeResponse) => {
     navigation.navigate('AuthFoundResult', {
+      data,
       type: 'FOUND',
       previousURL: 'FOUND_EMAIL',
-      phoneNumber: phoneNumber.replace(/\-/g, ''),
+      phoneNumber: deleteHypen(phoneNumber),
     });
   };
 
@@ -39,7 +42,7 @@ function FindEmail() {
 
   // 인증 재발송 이벤트
   const onResendVerification = () => {
-    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+    let replacePhoneNumber = deleteHypen(phoneNumber);
 
     postAuthMobileVerify.mutateAsync({
       mobile: replacePhoneNumber,
@@ -48,7 +51,7 @@ function FindEmail() {
 
   // 인증하기 버튼 이벤트
   const onSendVerification = () => {
-    let replacePhoneNumber = phoneNumber.replace(/\-/g, '');
+    let replacePhoneNumber = deleteHypen(phoneNumber);
 
     postAuthMobileVerify.mutateAsync({
       mobile: replacePhoneNumber,
@@ -112,7 +115,7 @@ function FindEmail() {
           handlePage={handlePage}
           onResendVerification={onResendVerification}
           onVerificationFail={onVerificationFail}
-          phoneNumber={phoneNumber.replace(/\-/g, '')}
+          phoneNumber={deleteHypen(phoneNumber)}
         />
       </SafeAreaView>
     </TouchableWithoutView>

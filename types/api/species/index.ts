@@ -18,3 +18,21 @@ export type SpeciesData = {
     name: string;
   };
 };
+
+/**
+ *@description species 기본 type
+ */
+
+export type SpeciesType = {
+  id: string,
+  name: string,
+  kindId: string,
+  created_at: string,
+  _count?: {
+    pets: number
+  }
+  specie?: {
+    id: string;
+    name: string;
+  };
+}

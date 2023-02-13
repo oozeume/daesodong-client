@@ -2,10 +2,10 @@ import React from 'react';
 import {Center, Flex, Text} from 'native-base';
 
 import {colors} from '~/theme/theme';
-import {VisitedAnimalsType} from '~/../types/hospital';
+import Species from '~/model/species';
 
 interface Props {
-  visitedAnimals: VisitedAnimalsType[];
+  visitedAnimals: Species[];
 }
 
 /**
@@ -23,9 +23,9 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
         flexDirection={'row'}
         flexWrap={'wrap'}
         justifyContent={'space-between'}>
-        {visitedAnimals.map((data, index) => (
+        {visitedAnimals.map((pet) => (
           <Flex
-            key={`${data.animalType} + ${index}`}
+            key={pet.id}
             w={'149.5px'}
             h={'40px'}
             px={'16px'}
@@ -40,14 +40,14 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
               fontWeight={'400'}
               color={colors.grayScale[70]}
               textAlign={'center'}>
-              {data.animalType}
+              {pet.name}
             </Text>
             <Text
               fontSize={14}
               fontWeight={'400'}
               color={colors.grayScale[70]}
               textAlign={'center'}>
-              {data.visitsNumber}
+              {pet.count}
             </Text>
           </Flex>
         ))}

@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
+import {AuthFoundResultParams} from '../login';
 
 /**
  * @description script 설명
@@ -20,7 +21,9 @@ import {FormType} from '../community';
  * { ... Home: { id: string; }; ... }
  */
 export type RootTabParamList = {
-  Facility: undefined;
+  FacilityInfo: {
+    id: string;
+  };
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
@@ -32,7 +35,10 @@ export type RootTabParamList = {
  * { ... Hospital: { id: string; }; ... }
  */
 export type RootStackParamList = {
-  Hospital: undefined;
+  FacilityDetail: {
+    id: string;
+    facilityName: string;
+  };
   tab: undefined;
   HospitalReviewRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
@@ -41,11 +47,7 @@ export type RootStackParamList = {
   EmailLogin: undefined;
   PasswordReset: undefined;
   PasswordResetSuccess: undefined;
-  AuthFoundResult: {
-    type: 'FOUND' | 'NOT_FOUND';
-    phoneNumber?: string;
-    previousURL: 'FOUND_EMAIL' | 'CHANGE_PASSWORD';
-  };
+  AuthFoundResult: AuthFoundResultParams;
   FindEmail: undefined;
 
   SignupSocial: undefined;

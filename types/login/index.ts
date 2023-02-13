@@ -1,4 +1,5 @@
 import {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {PostAuthMobileVerifyCodeResponse} from '../api/auth';
 
 // 이메일 로그인 폼
 export interface EmailLoginForm {
@@ -16,4 +17,12 @@ export interface ActiveButtonProps extends LoginButtonProps {
   buttonStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   text: string;
+}
+
+// 회원 정보 찾기 결과 페이지 파라미터
+export interface AuthFoundResultParams {
+  data?: PostAuthMobileVerifyCodeResponse;
+  type: 'FOUND' | 'NOT_FOUND';
+  phoneNumber?: string;
+  previousURL: 'FOUND_EMAIL' | 'CHANGE_PASSWORD' | 'SIGNUP';
 }

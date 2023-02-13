@@ -11,7 +11,6 @@ import {
 } from '~/components/login/button';
 import {Dimensions} from 'react-native';
 import {colors} from '~/theme/theme';
-import {useGetAuthMobile} from '~/api/auth/queries';
 import _ from 'lodash';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 
@@ -22,7 +21,6 @@ function AuthFoundResult() {
   const {navigate} = useNavigation<NavigationHookProp>();
   const {params} = useRoute<RouteHookProp<'AuthFoundResult'>>();
 
-  const {data} = useGetAuthMobile(params.phoneNumber);
   const [mainText, setMainText] = useState('');
   const [subText, setSubText] = useState('');
 
@@ -42,17 +40,17 @@ function AuthFoundResult() {
   useEffect(() => {
     if (params?.type === 'NOT_FOUND') {
       // 계정이 없을 경우,
-      if (params?.previousURL === 'FOUND_EMAIL') {
-        // 이전 이메일 찾기 페이지일 경우
-        setSubText('회원가입하고 대소동 서비스를 이용해보세요');
-      } else {
-        // 이전 패스워드 찾기 페이지일 경우
-        setSubText('입력하신 이메일을 확인하시거나\n회원가입을 진행해주세요');
-      }
 
+      // FOUND_EMAIL = 이전 페이지가 이메일 찾기 페이지일 경우
+      let _subText =
+        params?.previousURL === 'FOUND_EMAIL'
+          ? '회원가입하고 대소동 서비스를 이용해보세요'
+          : '입력하신 이메일을 확인하시거나\n회원가입을 진행해주세요';
+
+      setSubText(_subText);
       setMainText('가입된 계정이 없어요');
     } else {
-      const social = data?.data?.social;
+      const social = params?.data?.social;
       if (social && _.isArray(social)) {
         // 소셜 가입일 경우
         const socialText = SOCIAL_TYPE[social[0] as string];
@@ -65,7 +63,7 @@ function AuthFoundResult() {
       }
       setSubText('가입했던 계정으로 로그인 해보세요');
     }
-  }, [data]);
+  }, [params]);
 
   return (
     <SafeAreaView>
@@ -96,17 +94,19 @@ function AuthFoundResult() {
             {subText}
           </Text>
 
-          <Box bgColor={colors.grayScale['10']} h="56px" borderRadius={18}>
-            <Center>
-              <Text
-                color={colors.grayScale[70]}
-                fontSize={'16px'}
-                lineHeight={'56px'}
-                fontWeight={400}>
-                {data?.data.email || ''}
-              </Text>
-            </Center>
-          </Box>
+          {params.type === 'FOUND' && (
+            <Box bgColor={colors.grayScale['10']} h="56px" borderRadius={18}>
+              <Center>
+                <Text
+                  color={colors.grayScale[70]}
+                  fontSize={'16px'}
+                  lineHeight={'56px'}
+                  fontWeight={400}>
+                  {params?.data?.email || ''}
+                </Text>
+              </Center>
+            </Box>
+          )}
         </VStack>
 
         {isEmailUser ? (
