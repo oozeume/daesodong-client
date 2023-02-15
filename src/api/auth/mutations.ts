@@ -9,6 +9,7 @@ import {
   PostAuthSignupBody,
   PostAuthSocialLoginData,
   PostAuthResetPasswordData,
+  PostAuthMobileVerifyCodeResponse,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
 
@@ -101,7 +102,7 @@ export const usePostAuthEmailSignup = () => {
 const postAuthMobileVerify = async (data: PostAuthMobileVerifyData) => {
   return apiCall<string>({
     method: 'POST',
-    url: `auth/verify`,
+    url: `auth/code`,
     data,
   });
 };
@@ -121,9 +122,9 @@ export const usePostAuthMobileVerify = () => {
  *@param {string} code - 인증 번호
  */
 const postAuthMobileVerifyCode = async (data: PostAuthMobileVerifyCodeData) => {
-  return apiCall<boolean>({
+  return apiCall<PostAuthMobileVerifyCodeResponse>({
     method: 'POST',
-    url: `auth/verify/code`,
+    url: `auth/code/verification`,
     data,
   });
 };

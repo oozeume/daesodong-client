@@ -4,6 +4,8 @@ import {Center, HStack} from 'native-base';
 import {colors} from '~/theme/theme';
 import {IconNameType} from '~/../types/hospital';
 import IconView from './IconView';
+import { APP_WIDTH } from '~/utils/dimension';
+import { MARGIN_X } from '~/constants/facility/detail';
 
 interface Props {
   iconName: IconNameType;
@@ -22,7 +24,7 @@ function HospitalInfoContents({
   return (
     <Center>
       <HStack
-        width={337}
+        width={APP_WIDTH - MARGIN_X * 2}
         borderBottomWidth={1}
         borderBottomColor={colors.grayScale[10]}
         style={{paddingVertical: 24}}>

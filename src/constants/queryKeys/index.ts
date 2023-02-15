@@ -1,6 +1,8 @@
 const QueryKeys = {
-  auth: {
-    getAuthMobile: 'get auth mobile',
+  facility: {
+    visitedPets: 'facility visited pets',
+    visitedUser: 'facility visited user',
+    info: 'facility Info',
   },
   user: {
     getUser: 'get user',
@@ -18,6 +20,7 @@ const QueryKeys = {
     getRecomments: 'get recomments',
     deleteRecomment: 'delete recomment',
   },
+  auth: {},
 } as const;
 
 export default QueryKeys;
