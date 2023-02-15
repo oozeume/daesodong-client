@@ -159,7 +159,13 @@ const AppNavigator = () => {
         />
         <Stack.Screen name="AuthFoundResult" component={AuthFoundResult} />
 
-        <Stack.Screen name="CommunityDetail" component={CommunityDetail} />
+        <Stack.Screen
+          name="CommunityDetail"
+          component={CommunityDetail}
+          options={{
+            headerShown: true,
+          }}
+        />
         <Stack.Screen name="CommunityRegister" component={CommunityRegister} />
         <Stack.Screen
           name="ContentsDetail"

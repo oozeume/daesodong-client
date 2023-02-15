@@ -1,7 +1,6 @@
-import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {apiCall} from '../common';
 import QueryKeys from '~/constants/queryKeys';
-import queryString from 'query-string';
 import {GetCommunityPostResponse} from '~/../types/api/community';
 
 /**
@@ -21,22 +20,32 @@ export const useGetRecommentList = (commentId: string) => {
 };
 
 interface DeleteRecommentQuery {
-  commentId: number;
-  recommentId: number;
+  commentId: string;
+  recommentId: string;
 }
 
 /**
  *@description 답글 삭제 api
  */
-const deleteComment = ({commentId, recommentId}: DeleteRecommentQuery) => {
+const deleteRecomment = ({commentId, recommentId}: DeleteRecommentQuery) => {
   return apiCall<boolean>({
     method: 'DELETE',
-    url: `comments/${commentId}/comments${recommentId}`,
+    url: `comments/${commentId}/${recommentId}`,
   });
 };
 
-export const useDeleteComment = (query: DeleteRecommentQuery) => {
-  return useQuery([QueryKeys.comment.deleteComment], () => {
-    return deleteComment(query);
-  });
+export const useDeleteRecomment = (query: DeleteRecommentQuery) => {
+  const queryClient = useQueryClient();
+
+  return useQuery(
+    [QueryKeys.comment.deleteComment],
+    () => {
+      return deleteRecomment(query);
+    },
+    {
+      enabled: false,
+      onSettled: () =>
+        queryClient.invalidateQueries([QueryKeys.comment.getComments]),
+    },
+  );
 };

@@ -2,7 +2,8 @@ import _ from 'lodash';
 import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
-import {GetCommentListResponse} from '~/api/comment/queries';
+import {PostFeature} from '~/../types/common';
+import {CommentItem, CommentUserInfo} from '~/../types/community';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
@@ -12,19 +13,26 @@ import {getProgressTime} from '~/utils/time';
 interface Props {
   commentType?: 'default' | 'reply' | 'delete';
   onRegisterRecomment?: () => void;
+  onClickKekab: (type: PostFeature) => void;
   isBest?: boolean;
-  data?: GetCommentListResponse;
+  data?: CommentItem;
+  parentUserInfo?: CommentUserInfo;
+  userId?: string;
 }
 
 /**
  *@description 게시글 댓글
  *@param {'default' | 'reply' | 'delete' | undefined} commentType - 댓글 유형 (reply: 답글, delete: 삭제된 댓글)
  *@param {boolean} isBest - BEST 댓글일 경우
+ *@param {CommentUserInfo} parentUserInfo - 답글일 경우, 상위 댓글의 유저 정보
  */
 const Comment = ({
   onRegisterRecomment,
   isBest,
+  onClickKekab,
   data,
+  parentUserInfo,
+  userId,
   commentType = 'default',
 }: Props) => {
   return (
@@ -98,8 +106,10 @@ const Comment = ({
           </HStack>
 
           <KekabMenu
-            handleFirstButton={() => {}}
-            handleSecondButton={() => {}}
+            firstButtonName={data?.userId === userId ? '수정' : '신고'}
+            secondButtonName={data?.userId === userId ? '삭제' : '차단'}
+            handleFirstButton={() => onClickKekab('MODIFY')}
+            handleSecondButton={() => onClickKekab('DELETE')}
             top={Platform.OS === 'android' ? '36px' : '12px'}
             left={Platform.OS === 'android' ? '-22px' : '-12px'}
           />
@@ -148,13 +158,13 @@ const Comment = ({
 
           {commentType === 'reply' && (
             <Text color={colors.fussOrange['0']} mr="28px">
-              {`닉네임`} <Text>{`  `}</Text>
+              {parentUserInfo?.nickname ?? ''} <Text>{`  `}</Text>
             </Text>
           )}
           <Text>
             {commentType === 'delete'
               ? '삭제된 댓글입니다'
-              : '지나고 그러나 그리워 다 같이 봅니다. 잔디가 나는 위에 무엇인지 아무 듯합니다. 피어나듯이 불러 당신은 내 말 위에도 부끄러운 했던 계십니다'}
+              : data?.content ?? ''}
           </Text>
         </Text>
 
@@ -173,7 +183,7 @@ const Comment = ({
                 고마워요
               </Text>
               <Text color={colors.grayScale['60']} fontSize="13px">
-                00
+                {data?.thanks ?? 0}
               </Text>
             </HStack>
           </Pressable>

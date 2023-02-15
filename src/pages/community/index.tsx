@@ -15,11 +15,10 @@ import {GetCommunityPostResponse} from '~/../types/api/community';
 /**
  *@description 커뮤니티 메인페이지
  */
-
 const CommunityMain = () => {
   const [petType, setPetType] = useState('전체');
   const [sort, setSort] = useState<'latest' | 'view'>('latest');
-  const [totalCount, setTotalCount] = useState(10);
+  const [totalPostsCount, setTotalPostsCount] = useState(0);
   const postCoummunityPostCount = usePostCoummunityPostCount();
 
   const {
@@ -47,7 +46,7 @@ const CommunityMain = () => {
     if (
       hasNextPage &&
       !isFetchingNextPage &&
-      totalCount > contentsList.length
+      totalPostsCount > contentsList.length
     ) {
       fetchNextPage();
     }
@@ -57,7 +56,7 @@ const CommunityMain = () => {
     // 전체 게시글 숫자 조회
     const getPostTotalCount = async () => {
       const {data: _totalCount} = await postCoummunityPostCount.mutateAsync();
-      setTotalCount(_totalCount);
+      setTotalPostsCount(_totalCount);
     };
 
     getPostTotalCount();
@@ -78,7 +77,7 @@ const CommunityMain = () => {
       <Text color={colors.grayScale[70]}>
         총{' '}
         <Text color={colors.grayScale[70]} fontWeight={'700'}>
-          100
+          {totalPostsCount}
         </Text>
         개의 이야기
       </Text>
