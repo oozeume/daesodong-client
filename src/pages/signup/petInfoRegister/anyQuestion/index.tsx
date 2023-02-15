@@ -25,15 +25,15 @@ function AnyQuestionRegister({
 
   const [concern, setConcern] = useState<string>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     if (!concern) return;
 
     setForm(pre => ({...pre, concern}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'AnyQuestionRegister']);
 
-    await setData(StorageKeys.petInfoRegister.form, {...form, concern});
-    await setData(StorageKeys.petInfoRegister.state, currentStage.toString());
+    setData(StorageKeys.petInfoRegister.form, {...form, concern});
+    setData(StorageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetImageRegister');
   };
 
@@ -48,6 +48,7 @@ function AnyQuestionRegister({
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={onMovePage}
       currentStage={currentStage}
       isSkipPage

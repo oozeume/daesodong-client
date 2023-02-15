@@ -33,7 +33,7 @@ function PetTypeRegister({
   const {isOpen, onOpen, onClose} = useDisclose();
   const [petType, setPetType] = useState<SpeciesData>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     if (!petType) return;
 
     setForm(prev => ({
@@ -44,11 +44,11 @@ function PetTypeRegister({
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetTypeRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, {
+    setData(storageKeys.petInfoRegister.form, {
       ...form,
       speciesName: petType.name,
     });
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetBirthRegister');
   };
 
@@ -69,6 +69,7 @@ function PetTypeRegister({
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={onMovePage}
       currentStage={currentStage}
       possibleButtonPress={!_.isNil(petType)}>
@@ -118,7 +119,6 @@ function PetTypeRegister({
             setPetType(petType);
           }}
           isEnrollPet
-          onPress={() => {}}
         />
       )}
     </LayoutContainer>

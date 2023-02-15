@@ -23,15 +23,15 @@ function PetNameRegister({
 
   const [name, setName] = useState<string>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     if (!name) return;
 
     setForm(pre => ({...pre, name}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetNameRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, {...form, name});
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.form, {...form, name});
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetTypeRegister');
   };
 

@@ -1,8 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Center, Image, Stack, Text} from 'native-base';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {NavigationHookProp} from '~/../types/navigator';
+import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
+import {useGetUser} from '~/api/user/queries';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
@@ -13,6 +14,10 @@ import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 
 function PetInfoRegisterOutro() {
   const {reset} = useNavigation<NavigationHookProp>();
+  const {params} = useRoute<RouteHookProp<'PetInfoRegisterOutro'>>();
+  const {data} = useGetUser();
+
+  const BOTTOM_BUTTON_HEIGHT = 40;
 
   const onMovePage = () => {
     reset({index: 0, routes: [{name: 'tab'}]});
@@ -23,7 +28,7 @@ function PetInfoRegisterOutro() {
         position={'relative'}
         px={'18px'}
         w={APP_WIDTH}
-        h={APP_HEIGHT - 40}
+        h={APP_HEIGHT - BOTTOM_BUTTON_HEIGHT}
         backgroundColor={colors.grayScale[0]}
         alignItems={'center'}
         justifyContent={'space-between'}>
@@ -36,7 +41,9 @@ function PetInfoRegisterOutro() {
               color={colors.grayScale[60]}
               fontSize={'15px'}
               textAlign={'center'}>
-              봉이네님과 봉삼이가 행복하고 건강한 시간을
+              {`${data?.data?.nickname ?? ''}님과 ${
+                params.petName
+              }가 행복하고 건강한 시간을`}
             </Text>
             <Text
               color={colors.grayScale[60]}
@@ -48,7 +55,6 @@ function PetInfoRegisterOutro() {
 
           <Image
             width={268}
-            // height={222}
             alt={'image'}
             source={require('../../../../assets/images/outro_image.png')}
           />

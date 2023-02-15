@@ -4,18 +4,6 @@ import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButto
 import {colors} from '~/theme/theme';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 
-const PET_INFO_REGISTER_STAGE_TEXT_LIST = [
-  '집사님의 성별을 알려주세요',
-  '집사님이 태어난 년도를 알려주세요',
-  '집사님과 함께하는\n반려아이의 이름을 알려주세요',
-  '귀여운 봉식이!\n봉식이는 어떤 동물인가요?',
-  '봉식이 나이는요?',
-  '봉식이 성별은 무엇인가요?',
-  '봉식이와 어디서 함께 살고 계세요?',
-  '봉식이를 키우면서\n고민되는 점이 있으신가요?',
-  '아주 좋아요!\n마지막으로 우리 봉삼이\n예쁜 모습 자랑해주실까요?',
-];
-
 interface Props {
   children?: React.ReactNode;
   buttonPress: () => void;
@@ -23,6 +11,7 @@ interface Props {
   possibleButtonPress?: boolean;
   isSkipPage?: boolean;
   onSkipPage?: () => void;
+  petName?: string;
 }
 
 /**
@@ -35,8 +24,21 @@ function LayoutContainer({
   currentStage,
   isSkipPage,
   onSkipPage,
+  petName = '',
   possibleButtonPress = false,
 }: Props) {
+  const PET_INFO_REGISTER_STAGE_TEXT_LIST = [
+    '집사님의 성별을 알려주세요',
+    '집사님이 태어난 년도를 알려주세요',
+    '집사님과 함께하는\n반려아이의 이름을 알려주세요',
+    `귀여운 ${petName}!\n${petName}는 어떤 동물인가요?`,
+    `${petName} 나이는요?`,
+    `${petName} 성별은 무엇인가요?`,
+    `${petName}와 어디서 함께 살고 계세요?`,
+    `${petName}를 키우면서\n고민되는 점이 있으신가요?`,
+    `아주 좋아요!\n마지막으로 우리 ${petName}\n예쁜 모습 자랑해주실까요?`,
+  ];
+
   return (
     <KeyboardAvoidingView
       flex={1}

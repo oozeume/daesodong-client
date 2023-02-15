@@ -27,22 +27,23 @@ function PetOwnerBirthRegister({
   const [index, setIndex] = useState<number>();
   const [yearList, setYearList] = useState<DateList[]>([]);
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     if (_.isUndefined(index)) return;
 
     setForm(pre => ({...pre, age: yearList[index].value}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetOwnerBirthRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, {
+    setData(storageKeys.petInfoRegister.form, {
       ...form,
       age: yearList[index].value,
     });
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetNameRegister');
   };
 
   useEffect(() => {
+    // 초기 연도 리스트 설정 로직
     const curYear = dayjs().year();
     const refYear = 1950;
 
@@ -52,6 +53,7 @@ function PetOwnerBirthRegister({
     for (let i = curYear; i >= refYear; i--) {
       _yearList.push({value: i, txt: `${i}년`});
 
+      // 이전에 등록했던 폼을 불러오는 로직
       if (form?.age === i) {
         setIndex(_index);
       }

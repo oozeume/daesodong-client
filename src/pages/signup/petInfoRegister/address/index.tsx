@@ -53,7 +53,7 @@ function AddressRegister({
   // 시도, 군 선택 후, 필터된 동 state
   const [sortedDong, setSortedDong] = useState<Hangjungdong[]>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     const address = `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`;
     setForm(() => ({
       ...form,
@@ -63,8 +63,8 @@ function AddressRegister({
     onChangeStage();
     setPreviousURL(prev => [...prev, 'AddressRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, {...form, address});
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.form, {...form, address});
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('AnyQuestionRegister');
   };
 
@@ -124,6 +124,7 @@ function AddressRegister({
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={onMovePage}
       currentStage={currentStage}
       possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>

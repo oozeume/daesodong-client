@@ -74,7 +74,15 @@ function PetImageRegister({
         if (response.data) {
           await removeData(storageKeys.petInfoRegister.form);
           await removeData(storageKeys.petInfoRegister.state);
-          reset({index: 0, routes: [{name: 'PetInfoRegisterOutro'}]});
+          reset({
+            index: 0,
+            routes: [
+              {
+                name: 'PetInfoRegisterOutro',
+                params: {petName: form?.name ?? ''},
+              },
+            ],
+          });
         }
       }
     } catch (error) {
@@ -108,6 +116,7 @@ function PetImageRegister({
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={() => onMovePage(false)}
       currentStage={currentStage}
       isSkipPage

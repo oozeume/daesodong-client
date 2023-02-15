@@ -39,15 +39,15 @@ function PetBirthRegister({
 
   const [birthDate, setBirthDate] = useState<number>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     if (!birthDate) return;
 
     setForm(pre => ({...pre, birthDate}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetBirthRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, {...form, birthDate});
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.form, {...form, birthDate});
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetGenderRegister');
   };
 
@@ -57,6 +57,7 @@ function PetBirthRegister({
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={onMovePage}
       currentStage={5}
       possibleButtonPress={!_.isNil(birthDate)}>

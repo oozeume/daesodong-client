@@ -96,7 +96,7 @@ export type RootStackParamList = {
   AddressRegister: undefined;
   AnyQuestionRegister: undefined;
   PetImageRegister: undefined;
-  PetInfoRegisterOutro: undefined;
+  PetInfoRegisterOutro: {petName: string};
 };
 
 export type SignupNavigatorRouteList =
