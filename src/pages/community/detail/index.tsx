@@ -1,9 +1,8 @@
-import {Box, KeyboardAvoidingView, ScrollView} from 'native-base';
+import {Box, ScrollView} from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';
 import CommunityContent from '~/components/community/detail/Content';
-import {Platform} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {RouteHookProp} from '~/../types/navigator';
 import Popup from '~/components/common/popup/Popup';
@@ -14,6 +13,7 @@ import useSetDetailHeader from '~/components/community/detail/useSetDetailHeader
 import CommentInput from '~/components/community/detail/CommentInput';
 import {CommentInputType, CommentItem} from '~/../types/community';
 import CommentList from '~/components/community/detail/CommentList';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -32,13 +32,6 @@ const CommunityDetail = () => {
 
   const [selectedRecomment, setSelectedRecomment] = useState<CommentItem>();
 
-  // 삭제 여부 팝업 오픈 state
-  const [isOpenDeletePopup, setOpenDeletePopup] = useState({
-    post: false,
-    comment: false,
-    recomment: false,
-  });
-
   const getCommunityPost = useGetCommunityPost(postId);
 
   const {data: commentList, refetch} = useGetCommentList(postId);
@@ -55,7 +48,13 @@ const CommunityDetail = () => {
   /**
    *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
    */
-  const {navigation, isBookmark, setBookmark} = useSetDetailHeader();
+  const {
+    navigation,
+    isBookmark,
+    setBookmark,
+    isOpenDeletePopup,
+    setOpenDeletePopup,
+  } = useSetDetailHeader();
 
   /**
    *@description 댓글 삭제
@@ -82,9 +81,7 @@ const CommunityDetail = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={0}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
         <ScrollView
           bgColor={colors.grayScale['0']}
@@ -95,7 +92,7 @@ const CommunityDetail = () => {
             isVisibleUserInfo
             isVisibleLike
             isVisibleTag
-            contentData={getCommunityPost.data?.data}
+            contentData={getCommunityPost.data}
           />
 
           <Box height="8px" bgColor={colors.grayScale['10']}></Box>
@@ -150,7 +147,7 @@ const CommunityDetail = () => {
           />
         </ScrollView>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

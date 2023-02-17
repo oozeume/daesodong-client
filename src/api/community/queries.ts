@@ -6,6 +6,7 @@ import {
   GetCommunityPostListQuery,
   GetCommunityPostResponse,
 } from '~/../types/api/community';
+import Post from '~/model/post';
 
 /**
  *@description 커뮤니티 게시글 리스트 조회 api
@@ -61,9 +62,9 @@ export const useGetCommunityPost = (id: string) => {
       return getCommunityPost(id);
     },
     {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      // enabled: !_.isUndefined(mobile),
+      select: data => {
+        return new Post(data.data);
+      },
     },
   );
 };
@@ -80,14 +81,12 @@ const deleteCommunityPost = async (id: string) => {
 
 export const useDeleteCommunityPost = (id: string) => {
   return useQuery(
-    [QueryKeys.auth.getAuthMobile],
+    [QueryKeys.community.deletePost],
     ({queryKey}) => {
       return deleteCommunityPost(id);
     },
     {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      // enabled: !_.isUndefined(mobile),
+      enabled: false,
     },
   );
 };

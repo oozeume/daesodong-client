@@ -6,21 +6,17 @@ import CommunityContent from '~/components/community/detail/Content';
 import {colors} from '~/theme/theme';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {FlatList} from 'react-native-gesture-handler';
-import {GetCommunityPostResponse} from '~/../types/api/community';
-import {getProgressTime} from '~/utils/time';
+import Post from '~/model/post';
 
 interface Props {
-  contentsList?: GetCommunityPostResponse[];
+  contentsList?: Post[];
 }
 
+/**
+ *@description 커뮤니티 게시글 리스트
+ */
 function CommunityContents({contentsList}: Props) {
   const navigation = useNavigation<NavigationProp<RouteList>>();
-
-  console.log('');
-  console.log('@ contentsList');
-  console.log(contentsList);
-  console.log('');
-  // 2923c720-334f-451f-81f1-5fa006429e73
 
   return (
     <FlatList

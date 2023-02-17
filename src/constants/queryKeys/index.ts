@@ -10,6 +10,7 @@ const QueryKeys = {
   community: {
     getPosts: 'get community posts',
     getPost: 'get community post',
+    deletePost: 'delete community post',
   },
   comment: {
     getComments: 'get comments',

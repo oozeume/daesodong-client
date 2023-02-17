@@ -26,7 +26,7 @@ interface Props {
  *@param setCommentInputType - 댓글/답글 입력, 수정 타입 설정 setState
  *@param commentInputType - 댓글/답글 입력, 수정 타입 설정 state
  */
-export default function CommentList({
+function CommentList({
   setSelectedComment,
   selectedComment,
   setSelectedRecomment,
@@ -106,3 +106,5 @@ export default function CommentList({
     </Box>
   );
 }
+
+export default CommentList;

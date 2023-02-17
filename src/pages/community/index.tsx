@@ -10,7 +10,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import CommunityContents from '../../components/community/main/CommunityContents';
 import {useGetCommunityPostList} from '~/api/community/queries';
 import {usePostCoummunityPostCount} from '~/api/community/mutation';
-import {GetCommunityPostResponse} from '~/../types/api/community';
+import Post from '~/model/post';
 
 /**
  *@description 커뮤니티 메인페이지
@@ -21,8 +21,10 @@ const CommunityMain = () => {
   const [totalPostsCount, setTotalPostsCount] = useState(0);
   const postCoummunityPostCount = usePostCoummunityPostCount();
 
+  const [postList, setPostList] = useState<Post[]>([]);
+
   const {
-    data: postList,
+    data: rawPostList,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
@@ -30,12 +32,6 @@ const CommunityMain = () => {
     limit: 10,
     sort,
     community: petType === '전체' ? undefined : petType,
-  });
-
-  // 실제 랜더링 되는 컨텐츠 리스트 구하는 로직
-  let contentsList: GetCommunityPostResponse[] = [];
-  postList?.pages.forEach(item => {
-    contentsList = [...contentsList, ...item.data];
   });
 
   /**
@@ -46,11 +42,25 @@ const CommunityMain = () => {
     if (
       hasNextPage &&
       !isFetchingNextPage &&
-      totalPostsCount > contentsList.length
+      totalPostsCount > postList.length
     ) {
       fetchNextPage();
     }
   };
+
+  useEffect(() => {
+    // 게시글 리스트 state 설정
+    if (rawPostList?.pages) {
+      let _postList: Post[] = [];
+      rawPostList?.pages.forEach(item => {
+        const tmpList = item.data.map(_item => new Post(_item));
+
+        _postList = [..._postList, ...tmpList];
+      });
+
+      setPostList(_postList);
+    }
+  }, [rawPostList]);
 
   useEffect(() => {
     // 전체 게시글 숫자 조회
@@ -97,7 +107,7 @@ const CommunityMain = () => {
         handleSecondButton={() => setSort('view')}
       />
     </HStack>,
-    <CommunityContents contentsList={contentsList} />,
+    <CommunityContents contentsList={postList} />,
   ];
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>

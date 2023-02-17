@@ -16,7 +16,13 @@ interface Props {
   onEnrollCallback: () => void;
   selectedComment?: CommentItem;
 }
-export default function CommentInput({
+
+/**
+ *@description 댓글 등록 인풋 컴포넌트
+ *@param ommentInputType -  댓글 입력 타입 (추가, 답글, 수정)
+ *@param onEnrollCallback - 등록 후, 콜백함수
+ */
+function CommentInput({
   postId,
   setCommentInputType,
   commentInputType,
@@ -123,3 +129,5 @@ export default function CommentInput({
     </Box>
   );
 }
+
+export default CommentInput;

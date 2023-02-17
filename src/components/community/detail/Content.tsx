@@ -7,8 +7,8 @@ import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
 import dayjs from 'dayjs';
-import {GetCommunityPostResponse} from '~/../types/api/community';
 import {getProgressTime} from '~/utils/time';
+import Post from '~/model/post';
 
 interface Props {
   isVisibleUserInfo?: boolean;
@@ -18,7 +18,7 @@ interface Props {
   viewAllButton?: JSX.Element;
   viewMode?: 'default' | 'simple';
   isVisibleTime?: boolean;
-  contentData?: GetCommunityPostResponse;
+  contentData?: Post;
 }
 
 /**
@@ -113,7 +113,7 @@ const CommunityContent = ({
               bottom={0}
               color={colors.grayScale['50']}
               fontSize={'12px'}>
-              {dayjs(contentData?.created_at).format('YY.MM.DD')}
+              {dayjs(contentData?.createdAt).format('YY.MM.DD')}
             </Text>
           </HStack>
         </HStack>
@@ -127,12 +127,12 @@ const CommunityContent = ({
             fontSize={'16px'}
             color={colors.grayScale['80']}
             fontWeight={800}>
-            {contentData?.title ?? ''}
+            {contentData?.title}
           </Text>
 
           {isVisibleTime && (
             <Text fontSize={'12px'} color={colors.grayScale['60']}>
-              {getProgressTime(contentData?.created_at)}
+              {getProgressTime(contentData?.createdAt)}
             </Text>
           )}
         </Stack>
@@ -143,7 +143,7 @@ const CommunityContent = ({
           fontSize={'14px'}
           color={colors.grayScale['80']}
           mb={'16px'}>
-          {contentData?.content ?? ''}
+          {contentData?.content}
         </Text>
 
         {viewAllButton}
@@ -154,7 +154,7 @@ const CommunityContent = ({
 
         {isVisibleTag && (
           <HStack mt={'20px'}>
-            {(contentData?.post_tag_join ?? []).map((item, i) => (
+            {contentData?.tags.map((item, i) => (
               <View
                 key={i.toString()}
                 py="1px"
@@ -192,7 +192,7 @@ const CommunityContent = ({
             </Text>
 
             <Text fontSize="12px" color={colors.grayScale['60']}>
-              {contentData?.thanks ?? 0}
+              {contentData?.thanks}
             </Text>
           </HStack>
         )}
@@ -203,7 +203,7 @@ const CommunityContent = ({
               <HStack alignItems={'center'}>
                 <ViewFillIcon fill={colors.grayScale['30']} />
                 <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
-                  {contentData?.views ?? 0}
+                  {contentData?.views}
                 </Text>
               </HStack>
             </Pressable>

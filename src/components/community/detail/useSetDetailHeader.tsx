@@ -10,10 +10,19 @@ import BookmarFillIcon from '~/assets/icons/bookmark_fill.svg';
 import {colors} from '~/theme/theme';
 import {Platform} from 'react-native';
 
-interface Props {}
-export default function useSetDetailHeader() {
+/**
+ *@description 커뮤니티 상세 댓글 헤더 설정 및 북마크, 삭제 팝업 state 초기 설정 훅
+ */
+function useSetDetailHeader() {
   const navigation = useNavigation<NavigationHookProp>();
   const [isBookmark, setBookmark] = useState(false);
+
+  // 삭제 여부 팝업 오픈 state
+  const [isOpenDeletePopup, setOpenDeletePopup] = useState({
+    post: false,
+    comment: false,
+    recomment: false,
+  });
 
   useEffect(() => {
     navigation.setOptions({
@@ -43,13 +52,9 @@ export default function useSetDetailHeader() {
 
               <KekabMenu
                 top={Platform.OS === 'android' ? '88px' : '110px'}
-                handleFirstButton={
-                  () => {}
-                  //   navigation.navigate('CommunityRegister', {type: 'MODIFY'})
-                }
-                handleSecondButton={
-                  () => {}
-                  //   setOpenDeletePopup(prev => ({...prev, post: true}))
+                handleFirstButton={() => {}}
+                handleSecondButton={() =>
+                  setOpenDeletePopup(prev => ({...prev, post: true}))
                 }
               />
             </HStack>
@@ -59,5 +64,13 @@ export default function useSetDetailHeader() {
     });
   }, [navigation]);
 
-  return {navigation, isBookmark, setBookmark};
+  return {
+    navigation,
+    isBookmark,
+    setBookmark,
+    isOpenDeletePopup,
+    setOpenDeletePopup,
+  };
 }
+
+export default useSetDetailHeader;
