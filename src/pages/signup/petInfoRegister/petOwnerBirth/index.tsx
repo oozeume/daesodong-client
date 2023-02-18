@@ -30,13 +30,13 @@ function PetOwnerBirthRegister({
   const onMovePage = () => {
     if (_.isUndefined(index)) return;
 
-    setForm(pre => ({...pre, age: yearList[index].value}));
+    setForm(pre => ({...pre, birthDate: yearList[index].value}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetOwnerBirthRegister']);
 
     setData(storageKeys.petInfoRegister.form, {
       ...form,
-      age: yearList[index].value,
+      birthDate: yearList[index].value,
     });
     setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetNameRegister');
@@ -54,7 +54,7 @@ function PetOwnerBirthRegister({
       _yearList.push({value: i, txt: `${i}년`});
 
       // 이전에 등록했던 폼을 불러오는 로직
-      if (form?.age === i) {
+      if (form?.birthDate === i) {
         setIndex(_index);
       }
       _index++;
