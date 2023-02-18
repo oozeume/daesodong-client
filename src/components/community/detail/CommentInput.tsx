@@ -8,13 +8,14 @@ import {usePatchComment, usePostComment} from '~/api/comment/mutation';
 import {SetState} from '~/../types/common';
 import {CommentInputType, CommentItem} from '~/../types/community';
 import {TextInput} from 'react-native';
+import CommentModel from '~/model/comment';
 
 interface Props {
   postId: string;
   setCommentInputType: SetState<CommentInputType>;
   commentInputType: CommentInputType;
   onEnrollCallback: () => void;
-  selectedComment?: CommentItem;
+  selectedComment?: CommentModel;
 }
 
 /**
@@ -63,7 +64,7 @@ function CommentInput({
       case 'PATCH_RECOMMENT':
         func = patchRecomment;
         data = {
-          commentId: selectedComment?.comment1Id || '',
+          commentId: selectedComment?.parentCommentId || '',
           recommentId: selectedComment?.id || '',
           content: commentText,
         };

@@ -3,10 +3,11 @@ import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
 import {PostFeature} from '~/../types/common';
-import {CommentItem, CommentUserInfo} from '~/../types/community';
+import {CommentUserInfo} from '~/../types/community';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
+import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
 import {getProgressTime} from '~/utils/time';
 
@@ -15,8 +16,8 @@ interface Props {
   onRegisterRecomment?: () => void;
   onClickKekab: (type: PostFeature) => void;
   isBest?: boolean;
-  data?: CommentItem;
-  parentUserInfo?: CommentUserInfo;
+  data?: CommentModel;
+  parentUserNickname?: string;
   userId?: string;
 }
 
@@ -31,7 +32,7 @@ const Comment = ({
   isBest,
   onClickKekab,
   data,
-  parentUserInfo,
+  parentUserNickname,
   userId,
   commentType = 'default',
 }: Props) => {
@@ -63,7 +64,7 @@ const Comment = ({
             {/* 닉네임, 이름, 동물, 나이 뷰 라인 */}
             <HStack alignItems="center">
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                {data?.user?.nickname || ''}
+                {data?.nickname}
               </Text>
 
               <View
@@ -74,7 +75,18 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                {(!_.isEmpty(data?.user?.pets) && data?.user?.pets[0]?.name) ||
+                {(!_.isEmpty(data?.petInfo) && data?.petInfo?.name) || ''}
+              </Text>
+
+              <View
+                backgroundColor={colors.grayScale['30']}
+                h="8px"
+                w="1px"
+                mx="4px"
+              />
+
+              <Text fontSize={'12px'} color={colors.grayScale['60']}>
+                {(!_.isEmpty(data?.petInfo) && data?.petInfo?.specie?.name) ||
                   ''}
               </Text>
 
@@ -86,21 +98,8 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                {(!_.isEmpty(data?.user?.pets) &&
-                  data?.user?.pets[0]?.specie?.name) ||
-                  ''}
-              </Text>
-
-              <View
-                backgroundColor={colors.grayScale['30']}
-                h="8px"
-                w="1px"
-                mx="4px"
-              />
-
-              <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                {(!_.isEmpty(data?.user?.pets) && data?.user?.pets[0]?.age) ||
-                  ''}
+                {(!_.isEmpty(data?.petInfo) && data?.petInfo?.age) || ''}
+                개월
               </Text>
             </HStack>
           </HStack>
@@ -118,13 +117,13 @@ const Comment = ({
         {/* 최초 작성 시간 / 수정됨 뷰 라인 */}
         <HStack mb="8px" ml="28px" alignItems={'center'}>
           <Text fontSize={'12px'} color={colors.grayScale['50']}>
-            {getProgressTime(data?.created_at, data?.updated_at || undefined)}
+            {getProgressTime(data?.createdAt, data?.updatedAt || undefined)}
           </Text>
 
           <Text color={colors.grayScale['30']}>{' ∙ '}</Text>
 
           <Text fontSize={'12px'} color={colors.grayScale['50']}>
-            {data?.created_at === data?.updated_at ? '' : '수정됨'}
+            {data?.createdAt === data?.updatedAt ? '' : '수정됨'}
           </Text>
         </HStack>
 
@@ -158,7 +157,7 @@ const Comment = ({
 
           {commentType === 'reply' && (
             <Text color={colors.fussOrange['0']} mr="28px">
-              {parentUserInfo?.nickname ?? ''} <Text>{`  `}</Text>
+              {parentUserNickname ?? ''} <Text>{`  `}</Text>
             </Text>
           )}
           <Text>

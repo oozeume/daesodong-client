@@ -14,6 +14,7 @@ import CommentInput from '~/components/community/detail/CommentInput';
 import {CommentInputType, CommentItem} from '~/../types/community';
 import CommentList from '~/components/community/detail/CommentList';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import CommentModel from '~/model/comment';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -24,13 +25,13 @@ const CommunityDetail = () => {
   const postId = params.id;
 
   // 키캡이나 답글달기로 선택된 댓글 state
-  const [selectedComment, setSelectedComment] = useState<CommentItem>();
+  const [selectedComment, setSelectedComment] = useState<CommentModel>();
 
   // 답글 등록 여부 state
   const [commentInputType, setCommentInputType] =
     useState<CommentInputType>('POST_COMMENT');
 
-  const [selectedRecomment, setSelectedRecomment] = useState<CommentItem>();
+  const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
 
   const getCommunityPost = useGetCommunityPost(postId);
 
@@ -102,7 +103,7 @@ const CommunityDetail = () => {
             setSelectedComment={setSelectedComment}
             selectedComment={selectedComment}
             setSelectedRecomment={setSelectedRecomment}
-            commentList={commentList?.data ?? []}
+            commentList={commentList ?? []}
             setOpenDeletePopup={setOpenDeletePopup}
             setCommentInputType={setCommentInputType}
             commentInputType={commentInputType}

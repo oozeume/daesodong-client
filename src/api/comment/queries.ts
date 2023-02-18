@@ -5,6 +5,7 @@ import {
   DeleteCommentQuery,
   GetCommentListResponse,
 } from '~/../types/api/comment';
+import Comment from '~/model/comment';
 
 /**
  *@description 댓글 리스트 조회 api
@@ -17,9 +18,17 @@ const getCommentList = (postId: string) => {
 };
 
 export const useGetCommentList = (postId: string) => {
-  return useQuery([QueryKeys.comment.getComments], () => {
-    return getCommentList(postId);
-  });
+  return useQuery(
+    [QueryKeys.comment.getComments],
+    () => {
+      return getCommentList(postId);
+    },
+    {
+      select: data => {
+        return (data?.data ?? []).map(item => new Comment(item));
+      },
+    },
+  );
 };
 
 /**

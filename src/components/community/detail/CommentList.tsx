@@ -1,20 +1,17 @@
 import {Box, HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 import {PostFeature, SetState} from '~/../types/common';
-import {
-  CommentInputType,
-  CommentItem,
-  OpenDeletePopup,
-} from '~/../types/community';
+import {CommentInputType, OpenDeletePopup} from '~/../types/community';
 import {useGetUser} from '~/api/user/queries';
 import Comment from '~/components/common/comment';
+import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
 
 interface Props {
-  setSelectedComment: SetState<CommentItem | undefined>;
-  selectedComment?: CommentItem;
-  setSelectedRecomment: SetState<CommentItem | undefined>;
-  commentList: CommentItem[];
+  setSelectedComment: SetState<CommentModel | undefined>;
+  selectedComment?: CommentModel;
+  setSelectedRecomment: SetState<CommentModel | undefined>;
+  commentList: CommentModel[];
   setOpenDeletePopup: SetState<OpenDeletePopup>;
   setCommentInputType: SetState<CommentInputType>;
   commentInputType: CommentInputType;
@@ -57,7 +54,7 @@ function CommentList({
             }}
           />
 
-          {(item?.comment2 ?? []).map((recomment, k) => (
+          {(item?.recomments).map((recomment, k) => (
             <React.Fragment key={k.toString()}>
               <Comment
                 userId={user.data?.data?.id}
@@ -73,7 +70,7 @@ function CommentList({
                   setSelectedComment(item);
                   setSelectedRecomment(recomment);
                 }}
-                parentUserInfo={item.user}
+                parentUserNickname={item.nickname}
               />
             </React.Fragment>
           ))}
@@ -91,9 +88,7 @@ function CommentList({
           px="18px"
           bgColor={colors.grayScale['90']}>
           <Text color={colors.fussOrange['0']} fontSize="13px">
-            {`@${
-              selectedComment?.user?.nickname ?? ''
-            } 님에게 답글을 작성중이에요`}
+            {`@${selectedComment?.nickname ?? ''} 님에게 답글을 작성중이에요`}
           </Text>
 
           <Pressable onPress={() => setCommentInputType('POST_COMMENT')}>
