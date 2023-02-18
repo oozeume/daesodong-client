@@ -10,17 +10,21 @@ import {
   RANGE_TEXT_8_20_REGREX,
 } from '~/constants/regEx';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
+import {usePostAuthResetPassword} from '~/api/auth/mutations';
 
 interface Props {
   handlePage: () => void;
+  emailForm: string;
 }
 
 /**
  *@description 비밀번호 재설정 페이지
  */
-function PasswordResetChange({handlePage}: Props) {
+function PasswordResetChange({handlePage, emailForm}: Props) {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState(''); // 비밀번호 확인 state
+
+  const postAuthResetPassword = usePostAuthResetPassword();
 
   // 비밀번호 검증폼 helpVerificationResults state
   const [passwordVerificationResult, setPasswordVerificationResult] = useState<
@@ -51,6 +55,17 @@ function PasswordResetChange({handlePage}: Props) {
   const isButtonActive =
     password === passwordConfirm && PASSWORD_REGREX.test(password);
 
+  const onSubmit = async () => {
+    const response = await postAuthResetPassword.mutateAsync({
+      email: emailForm,
+      password,
+    });
+
+    if (response.data) {
+      handlePage();
+    }
+  };
+
   return (
     <VStack flex={1} justifyContent={'space-between'}>
       <VStack>
@@ -59,7 +74,7 @@ function PasswordResetChange({handlePage}: Props) {
           fontSize="20px"
           color={colors.grayScale['80']}
           textAlign="center">
-          변경하실 비밀번호를 입력해주세요
+          새 비밀번호를 입력해주세요
         </Text>
 
         <VerificationForm
@@ -93,7 +108,7 @@ function PasswordResetChange({handlePage}: Props) {
 
       <RedActiveLargeButton
         active={isButtonActive}
-        handlePress={handlePage}
+        handlePress={onSubmit}
         text={'확인'}
       />
     </VStack>

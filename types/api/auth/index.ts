@@ -40,3 +40,23 @@ export interface PostAuthMobileVerifyCodeData {
   code: string;
   mobile: string;
 }
+
+export interface PostAuthMobileVerifyCodeResponse {
+  address: string | null;
+  birthdate: string | null;
+  created_at: string;
+  email: string;
+  gender: 'Male' | 'Female';
+  id: string;
+  mobile: string;
+  nickname: string;
+  role: string;
+  social: string[] | null;
+  updated_at: string | null;
+}
+
+// 비밀번호 변경 api 전송 데이터
+export interface PostAuthResetPasswordData {
+  email: string;
+  password: string;
+}

@@ -9,6 +9,7 @@ const QueryKeys = {
     },
   },
   tags: ['tags'],
+  auth: {},
 } as const;
 
 export default QueryKeys;

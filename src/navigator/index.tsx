@@ -42,6 +42,7 @@ import MyReview from '~/pages/mypage/myReview';
 import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
 import Inquiry from '~/pages/mypage/inquiry';
+import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 import FacilityDetail from '../pages/facility/detail';
 import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 
@@ -119,8 +120,55 @@ const AppNavigator = () => {
           }}
         />
 
-        <Stack.Screen name="PasswordReset" component={PasswordReset} />
-        <Stack.Screen name="FindEmail" component={FindEmail} />
+        <Stack.Screen
+          name="PasswordReset"
+          component={PasswordReset}
+          options={({route}) => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'비밀번호 재설정'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="PasswordResetSuccess"
+          component={PasswordResetSuccess}
+          options={({route}) => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={''}
+                leftButton={
+                  <BackIcon
+                    onPress={() => props.navigation.navigate('EmailLogin')}
+                  />
+                }
+              />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="FindEmail"
+          component={FindEmail}
+          options={{
+            headerShown: true,
+            header: props => (
+              <Header
+                title="이메일 찾기"
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          }}
+        />
         <Stack.Screen name="AuthFoundResult" component={AuthFoundResult} />
 
         <Stack.Screen name="CommunityDetail" component={CommunityDetail} />

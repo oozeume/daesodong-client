@@ -6,6 +6,7 @@ import {
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
 import {FacilityReviewParams} from '../facility';
+import {AuthFoundResultParams} from '../login';
 
 /**
  * @description script 설명
@@ -48,10 +49,8 @@ export type RootStackParamList = {
 
   EmailLogin: undefined;
   PasswordReset: undefined;
-  AuthFoundResult: {
-    type: '이메일' | '카카오' | '구글' | 'Apple' | 'NOT_FOUND';
-    previousURL: 'FOUND_EMAIL' | 'FOUND_PASSWORD';
-  };
+  PasswordResetSuccess: undefined;
+  AuthFoundResult: AuthFoundResultParams;
   FindEmail: undefined;
 
   SignupSocial: undefined;

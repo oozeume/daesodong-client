@@ -11,7 +11,6 @@ import {
 } from 'native-base';
 
 import Timer from '../Timer';
-import Button from '../button';
 import {colors} from '~/theme/theme';
 import VerificationForm from '../VerificationForm';
 import {VerificationResult} from '~/../types/verification';
@@ -20,6 +19,7 @@ import BackIcon from '../../../assets/icons/back.svg';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import RedActiveLargeButton from '../button/RedActiveLargeButton';
 import {usePostAuthMobileVerifyCode} from '~/api/auth/mutations';
+import {PostAuthMobileVerifyCodeResponse} from '~/../types/api/auth';
 
 // 숫자만 받을 수 있는 정규식
 const regex = /^[0-9]+$/;
@@ -27,7 +27,7 @@ const regex = /^[0-9]+$/;
 interface Props {
   visible: boolean;
   handleModal: () => void;
-  handlePage?: () => void;
+  handlePage: (data?: PostAuthMobileVerifyCodeResponse) => void;
   onResendVerification: () => void;
   onVerificationFail?: () => void;
   phoneNumber: string;
@@ -42,7 +42,7 @@ interface Props {
 function VerificationModal({
   visible,
   handleModal,
-  handlePage = () => {},
+  handlePage,
   onVerificationFail,
   onResendVerification,
   phoneNumber,
@@ -91,6 +91,9 @@ function VerificationModal({
             if (errorResponse?.message && errorResponse?.message !== '') {
               setResult('FAIL');
               setErrorMessage(errorResponse?.message);
+              handleModal();
+
+              if (onVerificationFail) onVerificationFail();
             }
           },
         },
@@ -99,7 +102,7 @@ function VerificationModal({
 
     if (response?.data) {
       setResult('SUCCESS');
-      handlePage();
+      handlePage(response?.data);
       handleModal();
     } else {
       setResult('FAIL');
@@ -131,7 +134,7 @@ function VerificationModal({
           <VStack h={'100%'} mx={'28px'}>
             <Box maxH={'164px'}>
               {/* 인증 모달 타이틀 */}
-              <Center mt={'28px'} mb={'12px'}>
+              <Center mt={'28px'} mb={'24px'}>
                 <Pressable position={'absolute'} left={0} onPress={handleModal}>
                   <BackIcon />
                 </Pressable>
@@ -164,7 +167,7 @@ function VerificationModal({
             </Box>
 
             {/* 인증번호 확인 버튼 */}
-            <Box h={'144px'} mt={'12px'}>
+            <Box h={'144px'} mt={'28px'}>
               <RedActiveLargeButton
                 active={
                   verificationNumber.length === VERIFICATION_CODE_DIGITS ||

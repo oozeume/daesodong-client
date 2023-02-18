@@ -18,8 +18,8 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {usePostAuthSocialLogin} from '~/api/auth/mutations';
+import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 
-// console.log();
 /**
  *@description 초기 소셜 로그인 선택 페이지
  */
@@ -57,6 +57,19 @@ function InitialLogin() {
         // some other error happened
       }
     }
+  };
+
+  const onKakaoLogin = async () => {
+    try {
+      const {accessToken: token} = (await login()) as KakaoOAuthToken;
+
+      if (token) {
+        const res = await postAuthSocialLogin.mutateAsync({
+          social: 'Kakao',
+          token,
+        });
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -100,7 +113,7 @@ function InitialLogin() {
         </VStack>
 
         <VStack>
-          <KakaoLoginButton handlePress={() => {}} />
+          <KakaoLoginButton handlePress={onKakaoLogin} />
           <AppleLoginButton handlePress={() => {}} />
           <GoogleLoginButton handlePress={onGoogleLogin} />
           <EmailLoginButton handlePress={onMove} />
