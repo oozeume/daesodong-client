@@ -25,7 +25,7 @@ function PartialRate({title, rate}: Props) {
         mr={'10px'}
         borderRadius={'100px'}>
         <Box
-          w={'80%'}
+          w={`${(rate / 5) * 100}%`}
           h={'100%'}
           backgroundColor={'grayScale.40'}
           borderRadius={'100px'}

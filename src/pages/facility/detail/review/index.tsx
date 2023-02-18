@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
+import {Button, HStack, ScrollView, Spinner, Stack, Text} from 'native-base';
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import ReviewList from '~/components/hospital/review/ReviewList';
@@ -13,6 +13,9 @@ import {
   useReviewRegister,
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
+import {FacilityReviewsResponse} from '~/../types/api/facility';
+import Review from '~/model/review';
+import {useGetFacilityReviews} from '~/api/facility/queries';
 
 interface Props {
   id: string;
@@ -50,6 +53,21 @@ function FacilityReview({id, facilityName}: Props) {
     }
   }, [isFocused, isRevewRegisterComplete]);
 
+  const {data, isLoading} = useGetFacilityReviews({facilityId: id, limit: 10});
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setReviews(
+        data.data.map((review: FacilityReviewsResponse) => new Review(review)),
+      );
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <Stack>
       <ScrollView>
@@ -58,8 +76,9 @@ function FacilityReview({id, facilityName}: Props) {
           py={'20px'}
           px={'18px'}
           borderBottomColor={'grayScale.20'}
-          borderBottomWidth={1}>
-          <HospitalReviewAllRate />
+          borderBottomWidth={1}
+          backgroundColor={'white'}>
+          <HospitalReviewAllRate reviews={reviews} />
           <Button
             onPress={onMoveReviewRegisterPage}
             w={'100%'}
@@ -69,9 +88,10 @@ function FacilityReview({id, facilityName}: Props) {
             borderColor={'fussOrange.0'}
             backgroundColor={'fussOrange.-40'}
             shadow={'0px 3px 4px rgba(0, 0, 0, 0.08)'}>
-            <Text color={'fussOrange.0'}>리뷰쓰기</Text>
+            <Text color={'fussOrange.0'}>후기 남기기</Text>
           </Button>
         </Stack>
+
         <HStack
           backgroundColor={'white'}
           h={'44px'}
@@ -81,11 +101,12 @@ function FacilityReview({id, facilityName}: Props) {
           px={'18px'}>
           <HStack space={'8px'}>
             <CheckIcon fill={'#FF6B00'} />
+            {/* TODO: API 수정 필요 */}
             <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
           </HStack>
         </HStack>
 
-        <ReviewList id={id} />
+        <ReviewList reviews={reviews} />
       </ScrollView>
 
       {/* TODO: 컴포넌트 네이밍 범용적으로 변경 */}
