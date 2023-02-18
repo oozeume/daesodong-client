@@ -83,7 +83,7 @@ function CommentInput({
   };
 
   useEffect(() => {
-    if (commentInputType.includes('PATCH')) {
+    if (commentInputType !== 'POST_COMMENT') {
       inputRef.current?.focus();
       setCommentText(selectedComment?.content || '');
     }
