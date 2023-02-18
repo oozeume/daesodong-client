@@ -18,7 +18,7 @@ interface Props {
   onClose: () => void;
   setPetType: (selectedItem: SpeciesData) => void;
   isEnrollPet?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
   buttonText?: string;
 }
 
@@ -41,6 +41,8 @@ function PetTypeSelectModal({
   const {data, isSuccess} = useGetSpecies({limit: 10});
   const [searchText, setSearchText] = useState('');
   const [searchList, setSearchList] = useState<SpeciesData[]>([]);
+
+  const petSearchHeight = 200;
 
   useEffect(() => {
     let _searchList: SpeciesData[] = [];
@@ -138,7 +140,7 @@ function PetTypeSelectModal({
             ) : (
               <FlatList
                 style={{
-                  height: APP_HEIGHT - statusbarHeight - 200,
+                  height: APP_HEIGHT - statusbarHeight - petSearchHeight,
                 }}
                 data={!searchList.length && isSuccess ? data?.data : searchList}
                 keyExtractor={(_, index) => index.toString()}
@@ -206,7 +208,7 @@ function PetTypeSelectModal({
                   if (!selectedItem) return;
                   onClose();
                   setPetType(selectedItem);
-                  onPress();
+                  if (onPress) onPress();
                 }}
                 large
                 active={!_.isUndefined(selectedItem)}

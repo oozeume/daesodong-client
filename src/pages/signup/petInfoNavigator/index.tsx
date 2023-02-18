@@ -52,13 +52,13 @@ function SignupPetInfoNavigator() {
 
   const onBack = () => {
     setCurrentStage(prev => {
-      if (prev === 0) return prev;
+      if (prev === 1) return prev;
 
       return prev - 1;
     });
 
     setPreviousURL(prev => prev.slice(0, prev.length - 1));
-    if (previousURL.length > 1) navigate(previousURL[previousURL.length - 2]);
+    if (previousURL.length > 1) navigate(previousURL[previousURL.length - 1]);
   };
 
   useEffect(() => {
@@ -79,7 +79,7 @@ function SignupPetInfoNavigator() {
           Number(loadState) + 1,
         );
 
-        setPreviousURL(_routeList);
+        setPreviousURL(_routeList.slice(0, _routeList.length - 1));
         navigate(_routeList[_routeList.length - 1]);
       }
     }

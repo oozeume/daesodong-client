@@ -16,7 +16,6 @@ const QueryKeys = {
     getComments: 'get comments',
     deleteComment: 'delete comment',
   },
-
   recomment: {
     getRecomments: 'get recomments',
     deleteRecomment: 'delete recomment',

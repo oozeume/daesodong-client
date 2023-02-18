@@ -23,17 +23,18 @@ function PetGenderRegister({
 }: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
-  const onMovePage = async () => {
+  const onMovePage = () => {
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetGenderRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, form);
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.form, form);
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('AddressRegister');
   };
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={onMovePage}
       currentStage={currentStage}
       possibleButtonPress={!_.isNil(form.sex)}>

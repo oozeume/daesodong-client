@@ -37,29 +37,30 @@ function PetBirthRegister({
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
-  const [birthDate, setBirthDate] = useState<number>();
+  const [age, setAge] = useState<number>();
 
-  const onMovePage = async () => {
-    if (!birthDate) return;
+  const onMovePage = () => {
+    if (!age) return;
 
-    setForm(pre => ({...pre, birthDate}));
+    setForm(pre => ({...pre, age}));
     onChangeStage();
     setPreviousURL(prev => [...prev, 'PetBirthRegister']);
 
-    await setData(storageKeys.petInfoRegister.form, {...form, birthDate});
-    await setData(storageKeys.petInfoRegister.state, currentStage.toString());
+    setData(storageKeys.petInfoRegister.form, {...form, age});
+    setData(storageKeys.petInfoRegister.state, currentStage.toString());
     navigate('PetGenderRegister');
   };
 
   useEffect(() => {
-    if (form.birthDate) setBirthDate(form.birthDate);
+    if (form.age) setAge(form.age);
   }, []);
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={onMovePage}
       currentStage={5}
-      possibleButtonPress={!_.isNil(birthDate)}>
+      possibleButtonPress={!_.isNil(age)}>
       <HStack
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -67,8 +68,8 @@ function PetBirthRegister({
         borderBottomWidth={1}>
         <TextInput
           style={styles.input}
-          onChangeText={text => setBirthDate(Number(text))}
-          value={birthDate?.toString()}
+          onChangeText={text => setAge(Number(text))}
+          value={age?.toString()}
           onSubmitEditing={Keyboard.dismiss}
           keyboardType={'number-pad'}
           placeholder={'숫자만 입력해주세요'}

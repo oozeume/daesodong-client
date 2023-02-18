@@ -35,47 +35,58 @@ function PetImageRegister({
   const [fileName, setFilename] = useState<string>();
 
   const onMovePage = async (isSkip: boolean) => {
-    if (!imagePath || !imageInfo || !fileName) return;
+    if (!isSkip && (!imagePath || !imageInfo || !fileName)) return;
 
     const petPictureUrl = isSkip ? undefined : fileName;
 
     setForm(prev => ({...prev}));
 
     try {
-      const imageUploadForm = {
-        uri: Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
-        type: imageInfo.mime,
-        name: Platform.OS === 'android' ? fileName : imageInfo.filename,
-      };
+      const imageUploadForm = imageInfo
+        ? {
+            uri:
+              Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
+            type: imageInfo.mime,
+            name: Platform.OS === 'android' ? fileName : imageInfo.filename,
+          }
+        : undefined;
 
       const data = new FormData();
       data.append('file', imageUploadForm);
 
-      // 이미지 업로드 api 호출
-      const imageUploadResponse = await mutateAsync(
-        {data, fileName},
-        {
-          onError: error => {
-            const errorResponse = error as ErrorResponseTransform;
+      if (fileName) {
+        // 이미지 업로드 api 호출
+        await mutateAsync(
+          {data, fileName},
+          {
+            onError: error => {
+              const errorResponse = error as ErrorResponseTransform;
 
-            if (errorResponse?.message && errorResponse?.message !== '') {
-              Alert.alert(errorResponse.message);
-            }
+              if (errorResponse?.message && errorResponse?.message !== '') {
+                Alert.alert(errorResponse.message);
+              }
+            },
           },
-        },
-      );
+        );
+      }
 
-      if (imageUploadResponse.statusCode === 201) {
-        const response = await patchUserInfo.mutateAsync({
-          ...form,
-          petPictureUrl,
+      const patchUserResponse = await patchUserInfo.mutateAsync({
+        ...form,
+        petPictureUrl,
+      });
+
+      if (patchUserResponse.data) {
+        await removeData(storageKeys.petInfoRegister.form);
+        await removeData(storageKeys.petInfoRegister.state);
+        reset({
+          index: 0,
+          routes: [
+            {
+              name: 'PetInfoRegisterOutro',
+              params: {petName: form?.name ?? ''},
+            },
+          ],
         });
-
-        if (response.data) {
-          await removeData(storageKeys.petInfoRegister.form);
-          await removeData(storageKeys.petInfoRegister.state);
-          reset({index: 0, routes: [{name: 'PetInfoRegisterOutro'}]});
-        }
       }
     } catch (error) {
       const _error = error as ErrorResponseTransform;
@@ -108,6 +119,7 @@ function PetImageRegister({
 
   return (
     <LayoutContainer
+      petName={form.name}
       buttonPress={() => onMovePage(false)}
       currentStage={currentStage}
       isSkipPage
