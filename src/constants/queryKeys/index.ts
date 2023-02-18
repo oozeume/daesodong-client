@@ -3,6 +3,7 @@ const QueryKeys = {
     visitedPets: 'facility visited pets',
     visitedUser: 'facility visited user',
     info: 'facility info',
+    reviews: 'facilify reviews',
     review: {
       registerComplete: ['facility review register complete'],
     },

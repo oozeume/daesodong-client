@@ -1,7 +1,14 @@
 import React from 'react';
-import {Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
-
-import _ from 'lodash';
+import {
+  Box,
+  Divider,
+  Flex,
+  HStack,
+  Image,
+  Stack,
+  Text,
+  View,
+} from 'native-base';
 
 import StarRate from './StarRate';
 import ImageModal from './ImageModal';
@@ -10,6 +17,7 @@ import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import ImageContainer from './imageContainer.tsx';
 import {colors} from '~/theme/theme';
+import Review from '~/model/review';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -20,6 +28,7 @@ interface Props {
   isInvisiblePetInfo?: boolean;
   address?: JSX.Element;
   name?: string;
+  review: Review;
 }
 
 /**
@@ -27,6 +36,7 @@ interface Props {
  */
 
 function ReviewItem({
+  review,
   isInvisibleBorderTop,
   visitDate,
   isInvisibleTag,
@@ -54,11 +64,22 @@ function ReviewItem({
         alignItems={'center'}
         justifyContent={'space-between'}>
         <HStack space={'12px'}>
+          {/* TODO: 이미지 경로 확인 */}
+          {/* {_.isEmpty(review.petImage) ? ( */}
           <AvatarIcon fill={colors.grayScale['30']} />
+          {/* ) : (
+            <Image
+              w={'44px'}
+              h={'44px'}
+              borderRadius={'50%'}
+              alt={'pet_image'}
+              src={review.petImage}
+            />
+          )} */}
           <Stack>
             <HStack alignItems={'center'} space={'4px'}>
-              <Text>{name ?? '닉네임'}</Text>
-              {!isInvisibleTag && (
+              <Text>{review.nickname ?? '닉네임'}</Text>
+              {!isInvisibleTag && review.isRevisit && (
                 <Flex
                   justifyContent={'center'}
                   alignItems={'center'}
@@ -75,19 +96,19 @@ function ReviewItem({
             {!isInvisiblePetInfo && (
               <HStack space={'6px'}>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
-                  동물
+                  {review.petInfo.species}
                 </Text>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
                   |
                 </Text>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
-                  나이
+                  {review.petInfo.age}살
                 </Text>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
                   |
                 </Text>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
-                  성별
+                  {review.petInfo.sex}
                 </Text>
               </HStack>
             )}
@@ -141,7 +162,7 @@ function ReviewItem({
               진단
             </Text>
             <Text color={'grayScale.60'} fontWeight={'500'} fontSize={'13px'}>
-              건강검진
+              {review.tags[0].slice(1)}
             </Text>
           </HStack>
 
@@ -150,7 +171,7 @@ function ReviewItem({
               진료비
             </Text>
             <Text color={'grayScale.60'} fontWeight={'500'} fontSize={'13px'}>
-              3만원
+              {review.cost}만원
             </Text>
           </HStack>
         </HStack>
@@ -159,48 +180,62 @@ function ReviewItem({
 
         <HStack bg={'red'} space={'13px'} pt={'18px'}>
           <Stack space={'8px'} w={'143px'}>
-            <StarRate title={'진료'} />
-            <StarRate title={'시설'} />
+            <StarRate title={'진료'} rate={review.starScore.treatment} />
+            <StarRate title={'시설'} rate={review.starScore.facility} />
           </Stack>
 
           <Stack space={'8px'} w={'143px'}>
-            <StarRate title={'비용'} />
-            <StarRate title={'친절'} />
+            <StarRate title={'비용'} rate={review.starScore.price} />
+            <StarRate title={'친절'} rate={review.starScore.kindness} />
           </Stack>
         </HStack>
       </Box>
 
       <HStack space={'8px'} pb={'4px'}>
-        <HeartFillIcon fill={'#FF6B00'} />
-        <Text>재방문 의사 있어요</Text>
-        {visitDate}
+        {review.hasExpectRevisit && (
+          <HStack alignItems={'center'} space={'6px'}>
+            <HeartFillIcon fill={'#FF6B00'} />
+            <Text>재방문 의사 있어요</Text>
+          </HStack>
+        )}
+        <HStack alignItems={'center'} space={'6px'}>
+          {review.hasExpectRevisit && (
+            <View backgroundColor={colors.grayScale['30']} h="8px" w="1px" />
+          )}
+          <Text color={colors.grayScale[50]} fontSize={'13px'}>
+            {review.visitDate} 방문
+          </Text>
+        </HStack>
       </HStack>
-      <Text>
-        지나고 그러나 그리워 다 같이 봅니다. 잔디가 나는 위에 무엇인지 아무
-        듯합니다. 피어나듯이 불러 당신은 내 말 위에도 부끄러운 했던 계십니다.
+
+      <Text fontSize={'15px'} color={colors.grayScale[80]}>
+        {review.reviewContent}
       </Text>
 
-      <HStack w={'100%'} pt={'16px'} justifyContent={'space-between'}>
+      {/* TODO: API 수정 요청 필요 (API 이미지 없음) */}
+      {/* <HStack w={'100%'} pt={'16px'} justifyContent={'space-between'}>
         <ImageContainer onPress={() => setModalOpen(true)} />
         <ImageContainer onPress={() => setModalOpen(true)} />
         <ImageContainer onPress={() => setModalOpen(true)} visibleMoreImage />
-      </HStack>
+      </HStack> */}
 
       <HStack space={'4px'} pt={'20px'} py={'20px'}>
-        {_.range(0, 5).map(i => (
+        {review.tags.map(tag => (
           <Flex
-            key={i.toString()}
-            w={'44px'}
-            h={'20px'}
+            key={tag}
+            px={'6px'}
+            py={'1px'}
             borderRadius={'4px'}
             backgroundColor={'grayScale.20'}
             alignItems={'center'}>
             <Text color={'grayScale.70'} fontSize={'12px'}>
-              테스트
+              {tag}
             </Text>
           </Flex>
         ))}
       </HStack>
+
+      {/* TODO: 리뷰 고마워요 api 요청 필요 */}
       <HStack
         alignItems={'center'}
         space={'10px'}

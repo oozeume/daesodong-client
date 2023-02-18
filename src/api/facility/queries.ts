@@ -1,6 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import {
   FacilityResponse,
+  FacilityReviewsResponse,
   VisitedFacilityResponse,
 } from '~/../types/api/facility';
 import {SpeciesType} from '~/../types/api/species';
@@ -53,5 +54,30 @@ const getVisitedPetsFacility = (facilityId: string) => {
 export const useGetVisitedPetsFacility = (facilityId: string) => {
   return useQuery([QueryKeys.facility.visitedPets], () =>
     getVisitedPetsFacility(facilityId),
+  );
+};
+
+/**
+ *@description 시설 리뷰 리스트 API
+ */
+
+type GetFacilityReviewsQuery = {
+  facilityId: string;
+  limit: number;
+};
+
+const getFacilityReviews = ({facilityId, limit}: GetFacilityReviewsQuery) => {
+  return apiCall<FacilityReviewsResponse[]>({
+    method: 'GET',
+    url: `/hospitals/${facilityId}/reviews?limit=${limit}`,
+  });
+};
+
+export const useGetFacilityReviews = ({
+  facilityId,
+  limit,
+}: GetFacilityReviewsQuery) => {
+  return useQuery([QueryKeys.facility.reviews], () =>
+    getFacilityReviews({facilityId, limit}),
   );
 };

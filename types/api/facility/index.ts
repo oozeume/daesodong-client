@@ -71,3 +71,50 @@ export type PostFacilityReviewData = {
   hospital_review_picture?: string[];
   tags: string[];
 };
+
+// TODO: api 수정 요청 - 리뷰 이미지 추가 필요
+export type FacilityReviewsResponse = {
+  id: string;
+  hospitalId: string;
+  userId: string;
+  petId: string;
+  visit_date: string;
+  cost: number;
+  thoughts: string;
+  score_treatment: number;
+  score_price: number;
+  score_facilities: number;
+  score_kindness: number;
+  expect_revisit: false;
+  already_reviesit: false;
+  created_at: string;
+  updated_at: string;
+  user: {
+    nickname: string;
+  };
+  pet: {
+    id: string;
+    userId: string;
+    name: string;
+    age: number;
+    sex: string;
+    specieId: string;
+    concern: string;
+    pet_picture_url: string;
+    created_at: string;
+    updated_at: string;
+    specie: {
+      id: string;
+      name: string;
+      confirm: true;
+      kindId: string;
+      created_at: string;
+    };
+  };
+  tags: {
+    hospital_review_tags: {
+      id: string;
+      name: string;
+    };
+  }[];
+};

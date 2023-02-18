@@ -3,9 +3,8 @@ import {Button, HStack, ScrollView, Stack, Text} from 'native-base';
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import ReviewList from '~/components/hospital/review/ReviewList';
-import {NavigationHookProp, RootTabParamList} from '~/../types/navigator';
+import {NavigationHookProp} from '~/../types/navigator';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import InfoChangeBottomSheet from '~/components/mypage/myInfo/InfoChangeBottomSheet';
 import {colors} from '~/theme/theme';
 import ReviewRegisterCompleteImage from '~/assets/images/review-register-complete.svg';
@@ -15,14 +14,16 @@ import {
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
 
-type Props = NativeStackScreenProps<RootTabParamList, 'FacilityReview'>;
+interface Props {
+  id: string;
+  facilityName: string;
+}
 
 /**
  *@description 병원 리뷰 페이지
  */
 
-function FacilityReview({route}: Props) {
-  const {id, facilityName} = route.params;
+function FacilityReview({id, facilityName}: Props) {
   const navigation = useNavigation<NavigationHookProp>();
 
   const isFocused = useIsFocused();
@@ -84,7 +85,7 @@ function FacilityReview({route}: Props) {
           </HStack>
         </HStack>
 
-        <ReviewList />
+        <ReviewList id={id} />
       </ScrollView>
 
       {/* TODO: 컴포넌트 네이밍 범용적으로 변경 */}
