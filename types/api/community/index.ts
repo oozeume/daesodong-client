@@ -1,7 +1,7 @@
+import {FormState} from '../../community';
+
 // 커뮤니티 게시글 등록 폼 데이터
-export interface PostCummunityPostData {
-  //
-}
+export interface PostCummunityPostData extends FormState {}
 
 // 커뮤니티 게시글 등록 응답
 export interface PostCummunityPostResponse {

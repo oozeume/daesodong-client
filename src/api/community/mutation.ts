@@ -18,7 +18,7 @@ const postCummunityPost = (data: PostCummunityPostData) => {
   });
 };
 
-export const usePostAuthNicknameCheck = () => {
+export const usePostCummunityPost = () => {
   return useMutation((data: PostCummunityPostData) => postCummunityPost(data));
 };
 

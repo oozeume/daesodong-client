@@ -11,17 +11,32 @@ import CommunityContents from '../../components/community/main/CommunityContents
 import {useGetCommunityPostList} from '~/api/community/queries';
 import {usePostCoummunityPostCount} from '~/api/community/mutation';
 import Post from '~/model/post';
+import {Platform, StyleSheet} from 'react-native';
+import FloatingButtonImage from '~/assets/images/floating_button_image.svg';
+import TooltipImage from '~/assets/images/tooltip_image.svg';
+import {NavigationHookProp} from '~/../types/navigator';
+import {useNavigation} from '@react-navigation/native';
 
 /**
  *@description 커뮤니티 메인페이지
  */
 const CommunityMain = () => {
+  const {navigate} = useNavigation<NavigationHookProp>();
+
   const [petType, setPetType] = useState('전체');
   const [sort, setSort] = useState<'latest' | 'view'>('latest');
   const [totalPostsCount, setTotalPostsCount] = useState(0);
   const postCoummunityPostCount = usePostCoummunityPostCount();
+  const [isTooltipOpen, setTooltipOpen] = useState(true);
 
   const [postList, setPostList] = useState<Post[]>([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      // 4초 후, 다음 콘텐츠로 보고 싶은 내용이 있다면 알려주세요 툴팁 지워짐
+      setTooltipOpen(false);
+    }, 4000);
+  }, []);
 
   const {
     data: rawPostList,
@@ -127,8 +142,35 @@ const CommunityMain = () => {
           );
         }}
       />
+
+      {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
+      <FloatingButtonImage
+        onPress={() => navigate('CommunityRegister')}
+        style={styles.floatingButtonImage}
+        fill={colors.fussOrange[0]}
+      />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  floatingButtonImage: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? 20 : 52,
+    right: 18,
+    zIndex: 99,
+  },
+
+  tooltipImage: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? 78 : 110,
+    right: 24,
+    zIndex: 99,
+  },
+
+  searchIcon: {
+    marginLeft: 12,
+  },
+});
 
 export default CommunityMain;

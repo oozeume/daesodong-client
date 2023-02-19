@@ -178,7 +178,13 @@ const AppNavigator = () => {
             headerShown: true,
           }}
         />
-        <Stack.Screen name="CommunityRegister" component={CommunityRegister} />
+        <Stack.Screen
+          name="CommunityRegister"
+          component={CommunityRegister}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="ContentsDetail"
           component={ContentsDetail}

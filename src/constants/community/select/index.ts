@@ -1,4 +1,4 @@
-export const COMMUNIT_LIST = [
+export const PET_KIND_LIST = [
   '설치류',
   '포유류',
   '파충류',

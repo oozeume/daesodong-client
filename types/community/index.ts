@@ -1,8 +1,10 @@
 // 게시글 등록/수정 폼
 export interface FormState {
-  community?: string;
+  kind: string;
   title: string;
   content: string;
+  tags?: string[];
+  pictures?: string[];
 }
 
 // 게시글 등록, 수정 타입
