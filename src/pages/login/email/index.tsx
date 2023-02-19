@@ -27,6 +27,7 @@ import {
 } from '~/api/auth/mutations';
 import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {useGetUser} from '~/api/user/queries';
+import {useUserRegister} from '~/store/useUserContext';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -55,6 +56,8 @@ function EmailLogin() {
     // 로그인 가능 여부 체크
     if (!__DEV__) checkIsLogin();
   }, []);
+
+  const setUserInfo = useUserRegister();
 
   const onLogin = async () => {
     // 테스트 혹은 토큰 발급 로그인을 위한 로그인 시, 아랫줄을 주석 처리해주세요.
@@ -85,6 +88,7 @@ function EmailLogin() {
         navigate('SignupPetInfoNavigator');
       } else {
         // 있으면 시설 지도 페이지로 이동
+        setUserInfo({userId: userData.data?.data.id});
         reset({index: 0, routes: [{name: 'tab'}]});
       }
 
