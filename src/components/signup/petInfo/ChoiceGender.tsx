@@ -20,7 +20,7 @@ function ChoiceGender({handlePage, form, setForm}: Props) {
     <LayoutContainer
       buttonPress={handlePage}
       possibleButtonPress={!_.isNil(form.gender)}>
-      <Stack space={'10px'}>
+      <Stack w="100%" space={'10px'}>
         <ChoiceButton
           buttonName={'여성'}
           onPress={() => setForm(prev => ({...prev, gender: 'Female'}))}

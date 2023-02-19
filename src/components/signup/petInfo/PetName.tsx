@@ -5,6 +5,7 @@ import {PetInfoForm, SetPetInfoForm} from '~/../types/signup';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {colors} from '~/theme/theme';
 import LayoutContainer from './LayoutContainer';
+import {KeyboardAvoidingView} from 'native-base';
 
 interface Props {
   handlePage: () => void;

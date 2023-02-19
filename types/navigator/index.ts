@@ -85,6 +85,18 @@ export type RootStackParamList = {
   MyReviewDetail: undefined;
   MyCommunityContent: undefined;
   Inquiry: undefined;
+
+  SignupPetInfoNavigator: undefined;
+  ChoiceGenderRegister: undefined;
+  PetOwnerBirthRegister: undefined;
+  PetNameRegister: undefined;
+  PetTypeRegister: undefined;
+  PetBirthRegister: undefined;
+  PetGenderRegister: undefined;
+  AddressRegister: undefined;
+  AnyQuestionRegister: undefined;
+  PetImageRegister: undefined;
+  PetInfoRegisterOutro: {petName: string};
 };
 
 export type SignupNavigatorRouteList =
@@ -92,6 +104,18 @@ export type SignupNavigatorRouteList =
   | 'EmailRegister'
   | 'PasswordRegister'
   | 'EmailLogin';
+
+export type PetInfoRegisterNavigatorRouteList =
+  | 'ChoiceGenderRegister'
+  | 'EmailLogin'
+  | 'PetNameRegister'
+  | 'PetTypeRegister'
+  | 'PetBirthRegister'
+  | 'PetGenderRegister'
+  | 'AddressRegister'
+  | 'AnyQuestionRegister'
+  | 'PetImageRegister'
+  | 'PetOwnerBirthRegister';
 
 export type RouteList = RootTabParamList & RootStackParamList;
 

@@ -4,6 +4,9 @@ const QueryKeys = {
     visitedUser: 'facility visited user',
     info: 'facility Info',
   },
+  user: {
+    getUser: 'get user',
+  },
   auth: {},
 } as const;
 

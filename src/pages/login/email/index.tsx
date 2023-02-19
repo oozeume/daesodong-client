@@ -26,6 +26,7 @@ import {
   usePostAuthSocialLogin,
 } from '~/api/auth/mutations';
 import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
+import {useGetUser} from '~/api/user/queries';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -34,6 +35,7 @@ function EmailLogin() {
   const {navigate, reset} = useNavigation<NavigationHookProp>();
   const postAuthSocialLogin = usePostAuthSocialLogin();
   const postAuthEmailLogin = usePostAuthEmailLogin();
+  const getUser = useGetUser();
 
   const initForm = {
     email: '',
@@ -56,7 +58,7 @@ function EmailLogin() {
 
   const onLogin = async () => {
     // 테스트 혹은 토큰 발급 로그인을 위한 로그인 시, 아랫줄을 주석 처리해주세요.
-    if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
+    // if (__DEV__) return reset({index: 0, routes: [{name: 'tab'}]});
 
     if (!loginForm.email) return;
     if (!loginForm.password) return;
@@ -76,9 +78,19 @@ function EmailLogin() {
       await setSecurityData('access_token', response.data.access);
       await setSecurityData('refresh_token', response.data.refresh);
 
+      const userData = await getUser.refetch();
+
+      if (userData.data?.data.pets.length === 0) {
+        // 집사 정보가 없으면 등록 페이지로 이동
+        navigate('SignupPetInfoNavigator');
+      } else {
+        // 있으면 시설 지도 페이지로 이동
+        reset({index: 0, routes: [{name: 'tab'}]});
+      }
+
       // 집사 정보 등록 테스트 시, 아래 주석을 해제하고 tab reset관련해서 주석을 해주세요.
-      reset({index: 0, routes: [{name: 'tab'}]});
-      // reset({index: 0, routes: [{name: 'PetInfoRegister'}]});
+      // reset({index: 0, routes: [{name: 'tab'}]});
+      // reset({index: 0, routes: [{name: 'SignupPetInfoNavigator'}]});
     }
   };
 

@@ -1,14 +1,17 @@
-import {Pressable, Stack, Text} from 'native-base';
+import {KeyboardAvoidingView, Text, VStack} from 'native-base';
 import React from 'react';
-import {HEADER_HEIGHT} from '~/constants/heights';
-import {STAGE_TEXT_BOX_HEIGHT} from '~/pages/signup/petInfo';
-import {APP_HEIGHT} from '~/utils/dimension';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
+import {colors} from '~/theme/theme';
+import StageTextBox from '~/components/common/stage/StageTextBox';
 
 interface Props {
   children?: React.ReactNode;
-  buttonPress?: () => void;
+  buttonPress: () => void;
+  currentStage?: number;
   possibleButtonPress?: boolean;
+  isSkipPage?: boolean;
+  onSkipPage?: () => void;
+  petName?: string;
 }
 
 /**
@@ -18,29 +21,63 @@ interface Props {
 function LayoutContainer({
   children,
   buttonPress,
+  currentStage,
+  isSkipPage,
+  onSkipPage,
+  petName = '',
   possibleButtonPress = false,
 }: Props) {
-  const statusbarHeight = getStatusBarHeight();
+  const PET_INFO_REGISTER_STAGE_TEXT_LIST = [
+    '집사님의 성별을 알려주세요',
+    '집사님이 태어난 년도를 알려주세요',
+    '집사님과 함께하는\n반려아이의 이름을 알려주세요',
+    `귀여운 ${petName}!\n${petName}는 어떤 동물인가요?`,
+    `${petName} 나이는요?`,
+    `${petName} 성별은 무엇인가요?`,
+    `${petName}와 어디서 함께 살고 계세요?`,
+    `${petName}를 키우면서\n고민되는 점이 있으신가요?`,
+    `아주 좋아요!\n마지막으로 우리 ${petName}\n예쁜 모습 자랑해주실까요?`,
+  ];
+
   return (
-    <Stack
-      h={APP_HEIGHT - statusbarHeight - HEADER_HEIGHT - STAGE_TEXT_BOX_HEIGHT}>
-      {children}
-      <Stack pb={'40px'} w={'100%'} position={'absolute'} bottom={0}>
-        <Pressable
-          disabled={!possibleButtonPress}
-          onPress={buttonPress}
-          variant={
-            possibleButtonPress ? 'solidFussOrange' : 'opacityFussOrange'
-          }>
-          <Text
-            variant={
-              possibleButtonPress ? 'solidFussOrange' : 'opacityFussOrange'
-            }>
-            확인
-          </Text>
-        </Pressable>
-      </Stack>
-    </Stack>
+    <KeyboardAvoidingView
+      flex={1}
+      behavior={'padding'}
+      keyboardVerticalOffset={40}>
+      <VStack
+        alignItems={'center'}
+        pt="60px"
+        px="18px"
+        bgColor={colors.grayScale[0]}
+        flex={1}>
+        <VStack w="100%">
+          <StageTextBox
+            currentStage={currentStage || 1}
+            stageTextList={PET_INFO_REGISTER_STAGE_TEXT_LIST}
+          />
+          {children}
+        </VStack>
+
+        <VStack w={'100%'} position={'absolute'} bottom="100px">
+          {isSkipPage && (
+            <Text
+              w="100%"
+              textAlign={'center'}
+              mb="24px"
+              onPress={onSkipPage}
+              color={colors.grayScale[60]}>
+              건너뛰기
+            </Text>
+          )}
+
+          <RedActiveLargeButton
+            active={possibleButtonPress}
+            text={'다음'}
+            handlePress={buttonPress}
+          />
+        </VStack>
+      </VStack>
+    </KeyboardAvoidingView>
   );
 }
 
