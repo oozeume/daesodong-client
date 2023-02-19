@@ -7,6 +7,10 @@ class Review {
     return this.review.user.nickname ?? '';
   }
 
+  get userId() {
+    return this.review.userId ?? '';
+  }
+
   get tags() {
     return this.review.tags.map(tag => tag.hospital_review_tags.name) ?? [];
   }

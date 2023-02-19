@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Box,
   Divider,
@@ -9,15 +9,16 @@ import {
   Text,
   View,
 } from 'native-base';
-
 import StarRate from './StarRate';
 import ImageModal from './ImageModal';
 import AvatarIcon from '~/assets/icons/avartar.svg';
-import KebabMenuIcon from '~/assets/icons/kebabMenu.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import ImageContainer from './imageContainer.tsx';
 import {colors} from '~/theme/theme';
 import Review from '~/model/review';
+import KekabMenu from '~/components/common/kekab/KekabMenu';
+import {Platform} from 'react-native';
+import _ from 'lodash';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -45,8 +46,11 @@ function ReviewItem({
   address,
   name,
 }: Props) {
-  const [onKebabClick, setKebabClick] = React.useState(false);
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // TODO: 리뷰 수정/삭제 후속 PR에서 진행 예정
+  const onEdit = () => {};
+  const onDelete = () => {};
 
   return (
     <Box
@@ -64,18 +68,17 @@ function ReviewItem({
         alignItems={'center'}
         justifyContent={'space-between'}>
         <HStack space={'12px'}>
-          {/* TODO: 이미지 경로 확인 */}
-          {/* {_.isEmpty(review.petImage) ? ( */}
-          <AvatarIcon fill={colors.grayScale['30']} />
-          {/* ) : (
+          {_.isEmpty(review.petImage) ? (
+            <AvatarIcon fill={colors.grayScale['30']} />
+          ) : (
             <Image
               w={'44px'}
               h={'44px'}
-              borderRadius={'50%'}
-              alt={'pet_image'}
+              borderRadius={50}
+              alt={'image'}
               src={review.petImage}
             />
-          )} */}
+          )}
           <Stack>
             <HStack alignItems={'center'} space={'4px'}>
               <Text>{review.nickname ?? '닉네임'}</Text>
@@ -116,37 +119,16 @@ function ReviewItem({
           </Stack>
         </HStack>
         {!isInvisibleKebabMenu && (
-          <Box
-            onTouchStart={() => {
-              if (onKebabClick) {
-                setKebabClick(false);
-              } else {
-                setKebabClick(true);
-              }
-            }}>
-            <KebabMenuIcon />
-          </Box>
+          <KekabMenu
+            handleFirstButton={onEdit}
+            handleSecondButton={onDelete}
+            firstButtonName={'수정'}
+            secondButtonName={'삭제'}
+            top={Platform.OS === 'android' ? '36px' : '12px'}
+            left={Platform.OS === 'android' ? '-22px' : '-12px'}
+          />
         )}
       </HStack>
-
-      {onKebabClick && (
-        <Stack
-          position={'absolute'}
-          right={'18px'}
-          top={16}
-          zIndex={1}
-          borderRadius={'8px'}
-          w={'57px'}
-          h={'92px'}
-          space={'20px'}
-          borderColor={'black'}
-          backgroundColor={'white'}
-          p={'16px'}
-          shadow={'1'}>
-          <Text>수정</Text>
-          <Text>삭제</Text>
-        </Stack>
-      )}
 
       <Box
         w={'100%'}
