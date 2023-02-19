@@ -10,7 +10,7 @@ import {
   useToast,
   VStack,
 } from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DeleteIcon from '~/assets/icons/delete.svg';
 import ImageIcon from '~/assets/icons/image.svg';
@@ -32,15 +32,17 @@ import ToastMessage from '~/components/common/toast/ToastMessage';
 import {multipleImagePicker} from '~/utils/image';
 import {Platform} from 'react-native';
 import {PostImage} from '~/../types/utils';
-import {usePostImageUpload} from '~/api/image';
+import uuid from 'react-native-uuid';
+import useImageUpload from '~/hooks/useImagesUpload';
 
 /**
  *@description 커뮤니티 등록/수정
+ *@todo 병원 후기 등록 부분 태그 등록 올라오면 적용 예정
  */
 const CommunityRegister = () => {
   const navigation = useNavigation<NavigationHookProp>();
   const {mutateAsync} = usePostCummunityPost();
-  const postImageUpload = usePostImageUpload();
+  const {upload} = useImageUpload();
   const {params} = useRoute() as {params: FormType};
 
   const {data} = useGetPetKinds(false);
@@ -62,7 +64,10 @@ const CommunityRegister = () => {
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 셀랙터 on/off 훅
   const [form, setForm] = useState(initFormState);
 
+  // 앱에서 이미지 로드 중인 여부 state
   const [isImageLoad, setImageLoad] = useState(false);
+  // 폼 제출 여부 state
+  const [isSubmit, setSubmit] = useState(false);
 
   // 불러온 이미지의 내부 이미지 경로
   const [imageInnerPathList, setImageInnerPathList] = useState<string[]>([]);
@@ -89,12 +94,9 @@ const CommunityRegister = () => {
         const _innerPathList: string[] = [];
         const _infoList: PostImage[] = [];
         const _nameList: string[] = [];
-        console.log('@ imageInfo[0]');
-        console.log(response[0]);
 
         response.forEach(item => {
-          const tmp = item.path.split('/');
-          const serverFilename = tmp[tmp.length - 1];
+          const serverFilename = uuid.v4() as string;
 
           const iosSourceURL = item.sourceURL ?? '';
 
@@ -122,18 +124,17 @@ const CommunityRegister = () => {
       console.log(error);
     }
   };
+  /**
+   *@description 등록 이벤트 핸들러
+   */
+  const onSubmit = () => {
+    if (!isFormComplete || (isImageLoad && isSubmit)) return;
 
-  const onSubmit = async () => {
-    if (!isFormComplete || isImageLoad) return;
+    setSubmit(true);
+  };
 
+  const registerForm = async () => {
     try {
-      for (let i = 0; i < imageInfo.length; i++) {
-        const data = new FormData();
-        data.append('file', imageInfo[i]);
-
-        await postImageUpload.mutateAsync({data, fileName: imageInfo[i].name});
-      }
-
       const response = await mutateAsync({
         ...form,
         pictures: imageNameList,
@@ -150,10 +151,18 @@ const CommunityRegister = () => {
           ),
         });
 
+        setSubmit(false);
+
         navigation.reset({index: 0, routes: [{name: 'Commuity'}]});
       }
     } catch (error) {}
   };
+
+  useEffect(() => {
+    if (isSubmit) {
+      upload(imageInfo, registerForm);
+    }
+  }, [isSubmit]);
 
   return (
     <KeyboardAwareScrollView bounces={false}>
@@ -220,7 +229,7 @@ const CommunityRegister = () => {
 
             <InputTopLabel text="내용" isNecessary />
 
-            <ScrollView mt="14px" borderWidth={1} horizontal bounces={false}>
+            <ScrollView mt="14px" horizontal bounces={false}>
               <HStack>
                 {imageInnerPathList.map((item, i) => (
                   <Stack key={i.toString()} mr="8px">
@@ -268,7 +277,7 @@ const CommunityRegister = () => {
           <ImageIcon style={{marginRight: 10}} />
 
           <Text color={colors.grayScale['80']} fontSize="13px">
-            {`0 / 5`}
+            {`${imageInfo.length} / 5`}
           </Text>
         </Pressable>
       </SafeAreaView>
