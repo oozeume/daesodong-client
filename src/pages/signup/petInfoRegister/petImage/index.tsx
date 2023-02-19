@@ -34,40 +34,48 @@ function PetImageRegister({
   // 이미지명
   const [fileName, setFilename] = useState<string>();
 
+  /**
+   *@description r2에 이미지 등록 및 서버에 폼 요청
+   *@param isSkip - 건너뛰기 여부 파라미터 (true 일 시, 이미지 저장 안함)
+   */
   const onMovePage = async (isSkip: boolean) => {
-    if (!isSkip && (!imagePath || !imageInfo || !fileName)) return;
+    if (isLoading) return;
 
     const petPictureUrl = isSkip ? undefined : fileName;
 
     setForm(prev => ({...prev}));
 
     try {
-      const imageUploadForm = imageInfo
-        ? {
-            uri:
-              Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
-            type: imageInfo.mime,
-            name: Platform.OS === 'android' ? fileName : imageInfo.filename,
-          }
-        : undefined;
+      if (petPictureUrl) {
+        const imageUploadForm = imageInfo
+          ? {
+              uri:
+                Platform.OS === 'android'
+                  ? imageInfo.path
+                  : imageInfo.sourceURL,
+              type: imageInfo.mime,
+              name: Platform.OS === 'android' ? fileName : imageInfo.filename,
+            }
+          : undefined;
 
-      const data = new FormData();
-      data.append('file', imageUploadForm);
+        const data = new FormData();
+        data.append('file', imageUploadForm);
 
-      if (fileName) {
-        // 이미지 업로드 api 호출
-        await mutateAsync(
-          {data, fileName},
-          {
-            onError: error => {
-              const errorResponse = error as ErrorResponseTransform;
+        if (fileName) {
+          // 이미지 업로드 api 호출
+          await mutateAsync(
+            {data, fileName},
+            {
+              onError: error => {
+                const errorResponse = error as ErrorResponseTransform;
 
-              if (errorResponse?.message && errorResponse?.message !== '') {
-                Alert.alert(errorResponse.message);
-              }
+                if (errorResponse?.message && errorResponse?.message !== '') {
+                  Alert.alert(errorResponse.message);
+                }
+              },
             },
-          },
-        );
+          );
+        }
       }
 
       const patchUserResponse = await patchUserInfo.mutateAsync({
@@ -124,7 +132,7 @@ function PetImageRegister({
       currentStage={currentStage}
       isSkipPage
       onSkipPage={() => onMovePage(true)}
-      possibleButtonPress={!_.isNil(imagePath)}>
+      possibleButtonPress={!_.isNil(imagePath) && !_.isNil(imageInfo)}>
       {patchUserInfo.isLoading && <Spinner size="lg" />}
 
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
