@@ -9,6 +9,9 @@ const QueryKeys = {
     },
   },
   tags: ['tags'],
+  user: {
+    getUser: 'get user',
+  },
   auth: {},
 } as const;
 
