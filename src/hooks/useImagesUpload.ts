@@ -1,10 +1,16 @@
-import {PostImage} from '~/../types/utils';
+import {PostCloudImageData} from '~/../types/utils';
 import {usePostImageUpload} from '~/api/image';
 
-export default function useImageUpload() {
+/**
+ *@description 이미지 업로드 api 훅 및 요청 핸들러 반환 커스텀 훅
+ */
+function useImageUpload() {
   const postImageUpload = usePostImageUpload();
 
-  const upload = async (imageInfo: PostImage[], callback: () => void) => {
+  const onImageUpload = async (
+    imageInfo: PostCloudImageData[],
+    callback: () => void,
+  ) => {
     try {
       for (let i = 0; i < imageInfo.length; i++) {
         const data = new FormData();
@@ -13,8 +19,11 @@ export default function useImageUpload() {
         await postImageUpload.mutateAsync({data, fileName: imageInfo[i].name});
       }
 
+      // 이미지 클라우드에 업로드 후, 콜백 실행
       callback();
     } catch (error) {}
   };
-  return {upload, postImageUpload};
+  return {onImageUpload, postImageUpload};
 }
+
+export default useImageUpload;

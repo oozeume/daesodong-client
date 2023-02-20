@@ -55,9 +55,9 @@ const getCommunityPost = async (id: string) => {
   });
 };
 
-export const useGetCommunityPost = (id: string) => {
+export const useGetCommunityPost = (id: string, enabled?: boolean) => {
   return useQuery(
-    [QueryKeys.community.getPost],
+    [QueryKeys.community.getPost, id],
     () => {
       return getCommunityPost(id);
     },
@@ -65,6 +65,7 @@ export const useGetCommunityPost = (id: string) => {
       select: data => {
         return new Post(data.data);
       },
+      enabled,
     },
   );
 };

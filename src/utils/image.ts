@@ -33,9 +33,10 @@ export function imagePicker() {
   return ImagePicker.openPicker(option);
 }
 
-export function multipleImagePicker() {
+export function multipleImagePicker(maxFiles = 1) {
   return ImagePicker.openPicker({
     ...option,
     multiple: true,
+    maxFiles,
   });
 }

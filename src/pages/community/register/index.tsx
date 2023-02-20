@@ -14,13 +14,15 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DeleteIcon from '~/assets/icons/delete.svg';
 import ImageIcon from '~/assets/icons/image.svg';
+import CircleDeleteIcon from '~/assets/icons/circle_delete.svg';
+
 import {colors} from '~/theme/theme';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {NavigationHookProp} from '~/../types/navigator';
+import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
 import VerificationForm from '~/components/common/VerificationForm';
 import CommunitySelect from '~/components/community/register/CommunitySelect';
 import SelectButtonForm from '~/components/community/register/SelectButtonForm';
-import {FormState, FormType} from '~/../types/community';
+import {FormState, RegisterImageData} from '~/../types/community';
 import {APP_HEIGHT} from '~/utils/dimension';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Header from '~/components/common/header/Header';
@@ -31,24 +33,28 @@ import _ from 'lodash';
 import ToastMessage from '~/components/common/toast/ToastMessage';
 import {multipleImagePicker} from '~/utils/image';
 import {Platform} from 'react-native';
-import {PostImage} from '~/../types/utils';
+import {PostCloudImageData} from '~/../types/utils';
 import uuid from 'react-native-uuid';
 import useImageUpload from '~/hooks/useImagesUpload';
+import {useGetCommunityPost} from '~/api/community/queries';
+import {config} from '~/utils/config';
 
 /**
  *@description 커뮤니티 등록/수정
  *@todo 병원 후기 등록 부분 태그 등록 올라오면 적용 예정
+ *@logic 등록 버튼 클릭 > onSubmit > isSubmitLoading: true > 이미지 업로드 > 서버에 게시글 등록 폼 전송
  */
 const CommunityRegister = () => {
   const navigation = useNavigation<NavigationHookProp>();
-  const {mutateAsync} = usePostCummunityPost();
-  const {upload} = useImageUpload();
-  const {params} = useRoute() as {params: FormType};
+  const {params} = useRoute<RouteHookProp<'CommunityRegister'>>();
+  const {mutateAsync} = usePostCummunityPost(params?.postId);
+  const {onImageUpload} = useImageUpload();
+  const getCommunityPost = useGetCommunityPost(params?.postId ?? '');
 
   const {data} = useGetPetKinds(false);
 
   // 등록: REGISTER, 수정: MODIFY
-  const formType = params?.type || 'REGISTER';
+  const formType = params?.postId ? 'REGISTER' : 'MODIFY';
   const toast = useToast();
 
   // 초기 등록 폼 state
@@ -67,17 +73,15 @@ const CommunityRegister = () => {
   // 앱에서 이미지 로드 중인 여부 state
   const [isImageLoad, setImageLoad] = useState(false);
   // 폼 제출 여부 state
-  const [isSubmit, setSubmit] = useState(false);
+  const [isSubmitLoading, setSubmitLoading] = useState(false);
 
-  // 불러온 이미지의 내부 이미지 경로
-  const [imageInnerPathList, setImageInnerPathList] = useState<string[]>([]);
-
-  // cloud flare r2에 저장된 이미지 이름들
-  const [imageNameList, setImageNameList] = useState<string[]>([]);
-  // cloud flare r2에 저장할 이미지 정보 state
-  const [imageInfo, setImageInfo] = useState<PostImage[]>([]);
+  // 이미지 리스트
+  const [imageDatas, setImageDatas] = useState<RegisterImageData[]>([]);
 
   const registerImageViewHeight = 84;
+
+  // 최대 이미지 등록 가능 수
+  const MAX_IMAGE_COUNT = 5;
 
   // 폼 작성 완료 여부
   const isFormComplete =
@@ -86,39 +90,37 @@ const CommunityRegister = () => {
   // 이미지 선택 핸들러
   const onImagePicker = () => {
     // 이미지가 업로드 중이면 핸들러 반환
-    if (isImageLoad) return;
+    if (isImageLoad && isSubmitLoading) return;
     setImageLoad(true);
 
     try {
-      multipleImagePicker().then(response => {
-        const _innerPathList: string[] = [];
-        const _infoList: PostImage[] = [];
-        const _nameList: string[] = [];
+      multipleImagePicker(MAX_IMAGE_COUNT - imageDatas.length).then(
+        response => {
+          const _registerPageImageNames: RegisterImageData[] = [];
 
-        response.forEach(item => {
-          const serverFilename = uuid.v4() as string;
+          response.forEach(item => {
+            const cloudImageName = uuid.v4() as string;
+            const iosSourceURL = item.sourceURL ?? '';
+            const imageInfoURI =
+              Platform.OS === 'android' ? item.path : iosSourceURL;
 
-          const iosSourceURL = item.sourceURL ?? '';
-
-          const imageInfoURI =
-            Platform.OS === 'android' ? item.path : iosSourceURL;
-
-          _innerPathList.push(
-            Platform.OS === 'android' ? item.path : iosSourceURL,
-          );
-          _nameList.push(serverFilename);
-          _infoList.push({
-            uri: imageInfoURI,
-            type: item.mime,
-            name: serverFilename,
+            _registerPageImageNames.push({
+              registerPageImageName:
+                Platform.OS === 'android' ? item.path : iosSourceURL,
+              cloudImageName,
+              cloudData: {
+                uri: imageInfoURI,
+                type: item.mime,
+                name: cloudImageName,
+              },
+              type: 'UNREGISTERED',
+            });
           });
-        });
 
-        setImageInfo(_infoList);
-        setImageInnerPathList(_innerPathList);
-        setImageNameList(_nameList);
-        setImageLoad(false);
-      });
+          setImageDatas(prev => [...prev, ..._registerPageImageNames]);
+          setImageLoad(false);
+        },
+      );
     } catch (error) {
       setImageLoad(false);
       console.log(error);
@@ -128,41 +130,109 @@ const CommunityRegister = () => {
    *@description 등록 이벤트 핸들러
    */
   const onSubmit = () => {
-    if (!isFormComplete || (isImageLoad && isSubmit)) return;
+    if (!isFormComplete || (isImageLoad && isSubmitLoading)) return;
 
-    setSubmit(true);
+    setSubmitLoading(true);
   };
 
-  const registerForm = async () => {
-    try {
-      const response = await mutateAsync({
-        ...form,
-        pictures: imageNameList,
-      });
+  /**
+   *@description 이미지 리스트에서 제거 핸들러
+   */
+  const onDeleteImage = (index: number) => {
+    if (isImageLoad && isSubmitLoading) return;
 
-      if (response.data) {
+    setImageDatas(prev => prev.filter((_, k) => k !== index));
+  };
+
+  /**
+   *@description 서버에 게시글 폼 등록 요청 이벤트 핸들러
+   */
+  const registerForm = () => {
+    mutateAsync({
+      ...form,
+      pictures: imageDatas.map(item => item.cloudImageName),
+    })
+      .then(response => {
+        if (response.data) {
+          toast.show({
+            render: () => (
+              <ToastMessage
+                text={`게시글을 ${
+                  formType === 'REGISTER' ? '등록' : '수정'
+                }했어요`}
+              />
+            ),
+          });
+
+          setSubmitLoading(false);
+
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'tab', state: {routes: [{name: 'Commuity'}]}}],
+          });
+        }
+      })
+      .catch(error => {
         toast.show({
           render: () => (
             <ToastMessage
               text={`게시글을 ${
                 formType === 'REGISTER' ? '등록' : '수정'
-              }했어요`}
+              }하는 과정에서 오류가 발생했습니다.`}
             />
           ),
         });
-
-        setSubmit(false);
-
-        navigation.reset({index: 0, routes: [{name: 'Commuity'}]});
-      }
-    } catch (error) {}
+      });
   };
 
   useEffect(() => {
-    if (isSubmit) {
-      upload(imageInfo, registerForm);
+    if (isSubmitLoading) {
+      // 클라우드에 이미지 업로드 후, 콜백으로 서버에 게시글 등록
+      onImageUpload(
+        imageDatas.reduce<PostCloudImageData[]>((result, item) => {
+          if (item.cloudData) {
+            result.push(item.cloudData);
+          }
+
+          return result;
+        }, []),
+        registerForm,
+      ).catch(error => {
+        // 이미지 클라우드 등록 실패 시, 에러
+        toast.show({
+          render: () => (
+            <ToastMessage
+              text={`이미지 업로드하는 과정에서 오류가 발생했습니다.`}
+            />
+          ),
+        });
+      });
     }
-  }, [isSubmit]);
+  }, [isSubmitLoading]);
+
+  useEffect(() => {
+    if (params?.postId && getCommunityPost.data) {
+      const {kind, title, content, tagNameList, imageNameList} =
+        getCommunityPost.data;
+
+      setForm({
+        kind: kind?.name ?? '',
+        title: title ?? '',
+        content: content ?? '',
+        tags: tagNameList ?? [],
+        pictures: imageNameList ?? [],
+      });
+
+      setImageDatas(
+        (imageNameList ?? []).map(item => ({
+          type: 'REGISTERED',
+          registerPageImageName: item,
+          cloudImageName: item,
+          cloudData: undefined,
+        })),
+      );
+    }
+  }, []);
 
   return (
     <KeyboardAwareScrollView bounces={false}>
@@ -231,14 +301,32 @@ const CommunityRegister = () => {
 
             <ScrollView mt="14px" horizontal bounces={false}>
               <HStack>
-                {imageInnerPathList.map((item, i) => (
+                {imageDatas.map((item, i) => (
                   <Stack key={i.toString()} mr="8px">
                     <Image
                       width={'96px'}
                       height="96px"
-                      source={{uri: item}}
+                      source={{
+                        uri: `${
+                          item.type === 'REGISTERED'
+                            ? config.IMAGE_BASE_URL
+                            : ''
+                        }${item.registerPageImageName}`,
+                      }}
                       alt={'post_img'}
                     />
+
+                    <Pressable
+                      onPress={() => onDeleteImage(i)}
+                      position={'absolute'}
+                      width="32px"
+                      height="32px"
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                      top={0}
+                      right={0}>
+                      <CircleDeleteIcon fill={colors.grayScale[90]} />
+                    </Pressable>
                   </Stack>
                 ))}
               </HStack>
@@ -277,7 +365,7 @@ const CommunityRegister = () => {
           <ImageIcon style={{marginRight: 10}} />
 
           <Text color={colors.grayScale['80']} fontSize="13px">
-            {`${imageInfo.length} / 5`}
+            {`${imageDatas.length} / 5`}
           </Text>
         </Pressable>
       </SafeAreaView>

@@ -11,7 +11,7 @@ import Comment from '~/model/comment';
  *@description 댓글 리스트 조회 api
  */
 const getCommentList = (postId: string) => {
-  return apiCall<GetCommentListResponse[]>({
+  return apiCall<GetCommentListResponse>({
     method: 'GET',
     url: `posts/${postId}/comments`,
   });

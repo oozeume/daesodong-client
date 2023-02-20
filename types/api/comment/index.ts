@@ -26,4 +26,4 @@ export interface DeleteCommentQuery {
 }
 
 // 댓글 리스트 조회 응답
-export type GetCommentListResponse = CommentItem;
+export type GetCommentListResponse = CommentItem[];

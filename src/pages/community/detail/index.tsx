@@ -11,7 +11,7 @@ import {useDeleteComment, useGetCommentList} from '~/api/comment/queries';
 import {useDeleteRecomment} from '~/api/recomment/queries';
 import useSetDetailHeader from '~/components/community/detail/useSetDetailHeader';
 import CommentInput from '~/components/community/detail/CommentInput';
-import {CommentInputType, CommentItem} from '~/../types/community';
+import {CommentInputType} from '~/../types/community';
 import CommentList from '~/components/community/detail/CommentList';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CommentModel from '~/model/comment';
@@ -33,7 +33,7 @@ const CommunityDetail = () => {
 
   const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
 
-  const getCommunityPost = useGetCommunityPost(postId);
+  const getCommunityPost = useGetCommunityPost(postId, true);
 
   const {data: commentList, refetch} = useGetCommentList(postId);
   const deleteComment = useDeleteComment({
@@ -55,7 +55,7 @@ const CommunityDetail = () => {
     setBookmark,
     isOpenDeletePopup,
     setOpenDeletePopup,
-  } = useSetDetailHeader();
+  } = useSetDetailHeader(postId);
 
   /**
    *@description 댓글 삭제

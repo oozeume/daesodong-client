@@ -1,4 +1,14 @@
-import {Box, HStack, Pressable, Stack, Text, View, VStack} from 'native-base';
+import {
+  Box,
+  Center,
+  HStack,
+  Image,
+  Pressable,
+  Stack,
+  Text,
+  View,
+  VStack,
+} from 'native-base';
 import React from 'react';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {colors} from '~/theme/theme';
@@ -9,6 +19,9 @@ import {Dimensions} from 'react-native';
 import dayjs from 'dayjs';
 import {getProgressTime} from '~/utils/time';
 import Post from '~/model/post';
+import _ from 'lodash';
+import {config} from '~/utils/config';
+import ImageSwiper from '~/components/common/swiper/ImageSwiper';
 
 interface Props {
   isVisibleUserInfo?: boolean;
@@ -36,13 +49,16 @@ const CommunityContent = ({
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
+  // 목록에서 게시글 대표 이미지로 보여질 사진 (첫번째 사진)
+  const mainImageURL = _.isEmpty(contentData?.images)
+    ? undefined
+    : `${config.IMAGE_BASE_URL}${contentData?.images[0]?.url}`;
+
   return (
     <Box
       px="18px"
       mb="8px"
-      bgColor={
-        viewMode === 'simple' ? colors.grayScale[10] : colors.grayScale[0]
-      }
+      bgColor={colors.grayScale[0]}
       borderRadius={viewMode === 'simple' ? '16px' : undefined}>
       {/* 글쓴이 정보 */}
       {isVisibleUserInfo && (
@@ -148,8 +164,24 @@ const CommunityContent = ({
 
         {viewAllButton}
 
-        {viewMode !== 'simple' && (
-          <Box bgColor={colors.grayScale['20']} w={imageWidth} h={imageWidth} />
+        {viewMode === 'simple' ? (
+          <Image
+            w={imageWidth}
+            h={imageWidth}
+            fallbackElement={
+              <Box
+                bgColor={colors.grayScale['10']}
+                w={imageWidth}
+                h={imageWidth}
+              />
+            }
+            alt="post_img"
+            source={{
+              uri: mainImageURL,
+            }}
+          />
+        ) : (
+          <ImageSwiper list={contentData?.images ?? []} />
         )}
 
         {isVisibleTag && (

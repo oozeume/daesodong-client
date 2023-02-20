@@ -6,7 +6,7 @@ import Button from '~/components/common/button';
 import {usePatchRecomment, usePostRecomment} from '~/api/recomment/mutation';
 import {usePatchComment, usePostComment} from '~/api/comment/mutation';
 import {SetState} from '~/../types/common';
-import {CommentInputType, CommentItem} from '~/../types/community';
+import {CommentInputType} from '~/../types/community';
 import {TextInput} from 'react-native';
 import CommentModel from '~/model/comment';
 
