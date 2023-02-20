@@ -5,7 +5,7 @@ import {Platform} from 'react-native';
 
 interface Props {
   title: string;
-  rate: number;
+  rate: string;
 }
 
 /**

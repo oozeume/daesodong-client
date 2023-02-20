@@ -48,7 +48,7 @@ type Props = NativeStackScreenProps<
 function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
 
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(false);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const navigation = useNavigation<NavigationHookProp>();
@@ -321,7 +321,6 @@ function FacilityReviewRegister({route}: Props) {
             />
 
             {/* 리뷰 등록 버튼 */}
-            {/* TODO: active 조건 추가 */}
             <ReviewRegisterButton handlePress={onSubmit} active={active} />
           </FormControl>
         </VStack>

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {FacilityReviewsResponse} from '~/../types/api/facility';
 
 class Review {
@@ -16,13 +17,7 @@ class Review {
   }
 
   get visitDate() {
-    const year = new Date(this.review.visit_date)
-      .getFullYear()
-      .toString()
-      .slice(2);
-    const month = new Date(this.review.visit_date).getMonth() + 1;
-
-    return `${year}.${month}`;
+    return dayjs(this.review.visit_date).format('YY-MM') ?? '';
   }
 
   get petInfo() {

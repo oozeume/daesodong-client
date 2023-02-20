@@ -43,10 +43,10 @@ function HospitalReviewAllRate({reviews}: Props) {
     setTotalAverageScore(totalScore.toFixed(1));
 
     return {
-      facility: facilityAverage,
-      kindness: kindness,
-      treatment: treatment,
-      price: price,
+      facility: facilityAverage.toFixed(1),
+      kindness: kindness.toFixed(1),
+      treatment: treatment.toFixed(1),
+      price: price.toFixed(1),
       total: totalScore.toFixed(1),
     };
   }, [reviews]);
@@ -93,10 +93,10 @@ function HospitalReviewAllRate({reviews}: Props) {
           </Stack>
           <Divider orientation="vertical" bg={'grayScale.10'} />
           <Stack space={'3px'} alignItems={'flex-start'}>
-            <PartialRate title={'진료'} rate={scoreAverage.treatment ?? 0} />
-            <PartialRate title={'비용'} rate={scoreAverage.price ?? 0} />
-            <PartialRate title={'시설'} rate={scoreAverage.facility ?? 0} />
-            <PartialRate title={'친절'} rate={scoreAverage.kindness ?? 0} />
+            <PartialRate title={'진료'} rate={scoreAverage.treatment ?? '0'} />
+            <PartialRate title={'비용'} rate={scoreAverage.price ?? '0'} />
+            <PartialRate title={'시설'} rate={scoreAverage.facility ?? '0'} />
+            <PartialRate title={'친절'} rate={scoreAverage.kindness ?? '0'} />
           </Stack>
         </HStack>
       </Flex>
