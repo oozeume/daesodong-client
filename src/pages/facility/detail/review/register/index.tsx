@@ -75,7 +75,7 @@ function FacilityReviewRegister({route}: Props) {
     <>
       <ReviewForm
         facilityName={facilityName ?? ''}
-        onNamePress={() => setIsOpenPopup(true)}
+        onClose={() => setIsOpenPopup(true)}
         reviewForm={reviewForm}
         setReviewForm={setReviewForm}
         tagList={tagList}
@@ -96,7 +96,7 @@ function FacilityReviewRegister({route}: Props) {
           backgroundColor: colors.fussOrange[0],
         }}
         onCancel={() => {
-          setTags(['']);
+          setTags([]);
           navigation.goBack();
         }}
         onSuccess={() => setIsOpenPopup(false)}

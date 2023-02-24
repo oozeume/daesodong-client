@@ -4,8 +4,20 @@ import {FacilityReviewsResponse} from '~/../types/api/facility';
 class Review {
   constructor(private readonly review: FacilityReviewsResponse) {}
 
+  get id() {
+    return this.review.id ?? '';
+  }
+
   get nickname() {
     return this.review.user.nickname ?? '';
+  }
+
+  get facilityId() {
+    return this.review.hospitalId ?? '';
+  }
+
+  get reviewId() {
+    return this.review.id ?? '';
   }
 
   get userId() {

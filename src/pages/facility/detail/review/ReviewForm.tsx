@@ -33,7 +33,7 @@ import {PostFacilityReviewData} from '~/../types/api/facility';
 
 interface Props {
   facilityName: string;
-  onNamePress: () => void;
+  onClose: () => void;
   reviewForm: PostFacilityReviewData;
   setReviewForm: React.Dispatch<React.SetStateAction<PostFacilityReviewData>>;
   tagList: string[];
@@ -47,7 +47,7 @@ interface Props {
 
 function ReviewForm({
   facilityName,
-  onNamePress,
+  onClose,
   reviewForm,
   setReviewForm,
   tagList,
@@ -75,7 +75,7 @@ function ReviewForm({
   return (
     <SafeAreaView>
       <ScrollView backgroundColor={colors.grayScale['0']}>
-        <HospitalName text={facilityName ?? ''} onPress={onNamePress} />
+        <HospitalName text={facilityName ?? ''} onPress={onClose} />
 
         <VStack p={'18px'} pb="40px">
           <FormControl>

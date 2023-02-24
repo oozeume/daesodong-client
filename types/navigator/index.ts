@@ -4,6 +4,7 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Review from '~/model/review';
 import {FormType} from '../community';
 import {FacilityReviewParams} from '../facility';
 import {AuthFoundResultParams} from '../login';
@@ -43,6 +44,12 @@ export type RootStackParamList = {
   FacilityDetail: FacilityReviewParams;
   tab: undefined;
   FacilityReviewRegister: FacilityReviewParams;
+  FacilityReviewEdit: {
+    review: Review;
+    reviewId: string;
+    facilityId: string;
+    facilityName: string;
+  };
   TagRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;

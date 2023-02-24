@@ -12,8 +12,8 @@ interface Props {
   text: string;
   lineStyle?: ViewStyle;
   setReviewForm: (form: PostFacilityReviewData) => void;
-  reviewForm: PostFacilityReviewData;
-  rateName?: string;
+  reviewForm: PostFacilityReviewData | any;
+  rateName: string;
 }
 
 /**
@@ -28,7 +28,7 @@ function StarReviewLine({
   reviewForm,
   rateName,
 }: Props) {
-  const [starRating, setStartRating] = useState(0);
+  const [starRating, setStartRating] = useState(reviewForm[`${rateName}`] ?? 0);
 
   const UNCHECKED_ICON_STYLE = {
     marginRight: 6,

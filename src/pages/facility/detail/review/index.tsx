@@ -124,7 +124,7 @@ function FacilityReview({id, facilityName}: Props) {
             </HStack>
           </HStack>
 
-          <ReviewList reviews={reviews} />
+          <ReviewList reviews={reviews} facilityName={facilityName} />
         </ScrollView>
       )}
 
