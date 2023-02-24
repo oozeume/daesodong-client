@@ -6,6 +6,9 @@ import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
+import dayjs from 'dayjs';
+import {getProgressTime} from '~/utils/time';
+import Post from '~/model/post';
 
 interface Props {
   isVisibleUserInfo?: boolean;
@@ -15,6 +18,7 @@ interface Props {
   viewAllButton?: JSX.Element;
   viewMode?: 'default' | 'simple';
   isVisibleTime?: boolean;
+  contentData?: Post;
 }
 
 /**
@@ -28,6 +32,7 @@ const CommunityContent = ({
   userInfo,
   viewMode = 'default',
   isVisibleTime,
+  contentData,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -108,39 +113,37 @@ const CommunityContent = ({
               bottom={0}
               color={colors.grayScale['50']}
               fontSize={'12px'}>
-              YY.MM.DD
+              {dayjs(contentData?.createdAt).format('YY.MM.DD')}
             </Text>
           </HStack>
         </HStack>
       )}
 
-      {/* 내용 */}
       <Box py="20px">
         <Stack space={'2px'} mb={'8px'}>
+          {/* 제목 */}
           <Text
             noOfLines={viewMode === 'simple' ? 1 : undefined}
             fontSize={'16px'}
             color={colors.grayScale['80']}
             fontWeight={800}>
-            하나의 속의 지나가는 자랑처럼 북간도에 계절이 지나고 슬퍼하는
-            까닭입니다
+            {contentData?.title}
           </Text>
 
           {isVisibleTime && (
             <Text fontSize={'12px'} color={colors.grayScale['60']}>
-              3시간 전
+              {getProgressTime(contentData?.createdAt)}
             </Text>
           )}
         </Stack>
 
+        {/* 내용 */}
         <Text
           noOfLines={viewMode === 'simple' ? 2 : undefined}
           fontSize={'14px'}
           color={colors.grayScale['80']}
           mb={'16px'}>
-          이름자를 언덕 봄이 아름다운 어머니 별들을 이런 봅니다. 패, 흙으로
-          어머님, 걱정도 쓸쓸함과 새겨지는 있습니다. 그러나 슬퍼하는 이런 애기
-          까닭입니다.
+          {contentData?.content}
         </Text>
 
         {viewAllButton}
@@ -151,17 +154,18 @@ const CommunityContent = ({
 
         {isVisibleTag && (
           <HStack mt={'20px'}>
-            <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
-              <Text color={colors.fussYellow['30']}>태그1</Text>
-            </View>
-
-            <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
-              <Text color={colors.fussYellow['30']}>태그1</Text>
-            </View>
-
-            <View py="1px" px="6px" mr="6px" bgColor={colors.fussYellow['-30']}>
-              <Text color={colors.fussYellow['30']}>태그1</Text>
-            </View>
+            {contentData?.tags.map((item, i) => (
+              <View
+                key={i.toString()}
+                py="1px"
+                px="6px"
+                mr="6px"
+                bgColor={colors.fussYellow['-30']}>
+                <Text color={colors.fussYellow['30']}>
+                  {item.post_tag?.name || ''}
+                </Text>
+              </View>
+            ))}
           </HStack>
         )}
       </Box>
@@ -188,7 +192,7 @@ const CommunityContent = ({
             </Text>
 
             <Text fontSize="12px" color={colors.grayScale['60']}>
-              100
+              {contentData?.thanks}
             </Text>
           </HStack>
         )}
@@ -199,7 +203,7 @@ const CommunityContent = ({
               <HStack alignItems={'center'}>
                 <ViewFillIcon fill={colors.grayScale['30']} />
                 <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
-                  100
+                  {contentData?.views}
                 </Text>
               </HStack>
             </Pressable>

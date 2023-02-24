@@ -1,25 +1,39 @@
+import _ from 'lodash';
 import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
+import {PostFeature} from '~/../types/common';
+import {CommentUserInfo} from '~/../types/community';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
+import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
+import {getProgressTime} from '~/utils/time';
 
 interface Props {
   commentType?: 'default' | 'reply' | 'delete';
   onRegisterRecomment?: () => void;
+  onClickKekab: (type: PostFeature) => void;
   isBest?: boolean;
+  data?: CommentModel;
+  parentUserNickname?: string;
+  userId?: string;
 }
 
 /**
  *@description 게시글 댓글
  *@param {'default' | 'reply' | 'delete' | undefined} commentType - 댓글 유형 (reply: 답글, delete: 삭제된 댓글)
  *@param {boolean} isBest - BEST 댓글일 경우
+ *@param {CommentUserInfo} parentUserInfo - 답글일 경우, 상위 댓글의 유저 정보
  */
 const Comment = ({
   onRegisterRecomment,
   isBest,
+  onClickKekab,
+  data,
+  parentUserNickname,
+  userId,
   commentType = 'default',
 }: Props) => {
   return (
@@ -50,7 +64,7 @@ const Comment = ({
             {/* 닉네임, 이름, 동물, 나이 뷰 라인 */}
             <HStack alignItems="center">
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                닉네임
+                {data?.nickname}
               </Text>
 
               <View
@@ -61,7 +75,7 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                이름
+                {(!_.isEmpty(data?.petInfo) && data?.petInfo?.name) || ''}
               </Text>
 
               <View
@@ -72,7 +86,8 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                동물
+                {(!_.isEmpty(data?.petInfo) && data?.petInfo?.specie?.name) ||
+                  ''}
               </Text>
 
               <View
@@ -83,14 +98,17 @@ const Comment = ({
               />
 
               <Text fontSize={'12px'} color={colors.grayScale['60']}>
-                나이
+                {(!_.isEmpty(data?.petInfo) && data?.petInfo?.age) || ''}
+                개월
               </Text>
             </HStack>
           </HStack>
 
           <KekabMenu
-            handleFirstButton={() => {}}
-            handleSecondButton={() => {}}
+            firstButtonName={data?.userId === userId ? '수정' : '신고'}
+            secondButtonName={data?.userId === userId ? '삭제' : '차단'}
+            handleFirstButton={() => onClickKekab('MODIFY')}
+            handleSecondButton={() => onClickKekab('DELETE')}
             top={Platform.OS === 'android' ? '36px' : '12px'}
             left={Platform.OS === 'android' ? '-22px' : '-12px'}
           />
@@ -99,13 +117,13 @@ const Comment = ({
         {/* 최초 작성 시간 / 수정됨 뷰 라인 */}
         <HStack mb="8px" ml="28px" alignItems={'center'}>
           <Text fontSize={'12px'} color={colors.grayScale['50']}>
-            최초 작성 시간
+            {getProgressTime(data?.createdAt, data?.updatedAt || undefined)}
           </Text>
 
           <Text color={colors.grayScale['30']}>{' ∙ '}</Text>
 
           <Text fontSize={'12px'} color={colors.grayScale['50']}>
-            수정됨
+            {data?.createdAt === data?.updatedAt ? '' : '수정됨'}
           </Text>
         </HStack>
 
@@ -139,13 +157,13 @@ const Comment = ({
 
           {commentType === 'reply' && (
             <Text color={colors.fussOrange['0']} mr="28px">
-              {`닉네임`} <Text>{`  `}</Text>
+              {parentUserNickname ?? ''} <Text>{`  `}</Text>
             </Text>
           )}
           <Text>
             {commentType === 'delete'
               ? '삭제된 댓글입니다'
-              : '지나고 그러나 그리워 다 같이 봅니다. 잔디가 나는 위에 무엇인지 아무 듯합니다. 피어나듯이 불러 당신은 내 말 위에도 부끄러운 했던 계십니다'}
+              : data?.content ?? ''}
           </Text>
         </Text>
 
@@ -164,7 +182,7 @@ const Comment = ({
                 고마워요
               </Text>
               <Text color={colors.grayScale['60']} fontSize="13px">
-                00
+                {data?.thanks ?? 0}
               </Text>
             </HStack>
           </Pressable>

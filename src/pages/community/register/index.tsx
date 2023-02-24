@@ -93,7 +93,7 @@ const CommunityRegister = () => {
                       </HStack>
                     ),
                   });
-                  navigation.navigate('CommunityDetail');
+                  navigation.navigate('CommunityDetail', {id: ''});
                 }}>
                 <Text
                   color={colors.fussOrange[isFormComplete ? '0' : '-20']}

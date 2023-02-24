@@ -27,16 +27,14 @@ const getUser = async () => {
   });
 };
 
-export const useGetUser = () => {
+export const useGetUser = (enabled?: boolean) => {
   return useQuery(
     [QueryKeys.user.getUser],
     () => {
       return getUser();
     },
     {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      enabled: false,
+      enabled,
     },
   );
 };
