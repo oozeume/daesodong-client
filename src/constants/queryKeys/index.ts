@@ -12,6 +12,19 @@ const QueryKeys = {
   user: {
     getUser: 'get user',
   },
+  community: {
+    getPosts: 'get community posts',
+    getPost: 'get community post',
+    deletePost: 'delete community post',
+  },
+  comment: {
+    getComments: 'get comments',
+    deleteComment: 'delete comment',
+  },
+  recomment: {
+    getRecomments: 'get recomments',
+    deleteRecomment: 'delete recomment',
+  },
   auth: {},
 } as const;
 

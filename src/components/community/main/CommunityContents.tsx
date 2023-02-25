@@ -6,19 +6,32 @@ import CommunityContent from '~/components/community/detail/Content';
 import {colors} from '~/theme/theme';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {FlatList} from 'react-native-gesture-handler';
+import Post from '~/model/post';
 
-function CommunityContents() {
+interface Props {
+  contentsList?: Post[];
+}
+
+/**
+ *@description 커뮤니티 게시글 리스트
+ */
+function CommunityContents({contentsList}: Props) {
   const navigation = useNavigation<NavigationProp<RouteList>>();
+
   return (
     <FlatList
-      data={['', '', '']}
+      data={contentsList}
       keyExtractor={(item, index) => index.toString()}
-      renderItem={item => (
+      renderItem={({item}) => (
         <CommunityContent
+          contentData={item}
+          isVisibleTime
           viewAllButton={
             <Box mb={'16px'}>
               <Text
-                onPress={() => navigation.navigate('CommunityDetail')}
+                onPress={() =>
+                  navigation.navigate('CommunityDetail', {id: item.id})
+                }
                 color={colors.grayScale[50]}>
                 전체보기
               </Text>
