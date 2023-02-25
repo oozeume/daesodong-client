@@ -87,6 +87,7 @@ export const useDeleteCommunityPost = (id: string) => {
       return deleteCommunityPost(id);
     },
     {
+      cacheTime: 0,
       enabled: false,
     },
   );

@@ -38,6 +38,7 @@ import uuid from 'react-native-uuid';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {useGetCommunityPost} from '~/api/community/queries';
 import {config} from '~/utils/config';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 /**
  *@description 커뮤니티 등록/수정
@@ -47,14 +48,18 @@ import {config} from '~/utils/config';
 const CommunityRegister = () => {
   const navigation = useNavigation<NavigationHookProp>();
   const {params} = useRoute<RouteHookProp<'CommunityRegister'>>();
-  const {mutateAsync} = usePostCummunityPost(params?.postId);
+  const statusbarHeight = getStatusBarHeight();
+
+  const {mutateAsync: communityPostRegister} = usePostCummunityPost(
+    params?.postId,
+  );
   const {onImageUpload} = useImageUpload();
   const getCommunityPost = useGetCommunityPost(params?.postId ?? '');
-
-  const {data} = useGetPetKinds(false);
+  const {data: petKinds} = useGetPetKinds(false);
 
   // 등록: REGISTER, 수정: MODIFY
-  const formType = params?.postId ? 'REGISTER' : 'MODIFY';
+  const formType = params?.postId ? 'MODIFY' : 'REGISTER';
+
   const toast = useToast();
 
   // 초기 등록 폼 state
@@ -93,38 +98,36 @@ const CommunityRegister = () => {
     if (isImageLoad && isSubmitLoading) return;
     setImageLoad(true);
 
-    try {
-      multipleImagePicker(MAX_IMAGE_COUNT - imageDatas.length).then(
-        response => {
-          const _registerPageImageNames: RegisterImageData[] = [];
+    multipleImagePicker(MAX_IMAGE_COUNT - imageDatas.length)
+      .then(response => {
+        const _registerPageImageNames: RegisterImageData[] = [];
 
-          response.forEach(item => {
-            const cloudImageName = uuid.v4() as string;
-            const iosSourceURL = item.sourceURL ?? '';
-            const imageInfoURI =
-              Platform.OS === 'android' ? item.path : iosSourceURL;
+        response.forEach(item => {
+          const cloudImageName = uuid.v4() as string;
+          const iosSourceURL = item.sourceURL ?? '';
+          const imageInfoURI =
+            Platform.OS === 'android' ? item.path : iosSourceURL;
 
-            _registerPageImageNames.push({
-              registerPageImageName:
-                Platform.OS === 'android' ? item.path : iosSourceURL,
-              cloudImageName,
-              cloudData: {
-                uri: imageInfoURI,
-                type: item.mime,
-                name: cloudImageName,
-              },
-              type: 'UNREGISTERED',
-            });
+          _registerPageImageNames.push({
+            registerPageImageName:
+              Platform.OS === 'android' ? item.path : iosSourceURL,
+            cloudImageName,
+            cloudData: {
+              uri: imageInfoURI,
+              type: item.mime,
+              name: cloudImageName,
+            },
+            type: 'UNREGISTERED',
           });
+        });
 
-          setImageDatas(prev => [...prev, ..._registerPageImageNames]);
-          setImageLoad(false);
-        },
-      );
-    } catch (error) {
-      setImageLoad(false);
-      console.log(error);
-    }
+        setImageDatas(prev => [...prev, ..._registerPageImageNames]);
+        setImageLoad(false);
+      })
+      .catch(error => {
+        setImageLoad(false);
+        console.log(error);
+      });
   };
   /**
    *@description 등록 이벤트 핸들러
@@ -148,7 +151,7 @@ const CommunityRegister = () => {
    *@description 서버에 게시글 폼 등록 요청 이벤트 핸들러
    */
   const registerForm = () => {
-    mutateAsync({
+    communityPostRegister({
       ...form,
       pictures: imageDatas.map(item => item.cloudImageName),
     })
@@ -239,7 +242,7 @@ const CommunityRegister = () => {
       <SafeAreaView>
         <ScrollView
           bgColor={colors.grayScale['0']}
-          minHeight={APP_HEIGHT - registerImageViewHeight}>
+          minHeight={APP_HEIGHT - registerImageViewHeight - statusbarHeight}>
           <Header
             isRemoveTopPosition
             title={`게시글 ${formType === 'REGISTER' ? '작성' : '수정'}`}
@@ -260,7 +263,7 @@ const CommunityRegister = () => {
           />
 
           <CommunitySelect
-            list={data}
+            list={petKinds}
             isOpen={isOpen}
             onClose={onClose}
             setValue={value => setForm(prev => ({...prev, kind: value}))}
@@ -293,7 +296,10 @@ const CommunityRegister = () => {
             <VerificationForm
               placeholder={`# 햄스터  # 케이지추천   # 꿀팁  # 나이트엔젤`}
               marginBottom={'36px'}
-              onChangeText={setTag}
+              onChangeText={text => {
+                setTag(text);
+                setForm(prev => ({...prev, tags: [text]}));
+              }}
               value={tag}
             />
 
@@ -335,7 +341,7 @@ const CommunityRegister = () => {
             <TextArea
               mt="14px"
               mb="36px"
-              h="264px"
+              h="124px"
               fontSize="15px"
               lineHeight="22px"
               p={0}

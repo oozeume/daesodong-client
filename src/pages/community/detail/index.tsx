@@ -6,7 +6,10 @@ import CommunityContent from '~/components/community/detail/Content';
 import {useRoute} from '@react-navigation/native';
 import {RouteHookProp} from '~/../types/navigator';
 import Popup from '~/components/common/popup/Popup';
-import {useGetCommunityPost} from '~/api/community/queries';
+import {
+  useDeleteCommunityPost,
+  useGetCommunityPost,
+} from '~/api/community/queries';
 import {useDeleteComment, useGetCommentList} from '~/api/comment/queries';
 import {useDeleteRecomment} from '~/api/recomment/queries';
 import useSetDetailHeader from '~/components/community/detail/useSetDetailHeader';
@@ -41,6 +44,8 @@ const CommunityDetail = () => {
     commentId: selectedComment?.id ?? '',
   });
 
+  const deleteCommunityPost = useDeleteCommunityPost(postId);
+
   const deleteRecomment = useDeleteRecomment({
     commentId: selectedComment?.id ?? '',
     recommentId: selectedRecomment?.id ?? '',
@@ -56,6 +61,25 @@ const CommunityDetail = () => {
     isOpenDeletePopup,
     setOpenDeletePopup,
   } = useSetDetailHeader(postId);
+
+  deleteCommunityPost;
+
+  /**
+   *@description 댓글 삭제
+   */
+  const onDeletePost = () => {
+    deleteCommunityPost
+      .refetch()
+      .then(response => {
+        if (response.data) {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'tab', state: {routes: [{name: 'Commuity'}]}}],
+          });
+        }
+      })
+      .catch(error => console.log(error));
+  };
 
   /**
    *@description 댓글 삭제
@@ -125,6 +149,7 @@ const CommunityDetail = () => {
             setIsVisible={(isVisible: boolean) =>
               setOpenDeletePopup(prev => ({...prev, post: isVisible}))
             }
+            onSuccess={onDeletePost}
           />
 
           <Popup
