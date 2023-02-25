@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   Box,
   Divider,
@@ -7,6 +7,7 @@ import {
   Image,
   Stack,
   Text,
+  TextArea,
   View,
 } from 'native-base';
 import StarRate from './StarRate';
@@ -23,6 +24,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Popup from '~/components/common/popup/Popup';
 import {useMutationReviewDelete} from '~/api/facility/mutations';
+import {useUserContext} from '~/store/useUserContext';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -53,8 +55,22 @@ function ReviewItem({
   name,
 }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
+  const userInfo = useUserContext({userId: ''});
+
   const [modalOpen, setModalOpen] = useState(false);
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isDeletePopupOpen, setDeletePopupOpen] = useState(false);
+  const [isBlockPopupOpen, setBlockPopupOpen] = useState(false);
+  const [isAccusePopupOpen, setAccusePopupOpen] = useState(false);
+  const [accuseContents, setAccuseContents] = useState('');
+
+  const onDeleteButtonPress = () => setDeletePopupOpen(true);
+  const onAccuseButtonPress = () => setAccusePopupOpen(true);
+  const onBlockButtonPress = () => setBlockPopupOpen(true);
+
+  const isMyReview = useMemo(() => {
+    return review.userId === userInfo.userId;
+  }, [review.userId, userInfo.userId]);
 
   const {mutateAsync} = useMutationReviewDelete(
     review.facilityId,
@@ -74,6 +90,19 @@ function ReviewItem({
     mutateAsync()
       .then(d => console.log('success->', d))
       .catch(e => console.log('error->', e));
+  };
+
+  // TODO: 리뷰 신고 API 적용
+  const onAccuse = () => {
+    onAccuseClose();
+  };
+
+  // TODO: 리뷰 차단 API 적용
+  const onBlock = () => {};
+
+  const onAccuseClose = () => {
+    setAccusePopupOpen(false);
+    setAccuseContents('');
   };
 
   return (
@@ -146,10 +175,12 @@ function ReviewItem({
 
           {!isInvisibleKebabMenu && (
             <KekabMenu
-              handleFirstButton={onEdit}
-              handleSecondButton={() => setPopupOpen(true)}
-              firstButtonName={'수정'}
-              secondButtonName={'삭제'}
+              handleFirstButton={isMyReview ? onEdit : onAccuseButtonPress}
+              handleSecondButton={
+                isMyReview ? onDeleteButtonPress : onBlockButtonPress
+              }
+              firstButtonName={isMyReview ? '수정' : '신고'}
+              secondButtonName={isMyReview ? '삭제' : '차단'}
               top={Platform.OS === 'android' ? '36px' : '12px'}
               left={Platform.OS === 'android' ? '-22px' : '-12px'}
             />
@@ -257,21 +288,69 @@ function ReviewItem({
         <ImageModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </Box>
 
-      <Popup
-        title={'정말 후기를 삭제할까요?'}
-        subText={
-          '이 후기에 담긴 친구들의 마음을 잃게 되어요. 삭제한 내용과 잃어버린 고마움은 복구할 수 없어요.'
-        }
-        isVisible={isPopupOpen}
-        setIsVisible={setPopupOpen}
-        cancelButtonName={'취소'}
-        successButtonName={'삭제'}
-        successButtonStyle={{
-          backgroundColor: colors.negative[0],
-        }}
-        onCancel={() => setPopupOpen(false)}
-        onSuccess={onDelete}
-      />
+      {isDeletePopupOpen && (
+        <Popup
+          title={'정말 후기를 삭제할까요?'}
+          subText={
+            '이 후기에 담긴 친구들의 마음을 잃게 되어요. 삭제한 내용과 잃어버린 고마움은 복구할 수 없어요.'
+          }
+          isVisible={isDeletePopupOpen}
+          setIsVisible={setDeletePopupOpen}
+          cancelButtonName={'취소'}
+          successButtonName={'삭제'}
+          successButtonStyle={{
+            backgroundColor: colors.negative[0],
+          }}
+          onCancel={() => setDeletePopupOpen(false)}
+          onSuccess={onDelete}
+        />
+      )}
+
+      {isBlockPopupOpen && (
+        <Popup
+          title={'[닉네임]님을 차단하시겠어요?'}
+          subText={'이 회원의 모든 게시글과 댓글이 노출되지 않아요.'}
+          isVisible={isBlockPopupOpen}
+          setIsVisible={setBlockPopupOpen}
+          cancelButtonName={'취소'}
+          successButtonName={'차단'}
+          successButtonStyle={{
+            backgroundColor: colors.negative[0],
+          }}
+          onCancel={() => setBlockPopupOpen(false)}
+          onSuccess={onBlock}
+        />
+      )}
+
+      {isAccusePopupOpen && (
+        <Popup
+          title={'[닉네임]님을 신고하시겠어요?'}
+          subText={'이유를 알려주시면 더 적합한 조취를 취할 수 있어요.'}
+          isVisible={isAccusePopupOpen}
+          setIsVisible={setAccusePopupOpen}
+          cancelButtonName={'취소'}
+          successButtonName={'신고'}
+          successButtonStyle={{
+            backgroundColor: colors.negative[0],
+          }}
+          bodyElement={
+            <Box height={'160px'}>
+              <TextArea
+                flex={1}
+                value={accuseContents}
+                onChangeText={setAccuseContents}
+                autoCompleteType={false}
+                placeholder={'입력'}
+                backgroundColor={'white'}
+                borderColor={colors.grayScale[30]}
+                focusOutlineColor={colors.grayScale[30]}
+              />
+            </Box>
+          }
+          onCancel={onAccuseClose}
+          onSuccess={onAccuse}
+        />
+      )}
     </>
   );
 }
