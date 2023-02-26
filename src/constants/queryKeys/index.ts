@@ -13,6 +13,7 @@ const QueryKeys = {
     deletePost: 'delete community post',
   },
   comment: {
+    getBestComments: 'get best comments',
     getComments: 'get comments',
     deleteComment: 'delete comment',
   },

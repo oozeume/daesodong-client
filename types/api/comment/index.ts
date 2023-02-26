@@ -25,5 +25,11 @@ export interface DeleteCommentQuery {
   commentId: string;
 }
 
+// 댓글 리스트 조회 쿼리
+export interface GetCommentListQuery {
+  limit: number;
+  cursor?: string;
+}
+
 // 댓글 리스트 조회 응답
 export type GetCommentListResponse = CommentItem[];

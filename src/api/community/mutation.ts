@@ -3,6 +3,7 @@ import {apiCall} from '../common';
 import {
   PatchCommunityPost,
   PostCummunityPostData,
+  PostCummunityPostThankData,
 } from '~/../types/api/community';
 
 /**
@@ -34,4 +35,20 @@ const postCoummunityPostCount = () => {
 
 export const usePostCoummunityPostCount = () => {
   return useMutation(() => postCoummunityPostCount());
+};
+
+/**
+ *@description 커뮤니티 게시글 고마워요 등록/취소
+ */
+const postCummunityPostThank = ({id, isThank}: PostCummunityPostThankData) => {
+  return apiCall<boolean>({
+    method: 'POST',
+    url: `posts/${id}/thanks${isThank ? '' : '/cancel'}`,
+  });
+};
+
+export const usePostCummunityPostThank = () => {
+  return useMutation((data: PostCummunityPostThankData) =>
+    postCummunityPostThank(data),
+  );
 };

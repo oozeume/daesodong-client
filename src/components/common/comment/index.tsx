@@ -3,7 +3,8 @@ import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
 import {PostFeature} from '~/../types/common';
-import {CommentUserInfo} from '~/../types/community';
+import {usePostCommentThank} from '~/api/comment/mutation';
+import {usePostRecommentThank} from '~/api/recomment/mutation';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
@@ -15,7 +16,6 @@ interface Props {
   commentType?: 'default' | 'reply' | 'delete';
   onRegisterRecomment?: () => void;
   onClickKekab: (type: PostFeature) => void;
-  isBest?: boolean;
   data?: CommentModel;
   parentUserNickname?: string;
   userId?: string;
@@ -24,18 +24,38 @@ interface Props {
 /**
  *@description 게시글 댓글
  *@param {'default' | 'reply' | 'delete' | undefined} commentType - 댓글 유형 (reply: 답글, delete: 삭제된 댓글)
- *@param {boolean} isBest - BEST 댓글일 경우
  *@param {CommentUserInfo} parentUserInfo - 답글일 경우, 상위 댓글의 유저 정보
  */
 const Comment = ({
   onRegisterRecomment,
-  isBest,
   onClickKekab,
   data,
   parentUserNickname,
   userId,
   commentType = 'default',
 }: Props) => {
+  const postCommentThank = usePostCommentThank();
+  const postRecommentThank = usePostRecommentThank();
+
+  /**
+   *@description 댓글 고마워요/취소
+   */
+  const onThank = () => {
+    if (data?.postId && commentType === 'default') {
+      postCommentThank.mutateAsync({
+        postId: data?.postId,
+        commentId: data.id,
+        isThank: !data.isThank,
+      });
+    } else if (data?.parentCommentId && commentType === 'reply') {
+      postRecommentThank.mutateAsync({
+        commentId: data.parentCommentId,
+        recommentId: data.id,
+        isThank: !data.isThank,
+      });
+    }
+  };
+
   return (
     <Box
       px="18px"
@@ -138,7 +158,7 @@ const Comment = ({
               ? colors.grayScale['50']
               : colors.grayScale['80']
           }>
-          {isBest && (
+          {data?.isBest && commentType !== 'delete' && (
             <Center
               px="6px"
               py="2px"
@@ -153,7 +173,7 @@ const Comment = ({
             </Center>
           )}
 
-          {isBest && <Text>{`  `}</Text>}
+          {data?.isBest && commentType !== 'delete' && <Text>{`  `}</Text>}
 
           {commentType === 'reply' && (
             <Text color={colors.fussOrange['0']} mr="28px">
@@ -169,20 +189,26 @@ const Comment = ({
 
         <HStack ml="28px">
           <Pressable
-            borderColor={colors.grayScale['20']}
+            borderColor={
+              data?.isThank ? colors.grayScale['90'] : colors.grayScale['20']
+            }
             bgColor={colors.grayScale['0']}
             borderWidth={1}
             pl="10px"
             pr="8px"
             py="4px"
             mr="6px"
-            borderRadius={4}>
+            borderRadius={4}
+            onPress={onThank}>
             <HStack>
-              <Text color={colors.grayScale['60']} fontSize="13px" mr="2px">
-                고마워요
-              </Text>
-              <Text color={colors.grayScale['60']} fontSize="13px">
-                {data?.thanks ?? 0}
+              <Text
+                color={
+                  data?.isThank
+                    ? colors.grayScale['90']
+                    : colors.grayScale['60']
+                }
+                fontSize="13px">
+                {`고마워요 ${data?.thanks ?? 0}`}
               </Text>
             </HStack>
           </Pressable>

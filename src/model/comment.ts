@@ -54,6 +54,18 @@ class Comment {
   get recomments() {
     return (this.comment?.comment2 ?? []).map(item => new Comment(item));
   }
+
+  get isBest() {
+    return this.comment.best_score >= 20;
+  }
+
+  // 유저가 고마워요 눌렀는지 여부
+  get isThank() {
+    return (
+      !_.isEmpty(this.comment.thanks_comment1_join) ||
+      !_.isEmpty(this.comment.thanks_comment2_join)
+    );
+  }
 }
 
 export default Comment;

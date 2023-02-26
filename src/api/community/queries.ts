@@ -6,7 +6,7 @@ import {
   GetCommunityPostListQuery,
   GetCommunityPostResponse,
 } from '~/../types/api/community';
-import Post from '~/model/post';
+import CommunityPost from '~/model/communityPost';
 
 /**
  *@description 커뮤니티 게시글 리스트 조회 api
@@ -63,7 +63,7 @@ export const useGetCommunityPost = (id: string, enabled?: boolean) => {
     },
     {
       select: data => {
-        return new Post(data.data);
+        return new CommunityPost(data.data);
       },
       enabled,
     },
