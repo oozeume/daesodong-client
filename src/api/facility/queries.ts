@@ -1,4 +1,5 @@
-import {useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
+import _ from 'lodash';
 import {
   FacilityResponse,
   FacilityReviewsResponse,
@@ -64,12 +65,19 @@ export const useGetVisitedPetsFacility = (facilityId: string) => {
 type GetFacilityReviewsQuery = {
   facilityId: string;
   limit: number;
+  cursor?: string;
 };
 
-const getFacilityReviews = ({facilityId, limit}: GetFacilityReviewsQuery) => {
+const getFacilityReviews = ({
+  facilityId,
+  limit,
+  cursor,
+}: GetFacilityReviewsQuery | any) => {
   return apiCall<FacilityReviewsResponse[]>({
     method: 'GET',
-    url: `/hospitals/${facilityId}/reviews?limit=${limit}`,
+    url: _.isNil(cursor)
+      ? `/hospitals/${facilityId}/reviews?limit=${limit}`
+      : `/hospitals/${facilityId}/reviews?limit=${limit}&cursor=${cursor}`,
   });
 };
 
@@ -77,7 +85,25 @@ export const useGetFacilityReviews = ({
   facilityId,
   limit,
 }: GetFacilityReviewsQuery) => {
-  return useQuery([QueryKeys.facility.reviews], () =>
-    getFacilityReviews({facilityId, limit}),
+  return useInfiniteQuery(
+    [QueryKeys.facility.reviews],
+    param => {
+      const cursor = param.pageParam?.cursor ?? undefined;
+
+      return getFacilityReviews({facilityId, limit, cursor});
+    },
+    {
+      getNextPageParam: lastPage => {
+        const lastDataLength = lastPage.data.length;
+        return {
+          limit: limit,
+          cursor:
+            lastDataLength === 0
+              ? undefined
+              : lastPage.data[lastDataLength - 1].id,
+        };
+      },
+      keepPreviousData: true,
+    },
   );
 };

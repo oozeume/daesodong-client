@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, HStack, ScrollView, Spinner, Stack, Text} from 'native-base';
+import {Button, HStack, Spinner, Stack, Text} from 'native-base';
 import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
-import ReviewList from '~/components/hospital/review/ReviewList';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import InfoChangeBottomSheet from '~/components/mypage/myInfo/InfoChangeBottomSheet';
@@ -13,11 +12,12 @@ import {
   useReviewRegister,
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
-import {FacilityReviewsResponse} from '~/../types/api/facility';
 import Review from '~/model/review';
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import EmptyReviews from '~/components/facility/review/EmptyReviews';
 import _ from 'lodash';
+import {FlatList} from 'react-native';
+import ReviewItem from '~/components/hospital/review/ReviewItem';
 
 interface Props {
   id: string;
@@ -30,17 +30,16 @@ interface Props {
 
 function FacilityReview({id, facilityName}: Props) {
   const navigation = useNavigation<NavigationHookProp>();
-
   const isFocused = useIsFocused();
-  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
 
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
 
-  // TODO: 무한스크롤 작업
-  const {data, isLoading, refetch} = useGetFacilityReviews({
-    facilityId: id,
-    limit: 10,
-  });
+  const {data, isLoading, hasNextPage, refetch, fetchNextPage} =
+    useGetFacilityReviews({
+      facilityId: id,
+      limit: 10,
+    });
 
   const onMoveReviewRegisterPage = () => {
     navigation.navigate('FacilityReviewRegister', {
@@ -66,18 +65,27 @@ function FacilityReview({id, facilityName}: Props) {
   }, [isFocused, isRevewRegisterComplete]);
 
   useEffect(() => {
-    if (data) {
-      if (_.isEmpty(data.data)) {
+    if (data?.pages) {
+      if (_.isEmpty(data.pages)) {
         setReviews([]);
       } else {
-        setReviews(
-          data.data.map(
-            (review: FacilityReviewsResponse) => new Review(review),
-          ),
-        );
+        let _reviews: Review[] = [];
+        data?.pages.forEach(item => {
+          const tmpList = item.data.map(_item => new Review(_item));
+
+          _reviews = [..._reviews, ...tmpList];
+        });
+
+        setReviews(_reviews);
       }
     }
   }, [data]);
+
+  const fetchMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
 
   if (isLoading) {
     return <Spinner />;
@@ -88,44 +96,62 @@ function FacilityReview({id, facilityName}: Props) {
       {_.isEmpty(reviews) ? (
         <EmptyReviews onPress={onMoveReviewRegisterPage} />
       ) : (
-        <ScrollView>
-          <Stack
-            space={'12px'}
-            py={'20px'}
-            px={'18px'}
-            borderBottomColor={'grayScale.20'}
-            borderBottomWidth={1}
-            backgroundColor={'white'}>
-            <HospitalReviewAllRate reviews={reviews} />
-            <Button
-              onPress={onMoveReviewRegisterPage}
-              w={'100%'}
-              h={'44px'}
-              borderRadius={'8px'}
-              borderWidth={'1px'}
-              borderColor={'fussOrange.0'}
-              backgroundColor={'fussOrange.-40'}
-              shadow={'0px 3px 4px rgba(0, 0, 0, 0.08)'}>
-              <Text color={'fussOrange.0'}>후기 남기기</Text>
-            </Button>
-          </Stack>
+        <FlatList
+          data={reviews}
+          disableVirtualization={false}
+          onEndReached={fetchMore}
+          onEndReachedThreshold={0.8}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => {
+            return (
+              <Stack space={'8px'} backgroundColor={colors.grayScale[10]}>
+                <ReviewItem
+                  review={item}
+                  facilityName={facilityName}
+                  isInvisibleBorderTop={index === 0}
+                />
+              </Stack>
+            );
+          }}
+          ListHeaderComponent={
+            <>
+              <Stack
+                space={'12px'}
+                py={'20px'}
+                px={'18px'}
+                borderBottomColor={'grayScale.20'}
+                borderBottomWidth={1}
+                backgroundColor={'white'}>
+                <HospitalReviewAllRate reviews={reviews} />
+                <Button
+                  onPress={onMoveReviewRegisterPage}
+                  w={'100%'}
+                  h={'44px'}
+                  borderRadius={'8px'}
+                  borderWidth={'1px'}
+                  borderColor={'fussOrange.0'}
+                  backgroundColor={'fussOrange.-40'}
+                  shadow={'0px 3px 4px rgba(0, 0, 0, 0.08)'}>
+                  <Text color={'fussOrange.0'}>후기 남기기</Text>
+                </Button>
+              </Stack>
 
-          <HStack
-            backgroundColor={'white'}
-            h={'44px'}
-            justifyContent={'flex-end'}
-            alignItems={'flex-end'}
-            pb={'4px'}
-            px={'18px'}>
-            <HStack space={'8px'}>
-              <CheckIcon fill={'#FF6B00'} />
-              {/* TODO: API 수정 필요 */}
-              <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
-            </HStack>
-          </HStack>
-
-          <ReviewList reviews={reviews} facilityName={facilityName} />
-        </ScrollView>
+              <HStack
+                backgroundColor={'white'}
+                h={'44px'}
+                justifyContent={'flex-end'}
+                alignItems={'flex-end'}
+                pb={'4px'}
+                px={'18px'}>
+                <HStack space={'8px'}>
+                  <CheckIcon fill={'#FF6B00'} />
+                  {/* TODO: API 수정 필요 */}
+                  <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
+                </HStack>
+              </HStack>
+            </>
+          }
+        />
       )}
 
       {/* TODO: 컴포넌트 네이밍 범용적으로 변경 */}
