@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, HStack, ScrollView, Spinner, Stack, Text} from 'native-base';
-import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
+import FacilityReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import ReviewList from '~/components/hospital/review/ReviewList';
 import {NavigationHookProp} from '~/../types/navigator';
@@ -96,7 +96,7 @@ function FacilityReview({id, facilityName}: Props) {
             borderBottomColor={'grayScale.20'}
             borderBottomWidth={1}
             backgroundColor={'white'}>
-            <HospitalReviewAllRate reviews={reviews} />
+            <FacilityReviewAllRate facilityId={id} />
             <Button
               onPress={onMoveReviewRegisterPage}
               w={'100%'}

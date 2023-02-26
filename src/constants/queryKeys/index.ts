@@ -7,6 +7,7 @@ const QueryKeys = {
     review: {
       registerComplete: ['facility review register complete'],
     },
+    score: 'facility score',
   },
   tags: ['tags'],
   user: {

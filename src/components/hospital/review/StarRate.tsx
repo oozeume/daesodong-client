@@ -25,9 +25,11 @@ function StarRate({title, rate}: Props) {
         {title}
       </Text>
       {RATE_NUMBER.map(number => (
-        <StarFillIcon
-          fill={number <= rate ? '#FFCC16' : colors.grayScale[20]}
-        />
+        <React.Fragment key={number}>
+          <StarFillIcon
+            fill={number <= rate ? '#FFCC16' : colors.grayScale[20]}
+          />
+        </React.Fragment>
       ))}
     </HStack>
   );

@@ -1,3 +1,6 @@
+/**
+ *@description 시설 상세 API 응답
+ */
 export type FacilityResponse = {
   id: string;
   hospitalCategoryId: string;
@@ -39,6 +42,9 @@ export type FacilityResponse = {
   };
 };
 
+/**
+ *@description 시설 방문 기록 API 응답
+ */
 export type VisitedFacilityResponse = {
   created_at: string;
   hospitalId: string;
@@ -58,6 +64,9 @@ export type VisitedFacilityResponse = {
   userId: string;
 };
 
+/**
+ *@description 시설 리뷰작성 API 폼
+ */
 export type PostFacilityReviewData = {
   visit_date: string;
   cost: number;
@@ -72,7 +81,10 @@ export type PostFacilityReviewData = {
   tags: string[];
 };
 
-// TODO: api 수정 요청 - 리뷰 이미지 추가 필요
+// TODO: api 수정 요청 - 리뷰 이미지 추가 필요 (수정 대기중)
+/**
+ *@description 병원 리뷰 API 응답
+ */
 export type FacilityReviewsResponse = {
   id: string;
   hospitalId: string;
@@ -117,4 +129,24 @@ export type FacilityReviewsResponse = {
       name: string;
     };
   }[];
+};
+
+/**
+ *@description 병원 방문 API 응답
+ */
+export type PostVisitedFacilityResponse = {
+  data: boolean;
+  statusCode: number;
+  success: string;
+};
+
+/**
+ *@description 병원 리뷰 스코어 API 응답
+ */
+export type FacilityScoreResponse = {
+  score_facilities: number;
+  score_kindness: number;
+  score_price: number;
+  score_treatment: number;
+  score_total: number;
 };

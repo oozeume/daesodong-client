@@ -1,55 +1,26 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Box, Divider, Flex, HStack, Stack, Text} from 'native-base';
-
 import PartialRate from './PartialRate';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
-import Review from '~/model/review';
 import _ from 'lodash';
 import {colors} from '~/theme/theme';
+import {useGetFacilityScore} from '~/api/facility/queries';
 
 interface Props {
-  reviews: Review[];
+  facilityId: string;
 }
 
 /**
- *@description 병원 리뷰 평점 통계
+ *@description 시설 리뷰 평점 통계
  */
 
-function HospitalReviewAllRate({reviews}: Props) {
+function FacilityReviewAllRate({facilityId}: Props) {
   const RATE_NUMBER = useMemo(() => {
     return _.range(1, 6);
   }, []);
 
-  const [totalAverageScore, setTotalAverageScore] = useState('');
-  const reviewsCount = useMemo(() => {
-    return reviews.length;
-  }, [reviews.length]);
-
-  const revisitRatio = useMemo(() => {
-    const revisitCount = reviews.filter(i => i.isRevisit).length;
-    return (revisitCount / reviewsCount) * 100;
-  }, [reviews]);
-
-  const scoreAverage = useMemo(() => {
-    const facilityAverage =
-      _.sum(reviews.map(i => i.starScore.facility)) / reviewsCount;
-    const kindness =
-      _.sum(reviews.map(i => i.starScore.kindness)) / reviewsCount;
-    const price = _.sum(reviews.map(i => i.starScore.price)) / reviewsCount;
-    const treatment =
-      _.sum(reviews.map(i => i.starScore.treatment)) / reviewsCount;
-
-    const totalScore = (facilityAverage + kindness + treatment + price) / 4;
-    setTotalAverageScore(totalScore.toFixed(1));
-
-    return {
-      facility: facilityAverage.toFixed(1),
-      kindness: kindness.toFixed(1),
-      treatment: treatment.toFixed(1),
-      price: price.toFixed(1),
-      total: totalScore.toFixed(1),
-    };
-  }, [reviews]);
+  // TODO: 재방문율 데이터 추가되도록 api 수정 요청(isRevisit인 방문자수, 총 방문자수)
+  const {data} = useGetFacilityScore(facilityId);
 
   return (
     <Box>
@@ -66,17 +37,19 @@ function HospitalReviewAllRate({reviews}: Props) {
               color={'fussOrange.0'}
               fontWeight="700"
               lineHeight={'36px'}>
-              {scoreAverage.total}
+              {data?.data.score_total ?? 0}
             </Text>
             <HStack mt={'1.5px'}>
               {RATE_NUMBER.map(i => (
-                <StarFillIcon
-                  fill={
-                    i <= Number(totalAverageScore)
-                      ? '#FF6B00'
-                      : colors.grayScale[40]
-                  }
-                />
+                <React.Fragment key={i.toString()}>
+                  <StarFillIcon
+                    fill={
+                      i <= Number(data?.data.score_total)
+                        ? '#FF6B00'
+                        : colors.grayScale[40]
+                    }
+                  />
+                </React.Fragment>
               ))}
             </HStack>
             <Flex
@@ -87,16 +60,22 @@ function HospitalReviewAllRate({reviews}: Props) {
               justifyContent={'center'}
               alignItems={'center'}>
               <Text color={'fussOrange.0'} fontSize={'11px'} fontWeight={'500'}>
-                재방문률 {revisitRatio}%
+                재방문률 0%
               </Text>
             </Flex>
           </Stack>
           <Divider orientation="vertical" bg={'grayScale.10'} />
           <Stack space={'3px'} alignItems={'flex-start'}>
-            <PartialRate title={'진료'} rate={scoreAverage.treatment ?? '0'} />
-            <PartialRate title={'비용'} rate={scoreAverage.price ?? '0'} />
-            <PartialRate title={'시설'} rate={scoreAverage.facility ?? '0'} />
-            <PartialRate title={'친절'} rate={scoreAverage.kindness ?? '0'} />
+            <PartialRate
+              title={'진료'}
+              rate={data?.data.score_treatment ?? 0}
+            />
+            <PartialRate title={'비용'} rate={data?.data.score_price ?? 0} />
+            <PartialRate
+              title={'시설'}
+              rate={data?.data.score_facilities ?? 0}
+            />
+            <PartialRate title={'친절'} rate={data?.data.score_kindness ?? 0} />
           </Stack>
         </HStack>
       </Flex>
@@ -104,4 +83,4 @@ function HospitalReviewAllRate({reviews}: Props) {
   );
 }
 
-export default HospitalReviewAllRate;
+export default FacilityReviewAllRate;

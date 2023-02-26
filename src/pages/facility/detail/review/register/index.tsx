@@ -57,7 +57,7 @@ function FacilityReviewRegister({route}: Props) {
     month: dayjs().month(),
   });
 
-  const [yearList, setYearList] = useState(setYears());
+  const [yearList, setYearList] = useState(setYears(2015));
   const [monthList, setMonthList] = useState(setMonths());
 
   const onMovePrecaution = () => {
