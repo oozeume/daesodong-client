@@ -105,7 +105,7 @@ function ReviewItem({
                   |
                 </Text>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
-                  {review.petInfo.age}살
+                  {review.petInfo.age}개월
                 </Text>
                 <Text color={'grayScale.60'} fontSize={'13px'}>
                   |
