@@ -1,8 +1,12 @@
 import dayjs from 'dayjs';
 
-export const setYears = () => {
+/**
+ *@description DateSelector의 itemList 세팅 함수 (년도별)
+ *@param refYear (필수) 기준 년도
+ */
+
+export const setYears = (refYear: number) => {
   const curYear = dayjs().year();
-  const refYear = 2015;
   let yearList = [];
 
   for (let i = curYear; i >= refYear; i--) {
@@ -11,6 +15,10 @@ export const setYears = () => {
 
   return yearList;
 };
+
+/**
+ *@description DateSelector의 itemList 세팅 함수 (월별)
+ */
 
 export const setMonths = () => {
   let monthList = [];

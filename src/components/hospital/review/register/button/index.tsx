@@ -19,7 +19,7 @@ interface IconButtonProps {
  *@description 뒤로가기 버튼
  *@param {ViewStyle} buttonStyle - 버튼 추가 스타일
  *@param {ViewStyle} iconStyle - 아이콘 추가 스타일
- *@param {() => void)} onPress - 클릭 이벤트 함수
+ *@param {() => void} onPress - 클릭 이벤트 함수
  */
 function BackButton({buttonStyle, iconStyle, onPress}: IconButtonProps) {
   return (
@@ -81,7 +81,7 @@ function ReviewPrecautionButton({onPress}: ReviewPrecautionButtonProps) {
 }
 
 interface CheckButtonProps {
-  setReviewForm: React.Dispatch<React.SetStateAction<any>>;
+  setReviewForm: React.Dispatch<React.SetStateAction<PostFacilityReviewData>>;
   reviewForm: PostFacilityReviewData;
 }
 

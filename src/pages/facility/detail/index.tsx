@@ -28,7 +28,9 @@ function FacilityDetail({route}: Props) {
             marginHorizontal: 18,
           },
           tabBarStyle: {
-            backgroundColor: 'white',
+            shadowColor: 'white',
+            shadowRadius: 0,
+            shadowOpacity: 0,
             borderColor: 'black',
             marginHorizontal: 18,
           },
