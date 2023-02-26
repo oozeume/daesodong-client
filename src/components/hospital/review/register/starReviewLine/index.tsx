@@ -3,6 +3,7 @@ import {HStack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {ViewStyle} from 'react-native';
 import {PostFacilityReviewData} from '~/../types/api/facility';
+import {RateName} from '~/../types/facility';
 import StarRatingIcon from '~/assets/icons/star_rating.svg';
 import {colors} from '~/theme/theme';
 
@@ -12,8 +13,8 @@ interface Props {
   text: string;
   lineStyle?: ViewStyle;
   setReviewForm: (form: PostFacilityReviewData) => void;
-  reviewForm: PostFacilityReviewData | any;
-  rateName: string;
+  reviewForm: PostFacilityReviewData;
+  rateName: RateName;
 }
 
 /**
