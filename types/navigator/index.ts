@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FormType} from '../community';
+import {FacilityReviewParams} from '../facility';
 import {AuthFoundResultParams} from '../login';
 
 /**
@@ -24,6 +25,10 @@ export type RootTabParamList = {
   FacilityInfo: {
     id: string;
   };
+  FacilityReview: {
+    id: string;
+    facilityName: string;
+  };
   Contents: undefined;
   Commuity: undefined;
   MyPage: undefined;
@@ -35,12 +40,10 @@ export type RootTabParamList = {
  * { ... Hospital: { id: string; }; ... }
  */
 export type RootStackParamList = {
-  FacilityDetail: {
-    id: string;
-    facilityName: string;
-  };
+  FacilityDetail: FacilityReviewParams;
   tab: undefined;
-  HospitalReviewRegister: undefined;
+  FacilityReviewRegister: FacilityReviewParams;
+  TagRegister: undefined;
   HospitalReviewRegisterPrecaution: undefined;
   InitialLogin: undefined;
 
