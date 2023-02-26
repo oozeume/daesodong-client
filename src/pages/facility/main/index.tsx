@@ -25,11 +25,13 @@ import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import ListViewChangeButton from '~/components/facility/main/ListViewChangeButton';
 import {FormState} from '~/../types/facility';
 import {SpeciesData} from '~/../types/api/species';
+import {useGetUser} from '~/api/user/queries';
 
 /**
  *@description 컨텐츠 메인 페이지
  */
 const FacilityMain = () => {
+  const getUser = useGetUser(true);
   const navigation = useNavigation<NavigationHookProp>();
   const ref = useRef<WebView | null>(null);
 

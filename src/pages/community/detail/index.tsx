@@ -1,161 +1,154 @@
-import {
-  Box,
-  HStack,
-  KeyboardAvoidingView,
-  Pressable,
-  ScrollView,
-  Text,
-} from 'native-base';
+import {Box, ScrollView} from 'native-base';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import BookmarLineIcon from '~/assets/icons/bookmark_line.svg';
-import BookmarFillIcon from '~/assets/icons/bookmark_fill.svg';
-import BackIcon from '~/assets/icon/back_icon.svg';
 import {colors} from '~/theme/theme';
-import VerificationForm from '~/components/common/VerificationForm';
-import Button from '~/components/common/button';
 import CommunityContent from '~/components/community/detail/Content';
-import Header from '~/components/hospital/review/register/Header';
-import {Platform} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {NavigationHookProp} from '~/../types/navigator';
-import KekabMenu from '~/components/common/kekab/KekabMenu';
+import {useRoute} from '@react-navigation/native';
+import {RouteHookProp} from '~/../types/navigator';
 import Popup from '~/components/common/popup/Popup';
-import Comment from '~/components/common/comment';
+import {useGetCommunityPost} from '~/api/community/queries';
+import {useDeleteComment, useGetCommentList} from '~/api/comment/queries';
+import {useDeleteRecomment} from '~/api/recomment/queries';
+import useSetDetailHeader from '~/components/community/detail/useSetDetailHeader';
+import CommentInput from '~/components/community/detail/CommentInput';
+import {CommentInputType, CommentItem} from '~/../types/community';
+import CommentList from '~/components/community/detail/CommentList';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import CommentModel from '~/model/comment';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
+ *@todo 고마워요, 북마크 기능 미구현 (서버 api 나온 후, 구현하기)
  */
 const CommunityDetail = () => {
-  const navigation = useNavigation<NavigationHookProp>();
-  const [comment, setComment] = useState('');
-  const [isBookmark, setIsBookmark] = useState(false);
+  const {params} = useRoute<RouteHookProp<'CommunityDetail'>>();
+  const postId = params.id;
 
-  const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
+  // 키캡이나 답글달기로 선택된 댓글 state
+  const [selectedComment, setSelectedComment] = useState<CommentModel>();
+
+  // 답글 등록 여부 state
+  const [commentInputType, setCommentInputType] =
+    useState<CommentInputType>('POST_COMMENT');
+
+  const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
+
+  const getCommunityPost = useGetCommunityPost(postId);
+
+  const {data: commentList, refetch} = useGetCommentList(postId);
+  const deleteComment = useDeleteComment({
+    postId,
+    commentId: selectedComment?.id ?? '',
+  });
+
+  const deleteRecomment = useDeleteRecomment({
+    commentId: selectedComment?.id ?? '',
+    recommentId: selectedRecomment?.id ?? '',
+  });
+
+  /**
+   *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
+   */
+  const {
+    navigation,
+    isBookmark,
+    setBookmark,
+    isOpenDeletePopup,
+    setOpenDeletePopup,
+  } = useSetDetailHeader();
+
+  /**
+   *@description 댓글 삭제
+   */
+  const onDeleteComment = () => {
+    deleteComment
+      .refetch()
+      .then(response => {
+        if (response.data) refetch();
+      })
+      .catch(error => console.log(error));
+  };
+
+  /**
+   *@description 답글 삭제
+   */
+  const onDeleteRecomment = () => {
+    deleteRecomment
+      .refetch()
+      .then(response => {
+        if (response.data) refetch();
+      })
+      .catch(error => console.log(error));
+  };
 
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={0}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+    <KeyboardAwareScrollView bounces={false}>
       <SafeAreaView>
-        <ScrollView bgColor={colors.grayScale['0']} minHeight="100%">
-          <Header
-            title={''}
-            leftButton={
-              <Pressable
-                position="absolute"
-                left="18px"
-                zIndex={1}
-                onPress={() => navigation.goBack()}>
-                <BackIcon />
-              </Pressable>
-            }
-            rightButton={
-              <HStack position="absolute" right={18} zIndex={1}>
-                {isBookmark ? (
-                  <BookmarFillIcon
-                    fill={colors.fussOrange['0']}
-                    style={{marginRight: 16}}
-                    onPress={() => setIsBookmark(prev => !prev)}
-                  />
-                ) : (
-                  <BookmarLineIcon
-                    fill={colors.grayScale['0']}
-                    style={{marginRight: 16}}
-                    onPress={() => setIsBookmark(prev => !prev)}
-                  />
-                )}
+        <ScrollView
+          bgColor={colors.grayScale['0']}
+          minHeight="100%"
+          bounces={false}>
+          {/* 컨텐츠 */}
+          <CommunityContent
+            isVisibleUserInfo
+            isVisibleLike
+            isVisibleTag
+            contentData={getCommunityPost.data}
+          />
 
-                <KekabMenu
-                  top={Platform.OS === 'android' ? '88px' : '110px'}
-                  handleFirstButton={() =>
-                    navigation.navigate('CommunityRegister', {type: 'MODIFY'})
-                  }
-                  handleSecondButton={() => setIsOpenDeletePopup(true)}
-                />
-              </HStack>
-            }
+          <Box height="8px" bgColor={colors.grayScale['10']}></Box>
+
+          {/* 댓글 리스트 */}
+          <CommentList
+            setSelectedComment={setSelectedComment}
+            selectedComment={selectedComment}
+            setSelectedRecomment={setSelectedRecomment}
+            commentList={commentList ?? []}
+            setOpenDeletePopup={setOpenDeletePopup}
+            setCommentInputType={setCommentInputType}
+            commentInputType={commentInputType}
+          />
+
+          {/* 댓글 입력 */}
+          <CommentInput
+            postId={postId}
+            selectedComment={selectedComment}
+            commentInputType={commentInputType}
+            setCommentInputType={setCommentInputType}
+            onEnrollCallback={() => refetch()}
           />
 
           <Popup
             title={'게시글을 삭제할까요?'}
             subText="삭제한 게시글의 내용은 복구할 수 없어요"
-            isVisible={isOpenDeletePopup}
-            setIsVisible={setIsOpenDeletePopup}
+            isVisible={isOpenDeletePopup.post}
+            setIsVisible={(isVisible: boolean) =>
+              setOpenDeletePopup(prev => ({...prev, post: isVisible}))
+            }
           />
 
-          {/* 컨텐츠 */}
-          <CommunityContent isVisibleUserInfo isVisibleLike isVisibleTag />
+          <Popup
+            title={'댓글을 삭제할까요?'}
+            subText={`삭제된 댓글의 내용은 복구할 수 없어요.\n댓글을 삭제해도 내 댓글의 답글들은 삭제되지 않아요.`}
+            isVisible={isOpenDeletePopup.comment}
+            setIsVisible={(isVisible: boolean) =>
+              setOpenDeletePopup(prev => ({...prev, comment: isVisible}))
+            }
+            onSuccess={onDeleteComment}
+          />
 
-          <Box height="8px" bgColor={colors.grayScale['10']}></Box>
-
-          {/* 댓글 리스트 */}
-          <Box>
-            <Comment />
-            <Comment commentType="reply" />
-            <Comment commentType="delete" />
-            <Comment commentType="reply" />
-
-            {comment.length !== 0 && (
-              <HStack
-                justifyContent={'space-between'}
-                alignItems="center"
-                w="100%"
-                position={'absolute'}
-                bottom={0}
-                h="38px"
-                px="18px"
-                bgColor={colors.grayScale['90']}>
-                <Text color={colors.fussOrange['0']} fontSize="13px">
-                  @닉네임 님에게 답글을 작성중이에요
-                </Text>
-
-                <Pressable>
-                  <Text color={colors.grayScale['60']} fontSize="13px">
-                    취소
-                  </Text>
-                </Pressable>
-              </HStack>
-            )}
-          </Box>
-
-          {/* 댓글 입력 */}
-          <Box
-            pt="15px"
-            pb="43px"
-            px="18px"
-            borderTopWidth={1}
-            borderTopColor={colors.grayScale['0']}>
-            <VerificationForm
-              placeholder="댓글을 남겨보세요"
-              value={comment}
-              onChangeText={text => setComment(text)}
-              noBorderBottom
-              inputRightElement={
-                <Button
-                  width="53px"
-                  text={'등록'}
-                  large={false}
-                  fontColors={{
-                    active: colors.grayScale['90'],
-                    disabled: colors.grayScale['40'],
-                  }}
-                  buttonColors={{
-                    active: colors.fussOrange['0'],
-                    disabled: colors.fussOrange['-30'],
-                  }}
-                  borderColors={{
-                    active: colors.grayScale['90'],
-                    disabled: colors.grayScale['40'],
-                  }}
-                  active={comment.length !== 0}
-                />
-              }
-            />
-          </Box>
+          <Popup
+            title={'답글을 삭제할까요?'}
+            subText={`삭제된 답글의 내용은 복구할 수 없어요.\n답글을 삭제해도 나를 태그한 답글들은 삭제되지 않아요.`}
+            isVisible={isOpenDeletePopup.recomment}
+            setIsVisible={(isVisible: boolean) =>
+              setOpenDeletePopup(prev => ({...prev, recomment: isVisible}))
+            }
+            onSuccess={onDeleteRecomment}
+          />
         </ScrollView>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 
