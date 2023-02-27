@@ -164,7 +164,7 @@ const CommunityContent = ({
 
         {viewAllButton}
 
-        {viewMode === 'simple' ? (
+        {viewMode === 'simple' && mainImageURL && (
           <Image
             w={imageWidth}
             h={imageWidth}
@@ -180,7 +180,9 @@ const CommunityContent = ({
               uri: mainImageURL,
             }}
           />
-        ) : (
+        )}
+
+        {viewMode === 'default' && !_.isEmpty(contentData?.images) && (
           <ImageSwiper list={contentData?.images ?? []} />
         )}
 

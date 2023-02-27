@@ -65,7 +65,7 @@ const CommunityDetail = () => {
   deleteCommunityPost;
 
   /**
-   *@description 댓글 삭제
+   *@description 게시글 삭제
    */
   const onDeletePost = () => {
     deleteCommunityPost
