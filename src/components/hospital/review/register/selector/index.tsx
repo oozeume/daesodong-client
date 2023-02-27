@@ -148,7 +148,7 @@ function Selector({
                     </HStack>
                   </Actionsheet.Item>
                 ) : (
-                  <Actionsheet.Item>
+                  <Actionsheet.Item onPress={() => onClickItem(i)}>
                     <HStack alignItems="center">
                       <Center
                         width="22px"
@@ -162,7 +162,7 @@ function Selector({
                             width="14px"
                             height="14px"
                             borderRadius={14}
-                            backgroundColor={colors.grayScale[0]}
+                            backgroundColor={colors.fussOrange[0]}
                           />
                         )}
                       </Center>
