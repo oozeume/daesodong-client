@@ -8,12 +8,13 @@ import {colors} from '~/theme/theme';
 import {config} from '~/utils/config';
 import {CommunityContentImage} from '~/../types/community';
 import _ from 'lodash';
+import {MARGIN_X} from '~/constants/style';
 
 interface Props {
-  list: CommunityContentImage[];
+  list?: CommunityContentImage[];
 }
-function ImageSwiper({list}: Props) {
-  const imageWidth = Dimensions.get('screen').width - 36;
+function ImageSwiper({list = []}: Props) {
+  const imageWidth = Dimensions.get('screen').width - MARGIN_X;
   const [index, setIndex] = useState(0);
   const ref = useRef<Swiper | null>(null);
 

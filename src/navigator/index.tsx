@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
 import SignupSocial from '~/pages/signup/social';
-import HospitalReviewRegister from '~/pages/facility/detail/review/register';
+import FacilityReviewRegister from '~/pages/facility/detail/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/facility/detail/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
@@ -46,6 +46,7 @@ import PasswordResetSuccess from '~/pages/login/passwordReset/success';
 import SignupPetInfoNavigator from '~/pages/signup/petInfoNavigator';
 import PetInfoRegisterOutro from '~/pages/signup/petInfoRegister/outro';
 import FacilityDetail from '../pages/facility/detail';
+import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -71,8 +72,21 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen
-          name="HospitalReviewRegister"
-          component={HospitalReviewRegister}
+          name="FacilityReviewRegister"
+          component={FacilityReviewRegister}
+        />
+        <Stack.Screen
+          name="TagRegister"
+          component={TagRegister}
+          options={({navigation}) => ({
+            headerShown: true,
+            header: () => (
+              <Header
+                title={'진단 내용'}
+                leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+              />
+            ),
+          })}
         />
         <Stack.Screen
           name="HospitalReviewRegisterPrecaution"

@@ -51,7 +51,8 @@ function useSetDetailHeader(postId: string) {
               )}
 
               <KekabMenu
-                top={Platform.OS === 'android' ? '88px' : '110px'}
+                top={Platform.OS === 'android' ? '28px' : '20px'}
+                left={'-20px'}
                 handleFirstButton={() =>
                   navigation.navigate('CommunityRegister', {postId})
                 }

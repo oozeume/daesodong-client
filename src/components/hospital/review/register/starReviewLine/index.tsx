@@ -1,12 +1,19 @@
+import _ from 'lodash';
 import {HStack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {ViewStyle} from 'react-native';
+import {PostFacilityReviewData} from '~/../types/api/facility';
 import StarRatingIcon from '~/assets/icons/star_rating.svg';
 import {colors} from '~/theme/theme';
+
+const STAR_RATE_COUNT = 5;
 
 interface Props {
   text: string;
   lineStyle?: ViewStyle;
+  setReviewForm: (form: PostFacilityReviewData) => void;
+  reviewForm: PostFacilityReviewData;
+  rateName?: string;
 }
 
 /**
@@ -14,7 +21,13 @@ interface Props {
  *@param {string} text - 별점 텍스트
  *@param {ViewStyle} lineStyle - 상단 컨테이너 스타일
  */
-function StarReviewLine({text, lineStyle}: Props) {
+function StarReviewLine({
+  text,
+  lineStyle,
+  setReviewForm,
+  reviewForm,
+  rateName,
+}: Props) {
   const [starRating, setStartRating] = useState(0);
 
   const UNCHECKED_ICON_STYLE = {
@@ -37,43 +50,22 @@ function StarReviewLine({text, lineStyle}: Props) {
       </HStack>
 
       <HStack>
-        <StarRatingIcon
-          style={UNCHECKED_ICON_STYLE}
-          onPress={() => setStartRating(1)}
-          fill={
-            starRating > 0 ? colors.fussOrange['0'] : colors.grayScale['20']
-          }
-        />
-        <StarRatingIcon
-          style={UNCHECKED_ICON_STYLE}
-          onPress={() => setStartRating(2)}
-          fill={
-            starRating > 1 ? colors.fussOrange['0'] : colors.grayScale['20']
-          }
-        />
-        <StarRatingIcon
-          style={UNCHECKED_ICON_STYLE}
-          onPress={() => setStartRating(3)}
-          fill={
-            starRating > 2 ? colors.fussOrange['0'] : colors.grayScale['20']
-          }
-        />
-        <StarRatingIcon
-          style={UNCHECKED_ICON_STYLE}
-          onPress={() => setStartRating(4)}
-          fill={
-            starRating > 3 ? colors.fussOrange['0'] : colors.grayScale['20']
-          }
-        />
-        <StarRatingIcon
-          style={{
-            marginRight: 0,
-          }}
-          onPress={() => setStartRating(5)}
-          fill={
-            starRating > 4 ? colors.fussOrange['0'] : colors.grayScale['20']
-          }
-        />
+        {_.range(0, STAR_RATE_COUNT).map((__, index) => (
+          <React.Fragment key={index.toString()}>
+            <StarRatingIcon
+              style={UNCHECKED_ICON_STYLE}
+              onPress={() => {
+                setStartRating(index + 1);
+                setReviewForm({...reviewForm, [`${rateName}`]: index + 1});
+              }}
+              fill={
+                starRating > index
+                  ? colors.fussOrange['0']
+                  : colors.grayScale['20']
+              }
+            />
+          </React.Fragment>
+        ))}
       </HStack>
     </HStack>
   );
