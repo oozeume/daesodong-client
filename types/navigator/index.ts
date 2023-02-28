@@ -4,7 +4,6 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {FormType} from '../community';
 import {FacilityReviewParams} from '../facility';
 import {AuthFoundResultParams} from '../login';
 
@@ -59,7 +58,7 @@ export type RootStackParamList = {
 
   Community: undefined;
   CommunityDetail: {id: string};
-  CommunityRegister?: FormType;
+  CommunityRegister?: {postId?: string};
 
   ContentsDetail: undefined;
   OtherContents: undefined;

@@ -8,7 +8,7 @@ import {
   Text,
 } from 'native-base';
 import React from 'react';
-import {COMMUNIT_LIST} from '~/constants/community/select';
+import {PET_KIND_LIST} from '~/constants/community/select';
 import {colors} from '~/theme/theme';
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   onClose: () => void;
   setValue: (value: any) => void;
   value: string;
+  list?: string[];
 }
 
 /**
@@ -25,14 +26,14 @@ interface Props {
  * @param setValue - 선택한 항목으로 state 변경 함수
  * @param value - 선택된 state
  */
-function CommunitySelect({isOpen, onClose, setValue, value}: Props) {
+function CommunitySelect({isOpen, onClose, setValue, value, list}: Props) {
   const onPress = (item: string) => {
     setValue(item);
     onClose();
   };
 
   return (
-    <Actionsheet isOpen={isOpen} onClose={onClose}>
+    <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
       <Actionsheet.Content bgColor={colors.grayScale[0]}>
         <Center
           alignItems="center"
@@ -46,7 +47,7 @@ function CommunitySelect({isOpen, onClose, setValue, value}: Props) {
 
         <Stack w={'100%'}>
           <ScrollView>
-            {COMMUNIT_LIST?.map((item, index) => {
+            {(list ?? PET_KIND_LIST)?.map((item, index) => {
               return (
                 <Actionsheet.Item
                   backgroundColor={colors.grayScale[0]}

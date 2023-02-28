@@ -29,7 +29,7 @@ function Header({title, rightButton, leftButton, isRemoveTopPosition}: Props) {
       </HStack>
 
       <Center w="100%">
-        <Text fontSize={18} color="black">
+        <Text fontSize={18} color={colors.grayScale[90]}>
           {title || ''}
         </Text>
       </Center>

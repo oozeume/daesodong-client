@@ -13,7 +13,7 @@ import {Platform} from 'react-native';
 /**
  *@description 커뮤니티 상세 댓글 헤더 설정 및 북마크, 삭제 팝업 state 초기 설정 훅
  */
-function useSetDetailHeader() {
+function useSetDetailHeader(postId: string) {
   const navigation = useNavigation<NavigationHookProp>();
   const [isBookmark, setBookmark] = useState(false);
 
@@ -51,8 +51,11 @@ function useSetDetailHeader() {
               )}
 
               <KekabMenu
-                top={Platform.OS === 'android' ? '88px' : '110px'}
-                handleFirstButton={() => {}}
+                top={Platform.OS === 'android' ? '28px' : '20px'}
+                left={'-20px'}
+                handleFirstButton={() =>
+                  navigation.navigate('CommunityRegister', {postId})
+                }
                 handleSecondButton={() =>
                   setOpenDeletePopup(prev => ({...prev, post: true}))
                 }
