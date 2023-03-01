@@ -26,6 +26,7 @@ function CommunityContents({contentsList}: Props) {
         <CommunityContent
           contentData={item}
           isVisibleTime
+          viewMode="simple"
           viewAllButton={
             <Box mb={'16px'}>
               <Text

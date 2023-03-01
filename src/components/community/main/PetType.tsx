@@ -3,6 +3,7 @@ import {Circle, HStack, Pressable, Stack, Text} from 'native-base';
 import React from 'react';
 import {ScrollView} from 'react-native';
 import {useGetPetKinds} from '~/api/kind/queries';
+import {PET_KIND_LIST} from '~/constants/community/select';
 import {colors} from '~/theme/theme';
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
  */
 
 function PetType({setPetType, petType}: Props) {
-  const {data} = useGetPetKinds();
+  const {data} = useGetPetKinds(true);
 
   return (
     <ScrollView
@@ -43,21 +44,19 @@ function PetType({setPetType, petType}: Props) {
           </Stack>
         </Pressable>
 
-        {(data?.data ?? []).map((item, index) => (
-          <Pressable
-            onPressIn={() => setPetType(item.name)}
-            key={index.toString()}>
+        {(data ?? PET_KIND_LIST).map((item, index) => (
+          <Pressable onPressIn={() => setPetType(item)} key={index.toString()}>
             <Stack alignItems={'center'} space={'6px'}>
               <Circle
                 width={'60px'}
                 height={'60px'}
                 backgroundColor={
-                  item?.name === petType
+                  item === petType
                     ? colors.fussOrange['-30']
                     : colors.grayScale[10]
                 }
               />
-              <Text>{item?.name || ''}</Text>
+              <Text>{item || ''}</Text>
             </Stack>
           </Pressable>
         ))}

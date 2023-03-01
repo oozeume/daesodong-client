@@ -1,4 +1,8 @@
-import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import ImagePicker, {
+  Image,
+  ImageOrVideo,
+  Options,
+} from 'react-native-image-crop-picker';
 
 /**
  * @description 모바일에서 이미지 선택 및 자르기 함수
@@ -18,11 +22,21 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
  * }
  */
 
-export function imagePicker(multiple?: boolean): Promise<ImageOrVideo> {
+const option: Options = {
+  width: 300,
+  height: 400,
+  cropping: true,
+  mediaType: 'photo',
+};
+
+export function imagePicker() {
+  return ImagePicker.openPicker(option);
+}
+
+export function multipleImagePicker(maxFiles = 1) {
   return ImagePicker.openPicker({
-    width: 300,
-    height: 400,
-    cropping: true,
-    multiple,
+    ...option,
+    multiple: true,
+    maxFiles,
   });
 }

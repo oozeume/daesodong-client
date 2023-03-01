@@ -6,12 +6,15 @@ import CommunityContent from '~/components/community/detail/Content';
 import {useRoute} from '@react-navigation/native';
 import {RouteHookProp} from '~/../types/navigator';
 import Popup from '~/components/common/popup/Popup';
-import {useGetCommunityPost} from '~/api/community/queries';
+import {
+  useDeleteCommunityPost,
+  useGetCommunityPost,
+} from '~/api/community/queries';
 import {useDeleteComment, useGetCommentList} from '~/api/comment/queries';
 import {useDeleteRecomment} from '~/api/recomment/queries';
 import useSetDetailHeader from '~/components/community/detail/useSetDetailHeader';
 import CommentInput from '~/components/community/detail/CommentInput';
-import {CommentInputType, CommentItem} from '~/../types/community';
+import {CommentInputType} from '~/../types/community';
 import CommentList from '~/components/community/detail/CommentList';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CommentModel from '~/model/comment';
@@ -33,13 +36,15 @@ const CommunityDetail = () => {
 
   const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
 
-  const getCommunityPost = useGetCommunityPost(postId);
+  const getCommunityPost = useGetCommunityPost(postId, true);
 
   const {data: commentList, refetch} = useGetCommentList(postId);
   const deleteComment = useDeleteComment({
     postId,
     commentId: selectedComment?.id ?? '',
   });
+
+  const deleteCommunityPost = useDeleteCommunityPost(postId);
 
   const deleteRecomment = useDeleteRecomment({
     commentId: selectedComment?.id ?? '',
@@ -55,7 +60,26 @@ const CommunityDetail = () => {
     setBookmark,
     isOpenDeletePopup,
     setOpenDeletePopup,
-  } = useSetDetailHeader();
+  } = useSetDetailHeader(postId);
+
+  deleteCommunityPost;
+
+  /**
+   *@description 게시글 삭제
+   */
+  const onDeletePost = () => {
+    deleteCommunityPost
+      .refetch()
+      .then(response => {
+        if (response.data) {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'tab', state: {routes: [{name: 'Commuity'}]}}],
+          });
+        }
+      })
+      .catch(error => console.log(error));
+  };
 
   /**
    *@description 댓글 삭제
@@ -125,6 +149,7 @@ const CommunityDetail = () => {
             setIsVisible={(isVisible: boolean) =>
               setOpenDeletePopup(prev => ({...prev, post: isVisible}))
             }
+            onSuccess={onDeletePost}
           />
 
           <Popup

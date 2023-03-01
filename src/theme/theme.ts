@@ -91,6 +91,7 @@ const theme = extendTheme({
     },
     scrim: {
       60: 'rgba(26, 30, 39, 0.6)',
+      35: 'rgba(26, 30, 39, 0.35)',
     },
   },
 });
