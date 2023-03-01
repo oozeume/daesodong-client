@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, HStack, Spinner, Stack, Text} from 'native-base';
-import HospitalReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
+import FacilityReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
@@ -12,12 +12,15 @@ import {
   useReviewRegister,
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
-import Review from '~/model/review';
+import Review from '~/model/faciltiyReview';
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import EmptyReviews from '~/components/facility/review/EmptyReviews';
 import _ from 'lodash';
 import {FlatList} from 'react-native';
 import ReviewItem from '~/components/hospital/review/ReviewItem';
+import {ReviewType} from '~/../types/facility';
+
+const MARGIN_X = 18;
 
 interface Props {
   id: string;
@@ -49,18 +52,25 @@ function FacilityReview({id, facilityName}: Props) {
   };
 
   const setIsReviewResterComplete = useReviewRegister();
-  const isRevewRegisterComplete = useReviewRegisterContext(false);
+  const isRevewRegisterComplete = useReviewRegisterContext({
+    type: ReviewType.Register,
+    isComplete: false,
+  });
 
   const onClose = () => {
-    setIsReviewResterComplete(false);
+    setIsReviewResterComplete({type: ReviewType.Register, isComplete: false});
     setIsCompleteModalOpen(false);
 
     refetch();
   };
 
   useEffect(() => {
-    if (isFocused && isRevewRegisterComplete) {
-      setIsCompleteModalOpen(true);
+    if (isFocused && isRevewRegisterComplete.isComplete) {
+      if (isRevewRegisterComplete.type === ReviewType.Register) {
+        setIsCompleteModalOpen(true);
+      } else {
+        refetch();
+      }
     }
   }, [isFocused, isRevewRegisterComplete]);
 
@@ -108,6 +118,7 @@ function FacilityReview({id, facilityName}: Props) {
                 <ReviewItem
                   review={item}
                   facilityName={facilityName}
+                  facilityId={id}
                   isInvisibleBorderTop={index === 0}
                 />
               </Stack>
@@ -122,7 +133,7 @@ function FacilityReview({id, facilityName}: Props) {
                 borderBottomColor={'grayScale.20'}
                 borderBottomWidth={1}
                 backgroundColor={'white'}>
-                <HospitalReviewAllRate reviews={reviews} />
+                <FacilityReviewAllRate facilityId={id} />
                 <Button
                   onPress={onMoveReviewRegisterPage}
                   w={'100%'}
@@ -174,7 +185,7 @@ function FacilityReview({id, facilityName}: Props) {
             </Text>
             <Button
               onPress={onClose}
-              width={APP_WIDTH - 18 * 2}
+              width={APP_WIDTH - MARGIN_X * 2}
               height={'52px'}
               borderRadius={'8px'}
               borderColor={colors.grayScale[60]}

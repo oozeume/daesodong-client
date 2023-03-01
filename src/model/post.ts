@@ -24,7 +24,22 @@ class Post {
   }
 
   get images() {
-    return this.post?.post_picture ?? [];
+    return (this.post?.post_picture ?? []).map(({postId, picture_url}) => ({
+      postId,
+      url: picture_url,
+    }));
+  }
+
+  get imageNameList() {
+    return (this.post?.post_picture ?? []).map(
+      ({picture_url}) => picture_url ?? '',
+    );
+  }
+
+  get tagNameList() {
+    return (this.post?.post_tag_join ?? []).map(
+      ({post_tag}) => post_tag?.name ?? '',
+    );
   }
 
   get tags() {

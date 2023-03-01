@@ -11,12 +11,12 @@ import CircleDeleteIcon from '~/assets/icons/circle_delete.svg';
 import Popup from '~/components/common/popup/Popup';
 import _ from 'lodash';
 import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {NavigationHookProp} from '~/../types/navigator';
 
 const MAX_TAG_NUMBER = 5;
 
 function TagRegister() {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation<NavigationHookProp>();
   const [text, setText] = useState('');
 
   const [open, setOpen] = useState(false);
@@ -94,9 +94,9 @@ function TagRegister() {
               }
             />
             <HStack>
-              {tagList.map(t => (
+              {tagList.map((tag, index) => (
                 <HStack
-                  key={t}
+                  key={index.toString()}
                   mr={'5px'}
                   borderRadius={'16px'}
                   borderWidth={1}
@@ -107,9 +107,9 @@ function TagRegister() {
                   pl={'12px'}
                   pr={'10px'}>
                   <Text fontSize={'13px'} color={colors.grayScale[70]}>
-                    {t}
+                    {tag}
                   </Text>
-                  <Pressable onPress={() => onDelete(t)}>
+                  <Pressable onPress={() => onDelete(tag)}>
                     <CircleDeleteIcon />
                   </Pressable>
                 </HStack>

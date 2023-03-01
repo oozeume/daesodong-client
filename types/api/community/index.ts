@@ -1,22 +1,10 @@
-// 커뮤니티 게시글 등록 폼 데이터
-export interface PostCummunityPostData {
-  //
-}
+import {FormState} from '../../community';
 
-// 커뮤니티 게시글 등록 응답
-export interface PostCummunityPostResponse {
-  //
-}
+// 커뮤니티 게시글 등록 폼 데이터
+export interface PostCummunityPostData extends FormState {}
 
 // 커뮤니티 게시글 수정 폼 데이터
-export interface PatchCommunityPost {
-  //
-}
-
-// 커뮤니티 게시글 수정 응답
-export interface PatchCommunityResponse {
-  //
-}
+export interface PatchCommunityPost extends FormState {}
 
 // 커뮤니티 게시글 리스트 조회 쿼리
 export interface GetCommunityPostListQuery {
@@ -37,7 +25,7 @@ export type GetCommunityPostResponse = {
   kindId: string;
   post_picture: {
     postId: string;
-    picture_url?: string | null;
+    picture_url?: string;
   }[];
   post_tag_join: {
     post_tag: {

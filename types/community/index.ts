@@ -1,13 +1,12 @@
+import {PostCloudImageData} from '../utils';
+
 // 게시글 등록/수정 폼
 export interface FormState {
-  community?: string;
+  kind: string;
   title: string;
   content: string;
-}
-
-// 게시글 등록, 수정 타입
-export interface FormType {
-  type: 'REGISTER' | 'MODIFY';
+  tags?: string[];
+  pictures?: string[];
 }
 
 export type CommentUserInfo = {
@@ -45,14 +44,42 @@ export type CommentItem = {
   user: CommentUserInfo;
 };
 
+/**
+ *@description 현재 댓글 입력 부분 타입
+ */
 export type CommentInputType =
   | 'POST_COMMENT'
   | 'POST_RECOMMENT'
   | 'PATCH_COMMENT'
   | 'PATCH_RECOMMENT';
 
+/**
+ *@description 삭제 팝업 on/off 여부
+ */
 export type OpenDeletePopup = {
   post: boolean;
   comment: boolean;
   recomment: boolean;
 };
+
+/**
+ *@description 커뮤니티 컨텐츠 이미지 데이터
+ */
+export interface CommunityContentImage {
+  postId: string;
+  url?: string;
+}
+
+/**
+ *@description 커뮤니티 게시글 등록 페이지 > 이미지 데이터
+ */
+export interface RegisterImageData {
+  // 게시글 작성 페이지에서 보여질 이미지 이름(클라우드 혹은 로컬 이미지 이름)
+  registerPageImageName: string;
+  // 클라우드에 등록되어있는 이미지 이름 (실제로 게시글 폼 데이터로 보낼 데이터)
+  cloudImageName: string;
+  // 클라우드에 올릴 이미지 데이터
+  cloudData?: PostCloudImageData;
+  // 서버 db에 이미지 이름이 등록되어 있는지 여부
+  type: 'REGISTERED' | 'UNREGISTERED';
+}

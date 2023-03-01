@@ -107,3 +107,26 @@ export const useGetFacilityReviews = ({
     },
   );
 };
+
+/**
+ *@description 시설 평점 API
+ */
+
+type FacilityScoreResponse = {
+  score_facilities: number;
+  score_kindness: number;
+  score_price: number;
+  score_treatment: number;
+  score_total: number;
+};
+
+const getFacilityScore = (id: string) => {
+  return apiCall<FacilityScoreResponse>({
+    method: 'GET',
+    url: `/hospitals/${id}/scores`,
+  });
+};
+
+export const useGetFacilityScore = (id: string) => {
+  return useQuery([QueryKeys.facility.score], () => getFacilityScore(id));
+};

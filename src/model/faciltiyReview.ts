@@ -25,7 +25,9 @@ class Review {
   }
 
   get tags() {
-    return this.review.tags.map(tag => tag.hospital_review_tags.name) ?? [];
+    return (
+      this.review.tags.map(tag => tag.hospital_review_tags?.name ?? '') ?? []
+    );
   }
 
   get visitDate() {
