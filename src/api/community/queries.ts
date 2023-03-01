@@ -7,6 +7,7 @@ import {
   GetCommunityPostResponse,
 } from '~/../types/api/community';
 import CommunityPost from '~/model/communityPost';
+import {ErrorResponseTransform} from '~/../types/api/common';
 
 /**
  *@description 커뮤니티 게시글 리스트 조회 api
@@ -55,7 +56,13 @@ const getCommunityPost = async (id: string) => {
   });
 };
 
-export const useGetCommunityPost = (id: string, enabled?: boolean) => {
+export const useGetCommunityPost = (
+  id: string,
+  option?: {
+    enabled?: boolean;
+    onError?: (error: ErrorResponseTransform) => void;
+  },
+) => {
   return useQuery(
     [QueryKeys.community.getPost, id],
     () => {
@@ -65,30 +72,12 @@ export const useGetCommunityPost = (id: string, enabled?: boolean) => {
       select: data => {
         return new CommunityPost(data.data);
       },
-      enabled,
-    },
-  );
-};
+      enabled: option?.enabled,
+      onError: error => {
+        const _error = error as ErrorResponseTransform;
 
-/**
- *@description 커뮤니티 게시글 삭제 api
- */
-const deleteCommunityPost = async (id: string) => {
-  return apiCall<GetCommunityPostResponse>({
-    method: 'DELETE',
-    url: `posts/${id}`,
-  });
-};
-
-export const useDeleteCommunityPost = (id: string) => {
-  return useQuery(
-    [QueryKeys.community.deletePost],
-    ({queryKey}) => {
-      return deleteCommunityPost(id);
-    },
-    {
-      cacheTime: 0,
-      enabled: false,
+        if (option?.onError) option.onError(_error);
+      },
     },
   );
 };

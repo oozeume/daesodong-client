@@ -1,8 +1,4 @@
-import {
-  useInfiniteQuery,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import {apiCall} from '../common';
 import QueryKeys from '~/constants/queryKeys';
 import {
@@ -10,7 +6,6 @@ import {
   GetCommentListQuery,
   GetCommentListResponse,
 } from '~/../types/api/comment';
-import Comment from '~/model/comment';
 import queryString from 'query-string';
 
 /**
@@ -64,30 +59,4 @@ export const useGetBestCommentList = (postId: string) => {
   return useQuery([QueryKeys.comment.getComments, postId], () => {
     return getBestCommentList(postId);
   });
-};
-
-/**
- *@description 댓글 삭제 api
- */
-const deleteComment = ({postId, commentId}: DeleteCommentQuery) => {
-  return apiCall<boolean>({
-    method: 'DELETE',
-    url: `posts/${postId}/comments/${commentId}`,
-  });
-};
-
-export const useDeleteComment = (query: DeleteCommentQuery) => {
-  const queryClient = useQueryClient();
-
-  return useQuery(
-    [QueryKeys.comment.deleteComment],
-    () => {
-      return deleteComment(query);
-    },
-    {
-      enabled: false,
-      onSettled: () =>
-        queryClient.invalidateQueries([QueryKeys.comment.getComments]),
-    },
-  );
 };

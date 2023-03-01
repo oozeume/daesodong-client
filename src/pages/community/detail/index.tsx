@@ -6,16 +6,8 @@ import CommunityContent from '~/components/community/detail/Content';
 import {useRoute} from '@react-navigation/native';
 import {RouteHookProp} from '~/../types/navigator';
 import Popup from '~/components/common/popup/Popup';
-import {
-  useDeleteCommunityPost,
-  useGetCommunityPost,
-} from '~/api/community/queries';
-import {
-  useDeleteComment,
-  useGetBestCommentList,
-  useGetCommentList,
-} from '~/api/comment/queries';
-import {useDeleteRecomment} from '~/api/recomment/queries';
+import {useGetCommunityPost} from '~/api/community/queries';
+import {useGetBestCommentList, useGetCommentList} from '~/api/comment/queries';
 import useSetDetailHeader from '~/components/community/detail/useSetDetailHeader';
 import CommentInput from '~/components/community/detail/CommentInput';
 import {CommentInputType} from '~/../types/community';
@@ -25,20 +17,25 @@ import CommentModel from '~/model/comment';
 import Comment from '~/model/comment';
 import {Platform} from 'react-native';
 import _ from 'lodash';
-import {usePostCummunityPostThank} from '~/api/community/mutation';
+import {
+  useDeleteCommunityPost,
+  usePostCummunityPostThank,
+} from '~/api/community/mutation';
+import {useDeleteComment} from '~/api/comment/mutation';
+import {useDeleteRecomment} from '~/api/recomment/mutation';
+import {ErrorResponseTransform} from '~/../types/api/common';
+import useToastShow from '~/hooks/useToast';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
  *@todo 고마워요, 북마크 기능 미구현 (서버 api 나온 후, 구현하기)
- *@todo 게시글이 중간에 삭제되고 조회 되는 경우에 대한 알림과 함께 리스트 페이지로 이동하는 로직 추가
- *@todo 무한 스크롤일 경우, 캐시 무효화 로직 알아보기
- *@todo 댓글이 수정시, 스크롤이 올라가는 현상 수정
- *@todo 캐싱 키 값과 캐시 무효화 상관관계 확인
  *@todo mutation 후, 다시 조회하기 보단, onSettle로 현재 state 변경 로직 추가하기
  */
 const CommunityDetail = () => {
   const {params} = useRoute<RouteHookProp<'CommunityDetail'>>();
+  const {toastShow} = useToastShow();
   const postId = params.id;
+
   const COMMENT_INPUT_VIEW_HEIGHT = 60;
 
   // 키캡이나 답글달기로 선택된 댓글 state
@@ -52,7 +49,26 @@ const CommunityDetail = () => {
 
   const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
 
-  const getCommunityPost = useGetCommunityPost(postId, true);
+  /**
+   *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
+   */
+  const {
+    navigation,
+    isBookmark,
+    setBookmark,
+    isOpenDeletePopup,
+    setOpenDeletePopup,
+  } = useSetDetailHeader(postId);
+
+  const getCommunityPost = useGetCommunityPost(postId, {
+    enabled: true,
+    onError: (error: ErrorResponseTransform) => {
+      if (error.statusCode === 404) {
+        toastShow('게시글이 존재하지 않습니다.');
+        navigation.goBack();
+      }
+    },
+  });
 
   const getCommentList = useGetCommentList(postId, {
     limit: 10,
@@ -74,24 +90,11 @@ const CommunityDetail = () => {
   });
 
   /**
-   *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
-   */
-  const {
-    navigation,
-    isBookmark,
-    setBookmark,
-    isOpenDeletePopup,
-    setOpenDeletePopup,
-  } = useSetDetailHeader(postId);
-
-  deleteCommunityPost;
-
-  /**
    *@description 게시글 삭제
    */
   const onDeletePost = () => {
     deleteCommunityPost
-      .refetch()
+      .mutateAsync()
       .then(response => {
         if (response.data) {
           navigation.reset({
@@ -108,7 +111,7 @@ const CommunityDetail = () => {
    */
   const onDeleteComment = () => {
     deleteComment
-      .refetch()
+      .mutateAsync()
       .then(response => {
         if (response.data) getCommentList.refetch();
       })
@@ -120,7 +123,7 @@ const CommunityDetail = () => {
    */
   const onDeleteRecomment = () => {
     deleteRecomment
-      .refetch()
+      .mutateAsync()
       .then(response => {
         if (response.data) getCommentList.refetch();
       })

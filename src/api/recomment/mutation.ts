@@ -2,6 +2,7 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {apiCall} from '../common';
 import QueryKeys from '~/constants/queryKeys';
 import {
+  DeleteRecommentQuery,
   PatchRecommentData,
   PostRecommentData,
   PostRecommentThankData,
@@ -26,12 +27,6 @@ export const usePostRecomment = () => {
   return useMutation((data: PostRecommentData) => postRecomment(data), {
     onSettled: () =>
       queryClient.invalidateQueries([QueryKeys.comment.getComments]),
-    // onSuccess:(newData) => {
-    //     queryClient.setQueryData([QueryKeys.comment.getComments], (oldData) => {
-    //         return {...oldData, newData};
-
-    //     })
-    // }
   });
 };
 
@@ -53,7 +48,36 @@ const patchRecomment = async ({
 };
 
 export const usePatchRecomment = () => {
-  return useMutation((data: PatchRecommentData) => patchRecomment(data));
+  const queryClient = useQueryClient();
+
+  return useMutation((data: PatchRecommentData) => patchRecomment(data), {
+    onSettled: () =>
+      queryClient.invalidateQueries([QueryKeys.comment.getComments]),
+  });
+};
+
+/**
+ *@description 답글 삭제 api
+ */
+const deleteRecomment = ({commentId, recommentId}: DeleteRecommentQuery) => {
+  return apiCall<boolean>({
+    method: 'DELETE',
+    url: `comments/${commentId}/${recommentId}`,
+  });
+};
+
+export const useDeleteRecomment = (query: DeleteRecommentQuery) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    () => {
+      return deleteRecomment(query);
+    },
+    {
+      onSettled: () =>
+        queryClient.invalidateQueries([QueryKeys.comment.getComments]),
+    },
+  );
 };
 
 /**
