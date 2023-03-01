@@ -94,5 +94,11 @@ const postCommentThank = async ({
 };
 
 export const usePostCommentThank = () => {
-  return useMutation((data: PostCommentThankData) => postCommentThank(data));
+  const queryClient = useQueryClient();
+
+  return useMutation((data: PostCommentThankData) => postCommentThank(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([QueryKeys.comment.getComments]);
+    },
+  });
 };

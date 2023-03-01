@@ -52,6 +52,11 @@ export type GetCommunityPostResponse = {
     postId: string;
     userId: string;
   }[];
+  // 북마크 여부
+  save_post: {
+    postId: string;
+    userId: string;
+  }[];
 };
 
 /**
@@ -59,5 +64,13 @@ export type GetCommunityPostResponse = {
  */
 export interface PostCummunityPostThankData {
   id: string;
-  isThank: boolean;
+  isOn: boolean;
+}
+
+/**
+ *@description 게시글 북마크 및 취소 데이터
+ */
+export interface PostCummunityPostBookmarkData {
+  id: string;
+  isOn: boolean;
 }

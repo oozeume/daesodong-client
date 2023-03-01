@@ -28,8 +28,6 @@ import useToastShow from '~/hooks/useToast';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
- *@todo 고마워요, 북마크 기능 미구현 (서버 api 나온 후, 구현하기)
- *@todo mutation 후, 다시 조회하기 보단, onSettle로 현재 state 변경 로직 추가하기
  */
 const CommunityDetail = () => {
   const {params} = useRoute<RouteHookProp<'CommunityDetail'>>();
@@ -49,17 +47,6 @@ const CommunityDetail = () => {
 
   const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
 
-  /**
-   *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
-   */
-  const {
-    navigation,
-    isBookmark,
-    setBookmark,
-    isOpenDeletePopup,
-    setOpenDeletePopup,
-  } = useSetDetailHeader(postId);
-
   const getCommunityPost = useGetCommunityPost(postId, {
     enabled: true,
     onError: (error: ErrorResponseTransform) => {
@@ -69,6 +56,12 @@ const CommunityDetail = () => {
       }
     },
   });
+
+  /**
+   *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
+   */
+  const {navigation, isOpenDeletePopup, setOpenDeletePopup} =
+    useSetDetailHeader(postId, getCommunityPost.data?.isBookmark);
 
   const getCommentList = useGetCommentList(postId, {
     limit: 10,
@@ -150,7 +143,7 @@ const CommunityDetail = () => {
 
     postCummunityPostThank.mutateAsync({
       id: postId,
-      isThank: !getCommunityPost.data?.isThank,
+      isOn: !getCommunityPost.data?.isThank,
     });
   };
 

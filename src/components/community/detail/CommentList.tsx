@@ -37,7 +37,7 @@ function CommentList({
           <Comment
             commentType={{
               type: 'default',
-              isDelete: _.isNull(item.deletedAt),
+              isDelete: !_.isNull(item.deletedAt),
             }}
             userId={user.data?.data?.id}
             data={item}
@@ -60,7 +60,7 @@ function CommentList({
                 userId={user.data?.data?.id}
                 commentType={{
                   type: 'reply',
-                  isDelete: _.isNull(recomment.deletedAt),
+                  isDelete: !_.isNull(recomment.deletedAt),
                 }}
                 data={recomment}
                 onClickKekab={(type: PostFeature) => {

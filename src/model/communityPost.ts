@@ -93,6 +93,10 @@ class CommunityPost {
   get isThank() {
     return !_.isEmpty(this.post.thanks_post_join);
   }
+
+  get isBookmark() {
+    return !_.isEmpty(this.post.save_post);
+  }
 }
 
 export default CommunityPost;

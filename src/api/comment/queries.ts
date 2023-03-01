@@ -25,7 +25,8 @@ export const useGetCommentList = (
   query: GetCommentListQuery,
 ) => {
   return useInfiniteQuery(
-    [QueryKeys.comment.getComments, query],
+    [QueryKeys.comment.getComments],
+    // [QueryKeys.comment.getComments, query],
     param => {
       return getCommentList(postId, param.pageParam ?? query);
     },
@@ -56,7 +57,7 @@ const getBestCommentList = (postId: string) => {
 };
 
 export const useGetBestCommentList = (postId: string) => {
-  return useQuery([QueryKeys.comment.getComments, postId], () => {
+  return useQuery([QueryKeys.comment.getBestComments, postId], () => {
     return getBestCommentList(postId);
   });
 };

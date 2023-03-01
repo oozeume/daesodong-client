@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {Box, Center, HStack, Image, Pressable, Text, View} from 'native-base';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {PostFeature} from '~/../types/common';
 import {usePostCommentThank} from '~/api/comment/mutation';
@@ -44,21 +44,32 @@ const Comment = ({
   const postCommentThank = usePostCommentThank();
   const postRecommentThank = usePostRecommentThank();
 
+  const [isThank, setThank] = useState(data?.isThank);
+  const [thankCount, setThankCount] = useState(data?.thanks ?? 0);
+
   /**
    *@description 댓글 고마워요/취소
    */
   const onThank = () => {
+    // if (postCommentThank.isLoading || postRecommentThank.isLoading) return;
+    setThank(!isThank);
+    setThankCount(prev => {
+      if (isThank && prev === 0) return 0;
+
+      return isThank ? prev - 1 : prev + 1;
+    });
+
     if (data?.postId && commentType.type === 'default') {
       postCommentThank.mutateAsync({
         postId: data?.postId,
         commentId: data.id,
-        isThank: !data.isThank,
+        isThank: !isThank,
       });
     } else if (data?.parentCommentId && commentType.type === 'reply') {
       postRecommentThank.mutateAsync({
         commentId: data.parentCommentId,
         recommentId: data.id,
-        isThank: !data.isThank,
+        isThank: !isThank,
       });
     }
   };
@@ -211,7 +222,7 @@ const Comment = ({
           {!commentType.isDelete && (
             <Pressable
               borderColor={
-                data?.isThank ? colors.fussOrange['0'] : colors.grayScale['20']
+                isThank ? colors.fussOrange['0'] : colors.grayScale['20']
               }
               bgColor={colors.grayScale['0']}
               borderWidth={1}
@@ -224,12 +235,10 @@ const Comment = ({
               <HStack>
                 <Text
                   color={
-                    data?.isThank
-                      ? colors.fussOrange['0']
-                      : colors.grayScale['60']
+                    isThank ? colors.fussOrange['0'] : colors.grayScale['60']
                   }
                   fontSize="13px">
-                  {`고마워요 ${data?.thanks ?? 0}`}
+                  {`고마워요 ${thankCount}`}
                 </Text>
               </HStack>
             </Pressable>
