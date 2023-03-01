@@ -48,7 +48,16 @@ class Comment {
   }
 
   get petInfo() {
-    return _.isEmpty(this.comment.user.pets) ? null : this.comment.user.pets[0];
+    const initPetInfo = {
+      age: 0,
+      name: '',
+      pet_picture_url: undefined,
+      specie: {name: ''},
+    };
+
+    return _.isEmpty(this.comment.user.pets)
+      ? initPetInfo
+      : this.comment.user.pets[0];
   }
 
   get recomments() {

@@ -79,6 +79,7 @@ class CommunityPost {
     const initPetInfo = {
       age: 0,
       name: '',
+      pet_picture_url: undefined,
       specie: {name: ''},
     };
 

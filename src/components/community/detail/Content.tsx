@@ -72,11 +72,23 @@ const CommunityContent = ({
           {/* 유저 이미지 */}
 
           <HStack w="100%">
-            <AvatarIcon
-              width={44}
-              height={44}
-              fill={colors.grayScale['30']}
-              style={{marginRight: 12}}
+            <Image
+              w={44}
+              h={44}
+              borderRadius={44}
+              mr="12px"
+              fallbackElement={
+                <AvatarIcon
+                  width={44}
+                  height={44}
+                  fill={colors.grayScale['30']}
+                  style={{marginRight: 12}}
+                />
+              }
+              alt="post_user_img"
+              source={{
+                uri: `${config.IMAGE_BASE_URL}${contentData?.writerPetInfo?.pet_picture_url}`,
+              }}
             />
 
             <VStack>

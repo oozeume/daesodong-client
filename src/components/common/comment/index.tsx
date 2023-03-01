@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
+import {Box, Center, HStack, Image, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {Platform} from 'react-native';
 import {PostFeature} from '~/../types/common';
@@ -10,6 +10,7 @@ import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
+import {config} from '~/utils/config';
 import {getProgressTime} from '~/utils/time';
 
 interface Props {
@@ -78,11 +79,23 @@ const Comment = ({
       <Box flex={1}>
         <HStack justifyContent={'space-between'} alignItems="center">
           <HStack alignItems={'center'}>
-            <AvatarIcon
-              width={20}
-              height={20}
-              fill={colors.grayScale['30']}
-              style={{marginRight: 8}}
+            <Image
+              w={'20px'}
+              h={'20px'}
+              borderRadius={20}
+              mr="8px"
+              fallbackElement={
+                <AvatarIcon
+                  width={'20px'}
+                  height={'20px'}
+                  fill={colors.grayScale['30']}
+                  style={{marginRight: 8}}
+                />
+              }
+              alt="post_user_img"
+              source={{
+                uri: `${config.IMAGE_BASE_URL}${data?.petInfo?.pet_picture_url}`,
+              }}
             />
 
             {/* 닉네임, 이름, 동물, 나이 뷰 라인 */}

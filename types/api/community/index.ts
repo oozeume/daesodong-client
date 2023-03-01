@@ -36,8 +36,9 @@ export type GetCommunityPostResponse = {
   user: {
     nickname: string;
     pets?: {
-      age: number;
       name: string;
+      age: number;
+      pet_picture_url?: string;
       specie: {name: string};
     }[];
   };
