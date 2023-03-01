@@ -10,7 +10,8 @@ import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import _ from 'lodash';
 import {useTagContext, useTagRegister} from '~/store/useTagContext';
 import {INIT_REVIEW_FORM} from '~/constants/facility/detail';
-import ReviewForm from '../ReviewForm';
+import ReviewForm from '../../../../../components/facility/review/ReviewForm';
+import {ReviewType} from '~/../types/facility';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -18,7 +19,7 @@ type Props = NativeStackScreenProps<
 >;
 
 /**
- *@description 시설 리뷰 등록 페이지
+ *@description 시설 리뷰 작성 페이지
  */
 function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
@@ -42,7 +43,10 @@ function FacilityReviewRegister({route}: Props) {
         setTagList([]);
         setTags([]);
         navigation.goBack();
-        setIsReviewRegisterComplete(true);
+        setIsReviewRegisterComplete({
+          type: ReviewType.Register,
+          isComplete: true,
+        });
       })
       .catch(e => console.log(e));
   };

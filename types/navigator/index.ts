@@ -4,7 +4,7 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import Review from '~/model/review';
+import Review from '~/model/faciltiyReview';
 import {FormType} from '../community';
 import {FacilityReviewParams} from '../facility';
 import {AuthFoundResultParams} from '../login';

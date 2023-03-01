@@ -96,7 +96,7 @@ const RevisitCheckButton = ({
   reviewForm,
   setReviewForm,
 }: RevisitCheckButtonProps) => {
-  const [isRevisit, setIsRevisit] = useState(false);
+  const [isRevisit, setIsRevisit] = useState(reviewForm.expect_revisit);
 
   const onPress = () => {
     setIsRevisit(prev => !prev);

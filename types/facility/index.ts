@@ -16,3 +16,9 @@ export type RateName =
   | 'score_price'
   | 'score_facilities'
   | 'score_kindness';
+
+// 리뷰 작성/수정인지 확인하는 타입
+export const enum ReviewType {
+  Register = 'register',
+  Edit = 'edit',
+}

@@ -1,5 +1,5 @@
 import {useToast} from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useMutationReviewEdit} from '~/api/facility/mutations';
 import {
   NativeStackNavigationProp,
@@ -8,10 +8,13 @@ import {
 import {RootStackParamList} from '~/../types/navigator';
 import {PostFacilityReviewData} from '~/../types/api/facility';
 import {useNavigation} from '@react-navigation/native';
-import {useTagRegister} from '~/store/useTagContext';
+import {useTagRegister, useTagContext} from '~/store/useTagContext';
 import ToastMessage from '~/components/common/toast/ToastMessage';
-import ReviewForm from '../ReviewForm';
+import ReviewForm from '../../../../../components/facility/review/ReviewForm';
 import _ from 'lodash';
+import {useReviewRegister} from '~/store/useReviewRegisterContext';
+import dayjs from 'dayjs';
+import {ReviewType} from '~/../types/facility';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
 
@@ -24,21 +27,40 @@ function FacilityReviewEdit({route}: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const toast = useToast();
 
+  const _reviewForm = useMemo(() => {
+    return {
+      visit_date: dayjs(`20${review.visitDate}`).format('YYYY-MM'),
+      cost: review.cost,
+      thoughts: review.reviewContent,
+      score_treatment: review.starScore.treatment,
+      score_price: review.starScore.price,
+      score_facilities: review.starScore.kindness,
+      score_kindness: review.starScore.kindness,
+      expect_revisit: review.hasExpectRevisit,
+      already_reviesit: review.isRevisit,
+      tags: review.tags,
+    };
+  }, [review]);
+
   const [active, setActive] = useState(false);
-  const [reviewForm, setReviewForm] = useState<PostFacilityReviewData>(
-    review.review,
-  );
+  const [reviewForm, setReviewForm] =
+    useState<PostFacilityReviewData>(_reviewForm);
 
   const [tagList, setTagList] = useState<string[]>(review.tags);
   const setTags = useTagRegister();
+  const tags = useTagContext([]);
 
   const {mutateAsync} = useMutationReviewEdit(facilityId, reviewId);
+  const setIsReviewResterComplete = useReviewRegister();
 
-  // TODO: 리뷰 수정 api - 수정 요청(불필요한 데이터 요구가 있음)
   const onSubmit = () => {
     mutateAsync(reviewForm)
       .then(() => {
         setTags([]);
+        setIsReviewResterComplete({
+          type: ReviewType.Edit,
+          isComplete: true,
+        });
         navigation.goBack();
         toast.show({
           render: () => <ToastMessage text={'내 후기를 수정했어요'} />,
@@ -53,16 +75,23 @@ function FacilityReviewEdit({route}: Props) {
   };
 
   useEffect(() => {
-    if (reviewForm !== review.review) {
+    if (_.isEqual(_reviewForm, reviewForm)) {
+      setActive(false);
+    } else {
       setActive(true);
     }
-  }, [reviewForm]);
+  }, [reviewForm, _reviewForm]);
+
+  useEffect(() => {
+    setTagList(tags);
+  }, [tags]);
 
   useEffect(() => {
     if (!_.isEmpty(tagList)) {
-      setTags(review.tags);
+      setTags(tagList);
+      setTagList(tagList);
     }
-  }, [tagList]);
+  }, []);
 
   return (
     <ReviewForm

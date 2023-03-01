@@ -16,7 +16,7 @@ import AvatarIcon from '~/assets/icons/avartar.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import ImageContainer from './imageContainer.tsx';
 import {colors} from '~/theme/theme';
-import Review from '~/model/review';
+import Review from '~/model/faciltiyReview';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {Platform} from 'react-native';
 import _ from 'lodash';
@@ -25,6 +25,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Popup from '~/components/common/popup/Popup';
 import {useMutationReviewDelete} from '~/api/facility/mutations';
 import {useUserContext} from '~/store/useUserContext';
+import {useGetFacilityReviews} from '~/api/facility/queries';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -37,6 +38,7 @@ interface Props {
   name?: string;
   review: Review;
   facilityName: string;
+  facilityId: string;
 }
 
 /**
@@ -52,9 +54,14 @@ function ReviewItem({
   isInvisibleKebabMenu,
   isInvisiblePetInfo,
   address,
+  facilityId,
   name,
 }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const {refetch} = useGetFacilityReviews({
+    facilityId,
+    limit: 10,
+  });
 
   const userInfo = useUserContext({userId: ''});
 
@@ -88,7 +95,7 @@ function ReviewItem({
 
   const onDelete = () => {
     mutateAsync()
-      .then(d => console.log('success->', d))
+      .then(() => refetch())
       .catch(e => console.log('error->', e));
   };
 
