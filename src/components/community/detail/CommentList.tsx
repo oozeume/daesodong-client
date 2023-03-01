@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {Box} from 'native-base';
 import React from 'react';
 import {PostFeature, SetState} from '~/../types/common';
@@ -34,7 +35,10 @@ function CommentList({
       {commentList.map((item, i) => (
         <React.Fragment key={i.toString()}>
           <Comment
-            commentType={item.deletedAt ? 'delete' : 'default'}
+            commentType={{
+              type: 'default',
+              isDelete: _.isNull(item.deletedAt),
+            }}
             userId={user.data?.data?.id}
             data={item}
             onClickKekab={(type: PostFeature) => {
@@ -54,7 +58,10 @@ function CommentList({
             <React.Fragment key={k.toString()}>
               <Comment
                 userId={user.data?.data?.id}
-                commentType="reply"
+                commentType={{
+                  type: 'reply',
+                  isDelete: _.isNull(recomment.deletedAt),
+                }}
                 data={recomment}
                 onClickKekab={(type: PostFeature) => {
                   if (type === 'DELETE')

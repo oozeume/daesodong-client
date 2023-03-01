@@ -10,6 +10,7 @@ import Popup from '~/components/common/popup/Popup';
 import Comment from '~/components/common/comment';
 import {APP_WIDTH} from '~/utils/dimension';
 import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
+import {PostFeature} from '~/../types/common';
 
 /**
  *@description 컨텐츠 댓글 리스트
@@ -45,11 +46,10 @@ const ContentsCommentsList = () => {
         keyExtractor={(item, index) => String(index)}
         renderItem={info => (
           <Comment
-            isBest={info.index === 0 || info.index === 10}
-            commentType={info.index % 2 === 0 ? 'default' : 'delete'}
             onRegisterRecomment={() =>
               navigation.navigate('ContentsRecommentsList')
             }
+            onClickKekab={(type: PostFeature) => {}}
           />
         )}
       />
