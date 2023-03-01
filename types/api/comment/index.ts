@@ -17,7 +17,7 @@ export interface PatchCommentData {
 export interface PostCommentThankData {
   postId: string;
   commentId: string;
-  isThank: boolean;
+  isOn: boolean;
 }
 
 export interface DeleteCommentQuery {

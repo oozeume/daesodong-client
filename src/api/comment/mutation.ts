@@ -78,18 +78,16 @@ export const useDeleteComment = (query: DeleteCommentQuery) => {
 
 /**
  *@description 댓글 고마워요 등록/취소 api 요청
- *@param isThank : true 면 등록, false 면 취소
+ *@param isOn : true 면 등록, false 면 취소
  */
 const postCommentThank = async ({
   postId,
   commentId,
-  isThank,
+  isOn,
 }: PostCommentThankData) => {
   return apiCall<boolean>({
     method: 'POST',
-    url: `posts/${postId}/comments/${commentId}/thanks${
-      isThank ? '' : '/cancel'
-    }`,
+    url: `posts/${postId}/comments/${commentId}/thanks${isOn ? '' : '/cancel'}`,
   });
 };
 

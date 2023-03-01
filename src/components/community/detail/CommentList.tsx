@@ -19,7 +19,6 @@ interface Props {
  *@description 댓글 리스트 컴포넌트
  *@param setOpenDeletePopup - 댓글/답글 삭제 팝업창 on/off setState
  *@param setCommentInputType - 댓글/답글 입력, 수정 타입 설정 setState
- *@param commentInputType - 댓글/답글 입력, 수정 타입 설정 state
  */
 function CommentList({
   setSelectedComment,

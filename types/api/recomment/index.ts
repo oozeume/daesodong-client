@@ -17,5 +17,5 @@ export interface DeleteRecommentQuery {
 export interface PostRecommentThankData {
   commentId: string;
   recommentId: string;
-  isThank: boolean;
+  isOn: boolean;
 }

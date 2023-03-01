@@ -27,7 +27,7 @@ interface Props {
 
 /**
  *@description 게시글 댓글
- *@param commentType - 댓글 유형 (reply: 답글, delete: 삭제된 댓글)
+ *@param commentType - 댓글 유형 (type: 댓글 | 답글, isDelete: 삭제 여부)
  *@param parentUserNickname - 답글일 경우, 상위 댓글의 유저 닉네임
  */
 const Comment = ({
@@ -51,8 +51,8 @@ const Comment = ({
    *@description 댓글 고마워요/취소
    */
   const onThank = () => {
-    // if (postCommentThank.isLoading || postRecommentThank.isLoading) return;
     setThank(!isThank);
+    // 현재 isThank state가 true => 고마워요 취소 실행
     setThankCount(prev => {
       if (isThank && prev === 0) return 0;
 
@@ -63,13 +63,13 @@ const Comment = ({
       postCommentThank.mutateAsync({
         postId: data?.postId,
         commentId: data.id,
-        isThank: !isThank,
+        isOn: !isThank,
       });
     } else if (data?.parentCommentId && commentType.type === 'reply') {
       postRecommentThank.mutateAsync({
         commentId: data.parentCommentId,
         recommentId: data.id,
-        isThank: !isThank,
+        isOn: !isThank,
       });
     }
   };

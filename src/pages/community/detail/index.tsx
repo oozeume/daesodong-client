@@ -57,9 +57,6 @@ const CommunityDetail = () => {
     },
   });
 
-  /**
-   *@todo 북마크 기능 미구현, 서버 api 나온 후 구현.
-   */
   const {navigation, isOpenDeletePopup, setOpenDeletePopup} =
     useSetDetailHeader(postId, getCommunityPost.data?.isBookmark);
 
