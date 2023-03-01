@@ -178,7 +178,7 @@ const CommunityContent = ({
 
         {viewAllButton}
 
-        {viewMode === 'simple' && mainImageURL && (
+        {viewMode !== 'default' && mainImageURL && (
           <Image
             w={imageWidth}
             h={imageWidth}
