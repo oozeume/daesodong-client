@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, HStack, Spinner, Stack, Text} from 'native-base';
+import {Button, HStack, Pressable, Spinner, Stack, Text} from 'native-base';
 import FacilityReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
 import {NavigationHookProp} from '~/../types/navigator';
@@ -19,6 +19,7 @@ import _ from 'lodash';
 import {FlatList} from 'react-native';
 import ReviewItem from '~/components/hospital/review/ReviewItem';
 import {ReviewType} from '~/../types/facility';
+import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
 
 const MARGIN_X = 18;
 
@@ -37,12 +38,13 @@ function FacilityReview({id, facilityName}: Props) {
 
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [isSamePetTypeReviews, setSamePetTypeReviews] = useState(false);
 
-  const {data, isLoading, hasNextPage, refetch, fetchNextPage} =
+  const {data, isLoading, isFetching, hasNextPage, refetch, fetchNextPage} =
     useGetFacilityReviews({
       facilityId: id,
-      limit: 10,
-      same: false,
+      limit: REVIEWS_PER_PAGE,
+      same: isSamePetTypeReviews,
     });
 
   const onMoveReviewRegisterPage = () => {
@@ -98,13 +100,17 @@ function FacilityReview({id, facilityName}: Props) {
     }
   };
 
+  useEffect(() => {
+    refetch();
+  }, [isSamePetTypeReviews]);
+
   if (isLoading) {
     return <Spinner />;
   }
 
   return (
     <Stack flex={1} backgroundColor={'white'}>
-      {_.isEmpty(reviews) ? (
+      {_.isEmpty(reviews) && !isSamePetTypeReviews ? (
         <EmptyReviews onPress={onMoveReviewRegisterPage} />
       ) : (
         <FlatList
@@ -114,16 +120,20 @@ function FacilityReview({id, facilityName}: Props) {
           onEndReachedThreshold={0.8}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => {
-            return (
-              <Stack space={'8px'} backgroundColor={colors.grayScale[10]}>
-                <ReviewItem
-                  review={item}
-                  facilityName={facilityName}
-                  facilityId={id}
-                  isInvisibleBorderTop={index === 0}
-                />
-              </Stack>
-            );
+            if (_.isEmpty(reviews)) {
+              return <EmptyReviews onPress={onMoveReviewRegisterPage} />;
+            } else {
+              return (
+                <Stack space={'8px'} backgroundColor={colors.grayScale[10]}>
+                  <ReviewItem
+                    review={item}
+                    facilityName={facilityName}
+                    facilityId={id}
+                    isInvisibleBorderTop={index === 0}
+                  />
+                </Stack>
+              );
+            }
           }}
           ListHeaderComponent={
             <>
@@ -148,19 +158,23 @@ function FacilityReview({id, facilityName}: Props) {
                 </Button>
               </Stack>
 
-              <HStack
-                backgroundColor={'white'}
-                h={'44px'}
-                justifyContent={'flex-end'}
-                alignItems={'flex-end'}
-                pb={'4px'}
-                px={'18px'}>
-                <HStack space={'8px'}>
-                  <CheckIcon fill={'#FF6B00'} />
-                  {/* TODO: API 수정 필요 */}
-                  <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
+              <Pressable
+                onPress={() => setSamePetTypeReviews(!isSamePetTypeReviews)}>
+                <HStack
+                  backgroundColor={'white'}
+                  h={'44px'}
+                  justifyContent={'flex-end'}
+                  alignItems={'flex-end'}
+                  pb={'4px'}
+                  px={'18px'}>
+                  <HStack space={'8px'}>
+                    <CheckIcon
+                      fill={isSamePetTypeReviews ? '#FF6B00' : '#ECECEE'}
+                    />
+                    <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
+                  </HStack>
                 </HStack>
-              </HStack>
+              </Pressable>
             </>
           }
         />

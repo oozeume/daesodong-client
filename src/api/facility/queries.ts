@@ -96,15 +96,21 @@ export const useGetFacilityReviews = ({
       return getFacilityReviews({facilityId, limit, cursor, same});
     },
     {
-      getNextPageParam: lastPage => {
+      getNextPageParam: (lastPage, allpages) => {
+        const allPagesDataLength = allpages[0].data.length;
         const lastDataLength = lastPage.data.length;
-        return {
-          limit: limit,
-          cursor:
-            lastDataLength === 0
-              ? undefined
-              : lastPage.data[lastDataLength - 1].id,
-        };
+
+        if (allPagesDataLength < limit) {
+          return false;
+        } else {
+          return {
+            limit: limit,
+            cursor:
+              lastDataLength === 0
+                ? undefined
+                : lastPage.data[lastDataLength - 1].id,
+          };
+        }
       },
       keepPreviousData: true,
     },
