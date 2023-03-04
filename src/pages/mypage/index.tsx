@@ -1,7 +1,7 @@
 import {HStack, Image, Stack, Text, View} from 'native-base';
 import React from 'react';
 import {colors} from '~/theme/theme';
-import Notice from '~/assets/icons/notice_30.svg';
+import NotificationIcon from '~/assets/icons/notification_30.svg';
 import {APP_WIDTH} from '~/utils/dimension';
 import NoticeDashboard from '~/components/mypage/NoticeDashboard';
 import BookMarkFillIcon from '~/assets/icons/bookmark_fill_30.svg';
@@ -92,7 +92,7 @@ function MyPage() {
             <NoticeDashboard
               name={'새 알림'}
               count={10}
-              icon={<Notice fill={colors.fussOrange[0]} />}
+              icon={<NotificationIcon fill={colors.fussOrange[0]} />}
               onPress={() => navigation.navigate('MyPageNotice')}
             />
             <NoticeDashboard
@@ -164,7 +164,7 @@ function MyPage() {
 
           <MenuButton
             buttonName={'시설 소개/추천하기'}
-            onPress={() => navigation.navigate('Inquiry')}
+            onPress={() => {}}
             rightElement={
               <Tag
                 name={'도움이 필요해요!'}
