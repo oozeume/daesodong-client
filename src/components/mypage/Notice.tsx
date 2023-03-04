@@ -29,6 +29,7 @@ function Notice({notice}: Props) {
       <Text color={colors.fussOrange[0]} fontSize={'12px'}>
         {notice.category}
       </Text>
+
       <Text
         mt={'4px'}
         color={colors.grayScale[80]}

@@ -23,9 +23,7 @@ function UserInfo() {
 
         <PetInfoOneLine
           color={colors.grayScale[60]}
-          petType={'골든햄스터'}
-          petAge={'2개월'}
-          petGender={'남아'}
+          textList={['동물종', 'N개월', '성별']}
           dividerColor={colors.grayScale[30]}
         />
       </Stack>

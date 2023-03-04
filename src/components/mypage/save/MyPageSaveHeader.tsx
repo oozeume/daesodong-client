@@ -72,13 +72,15 @@ function MyPageSaveHeader(props: Props) {
         </Animated.View>
 
         {Object.keys(TABS).map((tab, i) => (
-          <TabElement
-            key={tab}
-            text={TABS[tab as keyof typeof TABS]}
-            active={currentRoute === tab}
-            onPress={() => setActivePage(tab as keyof typeof TABS)}
-            onLayout={setElementSize(i)}
-          />
+          <React.Fragment key={i.toString()}>
+            <TabElement
+              key={tab}
+              text={TABS[tab as keyof typeof TABS]}
+              active={currentRoute === tab}
+              onPress={() => setActivePage(tab as keyof typeof TABS)}
+              onLayout={setElementSize(i)}
+            />
+          </React.Fragment>
         ))}
       </HStack>
     </Stack>
