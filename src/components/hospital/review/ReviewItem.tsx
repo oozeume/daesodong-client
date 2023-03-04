@@ -61,6 +61,7 @@ function ReviewItem({
   const {refetch} = useGetFacilityReviews({
     facilityId,
     limit: 10,
+    same: false,
   });
 
   const userInfo = useUserContext({userId: ''});
@@ -77,7 +78,7 @@ function ReviewItem({
 
   const isMyReview = useMemo(() => {
     return review.userId === userInfo.userId;
-  }, [review.userId, userInfo.userId]);
+  }, [review, userInfo.userId]);
 
   const {mutateAsync} = useMutationReviewDelete(
     review.facilityId,
