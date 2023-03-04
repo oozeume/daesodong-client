@@ -94,9 +94,9 @@ function TagRegister() {
               }
             />
             <HStack>
-              {tagList.map(t => (
+              {tagList.map((tag, index) => (
                 <HStack
-                  key={t}
+                  key={index.toString()}
                   mr={'5px'}
                   borderRadius={'16px'}
                   borderWidth={1}
@@ -107,9 +107,9 @@ function TagRegister() {
                   pl={'12px'}
                   pr={'10px'}>
                   <Text fontSize={'13px'} color={colors.grayScale[70]}>
-                    {t}
+                    {tag}
                   </Text>
-                  <Pressable onPress={() => onDelete(t)}>
+                  <Pressable onPress={() => onDelete(tag)}>
                     <CircleDeleteIcon />
                   </Pressable>
                 </HStack>

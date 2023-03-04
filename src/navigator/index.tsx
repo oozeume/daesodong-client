@@ -47,6 +47,7 @@ import SignupPetInfoNavigator from '~/pages/signup/petInfoNavigator';
 import PetInfoRegisterOutro from '~/pages/signup/petInfoRegister/outro';
 import FacilityDetail from '../pages/facility/detail';
 import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
+import FacilityReviewEdit from '~/pages/facility/detail/review/edit';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -75,6 +76,12 @@ const AppNavigator = () => {
           name="FacilityReviewRegister"
           component={FacilityReviewRegister}
         />
+
+        <Stack.Screen
+          name="FacilityReviewEdit"
+          component={FacilityReviewEdit}
+        />
+
         <Stack.Screen
           name="TagRegister"
           component={TagRegister}

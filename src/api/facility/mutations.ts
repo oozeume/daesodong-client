@@ -35,3 +35,40 @@ const postReviewRegister = (data: PostFacilityReviewData, id: string) => {
 export const useMutationReviewRegister = (id: string) => {
   return useMutation((data: any) => postReviewRegister(data, id));
 };
+
+/**
+ *@description 시설 리뷰 수정 API
+ */
+
+const patchReviewEdit = (
+  data: PostFacilityReviewData,
+  id: string,
+  reviewId: string,
+) => {
+  return apiCall<PostFacilityReviewData>({
+    method: 'PATCH',
+    url: `hospitals/${id}/reviews/${reviewId}`,
+    data,
+  });
+};
+
+export const useMutationReviewEdit = (id: string, reviewId: string) => {
+  return useMutation((data: PostFacilityReviewData) =>
+    patchReviewEdit(data, id, reviewId),
+  );
+};
+
+/**
+ *@description 시설 리뷰 삭제 API
+ */
+
+const deleteReview = (id: string, reviewId: string) => {
+  return apiCall({
+    method: 'DELETE',
+    url: `hospitals/${id}/reviews/${reviewId}`,
+  });
+};
+
+export const useMutationReviewDelete = (id: string, reviewId: string) => {
+  return useMutation(() => deleteReview(id, reviewId));
+};
