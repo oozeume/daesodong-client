@@ -64,21 +64,27 @@ export const useGetVisitedPetsFacility = (facilityId: string) => {
 type GetFacilityReviewsQuery = {
   facilityId: string;
   limit: number;
+  same: boolean;
 };
 
-const getFacilityReviews = ({facilityId, limit}: GetFacilityReviewsQuery) => {
+const getFacilityReviews = ({
+  facilityId,
+  limit,
+  same,
+}: GetFacilityReviewsQuery) => {
   return apiCall<FacilityReviewsResponse[]>({
     method: 'GET',
-    url: `/hospitals/${facilityId}/reviews?limit=${limit}`,
+    url: `/hospitals/${facilityId}/reviews?limit=${limit}&same=${same}`,
   });
 };
 
 export const useGetFacilityReviews = ({
   facilityId,
   limit,
+  same,
 }: GetFacilityReviewsQuery) => {
   return useQuery([QueryKeys.facility.reviews], () =>
-    getFacilityReviews({facilityId, limit}),
+    getFacilityReviews({facilityId, limit, same}),
   );
 };
 

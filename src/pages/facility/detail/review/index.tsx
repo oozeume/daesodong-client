@@ -13,11 +13,14 @@ import {
   useReviewRegister,
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
-import {FacilityReviewsResponse} from '~/../types/api/facility';
-import Review from '~/model/review';
+import Review from '~/model/faciltiyReview';
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import EmptyReviews from '~/components/facility/review/EmptyReviews';
 import _ from 'lodash';
+import {FacilityReviewsResponse} from '~/../types/api/facility';
+import {ReviewType} from '~/../types/facility';
+
+const MARGIN_X = 18;
 
 interface Props {
   id: string;
@@ -40,6 +43,7 @@ function FacilityReview({id, facilityName}: Props) {
   const {data, isLoading, refetch} = useGetFacilityReviews({
     facilityId: id,
     limit: 10,
+    same: false,
   });
 
   const onMoveReviewRegisterPage = () => {
@@ -50,18 +54,25 @@ function FacilityReview({id, facilityName}: Props) {
   };
 
   const setIsReviewResterComplete = useReviewRegister();
-  const isRevewRegisterComplete = useReviewRegisterContext(false);
+  const isRevewRegisterComplete = useReviewRegisterContext({
+    type: ReviewType.Register,
+    isComplete: false,
+  });
 
   const onClose = () => {
-    setIsReviewResterComplete(false);
+    setIsReviewResterComplete({type: ReviewType.Register, isComplete: false});
     setIsCompleteModalOpen(false);
 
     refetch();
   };
 
   useEffect(() => {
-    if (isFocused && isRevewRegisterComplete) {
-      setIsCompleteModalOpen(true);
+    if (isFocused && isRevewRegisterComplete.isComplete) {
+      if (isRevewRegisterComplete.type === ReviewType.Register) {
+        setIsCompleteModalOpen(true);
+      } else {
+        refetch();
+      }
     }
   }, [isFocused, isRevewRegisterComplete]);
 
@@ -124,7 +135,11 @@ function FacilityReview({id, facilityName}: Props) {
             </HStack>
           </HStack>
 
-          <ReviewList reviews={reviews} />
+          <ReviewList
+            reviews={reviews}
+            facilityName={facilityName}
+            facilityId={id}
+          />
         </ScrollView>
       )}
 
@@ -148,7 +163,7 @@ function FacilityReview({id, facilityName}: Props) {
             </Text>
             <Button
               onPress={onClose}
-              width={APP_WIDTH - 18 * 2}
+              width={APP_WIDTH - MARGIN_X * 2}
               height={'52px'}
               borderRadius={'8px'}
               borderColor={colors.grayScale[60]}
