@@ -42,6 +42,7 @@ function FacilityReview({id, facilityName}: Props) {
     useGetFacilityReviews({
       facilityId: id,
       limit: 10,
+      same: false,
     });
 
   const onMoveReviewRegisterPage = () => {

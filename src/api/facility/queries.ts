@@ -66,31 +66,34 @@ type GetFacilityReviewsQuery = {
   facilityId: string;
   limit: number;
   cursor?: string;
+  same: boolean;
 };
 
 const getFacilityReviews = ({
   facilityId,
   limit,
   cursor,
+  same,
 }: GetFacilityReviewsQuery | any) => {
   return apiCall<FacilityReviewsResponse[]>({
     method: 'GET',
     url: _.isNil(cursor)
-      ? `/hospitals/${facilityId}/reviews?limit=${limit}`
-      : `/hospitals/${facilityId}/reviews?limit=${limit}&cursor=${cursor}`,
+      ? `/hospitals/${facilityId}/reviews?limit=${limit}&same=${same}`
+      : `/hospitals/${facilityId}/reviews?limit=${limit}&cursor=${cursor}&same=${same}`,
   });
 };
 
 export const useGetFacilityReviews = ({
   facilityId,
   limit,
+  same,
 }: GetFacilityReviewsQuery) => {
   return useInfiniteQuery(
     [QueryKeys.facility.reviews],
     param => {
       const cursor = param.pageParam?.cursor ?? undefined;
 
-      return getFacilityReviews({facilityId, limit, cursor});
+      return getFacilityReviews({facilityId, limit, cursor, same});
     },
     {
       getNextPageParam: lastPage => {
