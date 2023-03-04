@@ -10,9 +10,15 @@ import AddressChange from '~/components/mypage/myInfo/AddressChange';
 import ToastMessage from '~/components/common/toast/ToastMessage';
 import NameChange from '~/components/mypage/myInfo/NameChange';
 import {colors} from '~/theme/theme';
+import {useGetUser} from '~/api/user/queries';
 
+/**
+ *@description 내 계정 > 내 정보 페이지
+ */
 function MyInfo() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const {data: userData} = useGetUser();
+
   const [nicknameModalOpen, setNicknameModalOpen] = useState(false);
   const [genderModalOpen, setGenderModalOpen] = useState(false);
   const [birthModalOpen, setBirthModalOpen] = useState(false);
@@ -27,23 +33,27 @@ function MyInfo() {
           onPress={() => navigation.navigate('MyLoginInfo')}
         />
         <Info
+          text={'비밀번호 변경'}
+          onPress={() => setNicknameModalOpen(true)}
+        />
+        <Info
           text={'닉네임'}
-          info={'봉이네'}
+          info={userData?.nickname ?? ''}
           onPress={() => setNicknameModalOpen(true)}
         />
         <Info
           text={'성별'}
-          info={'여성'}
+          info={userData?.gender === 'Male' ? '남성' : '여성'}
           onPress={() => setGenderModalOpen(true)}
         />
         <Info
           text={'태어난 년도'}
-          info={'1995년'}
+          info={`${userData?.birthdate}년`}
           onPress={() => setBirthModalOpen(true)}
         />
         <Info
           text={'거주지'}
-          info={'서울 광진구 능동'}
+          info={`${userData?.address}`}
           onPress={() => setAddressModalOpen(true)}
         />
       </Stack>

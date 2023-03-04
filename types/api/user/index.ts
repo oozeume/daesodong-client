@@ -32,4 +32,4 @@ export type UserPetInfo = {
 
 export type PatchUserInfoResponse = boolean;
 
-export interface PatchUserInfoBody extends PetInfoForm {}
+export interface PatchUserInfoData extends PetInfoForm {}
