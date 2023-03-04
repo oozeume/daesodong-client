@@ -8,6 +8,7 @@ import {usePostRecommentThank} from '~/api/recomment/mutation';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
+import useToastShow from '~/hooks/useToast';
 import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
 import {config} from '~/utils/config';
@@ -46,6 +47,7 @@ const Comment = ({
 
   const [isThank, setThank] = useState(data?.isThank);
   const [thankCount, setThankCount] = useState(data?.thanks ?? 0);
+  const {toastShow} = useToastShow();
 
   /**
    *@description 댓글 고마워요/취소
@@ -72,6 +74,13 @@ const Comment = ({
         isOn: !isThank,
       });
     }
+  };
+
+  /**
+   *@description 삭제된 댓글에 답글 달기 버튼 클릭 이벤트
+   */
+  const onRecommentByDeletedComment = () => {
+    toastShow('삭제된 댓글에는 답글을 남길 수 없어요!');
   };
 
   return (
@@ -243,6 +252,27 @@ const Comment = ({
               </HStack>
             </Pressable>
           )}
+
+          {commentType.type === 'default' &&
+            commentType.isDelete &&
+            !_.isEmpty(data?.recomments) && (
+              <Pressable
+                borderColor={colors.grayScale['20']}
+                bgColor={colors.grayScale['0']}
+                borderWidth={1}
+                pl="10px"
+                pr="8px"
+                py="4px"
+                mr="6px"
+                borderRadius={4}
+                onPress={onRecommentByDeletedComment}>
+                <HStack>
+                  <Text color={colors.grayScale[40]} fontSize="13px">
+                    {`답글 ${data?.recomments.length}`}
+                  </Text>
+                </HStack>
+              </Pressable>
+            )}
 
           {!commentType.isDelete && (
             <Pressable
