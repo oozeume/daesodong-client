@@ -60,8 +60,6 @@ class User {
 
     const tmp = this.user.pets[0];
 
-    console.log('@ TMP USER');
-    console.log(tmp);
     const _info = {
       ...tmp,
       petImageURL: tmp.pet_picture_url,

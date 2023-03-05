@@ -16,10 +16,11 @@ import _ from 'lodash';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setPetType: (selectedItem: SpeciesData) => void;
+  setPetType?: (selectedItem: SpeciesData) => void;
   isEnrollPet?: boolean;
-  onPress?: () => void;
+  onPress?: (selectedItem?: SpeciesData) => void;
   buttonText?: string;
+  previousPetTypeName?: string;
 }
 
 /**
@@ -34,6 +35,7 @@ function PetTypeSelectModal({
   isEnrollPet,
   onPress,
   buttonText,
+  previousPetTypeName,
 }: Props) {
   const statusbarHeight = getStatusBarHeight();
   const [isPetTypeEmpty, setPetTypeEmpty] = useState(false);
@@ -41,22 +43,60 @@ function PetTypeSelectModal({
   const {data, isSuccess} = useGetSpecies({limit: 10});
   const [searchText, setSearchText] = useState('');
   const [searchList, setSearchList] = useState<SpeciesData[]>([]);
-
+  const [defaultList, setDefaultList] = useState<SpeciesData[]>(
+    data?.data ?? [],
+  );
   const petSearchHeight = 200;
 
   useEffect(() => {
-    let _searchList: SpeciesData[] = [];
-    data?.data.forEach(item => {
-      if (item?.name && item?.name.includes(searchText)) {
-        _searchList.push(item);
-      }
-    });
+    if (!_.isEmpty(searchText)) {
+      let _searchList: SpeciesData[] = [];
+      let _selectedPetType;
 
-    if (!_searchList.length && searchText.length) setPetTypeEmpty(true);
-    else setPetTypeEmpty(false);
+      data?.data.forEach(item => {
+        if (item.name === previousPetTypeName) {
+          _selectedPetType = item;
+        }
 
-    setSearchList(_searchList);
+        if (
+          item?.name &&
+          item?.name.includes(searchText) &&
+          item.name !== previousPetTypeName
+        ) {
+          _searchList.push(item);
+        }
+      });
+
+      // 검색 단어는 있지만, 검색된 리스트는 없을 경우
+      if (!_searchList.length && searchText.length) setPetTypeEmpty(true);
+      else setPetTypeEmpty(false);
+
+      if (_selectedPetType) _searchList.unshift(_selectedPetType);
+
+      setSearchList(_searchList);
+    }
   }, [searchText]);
+
+  useEffect(() => {
+    if (previousPetTypeName) {
+      let _selectedPetType;
+      const filterSpecies = (data?.data ?? []).filter(item => {
+        if (item.name === previousPetTypeName) {
+          _selectedPetType = item;
+        }
+
+        return item.name !== previousPetTypeName;
+      });
+
+      setSelectedItem(_selectedPetType);
+
+      let _searchList = _selectedPetType
+        ? [_selectedPetType, ...filterSpecies]
+        : [...filterSpecies];
+
+      setDefaultList(_searchList);
+    }
+  }, []);
 
   return (
     <Actionsheet
@@ -142,7 +182,9 @@ function PetTypeSelectModal({
                 style={{
                   height: APP_HEIGHT - statusbarHeight - petSearchHeight,
                 }}
-                data={!searchList.length && isSuccess ? data?.data : searchList}
+                data={
+                  !searchList.length && isSuccess ? defaultList : searchList
+                }
                 keyExtractor={(_, index) => index.toString()}
                 scrollEnabled
                 renderItem={({item, index}) => (
@@ -156,7 +198,10 @@ function PetTypeSelectModal({
                         ? colors.fussOrange[0]
                         : colors.grayScale[20]
                     }
-                    onPress={() => setSelectedItem(item)}>
+                    onPress={() => {
+                      setSelectedItem(item);
+                      if (setPetType) setPetType(item);
+                    }}>
                     <HStack
                       w={`${APP_WIDTH - 36}px`}
                       h="100%"
@@ -179,7 +224,7 @@ function PetTypeSelectModal({
 
                         <Text color={colors.grayScale[60]} fontSize="16px">
                           {index === 0 && !isEnrollPet
-                            ? '우리 아이(친칠라)'
+                            ? `우리 아이(${previousPetTypeName})`
                             : item.name}
                         </Text>
                       </HStack>
@@ -207,7 +252,7 @@ function PetTypeSelectModal({
                 handlePress={() => {
                   if (!selectedItem) return;
                   onClose();
-                  setPetType(selectedItem);
+                  if (setPetType) setPetType(selectedItem);
                   if (onPress) onPress();
                 }}
                 large

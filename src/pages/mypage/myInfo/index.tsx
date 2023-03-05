@@ -134,6 +134,8 @@ function MyInfo() {
         refetchUserData();
       })
       .catch(() => {
+        setModalOpen(prev => ({...prev, [modalKey]: false}));
+
         toastShow(
           `${messageKey} 변경 과정에서 오류가 발생했습니다. 다시 시도해주세요.`,
         );

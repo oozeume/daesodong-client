@@ -7,11 +7,13 @@ interface Props {
   bgColor?: string;
   color?: string;
   width?: string;
+  top?: number;
 }
 
-function Tag({name, bgColor, color, width}: Props) {
+function Tag({name, bgColor, color, width, top}: Props) {
   return (
     <Flex
+      top={top ? `${top}px` : 0}
       w={width ?? '44px'}
       h={'20px'}
       borderRadius={'4px'}

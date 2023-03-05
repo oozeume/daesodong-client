@@ -16,3 +16,13 @@ export type MyInfoForm = {
   birthdate: number;
   address: string;
 };
+
+/**
+ *@description 내 아이 정보 수정 폼
+ */
+export type MyPetInfoForm = {
+  name: string;
+  speciesName: string;
+  age: number;
+  sex: GenderType;
+};

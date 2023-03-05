@@ -1,10 +1,9 @@
-import {Button, Center, Divider, HStack, Text} from 'native-base';
-import React, {useEffect, useState} from 'react';
-import {TextInput} from 'react-native';
+import _ from 'lodash';
+import {Button, Center, HStack, Text} from 'native-base';
+import React from 'react';
 import {VerificationResult} from '~/../types/verification';
 import VerificationForm from '~/components/common/VerificationForm';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
 import {colors} from '~/theme/theme';
 
 interface Props {
@@ -55,12 +54,7 @@ function NameChange({
         {subText}
       </Center>
 
-      <HStack
-        mt={'24px'}
-        height={'100px'}
-        width="100%"
-        justifyContent={'space-between'}
-        alignItems={'center'}>
+      <HStack mt={'24px'} width="100%">
         <VerificationForm
           placeholder={placeholder}
           verificationResult={verificationResult}
@@ -71,12 +65,11 @@ function NameChange({
           value={value}
           marginBottom={'20px'}
           onChangeText={onChangeText}
+          inputRightElement={valueUnit}
         />
-
-        {valueUnit}
       </HStack>
 
-      <HStack mt="24px" flex={1} space={'10px'}>
+      <HStack mt={_.isEmpty(helpList) ? 0 : '24px'} flex={1} space={'10px'}>
         <Button
           onPress={onClose}
           width={'80px'}

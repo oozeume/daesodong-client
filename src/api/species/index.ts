@@ -18,9 +18,15 @@ const getSpecies = (query: GetSpeciesQuery) => {
 /**
  *@description 동물 종 리스트 조회 api hook
  */
-export const useGetSpecies = (query: GetSpeciesQuery) => {
-  return useQuery(['get-species', query], ({queryKey}) => {
-    const _query = queryKey[1] as GetSpeciesQuery;
-    return getSpecies(_query);
-  });
+export const useGetSpecies = (query: GetSpeciesQuery, enabled?: boolean) => {
+  return useQuery(
+    ['get-species', query],
+    ({queryKey}) => {
+      const _query = queryKey[1] as GetSpeciesQuery;
+      return getSpecies(_query);
+    },
+    {
+      enabled,
+    },
+  );
 };
