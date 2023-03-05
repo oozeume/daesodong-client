@@ -11,7 +11,7 @@ const PADDING_X = 18;
 
 interface Props {
   onClose: () => void;
-  onPress: () => void;
+  onPress: (birthdate?: number) => void;
 }
 
 /**
@@ -98,7 +98,7 @@ function BirthChange({onClose, onPress}: Props) {
         </Button>
 
         <Button
-          onPress={onPress}
+          onPress={() => onPress(birthDate)}
           flex={1}
           height={'52px'}
           borderRadius={'8px'}

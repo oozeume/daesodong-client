@@ -1,3 +1,4 @@
+import {GenderType} from '../../common';
 import {SignupForm} from '../../signup';
 
 // 이메일 회원가입 api 전송 데이터
@@ -46,7 +47,7 @@ export interface PostAuthMobileVerifyCodeResponse {
   birthdate: string | null;
   created_at: string;
   email: string;
-  gender: 'Male' | 'Female';
+  gender: GenderType;
   id: string;
   mobile: string;
   nickname: string;

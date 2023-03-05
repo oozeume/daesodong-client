@@ -1,9 +1,31 @@
 import {useMutation} from '@tanstack/react-query';
-import {PatchUserInfoData, PatchUserInfoResponse} from '~/../types/api/user';
+import {
+  PatchUserData,
+  PatchUserInfoData,
+  PatchUserInfoResponse,
+} from '~/../types/api/user';
 import {apiCall} from '../common';
 
 /**
- *@description 유저 정보 수정 api
+ *@description 유저 수정 api
+ */
+const patchUser = (data: PatchUserData) => {
+  return apiCall<boolean>({
+    method: 'PATCH',
+    url: `users`,
+    data,
+  });
+};
+
+/**
+ *@description 유저 수정 api hook
+ */
+export const usePatchUser = () => {
+  return useMutation((data: PatchUserData) => patchUser(data));
+};
+
+/**
+ *@description 유저 부가 정보 수정 api
  */
 const patchUserInfo = (_data: PatchUserInfoData) => {
   const data = {
@@ -23,7 +45,7 @@ const patchUserInfo = (_data: PatchUserInfoData) => {
 };
 
 /**
- *@description 유저 정보 수정 api hook
+ *@description 유저 부가 정보 수정 api hook
  */
 export const usePatchUserInfo = () => {
   return useMutation((data: PatchUserInfoData) => patchUserInfo(data));

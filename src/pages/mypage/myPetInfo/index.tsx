@@ -82,20 +82,21 @@ function MyPetInfo() {
         height={'222px'}
         onClose={() => setGenderModalOpen(false)}
         ElementComponent={
-          <GenderChange
-            onPress={() => {
-              setGenderModalOpen(false);
-              toast.show({
-                render: () => (
-                  <ToastMessage text={'우리 아이 성별을 변경했어요'} />
-                ),
-              });
-            }}
-          />
+          <></>
+          // <GenderChange
+          //   onPress={() => {
+          //     setGenderModalOpen(false);
+          //     toast.show({
+          //       render: () => (
+          //         <ToastMessage text={'우리 아이 성별을 변경했어요'} />
+          //       ),
+          //     });
+          //   }}
+          // />
         }
       />
 
-      <InfoChangeBottomSheet
+      {/* <InfoChangeBottomSheet
         isOpen={birthModalOpen}
         onClose={() => setBirthModalOpen(false)}
         ElementComponent={
@@ -103,9 +104,8 @@ function MyPetInfo() {
             title={'나이'}
             value={'2'}
             valueUnit={<Text color={colors.grayScale[70]}>개월</Text>}
-            isInvisibleDuplicationButton
             onClose={() => setBirthModalOpen(false)}
-            onPress={() => {
+            onPress={value => {
               setBirthModalOpen(false);
               toast.show({
                 render: () => (
@@ -115,7 +115,7 @@ function MyPetInfo() {
             }}
           />
         }
-      />
+      /> */}
 
       <PetTypeSelectModal
         isOpen={petTypeModalOpen}
@@ -129,16 +129,15 @@ function MyPetInfo() {
         onClose={() => setPetTypeModalOpen(false)}
       />
 
-      <InfoChangeBottomSheet
+      {/* <InfoChangeBottomSheet
         isOpen={nameModalOpen}
         onClose={() => setNameModalOpen(false)}
         ElementComponent={
           <NameChange
             title={'아이 이름'}
             value={'봉이네'}
-            isInvisibleDuplicationButton
             onClose={() => setNameModalOpen(false)}
-            onPress={() => {
+            onPress={value => {
               setNameModalOpen(false);
               toast.show({
                 render: () => (
@@ -148,7 +147,7 @@ function MyPetInfo() {
             }}
           />
         }
-      />
+      /> */}
     </Stack>
   );
 }

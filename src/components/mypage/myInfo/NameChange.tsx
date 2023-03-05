@@ -1,16 +1,26 @@
 import {Button, Center, Divider, HStack, Text} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TextInput} from 'react-native';
+import {VerificationResult} from '~/../types/verification';
+import VerificationForm from '~/components/common/VerificationForm';
+import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
+import {SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
 import {colors} from '~/theme/theme';
 
 interface Props {
+  value: string;
+  onChangeText: (text: string) => void;
   onPress: () => void;
   onClose: () => void;
-  isInvisibleDuplicationButton?: boolean;
   title?: string;
-  value?: string;
   valueUnit?: JSX.Element;
   subText?: JSX.Element;
+  placeholder?: string;
+  successMessage?: string;
+  errorMessage?: string;
+  helpList?: string[];
+  verificationResult?: VerificationResult;
+  helpResults?: VerificationResult[];
 }
 
 /**
@@ -18,15 +28,20 @@ interface Props {
  */
 
 function NameChange({
+  value,
+  onChangeText,
   onPress,
   onClose,
-  isInvisibleDuplicationButton,
   title,
-  value,
   valueUnit,
   subText,
+  placeholder,
+  successMessage,
+  errorMessage,
+  verificationResult,
+  helpResults,
+  helpList = [],
 }: Props) {
-  const [newName, setNewname] = useState(value);
   return (
     <>
       <Center flex={1} px={'18px'} pt={'28px'}>
@@ -42,57 +57,45 @@ function NameChange({
 
       <HStack
         mt={'24px'}
-        height={'60px'}
+        height={'100px'}
         width="100%"
         justifyContent={'space-between'}
         alignItems={'center'}>
-        <TextInput onChangeText={setNewname} value={newName} />
+        <VerificationForm
+          placeholder={placeholder}
+          verificationResult={verificationResult}
+          successMessage={successMessage}
+          errorMessage={errorMessage}
+          helpList={helpList}
+          helpVerificationResults={helpResults}
+          value={value}
+          marginBottom={'20px'}
+          onChangeText={onChangeText}
+        />
 
         {valueUnit}
-
-        {!isInvisibleDuplicationButton && (
-          <Button
-            backgroundColor={colors.fussYellow[0]}
-            borderColor={colors.grayScale[90]}
-            borderWidth={1}
-            height={'36px'}
-            alignItems={'center'}
-            justifyContent={'center'}>
-            <Text fontWeight={'500'} fontSize={'14px'} lineHeight={'14px'}>
-              중복확인
-            </Text>
-          </Button>
-        )}
       </HStack>
 
-      <Divider mb={'24px'} />
-
-      <HStack flex={1} space={'10px'}>
+      <HStack mt="24px" flex={1} space={'10px'}>
         <Button
           onPress={onClose}
           width={'80px'}
           height={'52px'}
           borderColor={colors.grayScale[60]}
           borderWidth={1}
+          borderRadius={'8px'}
           backgroundColor={colors.grayScale[10]}>
           <Text fontSize={'16px'} fontWeight={'500'}>
             이전
           </Text>
         </Button>
-        <Button
-          onPress={onPress}
-          flex={1}
-          height={'52px'}
-          borderColor={colors.grayScale[60]}
-          borderWidth={1}
-          backgroundColor={colors.fussOrange['0']}>
-          <Text
-            fontSize={'16px'}
-            fontWeight={'500'}
-            color={colors.grayScale[80]}>
-            변경
-          </Text>
-        </Button>
+
+        <RedActiveLargeButton
+          buttonStyle={{flex: 1}}
+          active={verificationResult === 'SUCCESS'}
+          text={'변경'}
+          handlePress={onPress}
+        />
       </HStack>
     </>
   );
