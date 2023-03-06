@@ -27,6 +27,7 @@ import {useMutationReviewDelete} from '~/api/facility/mutations';
 import {useUserContext} from '~/store/useUserContext';
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
+import ThanksReview from './ThanksReview';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -283,16 +284,7 @@ function ReviewItem({
           ))}
         </HStack>
 
-        {/* TODO: 리뷰 고마워요 api 요청 필요 */}
-        <HStack
-          alignItems={'center'}
-          space={'10px'}
-          py={'20px'}
-          borderTopWidth={'1'}
-          borderTopColor={'#F6F7F7'}>
-          <HeartFillIcon fill={'#E1E2E4'} stroke={'#E1E2E4'} />
-          <Text color={'grayScale.60'}>23마리의 친구가 고마워했어요!</Text>
-        </HStack>
+        <ThanksReview review={review} />
 
         <ImageModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </Box>
