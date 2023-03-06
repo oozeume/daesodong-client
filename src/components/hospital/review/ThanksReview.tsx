@@ -7,7 +7,7 @@ import {
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 
 interface Props {
   review: Review;

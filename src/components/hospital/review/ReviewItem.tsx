@@ -16,7 +16,7 @@ import AvatarIcon from '~/assets/icons/avartar.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import ImageContainer from './imageContainer.tsx';
 import {colors} from '~/theme/theme';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {Platform} from 'react-native';
 import _ from 'lodash';
