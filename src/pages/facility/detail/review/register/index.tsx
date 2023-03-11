@@ -12,6 +12,9 @@ import {useTagContext, useTagRegister} from '~/store/useTagContext';
 import {INIT_REVIEW_FORM} from '~/constants/facility/detail';
 import ReviewForm from '../../../../../components/facility/review/ReviewForm';
 import {ReviewType} from '~/../types/facility';
+import useImageUpload from '~/hooks/useImagesUpload';
+import {RegisterImageData} from '~/../types/community';
+import {PostCloudImageData} from '~/../types/utils';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -36,9 +39,30 @@ function FacilityReviewRegister({route}: Props) {
   const setIsReviewRegisterComplete = useReviewRegister();
 
   const {mutateAsync: mutateRegister} = useMutationReviewRegister(id);
+  const uploadReviewForm = () => {
+    mutateRegister({
+      ...reviewForm,
+      hospital_review_picture: images.map(item => item.cloudImageName),
+    }).catch(e => console.log(e));
+  };
+
+  const {onImageUpload} = useImageUpload();
+
+  const [images, setImages] = useState<RegisterImageData[]>([]);
+
+  const uploadImageCloud = () => {
+    onImageUpload(
+      images.reduce<PostCloudImageData[]>((result, item) => {
+        if (item.cloudData) {
+          result.push(item.cloudData);
+        }
+        return result;
+      }, []),
+    );
+  };
 
   const onSubmit = () => {
-    mutateRegister(reviewForm)
+    Promise.all([uploadReviewForm(), uploadImageCloud()])
       .then(() => {
         setTagList([]);
         setTags([]);
@@ -48,7 +72,8 @@ function FacilityReviewRegister({route}: Props) {
           isComplete: true,
         });
       })
-      .catch(e => console.log(e));
+      // TODO: 업로드 실패 알럿 추가
+      .catch(e => console.log('error', e));
   };
 
   useEffect(() => {
@@ -85,6 +110,8 @@ function FacilityReviewRegister({route}: Props) {
         tagList={tagList}
         onSubmit={onSubmit}
         active={active}
+        images={images}
+        setImages={setImages}
       />
 
       <Popup

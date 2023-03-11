@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {FacilityReviewsResponse} from '~/../types/api/facility';
+import {config} from '~/utils/config';
 
 class Review {
   constructor(private readonly review: FacilityReviewsResponse) {}
@@ -43,7 +44,11 @@ class Review {
   }
 
   get petImage() {
-    return this.review.pet.pet_picture_url ?? '';
+    if (this.review?.pet.pet_picture_url) {
+      return `${config.IMAGE_BASE_URL}${this.review.pet.pet_picture_url}`;
+    } else {
+      return '';
+    }
   }
 
   get isRevisit() {
@@ -81,6 +86,10 @@ class Review {
     } else {
       return false;
     }
+  }
+
+  get images() {
+    return this.review?.hospital_review_picture ?? [];
   }
 
   isPetFemale() {

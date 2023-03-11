@@ -244,7 +244,7 @@ function ReviewItem({
           {review.hasExpectRevisit && (
             <HStack alignItems={'center'} space={'6px'}>
               <HeartFillIcon fill={'#FF6B00'} />
-              <Text>재방문 의사 있어요</Text>
+              <Text>재방문의사 있어요</Text>
             </HStack>
           )}
           <HStack alignItems={'center'} space={'6px'}>
@@ -260,13 +260,18 @@ function ReviewItem({
         <Text fontSize={'15px'} color={colors.grayScale[80]}>
           {review.reviewContent}
         </Text>
-
-        {/* TODO: API 수정 요청 필요 (API 이미지 없음) */}
-        {/* <HStack w={'100%'} pt={'16px'} justifyContent={'space-between'}>
-        <ImageContainer onPress={() => setModalOpen(true)} />
-        <ImageContainer onPress={() => setModalOpen(true)} />
-        <ImageContainer onPress={() => setModalOpen(true)} visibleMoreImage />
-      </HStack> */}
+        <HStack w={'100%'} pt={'16px'} justifyContent={'space-between'}>
+          {!_.isEmpty(review.images) &&
+            review.images.map((image: string, index: number) => (
+              <React.Fragment key={index.toString()}>
+                <ImageContainer
+                  imageUrl={image}
+                  onPress={() => setModalOpen(true)}
+                  visibleMoreImage={index > 1}
+                />
+              </React.Fragment>
+            ))}
+        </HStack>
 
         <HStack space={'4px'} pt={'20px'} py={'20px'}>
           {review.tags.map(tag => (

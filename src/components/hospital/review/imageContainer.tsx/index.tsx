@@ -1,16 +1,33 @@
-import {Box, Text} from 'native-base';
+import {Box, Image, Text} from 'native-base';
 import React from 'react';
 import {Platform, Pressable} from 'react-native';
+import {config} from '~/utils/config';
 
 interface Props {
   onPress?: () => void;
   visibleMoreImage?: boolean;
+  imageUrl: string;
 }
 
-function ImageContainer({onPress, visibleMoreImage = false}: Props) {
+function ImageContainer({imageUrl, onPress, visibleMoreImage = false}: Props) {
   return (
     <>
       <Pressable onPress={onPress}>
+        <Image
+          w={Platform.OS === 'ios' ? '108px' : '100px'}
+          h={'108px'}
+          source={{
+            uri: `${config.IMAGE_BASE_URL}${imageUrl}`,
+          }}
+          alt={'image'}
+          fallbackElement={
+            <Box
+              w={Platform.OS === 'ios' ? '108px' : '100px'}
+              h={'108px'}
+              backgroundColor={'grayScale.10'}
+            />
+          }
+        />
         <Box
           w={Platform.OS === 'ios' ? '108px' : '100px'}
           h={'108px'}

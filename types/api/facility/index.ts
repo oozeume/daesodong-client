@@ -134,6 +134,8 @@ export type FacilityReviewsResponse = {
     hospitalReviewId: string;
     userId: string;
   }[];
+  // TODO: api 수정되면 적절한 타입으로 변경
+  hospital_review_picture?: any;
 };
 
 /**
