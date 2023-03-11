@@ -43,3 +43,10 @@ export interface PatchUserData extends MyInfoForm {}
  *@description 유저 부가 정보 수정
  */
 export interface PatchUserInfoData extends PetInfoForm {}
+
+/**
+ *@description 유저 삭제 api 데이터
+ */
+export interface DeleteUserData {
+  reason: string;
+}

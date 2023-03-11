@@ -10,6 +10,7 @@ import {useGetUser} from '~/api/user/queries';
 import {useDeleteUser} from '~/api/user/mutation';
 import useToastShow from '~/hooks/useToast';
 import {ErrorResponse} from '~/../types/api/common';
+import _ from 'lodash';
 
 /**
  *@description 내 계정 - 내 정보 - 로그인 정보 페이지
@@ -22,18 +23,25 @@ function LoginInfo() {
   const {mutateAsync: deleteUser} = useDeleteUser();
 
   const [logout, setLogout] = useState(false);
+
+  const [withdrawalReason, setWithdrawalReason] = useState('');
+
+  // 회원탈퇴 이유 폼 모달 on/off state
   const [withdrawal, setWithdrawal] = useState(false);
+  // 이유를 알려주셔서 감사해요 modal on/off state
   const [withdrawalConfirm, setWithdrawalConfirm] = useState(false);
   const {toastShow} = useToastShow();
 
   const [loginType, setLoginType] = useState('이메일');
 
   const onLogout = () => {
-    navigation.navigate('Login');
+    navigation.reset({index: 0, routes: [{name: 'InitialLogin'}]});
   };
 
   const onLeaveMembership = () => {
-    deleteUser()
+    deleteUser({
+      reason: _.isEmpty(withdrawalReason) ? ' ' : withdrawalReason,
+    })
       .then(response => {
         if (response) setWithdrawalConfirm(true);
       })
@@ -119,6 +127,8 @@ function LoginInfo() {
             placeholder={'정말 떠나신다면 이유를 꼭 듣고싶어요'}
             style={styles.textArea}
             focusOutlineColor={colors.grayScale[30]}
+            value={withdrawalReason}
+            onChangeText={setWithdrawalReason}
           />
         }
       />

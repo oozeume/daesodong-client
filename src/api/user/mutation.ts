@@ -1,5 +1,6 @@
 import {useMutation} from '@tanstack/react-query';
 import {
+  DeleteUserData,
   PatchUserData,
   PatchUserInfoData,
   PatchUserInfoResponse,
@@ -54,10 +55,11 @@ export const usePatchUserInfo = () => {
 /**
  *@description 회원탈퇴 api
  */
-const deleteUser = () => {
+const deleteUser = (data: DeleteUserData) => {
   return apiCall<boolean>({
     method: 'DELETE',
     url: `users`,
+    data,
   });
 };
 
@@ -65,5 +67,5 @@ const deleteUser = () => {
  *@description 회원탈퇴 api hook
  */
 export const useDeleteUser = () => {
-  return useMutation(() => deleteUser());
+  return useMutation((data: DeleteUserData) => deleteUser(data));
 };
