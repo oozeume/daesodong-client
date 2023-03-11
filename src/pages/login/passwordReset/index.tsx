@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {Box, KeyboardAvoidingView} from 'native-base';
+import {Box, KeyboardAvoidingView, Pressable} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -14,12 +14,14 @@ import {NavigationHookProp, RouteHookProp} from '~/../types/navigator';
 import PasswordCheck from './passwordCheck';
 import useToastShow from '~/hooks/useToast';
 import {useGetUser} from '~/api/user/queries';
+import Header from '~/components/common/header/Header';
+import BackIcon from '~/assets/icon/back_icon.svg';
 
 /**
  *@description 비밀번호 재설정 페이지
  */
 function PasswordReset() {
-  const {navigate, setOptions} = useNavigation<NavigationHookProp>();
+  const {navigate, setOptions, goBack} = useNavigation<NavigationHookProp>();
   const {data: userData} = useGetUser();
 
   const [emailForm, setEmailForm] = useState('');
@@ -48,13 +50,20 @@ function PasswordReset() {
 
   useEffect(() => {
     setOptions({
-      title:
-        params.type === 'LOGIN_EMAIL' ? '비밀번호 재설정' : '비밀번호 변경',
+      header: () => (
+        <Header
+          title={
+            params.type === 'LOGIN_EMAIL' ? '비밀번호 재설정' : '비밀번호 변경'
+          }
+          leftButton={
+            <Pressable onPress={() => goBack()}>
+              <BackIcon />
+            </Pressable>
+          }
+        />
+      ),
     });
-
-    if (params.type === 'MY_PET_INFO') {
-    }
-  }, [params]);
+  }, [setOptions, params, goBack]);
 
   return (
     <TouchableWithoutView onPress={Keyboard.dismiss} style={{flex: 1}}>
