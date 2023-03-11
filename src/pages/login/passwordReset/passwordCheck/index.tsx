@@ -2,19 +2,8 @@ import {Text, VStack} from 'native-base';
 import React, {useState} from 'react';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
-import {VerificationResult} from '~/../types/verification';
-import {
-  INCLUDE_ENGLISH_REGREX,
-  INCLUDE_NUMBER_REGREX,
-  PASSWORD_REGREX,
-  RANGE_TEXT_8_20_REGREX,
-} from '~/constants/regEx';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
-import {
-  usePostAuthEmailLogin,
-  usePostAuthResetPassword,
-} from '~/api/auth/mutations';
-import {useGetUser} from '~/api/user/queries';
+import {usePostAuthEmailLogin} from '~/api/auth/mutations';
 import useToastShow from '~/hooks/useToast';
 
 interface Props {
@@ -23,7 +12,7 @@ interface Props {
 }
 
 /**
- *@description 비밀번호 변경 > 현재 비밀번호 확인
+ *@description 비밀번호 변경 > 현재 비밀번호 확인 (내 계정 > 유저 정보 > 비밀번호 변경 페이지로 접근 시)
  */
 function PasswordCheck({handlePage, emailForm}: Props) {
   const {mutateAsync: onPasswordCheck} = usePostAuthEmailLogin();

@@ -39,6 +39,7 @@ function PasswordReset() {
   };
 
   useEffect(() => {
+    // 이전 페이지가 내 계정 > 내 정보 페이지일 경우, 유저 정보 조회를 통한 유저 이메일 state 설정
     if (
       userData?.email &&
       userData?.email !== emailForm &&
@@ -49,6 +50,7 @@ function PasswordReset() {
   }, [userData]);
 
   useEffect(() => {
+    // 이전 페이지에 따른 비밀번호 변경 페이지 타이틀 변경
     setOptions({
       header: () => (
         <Header
