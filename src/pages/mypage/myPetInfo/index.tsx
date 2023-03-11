@@ -1,4 +1,4 @@
-import {Center, HStack, Image, Stack, Text, useToast} from 'native-base';
+import {HStack, Image, Pressable, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {SpeciesData} from '~/../types/api/species';
 import {MyPetInfoForm} from '~/../types/mypage';
@@ -11,19 +11,21 @@ import Info from '~/components/mypage/myInfo/Info';
 import InfoChangeBottomSheet from '~/components/mypage/myInfo/InfoChangeBottomSheet';
 import NameChange from '~/components/mypage/myInfo/NameChange';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
+import useImageUpload from '~/hooks/useImagesUpload';
 import useToastShow from '~/hooks/useToast';
 import {colors} from '~/theme/theme';
+import {config} from '~/utils/config';
+import {onImagePicker} from '~/utils/image';
 
 /**
  *@description 내 계정 > 아이 정보 수정 페이지
  *@todo PetTypeSelectModal을 공통 모듈에 맞게 수정하기
- *@todo 비밀번호 변경 로직 추가하기
- *@todo 이미지 변경 로직 추가하기
  */
 function MyPetInfo() {
   const {data: userData, refetch: refetchUserData} = useGetUser(true);
   const patchUserInfo = usePatchUserInfo();
   const {toastShow} = useToastShow();
+  const {onImageUpload} = useImageUpload();
 
   const [modalOpen, setModalOpen] = useState({
     name: false,
@@ -37,6 +39,7 @@ function MyPetInfo() {
     speciesName: userData?.mainPetInfo.specieName ?? '',
     age: userData?.mainPetInfo.age ?? 1,
     sex: userData?.mainPetInfo.sex ?? 'Male',
+    petPictureUrl: userData?.mainPetInfo?.petImageURL,
   });
 
   const [selectedPetTypeName, setSelectedPetTypeName] = useState(
@@ -51,7 +54,7 @@ function MyPetInfo() {
   const onChangeUserInfo = (
     messageKey: string,
     modalKey: string,
-    _form: MyPetInfoForm,
+    _form: Partial<MyPetInfoForm>,
   ) => {
     patchUserInfo
       .mutateAsync({
@@ -59,7 +62,7 @@ function MyPetInfo() {
         birthDate: userData?.birthdate,
         address: userData?.address ?? '',
         concern: userData?.mainPetInfo.concern ?? '',
-        petPictureUrl: userData?.mainPetInfo.pet_picture_url ?? '',
+        // petPictureUrl: userData?.mainPetInfo?.pet_picture_url,
         ...form,
       })
       .then(() => {
@@ -77,27 +80,60 @@ function MyPetInfo() {
       });
   };
 
+  /**
+   *@description 이미지 선택 > 클라우드 저장 > 서버에 이미지 클라우드 파일명 전송 > 펫 이미지 변경 완료.
+   */
+  const onMyPetImageUpdate = async () => {
+    try {
+      const imageData = await onImagePicker();
+
+      onImageUpload([imageData.cloudData], () => {
+        onChangeUserInfo('이미지', 'petPictureUrl', {
+          petPictureUrl: imageData.cloudImageName,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      toastShow('이미지를 불러오는 과정에서 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <Stack backgroundColor={'white'} flex={1}>
-      <Center
+      <Pressable
         my={'40px'}
         alignSelf={'center'}
         w={'120px'}
         justifyContent={'center'}
+        onPress={onMyPetImageUpdate}
         alignItems={'center'}>
         <Image
           w={120}
           h={120}
           borderColor={'black'}
           borderWidth={1}
-          source={require('../../../assets/images/intro_image.png')}
-          alt={'image'}
           borderRadius={100}
+          fallbackElement={
+            <Image
+              w={120}
+              h={120}
+              borderColor={'black'}
+              borderWidth={1}
+              source={require('../../../assets/images/intro_image.png')}
+              alt={'image'}
+              borderRadius={100}
+            />
+          }
+          alt="post_img"
+          source={{
+            uri: `${config.IMAGE_BASE_URL}${form.petPictureUrl}`,
+          }}
         />
+
         <Stack position={'absolute'} bottom={0} right={0}>
           <CameraIcon fill={'#FF6B00'} />
         </Stack>
-      </Center>
+      </Pressable>
 
       <Stack px={'18px'}>
         <Info

@@ -27,7 +27,7 @@ import {
  *@description 내 계정 > 내 정보 페이지
  */
 function MyInfo() {
-  const navigation = useNavigation<NavigationHookProp>();
+  const {navigate} = useNavigation<NavigationHookProp>();
   const {toastShow} = useToastShow();
 
   const {data: userData, refetch: refetchUserData} = useGetUser(true);
@@ -39,7 +39,6 @@ function MyInfo() {
     gender: false,
     birthdate: false,
     address: false,
-    password: false,
   });
 
   const [previousForm, setPreviousForm] = useState({
@@ -145,13 +144,10 @@ function MyInfo() {
   return (
     <>
       <Stack backgroundColor={'white'} px={'18px'} flex={1}>
-        <Info
-          text={'로그인 정보'}
-          onPress={() => navigation.navigate('MyLoginInfo')}
-        />
+        <Info text={'로그인 정보'} onPress={() => navigate('MyLoginInfo')} />
         <Info
           text={'비밀번호 변경'}
-          onPress={() => setModalOpen(prev => ({...prev, password: true}))}
+          onPress={() => navigate('PasswordReset', {type: 'MY_PET_INFO'})}
         />
         <Info
           text={'닉네임'}

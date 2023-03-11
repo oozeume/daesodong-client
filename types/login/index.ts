@@ -26,3 +26,5 @@ export interface AuthFoundResultParams {
   phoneNumber?: string;
   previousURL: 'FOUND_EMAIL' | 'CHANGE_PASSWORD' | 'SIGNUP';
 }
+
+export type PasswordResetPreviousPage = 'MY_PET_INFO' | 'LOGIN_EMAIL';

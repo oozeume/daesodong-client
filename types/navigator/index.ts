@@ -6,7 +6,7 @@ import {
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Review from '~/model/faciltiyReview';
 import {FacilityReviewParams} from '../facility';
-import {AuthFoundResultParams} from '../login';
+import {AuthFoundResultParams, PasswordResetPreviousPage} from '../login';
 
 /**
  * @description script 설명
@@ -54,7 +54,9 @@ export type RootStackParamList = {
   InitialLogin: undefined;
 
   EmailLogin: undefined;
-  PasswordReset: undefined;
+  PasswordReset: {
+    type: PasswordResetPreviousPage;
+  };
   PasswordResetSuccess: undefined;
   AuthFoundResult: AuthFoundResultParams;
   FindEmail: undefined;

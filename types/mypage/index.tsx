@@ -25,4 +25,5 @@ export type MyPetInfoForm = {
   speciesName: string;
   age: number;
   sex: GenderType;
+  petPictureUrl?: string | null;
 };
