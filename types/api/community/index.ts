@@ -46,7 +46,7 @@ export type GetCommunityPostResponse = {
   title?: string | null;
   updated_at: string;
   userId: string;
-  views: 0;
+  views: number;
   comments: number;
   thanks_post_join: {
     postId: string;
