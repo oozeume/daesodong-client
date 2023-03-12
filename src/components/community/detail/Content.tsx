@@ -22,6 +22,7 @@ import CommunityPost from '~/model/communityPost';
 import _ from 'lodash';
 import {config} from '~/utils/config';
 import ImageSwiper from '~/components/common/swiper/ImageSwiper';
+import ProfileImage from '~/components/common/profileImage/ProfileImage';
 
 interface Props {
   isVisibleTopUserInfo?: boolean;
@@ -33,6 +34,8 @@ interface Props {
   isVisibleTime?: boolean;
   contentData?: CommunityPost;
   onThank?: () => void;
+  isThank?: boolean;
+  thankCount?: number;
 }
 
 /**
@@ -48,6 +51,8 @@ const CommunityContent = ({
   isVisibleTime,
   contentData,
   onThank,
+  isThank,
+  thankCount,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -72,23 +77,8 @@ const CommunityContent = ({
           {/* 유저 이미지 */}
 
           <HStack w="100%">
-            <Image
-              w={44}
-              h={44}
-              borderRadius={44}
-              mr="12px"
-              fallbackElement={
-                <AvatarIcon
-                  width={44}
-                  height={44}
-                  fill={colors.grayScale['30']}
-                  style={{marginRight: 12}}
-                />
-              }
-              alt="post_user_img"
-              source={{
-                uri: `${config.IMAGE_BASE_URL}${contentData?.writerPetInfo?.pet_picture_url}`,
-              }}
+            <ProfileImage
+              imageName={contentData?.writerPetInfo?.pet_picture_url}
             />
 
             <VStack>
@@ -258,22 +248,16 @@ const CommunityContent = ({
           <Pressable onPress={onThank}>
             <HStack alignItems={'center'}>
               <HeartFillIcon
-                fill={
-                  contentData?.isThank
-                    ? colors.grayScale['90']
-                    : colors.grayScale['30']
-                }
+                fill={isThank ? colors.grayScale['90'] : colors.grayScale['30']}
               />
 
               <Text
                 ml="4px"
                 fontSize="12px"
                 color={
-                  contentData?.isThank
-                    ? colors.grayScale['90']
-                    : colors.grayScale['60']
+                  isThank ? colors.grayScale['90'] : colors.grayScale['60']
                 }>
-                {`고마워요 ${contentData?.thanks}`}
+                {`고마워요 ${thankCount}`}
               </Text>
             </HStack>
           </Pressable>
