@@ -25,6 +25,7 @@ import {useDeleteComment} from '~/api/comment/mutation';
 import {useDeleteRecomment} from '~/api/recomment/mutation';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import useToastShow from '~/hooks/useToast';
+import {useGetUser} from '~/api/user/queries';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -47,6 +48,7 @@ const CommunityDetail = () => {
 
   const [selectedRecomment, setSelectedRecomment] = useState<CommentModel>();
 
+  const {data: userData} = useGetUser();
   const getCommunityPost = useGetCommunityPost(postId, {
     enabled: true,
     onError: (error: ErrorResponseTransform) => {
@@ -57,8 +59,21 @@ const CommunityDetail = () => {
     },
   });
 
+  // 컨텐츠 고마워요 여부 state
+  const [isContentThank, setContnetThank] = useState(
+    getCommunityPost?.data?.isThank,
+  );
+  const [thankContentCount, setThankContentCount] = useState(
+    getCommunityPost?.data?.thanks ?? 0,
+  );
+
   const {navigation, isOpenDeletePopup, setOpenDeletePopup} =
-    useSetDetailHeader(postId, getCommunityPost.data?.isBookmark);
+    useSetDetailHeader({
+      postId,
+      isBookmarkServerState: getCommunityPost.data?.isBookmark,
+      writerId: getCommunityPost.data?.userId,
+      userId: userData?.data.id,
+    });
 
   const getCommentList = useGetCommentList(postId, {
     limit: 10,
@@ -138,6 +153,14 @@ const CommunityDetail = () => {
   const onContentThank = () => {
     if (!getCommunityPost.data) return;
 
+    setContnetThank(!isContentThank);
+
+    setThankContentCount(prev => {
+      if (isContentThank && prev === 0) return 0;
+
+      return isContentThank ? prev - 1 : prev + 1;
+    });
+
     postCummunityPostThank.mutateAsync({
       id: postId,
       isOn: !getCommunityPost.data?.isThank,
@@ -175,6 +198,8 @@ const CommunityDetail = () => {
       isVisibleTag
       contentData={getCommunityPost.data}
       onThank={onContentThank}
+      isThank={isContentThank}
+      thankCount={thankContentCount}
     />,
 
     <Box height="8px" bgColor={colors.grayScale['10']}></Box>,
@@ -193,36 +218,6 @@ const CommunityDetail = () => {
       commentList={commentList ?? []}
       setOpenDeletePopup={setOpenDeletePopup}
       setCommentInputType={setCommentInputType}
-    />,
-
-    <Popup
-      title={'게시글을 삭제할까요?'}
-      subText="삭제한 게시글의 내용은 복구할 수 없어요"
-      isVisible={isOpenDeletePopup.post}
-      setIsVisible={(isVisible: boolean) =>
-        setOpenDeletePopup(prev => ({...prev, post: isVisible}))
-      }
-      onSuccess={onDeletePost}
-    />,
-
-    <Popup
-      title={'댓글을 삭제할까요?'}
-      subText={`삭제된 댓글의 내용은 복구할 수 없어요.\n댓글을 삭제해도 내 댓글의 답글들은 삭제되지 않아요.`}
-      isVisible={isOpenDeletePopup.comment}
-      setIsVisible={(isVisible: boolean) =>
-        setOpenDeletePopup(prev => ({...prev, comment: isVisible}))
-      }
-      onSuccess={onDeleteComment}
-    />,
-
-    <Popup
-      title={'답글을 삭제할까요?'}
-      subText={`삭제된 답글의 내용은 복구할 수 없어요.\n답글을 삭제해도 나를 태그한 답글들은 삭제되지 않아요.`}
-      isVisible={isOpenDeletePopup.recomment}
-      setIsVisible={(isVisible: boolean) =>
-        setOpenDeletePopup(prev => ({...prev, recomment: isVisible}))
-      }
-      onSuccess={onDeleteRecomment}
     />,
   ];
 
@@ -261,6 +256,36 @@ const CommunityDetail = () => {
           />
         </Box>
       </KeyboardAvoidingView>
+
+      <Popup
+        title={'게시글을 삭제할까요?'}
+        subText="삭제한 게시글의 내용은 복구할 수 없어요"
+        isVisible={isOpenDeletePopup.post}
+        setIsVisible={(isVisible: boolean) =>
+          setOpenDeletePopup(prev => ({...prev, post: isVisible}))
+        }
+        onSuccess={onDeletePost}
+      />
+
+      <Popup
+        title={'댓글을 삭제할까요?'}
+        subText={`삭제된 댓글의 내용은 복구할 수 없어요.\n댓글을 삭제해도 내 댓글의 답글들은 삭제되지 않아요.`}
+        isVisible={isOpenDeletePopup.comment}
+        setIsVisible={(isVisible: boolean) =>
+          setOpenDeletePopup(prev => ({...prev, comment: isVisible}))
+        }
+        onSuccess={onDeleteComment}
+      />
+
+      <Popup
+        title={'답글을 삭제할까요?'}
+        subText={`삭제된 답글의 내용은 복구할 수 없어요.\n답글을 삭제해도 나를 태그한 답글들은 삭제되지 않아요.`}
+        isVisible={isOpenDeletePopup.recomment}
+        setIsVisible={(isVisible: boolean) =>
+          setOpenDeletePopup(prev => ({...prev, recomment: isVisible}))
+        }
+        onSuccess={onDeleteRecomment}
+      />
     </SafeAreaView>
   );
 };
