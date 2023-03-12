@@ -132,13 +132,15 @@ function AddressRegister({
         <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />
         {sigugunValue && (
           <SelectButtonForm
-            selectorName={sigugunValue?.name ?? ''}
+            value={sigugunValue?.name}
+            placeholder=""
             onPress={onSigugunOpen}
           />
         )}
         {dongValue && (
           <SelectButtonForm
-            selectorName={dongValue?.name ?? ''}
+            value={dongValue?.name}
+            placeholder=""
             onPress={onDongOpen}
           />
         )}
