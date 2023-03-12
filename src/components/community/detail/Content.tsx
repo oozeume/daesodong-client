@@ -248,15 +248,13 @@ const CommunityContent = ({
           <Pressable onPress={onThank}>
             <HStack alignItems={'center'}>
               <HeartFillIcon
-                fill={isThank ? colors.grayScale['90'] : colors.grayScale['30']}
+                fill={isThank ? colors.fussOrange[0] : colors.grayScale[30]}
               />
 
               <Text
                 ml="4px"
                 fontSize="12px"
-                color={
-                  isThank ? colors.grayScale['90'] : colors.grayScale['60']
-                }>
+                color={isThank ? colors.fussOrange[0] : colors.grayScale[60]}>
                 {`고마워요 ${thankCount}`}
               </Text>
             </HStack>
