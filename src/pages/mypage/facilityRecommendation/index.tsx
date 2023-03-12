@@ -16,11 +16,10 @@ import ImageUploader from '~/components/hospital/review/register/imageUploader';
 import AddressChange from '~/components/mypage/myInfo/AddressChange';
 import Popup from '~/components/common/popup/Popup';
 
-interface Props {}
 /**
- *
+ * 내 계정 > 시설 소개/추천
  */
-function FacilityRecommendation({}: Props) {
+function FacilityRecommendation() {
   const navigation = useNavigation<NavigationHookProp>();
 
   const {
