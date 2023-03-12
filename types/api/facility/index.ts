@@ -97,8 +97,8 @@ export type FacilityReviewsResponse = {
   score_price: number;
   score_facilities: number;
   score_kindness: number;
-  expect_revisit: false;
-  already_reviesit: false;
+  expect_revisit: boolean;
+  already_reviesit: boolean;
   created_at: string;
   updated_at: string;
   user: {

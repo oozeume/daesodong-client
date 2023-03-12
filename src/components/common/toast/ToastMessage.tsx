@@ -7,6 +7,7 @@ const PADDING_X = 18;
 
 interface Props {
   text: string;
+  leftElement?: JSX.Element;
 }
 
 /**
@@ -14,18 +15,22 @@ interface Props {
  *@param text - (필수)
  */
 
-function ToastMessage({text}: Props) {
+function ToastMessage({text, leftElement}: Props) {
   return (
     <Center
       minHeight={'44px'}
+      px={leftElement ? '14px' : 0}
       py="12px"
       w={APP_WIDTH - PADDING_X * 2}
-      justifyContent={'center'}
+      flexDirection={'row'}
+      justifyContent={leftElement ? 'space-between' : 'center'}
       borderRadius={'8px'}
       backgroundColor={'rgba(26, 30, 39, 0.8)'}>
       <Text textAlign={'center'} color={colors.grayScale[0]}>
         {text}
       </Text>
+
+      {leftElement}
     </Center>
   );
 }

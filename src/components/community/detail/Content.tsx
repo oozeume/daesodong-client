@@ -57,11 +57,7 @@ const CommunityContent = ({
     : `${config.IMAGE_BASE_URL}${contentData?.images[0]?.url}`;
 
   return (
-    <Box
-      px="18px"
-      mb="8px"
-      bgColor={colors.grayScale[0]}
-      borderRadius={viewMode === 'simple' ? '16px' : undefined}>
+    <Box px="18px" mb="8px" bgColor={colors.grayScale[0]}>
       {/* 글쓴이 정보 */}
       {isVisibleTopUserInfo && (
         <HStack
@@ -153,7 +149,6 @@ const CommunityContent = ({
         <Stack space={'2px'} mb={'8px'}>
           {/* 제목 */}
           <Text
-            noOfLines={viewMode === 'simple' ? 1 : undefined}
             fontSize={'16px'}
             color={colors.grayScale['80']}
             fontWeight={800}>
@@ -225,11 +220,7 @@ const CommunityContent = ({
         pb="15px"
         px="3px"
         borderTopWidth={1}
-        borderTopColor={
-          viewMode === 'simple'
-            ? colors.grayScale['20']
-            : colors.grayScale['10']
-        }>
+        borderTopColor={colors.grayScale['10']}>
         {isVisibleBottomUserInfo && (
           <HStack>
             <AvatarIcon width={20} height={20} fill={colors.grayScale['30']} />
@@ -280,16 +271,14 @@ const CommunityContent = ({
         )}
 
         <HStack>
-          {viewMode !== 'simple' && (
-            <Pressable mr="16px">
-              <HStack alignItems={'center'}>
-                <ViewFillIcon fill={colors.grayScale['30']} />
-                <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
-                  {contentData?.views}
-                </Text>
-              </HStack>
-            </Pressable>
-          )}
+          <Pressable mr="16px">
+            <HStack alignItems={'center'}>
+              <ViewFillIcon fill={colors.grayScale['30']} />
+              <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
+                {contentData?.views}
+              </Text>
+            </HStack>
+          </Pressable>
 
           <Pressable>
             <HStack alignItems={'center'}>
