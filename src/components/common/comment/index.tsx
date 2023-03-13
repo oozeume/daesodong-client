@@ -1,21 +1,27 @@
 import _ from 'lodash';
-import {Box, Center, HStack, Pressable, Text, View} from 'native-base';
-import React from 'react';
+import {Box, Center, HStack, Image, Pressable, Text, View} from 'native-base';
+import React, {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {PostFeature} from '~/../types/common';
-import {CommentUserInfo} from '~/../types/community';
+import {usePostCommentThank} from '~/api/comment/mutation';
+import {usePostRecommentThank} from '~/api/recomment/mutation';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import ReplyIcon from '~/assets/icons/reply.svg';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
+import useToastShow from '~/hooks/useToast';
 import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
+import {config} from '~/utils/config';
 import {getProgressTime} from '~/utils/time';
+import ProfileImage from '../profileImage/ProfileImage';
 
 interface Props {
-  commentType?: 'default' | 'reply' | 'delete';
+  commentType?: {
+    type: 'default' | 'reply';
+    isDelete: boolean;
+  };
   onRegisterRecomment?: () => void;
   onClickKekab: (type: PostFeature) => void;
-  isBest?: boolean;
   data?: CommentModel;
   parentUserNickname?: string;
   userId?: string;
@@ -23,42 +29,82 @@ interface Props {
 
 /**
  *@description 게시글 댓글
- *@param {'default' | 'reply' | 'delete' | undefined} commentType - 댓글 유형 (reply: 답글, delete: 삭제된 댓글)
- *@param {boolean} isBest - BEST 댓글일 경우
- *@param {CommentUserInfo} parentUserInfo - 답글일 경우, 상위 댓글의 유저 정보
+ *@param commentType - 댓글 유형 (type: 댓글 | 답글, isDelete: 삭제 여부)
+ *@param parentUserNickname - 답글일 경우, 상위 댓글의 유저 닉네임
  */
 const Comment = ({
   onRegisterRecomment,
-  isBest,
   onClickKekab,
   data,
   parentUserNickname,
   userId,
-  commentType = 'default',
+  commentType = {
+    type: 'default',
+    isDelete: false,
+  },
 }: Props) => {
+  const postCommentThank = usePostCommentThank();
+  const postRecommentThank = usePostRecommentThank();
+
+  const [isThank, setThank] = useState(data?.isThank);
+  const [thankCount, setThankCount] = useState(data?.thanks ?? 0);
+  const {toastShow} = useToastShow();
+
+  /**
+   *@description 댓글 고마워요/취소
+   */
+  const onThank = () => {
+    setThank(!isThank);
+    // 현재 isThank state가 true => 고마워요 취소 실행
+    setThankCount(prev => {
+      if (isThank && prev === 0) return 0;
+
+      return isThank ? prev - 1 : prev + 1;
+    });
+
+    if (data?.postId && commentType.type === 'default') {
+      postCommentThank.mutateAsync({
+        postId: data?.postId,
+        commentId: data.id,
+        isOn: !isThank,
+      });
+    } else if (data?.parentCommentId && commentType.type === 'reply') {
+      postRecommentThank.mutateAsync({
+        commentId: data.parentCommentId,
+        recommentId: data.id,
+        isOn: !isThank,
+      });
+    }
+  };
+
+  /**
+   *@description 삭제된 댓글에 답글 달기 버튼 클릭 이벤트
+   */
+  const onRecommentByDeletedComment = () => {
+    toastShow('삭제된 댓글에는 답글을 남길 수 없어요!');
+  };
+
   return (
     <Box
       px="18px"
       py="14px"
       bgColor={
-        commentType === 'delete'
-          ? colors.grayScale['10']
-          : colors.grayScale['0']
+        commentType.isDelete ? colors.grayScale['10'] : colors.grayScale['0']
       }
       flexDir="row"
       borderBottomWidth={1}
       borderBottomColor={colors.grayScale['10']}>
       {/* 답글 표시 아이콘 */}
-      {commentType === 'reply' && <ReplyIcon style={{marginRight: 12}} />}
+      {commentType.type === 'reply' && <ReplyIcon style={{marginRight: 12}} />}
 
       <Box flex={1}>
         <HStack justifyContent={'space-between'} alignItems="center">
           <HStack alignItems={'center'}>
-            <AvatarIcon
+            <ProfileImage
+              imageName={data?.petInfo?.pet_picture_url}
               width={20}
               height={20}
-              fill={colors.grayScale['30']}
-              style={{marginRight: 8}}
+              imageStyle={{marginRight: 8}}
             />
 
             {/* 닉네임, 이름, 동물, 나이 뷰 라인 */}
@@ -104,14 +150,16 @@ const Comment = ({
             </HStack>
           </HStack>
 
-          <KekabMenu
-            firstButtonName={data?.userId === userId ? '수정' : '신고'}
-            secondButtonName={data?.userId === userId ? '삭제' : '차단'}
-            handleFirstButton={() => onClickKekab('MODIFY')}
-            handleSecondButton={() => onClickKekab('DELETE')}
-            top={Platform.OS === 'android' ? '36px' : '12px'}
-            left={Platform.OS === 'android' ? '-22px' : '-12px'}
-          />
+          {!commentType.isDelete && (
+            <KekabMenu
+              firstButtonName={data?.userId === userId ? '수정' : '신고'}
+              secondButtonName={data?.userId === userId ? '삭제' : '차단'}
+              handleFirstButton={() => onClickKekab('MODIFY')}
+              handleSecondButton={() => onClickKekab('DELETE')}
+              top={Platform.OS === 'android' ? '36px' : '12px'}
+              left={Platform.OS === 'android' ? '-22px' : '-12px'}
+            />
+          )}
         </HStack>
 
         {/* 최초 작성 시간 / 수정됨 뷰 라인 */}
@@ -134,11 +182,11 @@ const Comment = ({
           mr="32px"
           fontSize="14px"
           color={
-            commentType === 'delete'
+            commentType.isDelete
               ? colors.grayScale['50']
               : colors.grayScale['80']
           }>
-          {isBest && (
+          {data?.isBest && !commentType.isDelete && (
             <Center
               px="6px"
               py="2px"
@@ -153,54 +201,84 @@ const Comment = ({
             </Center>
           )}
 
-          {isBest && <Text>{`  `}</Text>}
+          {data?.isBest && !commentType.isDelete && <Text>{`  `}</Text>}
 
-          {commentType === 'reply' && (
+          {commentType.type === 'reply' && !commentType.isDelete && (
             <Text color={colors.fussOrange['0']} mr="28px">
               {parentUserNickname ?? ''} <Text>{`  `}</Text>
             </Text>
           )}
+
           <Text>
-            {commentType === 'delete'
-              ? '삭제된 댓글입니다'
+            {commentType.isDelete
+              ? `삭제된 ${commentType.type === 'reply' ? '답글' : '댓글'}입니다`
               : data?.content ?? ''}
           </Text>
         </Text>
 
         <HStack ml="28px">
-          <Pressable
-            borderColor={colors.grayScale['20']}
-            bgColor={colors.grayScale['0']}
-            borderWidth={1}
-            pl="10px"
-            pr="8px"
-            py="4px"
-            mr="6px"
-            borderRadius={4}>
-            <HStack>
-              <Text color={colors.grayScale['60']} fontSize="13px" mr="2px">
-                고마워요
-              </Text>
-              <Text color={colors.grayScale['60']} fontSize="13px">
-                {data?.thanks ?? 0}
-              </Text>
-            </HStack>
-          </Pressable>
+          {!commentType.isDelete && (
+            <Pressable
+              borderColor={
+                isThank ? colors.fussOrange['0'] : colors.grayScale['20']
+              }
+              bgColor={colors.grayScale['0']}
+              borderWidth={1}
+              pl="10px"
+              pr="8px"
+              py="4px"
+              mr="6px"
+              borderRadius={4}
+              onPress={onThank}>
+              <HStack>
+                <Text
+                  color={
+                    isThank ? colors.fussOrange['0'] : colors.grayScale['60']
+                  }
+                  fontSize="13px">
+                  {`고마워요 ${thankCount}`}
+                </Text>
+              </HStack>
+            </Pressable>
+          )}
 
-          <Pressable
-            borderColor={colors.grayScale['20']}
-            bgColor={colors.grayScale['0']}
-            borderWidth={1}
-            pl="10px"
-            pr="8px"
-            py="4px"
-            mr="6px"
-            borderRadius={4}
-            onPress={onRegisterRecomment}>
-            <Text color={colors.grayScale['60']} fontSize="13px">
-              답글달기
-            </Text>
-          </Pressable>
+          {commentType.type === 'default' &&
+            commentType.isDelete &&
+            !_.isEmpty(data?.recomments) && (
+              <Pressable
+                borderColor={colors.grayScale['20']}
+                bgColor={colors.grayScale['0']}
+                borderWidth={1}
+                pl="10px"
+                pr="8px"
+                py="4px"
+                mr="6px"
+                borderRadius={4}
+                onPress={onRecommentByDeletedComment}>
+                <HStack>
+                  <Text color={colors.grayScale[40]} fontSize="13px">
+                    {`답글 ${data?.recomments.length}`}
+                  </Text>
+                </HStack>
+              </Pressable>
+            )}
+
+          {!commentType.isDelete && (
+            <Pressable
+              borderColor={colors.grayScale['20']}
+              bgColor={colors.grayScale['0']}
+              borderWidth={1}
+              pl="10px"
+              pr="8px"
+              py="4px"
+              mr="6px"
+              borderRadius={4}
+              onPress={onRegisterRecomment}>
+              <Text color={colors.grayScale['60']} fontSize="13px">
+                답글달기
+              </Text>
+            </Pressable>
+          )}
         </HStack>
       </Box>
     </Box>

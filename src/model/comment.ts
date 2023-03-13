@@ -48,11 +48,32 @@ class Comment {
   }
 
   get petInfo() {
-    return _.isEmpty(this.comment.user.pets) ? null : this.comment.user.pets[0];
+    const initPetInfo = {
+      age: 0,
+      name: '',
+      pet_picture_url: undefined,
+      specie: {name: ''},
+    };
+
+    return _.isEmpty(this.comment.user.pets)
+      ? initPetInfo
+      : this.comment.user.pets[0];
   }
 
   get recomments() {
     return (this.comment?.comment2 ?? []).map(item => new Comment(item));
+  }
+
+  get isBest() {
+    return this.comment.best_score >= 20;
+  }
+
+  // 유저가 고마워요 눌렀는지 여부
+  get isThank() {
+    return (
+      !_.isEmpty(this.comment.thanks_comment1_join) ||
+      !_.isEmpty(this.comment.thanks_comment2_join)
+    );
   }
 }
 

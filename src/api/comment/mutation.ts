@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {apiCall} from '../common';
 import {
+  DeleteCommentQuery,
   PatchCommentData,
   PostCommentData,
   PostCommentThankData,
@@ -26,12 +27,6 @@ export const usePostComment = () => {
   return useMutation((data: PostCommentData) => postComment(data), {
     onSettled: () =>
       queryClient.invalidateQueries([QueryKeys.comment.getComments]),
-    // onSuccess:(newData) => {
-    //     queryClient.setQueryData([QueryKeys.comment.getComments], (oldData) => {
-    //         return {...oldData, newData};
-
-    //     })
-    // }
   });
 };
 
@@ -58,22 +53,50 @@ export const usePatchComment = () => {
 };
 
 /**
+ *@description 댓글 삭제 api
+ */
+const deleteComment = ({postId, commentId}: DeleteCommentQuery) => {
+  return apiCall<boolean>({
+    method: 'DELETE',
+    url: `posts/${postId}/comments/${commentId}`,
+  });
+};
+
+export const useDeleteComment = (query: DeleteCommentQuery) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    () => {
+      return deleteComment(query);
+    },
+    {
+      onSettled: () =>
+        queryClient.invalidateQueries([QueryKeys.comment.getComments]),
+    },
+  );
+};
+
+/**
  *@description 댓글 고마워요 등록/취소 api 요청
- *@param isThank : true 면 등록, false 면 취소
+ *@param isOn : true 면 등록, false 면 취소
  */
 const postCommentThank = async ({
   postId,
   commentId,
-  isThank,
+  isOn,
 }: PostCommentThankData) => {
   return apiCall<boolean>({
     method: 'POST',
-    url: `posts/${postId}/comments/${commentId}/thanks${
-      isThank ? '' : '/cancel'
-    }`,
+    url: `posts/${postId}/comments/${commentId}/thanks${isOn ? '' : '/cancel'}`,
   });
 };
 
 export const usePostCommentThank = () => {
-  return useMutation((data: PostCommentThankData) => postCommentThank(data));
+  const queryClient = useQueryClient();
+
+  return useMutation((data: PostCommentThankData) => postCommentThank(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([QueryKeys.comment.getComments]);
+    },
+  });
 };
