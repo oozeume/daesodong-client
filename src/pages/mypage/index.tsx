@@ -1,27 +1,35 @@
-import {HStack, Pressable, Stack, Text, View} from 'native-base';
+import {HStack, Image, Stack, Text, View} from 'native-base';
 import React from 'react';
 import {colors} from '~/theme/theme';
-import Notice from '~/assets/icons/notice_30.svg';
+import NotificationIcon from '~/assets/icons/notification_30.svg';
 import {APP_WIDTH} from '~/utils/dimension';
 import NoticeDashboard from '~/components/mypage/NoticeDashboard';
 import BookMarkFillIcon from '~/assets/icons/bookmark_fill_30.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill_30.svg';
-import AvatarIcon from '~/assets/icons/avartar.svg';
 import {ScrollView} from 'react-native-gesture-handler';
 import Tag from '~/components/common/Tag';
 import {StyleSheet} from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RouteList} from '~/../types/navigator';
+import MypageDefaultPetImage from '~/assets/images/mypage_default_pet_image.svg';
+import {useGetUser} from '~/api/user/queries';
+import {config} from '~/utils/config';
+import MenuButton from '~/components/mypage/myInfo/main/MenuButton';
+import MenuSectionView from '~/components/mypage/myInfo/main/MenuSectionView';
 
 /**
  *@description 내 계정 - 메인
  */
 
 function MyPage() {
+  const {data: userData} = useGetUser();
   const navigation = useNavigation<NavigationProp<RouteList>>();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+    <ScrollView
+      bounces={false}
+      showsVerticalScrollIndicator={false}
+      style={styles.container}>
       {/* 대시보드 */}
       <Stack
         height={'416px'}
@@ -30,27 +38,49 @@ function MyPage() {
         justifyContent={'flex-end'}
         backgroundColor={colors.fussOrange[0]}>
         <Stack alignItems={'center'}>
-          <AvatarIcon width={120} height={120} fill={colors.grayScale['30']} />
+          <Image
+            alt="my-page-pet"
+            width={120}
+            height={120}
+            borderRadius={120}
+            borderWidth={1}
+            borderColor={'black'}
+            fallbackElement={
+              <MypageDefaultPetImage
+                width={120}
+                height={120}
+                stroke={colors.grayScale[0]}
+              />
+            }
+            source={{
+              uri: `${config.IMAGE_BASE_URL}${userData?.mainPetInfo.petImageURL}`,
+            }}
+          />
+
           <Text
             mt={'16px'}
             color={colors.grayScale[90]}
             fontWeight={'700'}
             fontSize={'20px'}
             noOfLines={1}>
-            봉삼이
+            {`${userData?.nickname} ❤︎ ${userData?.mainPetInfo.name}`}
           </Text>
 
           <HStack alignItems={'center'} space="6px" ml={'8px'} mt={'2px'}>
             <Text color={colors.grayScale[90]} fontSize={'14px'}>
-              햄스터
+              {userData?.mainPetInfo?.specieName}
             </Text>
+
             <View backgroundColor={colors.grayScale['80']} h="8px" w="1px" />
+
             <Text color={colors.grayScale[90]} fontSize={'14px'}>
-              2개월
+              {userData?.mainPetInfo.age}개월
             </Text>
+
             <View backgroundColor={colors.grayScale['80']} h="8px" w="1px" />
+
             <Text color={colors.grayScale[90]} fontSize={'14px'}>
-              남아
+              {userData?.mainPetInfo.sex === 'Male' ? '남' : '여'}아
             </Text>
           </HStack>
 
@@ -62,7 +92,7 @@ function MyPage() {
             <NoticeDashboard
               name={'새 알림'}
               count={10}
-              icon={<Notice fill={colors.fussOrange[0]} />}
+              icon={<NotificationIcon fill={colors.fussOrange[0]} />}
               onPress={() => navigation.navigate('MyPageNotice')}
             />
             <NoticeDashboard
@@ -87,82 +117,68 @@ function MyPage() {
         pt={'16px'}
         pb={'20px'}
         backgroundColor={colors.grayScale[0]}>
-        <Text fontSize={'13px'} py={'14px'} color={colors.grayScale[40]}>
-          내 정보 관리
-        </Text>
-        <HStack
-          py={'14px'}
-          alignItems={'center'}
-          justifyContent={'space-between'}>
-          <Text fontSize={'16px'}>회원등급</Text>
-          <Tag
-            name={'등급명'}
-            bgColor={colors.fussYellow[10]}
-            color={colors.grayScale[80]}
+        <MenuSectionView title="내 정보 관리">
+          <MenuButton
+            buttonName={'회원등급'}
+            rightElement={
+              <Tag
+                name={'등급명'}
+                bgColor={colors.fussYellow[10]}
+                color={colors.grayScale[80]}
+              />
+            }
           />
-        </HStack>
-        <Text
-          fontSize={'16px'}
-          py={'14px'}
-          onPress={() => navigation.navigate('MyInfo')}>
-          내 정보
-        </Text>
-        <Text
-          fontSize={'16px'}
-          py={'14px'}
-          onPress={() => navigation.navigate('MyPetInfo')}>
-          아이 정보
-        </Text>
-        <Pressable onPress={() => navigation.navigate('MyReview')}>
-          <HStack py={'14px'} space={'10px'}>
-            <Text fontSize={'16px'}>내가 작성한 리뷰</Text>
-            <Text fontSize={'16px'} color={colors.fussOrange[0]}>
-              100
-            </Text>
-          </HStack>
-        </Pressable>
 
-        <Pressable onPress={() => navigation.navigate('MyCommunityContent')}>
-          <HStack py={'14px'} space={'10px'}>
-            <Text fontSize={'16px'}>내가 작성한 게시글</Text>
-            <Text fontSize={'16px'} color={colors.fussOrange[0]}>
-              100
-            </Text>
-          </HStack>
-        </Pressable>
-
-        {/* 서비스 문의 */}
-        <Text
-          fontSize={'13px'}
-          py={'14px'}
-          color={colors.grayScale[40]}
-          mt={'28px'}>
-          서비스 문의
-        </Text>
-
-        <Pressable onPress={() => navigation.navigate('Inquiry')}>
-          <Text flex={1} fontSize={'16px'} py={'14px'}>
-            1:1 문의
-          </Text>
-        </Pressable>
-        <HStack
-          py={'14px'}
-          alignItems={'center'}
-          justifyContent={'space-between'}>
-          <Text fontSize={'16px'}>시설 소개/추천하기</Text>
-          <Tag
-            name={'도움이 필요해요!'}
-            width={'91px'}
-            bgColor={colors.positive['-40']}
-            color={colors.positive[0]}
+          <MenuButton
+            buttonName={'내 정보'}
+            onPress={() => navigation.navigate('MyInfo')}
           />
-        </HStack>
-        <Text fontSize={'16px'} py={'14px'}>
-          서비스 이용약관
-        </Text>
-        <Text fontSize={'16px'} py={'14px'}>
-          개인정보 처리방침
-        </Text>
+
+          <MenuButton
+            buttonName={'아이 정보'}
+            onPress={() => navigation.navigate('MyPetInfo')}
+          />
+        </MenuSectionView>
+
+        <MenuSectionView title="내 활동">
+          <MenuButton
+            buttonName={'내가 작성한 리뷰'}
+            onPress={() => navigation.navigate('MyReview')}
+            count={100}
+          />
+
+          <MenuButton
+            buttonName={'내가 작성한 게시글'}
+            onPress={() => navigation.navigate('MyCommunityContent')}
+            count={100}
+          />
+
+          <MenuButton buttonName={'차단계정 관리'} onPress={() => {}} />
+        </MenuSectionView>
+
+        <MenuSectionView title="서비스 문의">
+          <MenuButton
+            buttonName={'1:1 문의'}
+            onPress={() => navigation.navigate('Inquiry')}
+          />
+
+          <MenuButton
+            buttonName={'시설 소개/추천하기'}
+            onPress={() => {}}
+            rightElement={
+              <Tag
+                name={'도움이 필요해요!'}
+                width={'91px'}
+                bgColor={colors.positive['-40']}
+                color={colors.positive[0]}
+              />
+            }
+          />
+
+          <MenuButton buttonName={'서비스 이용약관'} onPress={() => {}} />
+
+          <MenuButton buttonName={'개인정보 처리방침'} onPress={() => {}} />
+        </MenuSectionView>
       </Stack>
     </ScrollView>
   );

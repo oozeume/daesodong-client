@@ -28,7 +28,10 @@ function NoticeDetail() {
 
       <Stack backgroundColor={colors.grayScale[0]}>
         <Stack px={'18px'} py={'28px'} space={'22px'}>
-          <Text fontWeight={'700'} fontSize={'18px'}>
+          <Text
+            fontWeight={'700'}
+            fontSize={'18px'}
+            color={colors.grayScale[80]}>
             Q. 친구소개
           </Text>
           <Text
@@ -47,7 +50,10 @@ function NoticeDetail() {
           py={'28px'}
           space={'22px'}
           backgroundColor={colors.grayScale[0]}>
-          <Text fontWeight={'700'} fontSize={'18px'}>
+          <Text
+            fontWeight={'700'}
+            fontSize={'18px'}
+            color={colors.grayScale[80]}>
             Q. 친구소개
           </Text>
           <Text

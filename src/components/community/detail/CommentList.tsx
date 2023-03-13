@@ -27,7 +27,7 @@ function CommentList({
   setOpenDeletePopup,
   setCommentInputType,
 }: Props) {
-  const user = useGetUser();
+  const {data: userData} = useGetUser();
 
   return (
     <Box>
@@ -38,7 +38,7 @@ function CommentList({
               type: 'default',
               isDelete: !_.isNull(item.deletedAt),
             }}
-            userId={user.data?.data?.id}
+            userId={userData?.id}
             data={item}
             onClickKekab={(type: PostFeature) => {
               if (type === 'DELETE')
@@ -56,7 +56,7 @@ function CommentList({
           {(item?.recomments).map((recomment, k) => (
             <React.Fragment key={k.toString()}>
               <Comment
-                userId={user.data?.data?.id}
+                userId={userData?.id}
                 commentType={{
                   type: 'reply',
                   isDelete: !_.isNull(recomment.deletedAt),

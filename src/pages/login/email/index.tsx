@@ -36,7 +36,7 @@ function EmailLogin() {
   const {navigate, reset} = useNavigation<NavigationHookProp>();
   const postAuthSocialLogin = usePostAuthSocialLogin();
   const postAuthEmailLogin = usePostAuthEmailLogin();
-  const getUser = useGetUser();
+  const {data: userData, refetch: getUserRefetch} = useGetUser();
 
   const initForm = {
     email: '',
@@ -78,14 +78,14 @@ function EmailLogin() {
       await setSecurityData('access_token', response.data.access);
       await setSecurityData('refresh_token', response.data.refresh);
 
-      const userData = await getUser.refetch();
+      const _userData = await getUserRefetch();
 
-      if (userData.data?.data.pets.length === 0) {
+      if (_userData.data?.petInfoList.length === 0) {
         // 집사 정보가 없으면 등록 페이지로 이동
         navigate('SignupPetInfoNavigator');
       } else {
         // 있으면 시설 지도 페이지로 이동
-        setUserInfo({userId: userData.data?.data.id ?? ''});
+        setUserInfo({userId: _userData.data?.id ?? ''});
         reset({index: 0, routes: [{name: 'tab'}]});
       }
 

@@ -11,7 +11,7 @@ const ShoppingTab = createMaterialTopTabNavigator();
  *@description 내 계정 - 저장
  */
 
-function Index() {
+function MypageSave() {
   return (
     <ShoppingTab.Navigator
       tabBar={props => <MyPageSaveHeader {...props} />}
@@ -42,4 +42,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MypageSave;

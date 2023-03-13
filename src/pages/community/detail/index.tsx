@@ -72,7 +72,7 @@ const CommunityDetail = () => {
       postId,
       isBookmarkServerState: getCommunityPost.data?.isBookmark,
       writerId: getCommunityPost.data?.userId,
-      userId: userData?.data.id,
+      userId: userData?.id,
     });
 
   const getCommentList = useGetCommentList(postId, {
