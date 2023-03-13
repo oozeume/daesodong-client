@@ -58,18 +58,21 @@ class User {
         userId: '',
       };
 
-    const tmp = this.user.pets[0];
+    const firstUserPet = this.user.pets[0];
 
     const _info = {
-      ...tmp,
-      petImageURL: tmp.pet_picture_url,
-      specieName: tmp.specie?.name ?? '',
+      ...firstUserPet,
+      petImageURL: firstUserPet.pet_picture_url,
+      specieName: firstUserPet.specie?.name ?? '',
     };
 
     delete _info['pet_picture_url'];
     delete _info['specie'];
 
-    return _info;
+    const _mainPetInfo: Omit<typeof _info, 'pet_picture_url' | 'specie'> =
+      _info;
+
+    return _mainPetInfo;
   }
 
   get role() {

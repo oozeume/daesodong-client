@@ -22,6 +22,7 @@ import CommunityPost from '~/model/communityPost';
 import _ from 'lodash';
 import {config} from '~/utils/config';
 import ImageSwiper from '~/components/common/swiper/ImageSwiper';
+import ProfileImage from '~/components/common/profileImage/ProfileImage';
 
 interface Props {
   isVisibleTopUserInfo?: boolean;
@@ -33,6 +34,8 @@ interface Props {
   isVisibleTime?: boolean;
   contentData?: CommunityPost;
   onThank?: () => void;
+  isThank?: boolean;
+  thankCount?: number;
 }
 
 /**
@@ -48,6 +51,8 @@ const CommunityContent = ({
   isVisibleTime,
   contentData,
   onThank,
+  isThank,
+  thankCount,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -60,7 +65,9 @@ const CommunityContent = ({
     <Box
       px="18px"
       mb="8px"
-      bgColor={colors.grayScale[0]}
+      bgColor={
+        viewMode === 'simple' ? colors.grayScale[10] : colors.grayScale[0]
+      }
       borderRadius={viewMode === 'simple' ? '16px' : undefined}>
       {/* 글쓴이 정보 */}
       {isVisibleTopUserInfo && (
@@ -72,23 +79,8 @@ const CommunityContent = ({
           {/* 유저 이미지 */}
 
           <HStack w="100%">
-            <Image
-              w={44}
-              h={44}
-              borderRadius={44}
-              mr="12px"
-              fallbackElement={
-                <AvatarIcon
-                  width={44}
-                  height={44}
-                  fill={colors.grayScale['30']}
-                  style={{marginRight: 12}}
-                />
-              }
-              alt="post_user_img"
-              source={{
-                uri: `${config.IMAGE_BASE_URL}${contentData?.writerPetInfo?.pet_picture_url}`,
-              }}
+            <ProfileImage
+              imageName={contentData?.writerPetInfo?.pet_picture_url}
             />
 
             <VStack>
@@ -154,9 +146,9 @@ const CommunityContent = ({
           {/* 제목 */}
           <Text
             noOfLines={viewMode === 'simple' ? 1 : undefined}
-            fontSize={'16px'}
+            fontSize={viewMode === 'simple' ? '15px' : '16px'}
             color={colors.grayScale['80']}
-            fontWeight={800}>
+            fontWeight={viewMode === 'simple' ? 500 : 800}>
             {contentData?.title}
           </Text>
 
@@ -178,7 +170,7 @@ const CommunityContent = ({
 
         {viewAllButton}
 
-        {viewMode !== 'default' && mainImageURL && (
+        {viewMode === 'list' && mainImageURL && (
           <Image
             w={imageWidth}
             h={imageWidth}
@@ -232,22 +224,44 @@ const CommunityContent = ({
         }>
         {isVisibleBottomUserInfo && (
           <HStack>
-            <AvatarIcon width={20} height={20} fill={colors.grayScale['30']} />
+            <ProfileImage
+              width={20}
+              height={20}
+              imageStyle={{marginRight: 4}}
+              imageName={contentData?.writerPetInfo?.pet_picture_url}
+            />
 
             <HStack alignItems={'center'} space="4px" marginLeft={'8px'}>
-              <Text color={colors.grayScale['80']} fontSize={'14px'}>
+              <Text
+                fontWeight={500}
+                color={colors.grayScale['80']}
+                fontSize={'12px'}>
                 {contentData?.writerNickname}
               </Text>
+
               <View backgroundColor={colors.grayScale['30']} h="8px" w="1px" />
-              <Text color={colors.grayScale['60']} fontSize={'13px'}>
+
+              <Text color={colors.grayScale['60']} fontSize={'12px'}>
                 {contentData?.writerPetInfo.name}
               </Text>
+
+              {viewMode !== 'simple' && (
+                <View
+                  backgroundColor={colors.grayScale['30']}
+                  h="8px"
+                  w="1px"
+                />
+              )}
+
+              {viewMode !== 'simple' && (
+                <Text color={colors.grayScale['60']} fontSize={'12px'}>
+                  {contentData?.writerPetInfo.specie.name}
+                </Text>
+              )}
+
               <View backgroundColor={colors.grayScale['30']} h="8px" w="1px" />
-              <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                {contentData?.writerPetInfo.specie.name}
-              </Text>
-              <View backgroundColor={colors.grayScale['30']} h="8px" w="1px" />
-              <Text color={colors.grayScale['60']} fontSize={'13px'}>
+
+              <Text color={colors.grayScale['60']} fontSize={'12px'}>
                 {contentData?.writerPetInfo.age}개월
               </Text>
             </HStack>
@@ -258,22 +272,14 @@ const CommunityContent = ({
           <Pressable onPress={onThank}>
             <HStack alignItems={'center'}>
               <HeartFillIcon
-                fill={
-                  contentData?.isThank
-                    ? colors.grayScale['90']
-                    : colors.grayScale['30']
-                }
+                fill={isThank ? colors.fussOrange[0] : colors.grayScale[30]}
               />
 
               <Text
                 ml="4px"
                 fontSize="12px"
-                color={
-                  contentData?.isThank
-                    ? colors.grayScale['90']
-                    : colors.grayScale['60']
-                }>
-                {`고마워요 ${contentData?.thanks}`}
+                color={isThank ? colors.fussOrange[0] : colors.grayScale[60]}>
+                {`고마워요 ${thankCount}`}
               </Text>
             </HStack>
           </Pressable>
