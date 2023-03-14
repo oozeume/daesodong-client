@@ -1,7 +1,29 @@
-import {FacilityResponse} from '~/../types/api/facility';
+import {FacilityListResponse, FacilityResponse} from '~/../types/api/facility';
 
 class Facility {
-  constructor(private readonly facility: FacilityResponse) {}
+  constructor(
+    private readonly facility: FacilityResponse & FacilityListResponse,
+  ) {}
+
+  get id() {
+    return this.facility.id ?? '';
+  }
+
+  get name() {
+    return this.facility.name ?? '';
+  }
+
+  get representativeImage() {
+    return this.facility.hospital_picture[0].picture_url ?? '';
+  }
+
+  get averageScore() {
+    return this.facility.score_avg ?? 0;
+  }
+
+  get reviewCount() {
+    return this.facility.review_count ?? 0;
+  }
 
   get images() {
     return this.facility.hospital_picture?.map(i => i.picture_url) ?? [];

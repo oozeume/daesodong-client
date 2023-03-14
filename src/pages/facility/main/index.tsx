@@ -310,7 +310,6 @@ const FacilityMain = () => {
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}
         onClose={onFacilityListClose}
-        itemList={['', '', '', '', '', '', '', '', '', '']}
       />
     </Box>
   );

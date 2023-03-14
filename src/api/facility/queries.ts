@@ -1,5 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import {
+  FacilityListResponse,
   FacilityResponse,
   FacilityReviewsResponse,
   VisitedFacilityResponse,
@@ -109,4 +110,19 @@ const getFacilityScore = (id: string) => {
 
 export const useGetFacilityScore = (id: string) => {
   return useQuery([QueryKeys.facility.score], () => getFacilityScore(id));
+};
+
+/**
+ *@description 시설 리스트 API
+ */
+
+const getFacilityList = () => {
+  return apiCall<FacilityListResponse[]>({
+    method: 'GET',
+    url: '/hospitals',
+  });
+};
+
+export const useGetFacilityList = () => {
+  return useQuery([QueryKeys.facility.facilityList], () => getFacilityList());
 };
