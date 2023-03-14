@@ -1,6 +1,10 @@
+import _ from 'lodash';
 import {GetCommunityPostResponse} from '~/../types/api/community';
 
-class Post {
+/**
+ *@description 커뮤니티 게시글 모델링
+ */
+class CommunityPost {
   constructor(private readonly post: GetCommunityPostResponse) {}
 
   get id() {
@@ -47,7 +51,7 @@ class Post {
   }
 
   get thanks() {
-    return this.post?.thanks ?? 0;
+    return this.post.thanks;
   }
 
   get createdAt() {
@@ -63,8 +67,36 @@ class Post {
   }
 
   get views() {
-    return this.post?.views ?? 0;
+    return this.post.views;
+  }
+
+  get writerNickname() {
+    return this.post?.user?.nickname ?? '';
+  }
+
+  get writerPetInfo() {
+    const petInfos = this.post?.user?.pets;
+    const initPetInfo = {
+      age: 0,
+      name: '',
+      pet_picture_url: undefined,
+      specie: {name: ''},
+    };
+
+    return petInfos ? petInfos[0] : initPetInfo;
+  }
+
+  get commentsCount() {
+    return this.post.comments;
+  }
+
+  get isThank() {
+    return !_.isEmpty(this.post.thanks_post_join);
+  }
+
+  get isBookmark() {
+    return !_.isEmpty(this.post.save_post);
   }
 }
 
-export default Post;
+export default CommunityPost;

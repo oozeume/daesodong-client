@@ -19,7 +19,7 @@ export interface GetCommunityPostListQuery {
 export type GetCommunityPostResponse = {
   content?: string | null;
   created_at: string;
-  delete_at: string;
+  delete_at?: string | null;
   id: string;
   kind: {id: string; name: string};
   kindId: string;
@@ -33,9 +33,44 @@ export type GetCommunityPostResponse = {
       name?: string | null;
     };
   }[];
+  user: {
+    nickname: string;
+    pets?: {
+      name: string;
+      age: number;
+      pet_picture_url?: string;
+      specie: {name: string};
+    }[];
+  };
   thanks: number;
   title?: string | null;
   updated_at: string;
   userId: string;
-  views: 0;
+  views: number;
+  comments: number;
+  thanks_post_join: {
+    postId: string;
+    userId: string;
+  }[];
+  // 북마크 여부
+  save_post: {
+    postId: string;
+    userId: string;
+  }[];
 };
+
+/**
+ *@description 게시글 고마워요 및 취소 데이터
+ */
+export interface PostCummunityPostThankData {
+  id: string;
+  isOn: boolean;
+}
+
+/**
+ *@description 게시글 북마크 및 취소 데이터
+ */
+export interface PostCummunityPostBookmarkData {
+  id: string;
+  isOn: boolean;
+}

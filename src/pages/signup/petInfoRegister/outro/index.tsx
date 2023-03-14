@@ -15,7 +15,7 @@ import {APP_HEIGHT, APP_WIDTH} from '~/utils/dimension';
 function PetInfoRegisterOutro() {
   const {reset} = useNavigation<NavigationHookProp>();
   const {params} = useRoute<RouteHookProp<'PetInfoRegisterOutro'>>();
-  const {data} = useGetUser();
+  const {data: userData} = useGetUser();
 
   const BOTTOM_BUTTON_HEIGHT = 40;
 
@@ -41,9 +41,7 @@ function PetInfoRegisterOutro() {
               color={colors.grayScale[60]}
               fontSize={'15px'}
               textAlign={'center'}>
-              {`${data?.data?.nickname ?? ''}님과 ${
-                params.petName
-              }가 행복하고 건강한 시간을`}
+              {`${userData?.nickname}님과 ${params.petName}가 행복하고 건강한 시간을`}
             </Text>
             <Text
               color={colors.grayScale[60]}

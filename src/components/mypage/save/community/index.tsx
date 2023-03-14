@@ -1,23 +1,56 @@
-import {Box, Divider, HStack, Stack, Text, View} from 'native-base';
+import {HStack, Stack} from 'native-base';
 import React, {useState} from 'react';
-import CommunityContent from '~/components/community/detail/Content';
 import {colors} from '~/theme/theme';
-import AvatarIcon from '~/assets/icons/avartar.svg';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import FilterButton from '~/components/contents/main/FilterButton';
 import {APP_WIDTH} from '~/utils/dimension';
+import CommunityContent from '~/components/community/detail/Content';
+import CommunityPost from '~/model/communityPost';
+import dayjs from 'dayjs';
 
 /**
- *@description 내 계정 - 커뮤니티 Tab
+ *@description 내 계정 > 저장 - 커뮤니티 Tab
  */
 
-function Index() {
+function MypageSaveCommunity() {
   const [selectedCategory, setSelectedCategory] = useState('전체');
+
+  const dummnyData = [0, 0, 0, 0, 0].map((item, i) => {
+    return new CommunityPost({
+      title: `Test Title${i}`,
+      content: `Test Content${i}`,
+      created_at: dayjs().format('YYYY.MM.DD'),
+      updated_at: dayjs().format('YYYY.MM.DD'),
+      id: 'asdf',
+      kind: {id: 'adsf', name: 'asdf'},
+      kindId: 'asdf',
+      post_picture: [],
+      post_tag_join: [],
+      user: {
+        nickname: 'test',
+        pets: [
+          {
+            name: 'test_pet',
+            age: 10,
+            specie: {name: '햄스터'},
+          },
+        ],
+      },
+      thanks: 0,
+      userId: 'asdf',
+      views: 0,
+      comments: 0,
+      thanks_post_join: [],
+      save_post: [],
+    });
+  });
+
   return (
     <Stack flex={1} px={'18px'} backgroundColor={colors.grayScale[0]}>
       <FlatList
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0]}
+        keyExtractor={(item, index) => index.toString()}
         ListHeaderComponent={() => (
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <HStack width={APP_WIDTH} py={'16px'} backgroundColor={'white'}>
@@ -45,42 +78,12 @@ function Index() {
             </HStack>
           </ScrollView>
         )}
-        data={['', '', '', '']}
-        renderItem={() => (
+        data={dummnyData}
+        renderItem={({item}) => (
           <CommunityContent
-            viewMode={'simple'}
-            userInfo={
-              <HStack>
-                <AvatarIcon
-                  width={20}
-                  height={20}
-                  fill={colors.grayScale['30']}
-                />
-
-                <HStack alignItems={'center'} space="4px" marginLeft={'8px'}>
-                  <Text color={colors.grayScale['80']} fontSize={'14px'}>
-                    닉네임
-                  </Text>
-                  <View
-                    backgroundColor={colors.grayScale['30']}
-                    h="8px"
-                    w="1px"
-                  />
-                  <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                    골든햄스터
-                  </Text>
-                  <View
-                    backgroundColor={colors.grayScale['30']}
-                    h="8px"
-                    w="1px"
-                  />
-
-                  <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                    2개월
-                  </Text>
-                </HStack>
-              </HStack>
-            }
+            contentData={item}
+            viewMode="simple"
+            isVisibleBottomUserInfo
           />
         )}
       />
@@ -88,4 +91,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MypageSaveCommunity;
