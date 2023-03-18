@@ -22,6 +22,7 @@ import {
   isExistBlank,
   isExistSpecialCharacters,
 } from '~/utils/verification';
+import {config} from '~/utils/config';
 
 const helpList = ['공백 미포함', '기호 미포함', '2~10자 이내']; // 도움말 리스트
 
@@ -56,8 +57,8 @@ function NickNameRegister({signupForm, setSignupForm}: Props) {
        */
 
       if (response?.success === 'SUCCESS') {
-        await setSecurityData('access_token', response.data.access);
-        await setSecurityData('refresh_token', response.data.refresh);
+        await setSecurityData(config.ACCESS_TOKEN_NAME, response.data.access);
+        await setSecurityData(config.REFRESH_TOKEN_NAME, response.data.refresh);
 
         navigation.navigate('PetInfoRegister');
       }

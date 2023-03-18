@@ -28,6 +28,7 @@ import {
 import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {useGetUser} from '~/api/user/queries';
 import {useUserRegister} from '~/store/useUserContext';
+import {config} from '~/utils/config';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -48,7 +49,7 @@ function EmailLogin() {
 
   useEffect(() => {
     async function checkIsLogin() {
-      const accessToken = await getSecurityData('access_token');
+      const accessToken = await getSecurityData(config.ACCESS_TOKEN_NAME);
 
       if (accessToken) reset({index: 0, routes: [{name: 'tab'}]});
     }
@@ -75,8 +76,8 @@ function EmailLogin() {
     });
 
     if (response?.success === 'SUCCESS') {
-      await setSecurityData('access_token', response.data.access);
-      await setSecurityData('refresh_token', response.data.refresh);
+      await setSecurityData(config.ACCESS_TOKEN_NAME, response.data.access);
+      await setSecurityData(config.REFRESH_TOKEN_NAME, response.data.refresh);
 
       const _userData = await getUserRefetch();
 

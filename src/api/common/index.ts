@@ -15,10 +15,12 @@ const axiosInstance = axios.create();
 export const apiCall = async <ResponseType = any>(
   props: AxiosRequestConfig,
 ) => {
-  const accessToken = await getSecurityData('access_token');
+  const accessToken = await getSecurityData(config.ACCESS_TOKEN_NAME);
+  const refreshToken = await getSecurityData(config.REFRESH_TOKEN_NAME);
   if (__DEV__) {
     console.log('@ API CALL PREVIOUS @');
-    console.log(`1. accessToken : ${accessToken}`);
+    console.log(`0. accessToken : ${accessToken}`);
+    console.log(`1. refreshToken : ${refreshToken}`);
     console.log(`2. METHOD : ${props.method}`);
     console.log(`3. PATH : ${BASE_URL}${props.url}`);
     console.log(`4. DATA: ${JSON.stringify(props.data)}`);
@@ -91,7 +93,7 @@ export const imageApiCall = async <ResponseType = any>(props: {
   data: FormData;
   timeout?: number;
 }) => {
-  const accessToken = await getSecurityData('access_token');
+  const accessToken = await getSecurityData(config.ACCESS_TOKEN_NAME);
   if (__DEV__) {
     console.log('@ API CALL PREVIOUS @');
     console.log(`accessToken : ${accessToken}`);
