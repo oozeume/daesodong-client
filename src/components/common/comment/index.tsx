@@ -13,6 +13,7 @@ import CommentModel from '~/model/comment';
 import {colors} from '~/theme/theme';
 import {config} from '~/utils/config';
 import {getProgressTime} from '~/utils/time';
+import ProfileImage from '../profileImage/ProfileImage';
 
 interface Props {
   commentType?: {
@@ -99,23 +100,11 @@ const Comment = ({
       <Box flex={1}>
         <HStack justifyContent={'space-between'} alignItems="center">
           <HStack alignItems={'center'}>
-            <Image
-              w={'20px'}
-              h={'20px'}
-              borderRadius={20}
-              mr="8px"
-              fallbackElement={
-                <AvatarIcon
-                  width={'20px'}
-                  height={'20px'}
-                  fill={colors.grayScale['30']}
-                  style={{marginRight: 8}}
-                />
-              }
-              alt="post_user_img"
-              source={{
-                uri: `${config.IMAGE_BASE_URL}${data?.petInfo?.pet_picture_url}`,
-              }}
+            <ProfileImage
+              imageName={data?.petInfo?.pet_picture_url}
+              width={20}
+              height={20}
+              imageStyle={{marginRight: 8}}
             />
 
             {/* 닉네임, 이름, 동물, 나이 뷰 라인 */}
