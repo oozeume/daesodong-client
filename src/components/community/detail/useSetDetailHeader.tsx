@@ -11,10 +11,22 @@ import {colors} from '~/theme/theme';
 import {Platform} from 'react-native';
 import {usePostCummunityPostBookmark} from '~/api/community/mutation';
 
+interface Props {
+  postId: string;
+  writerId?: string;
+  userId?: string;
+  isBookmarkServerState?: boolean;
+}
+
 /**
  *@description 커뮤니티 상세 댓글 헤더 설정 및 북마크, 삭제 팝업 state 초기 설정 훅
  */
-function useSetDetailHeader(postId: string, isBookmarkServerState?: boolean) {
+function useSetDetailHeader({
+  postId,
+  writerId,
+  userId,
+  isBookmarkServerState,
+}: Props) {
   const navigation = useNavigation<NavigationHookProp>();
   const [isBookmark, setBookmark] = useState(isBookmarkServerState);
   const {mutateAsync, isLoading} = usePostCummunityPostBookmark();
@@ -35,6 +47,12 @@ function useSetDetailHeader(postId: string, isBookmarkServerState?: boolean) {
 
     setBookmark(prev => !prev);
   };
+
+  const onMoveModifyPage = () =>
+    navigation.navigate('CommunityRegister', {postId});
+  const onReport = () => {};
+  const onDelete = () => setOpenDeletePopup(prev => ({...prev, post: true}));
+  const onBlock = () => {};
 
   useEffect(() => {
     navigation.setOptions({
@@ -65,11 +83,13 @@ function useSetDetailHeader(postId: string, isBookmarkServerState?: boolean) {
               <KekabMenu
                 top={Platform.OS === 'android' ? '28px' : '20px'}
                 left={'-20px'}
+                firstButtonName={writerId === userId ? '수정' : '신고'}
+                secondButtonName={writerId === userId ? '삭제' : '차단'}
                 handleFirstButton={() =>
-                  navigation.navigate('CommunityRegister', {postId})
+                  writerId === userId ? onMoveModifyPage() : onReport()
                 }
                 handleSecondButton={() =>
-                  setOpenDeletePopup(prev => ({...prev, post: true}))
+                  writerId === userId ? onDelete() : onBlock()
                 }
               />
             </HStack>
