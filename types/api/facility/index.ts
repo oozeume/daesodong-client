@@ -129,6 +129,11 @@ export type FacilityReviewsResponse = {
       name: string;
     };
   }[];
+  thanks: number;
+  thanks_review_join: {
+    hospitalReviewId: string;
+    userId: string;
+  }[];
 };
 
 /**
