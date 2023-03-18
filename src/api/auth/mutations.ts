@@ -10,10 +10,15 @@ import {
   PostAuthSocialLoginData,
   PostAuthResetPasswordData,
   PostAuthMobileVerifyCodeResponse,
-  PostAuthRefreshData,
   PostAuthRefreshResponse,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
+import {
+  getSecurityData,
+  removeSecurityData,
+  setSecurityData,
+} from '~/utils/storage';
+import {config} from '~/utils/config';
 
 /**
  *@description 닉네임 확인 api
@@ -182,15 +187,35 @@ export const usePostAuthResetPassword = () => {
 
 /**
  *@description 토큰 업데이트
+ *@todo 추후 api 수정으로 refresh token이 응답에서 사라지면 해당 로직 수정
  */
-const postAuthRefresh = (data: PostAuthRefreshData) => {
-  return apiCall<PostAuthRefreshResponse>({
-    method: 'POST',
-    url: `auth/refresh`,
-    data,
-  });
+const postAuthRefresh = async () => {
+  try {
+    const refreshToken = await getSecurityData(config.REFRESH_TOKEN_NAME);
+
+    /**
+     *@todo form data로 보내기
+     */
+    const response = await apiCall<PostAuthRefreshResponse>({
+      method: 'POST',
+      url: `auth/refresh`,
+      data: {
+        refreshToken,
+      },
+    });
+
+    setSecurityData(config.ACCESS_TOKEN_NAME, response.data.accessToken);
+    setSecurityData(config.REFRESH_TOKEN_NAME, response.data.refreshToken);
+
+    return true;
+  } catch (error) {
+    removeSecurityData(config.ACCESS_TOKEN_NAME);
+    removeSecurityData(config.REFRESH_TOKEN_NAME);
+
+    throw false;
+  }
 };
 
 export const usePostAuthRefresh = () => {
-  return useMutation((data: PostAuthRefreshData) => postAuthRefresh(data));
+  return useMutation(() => postAuthRefresh());
 };
