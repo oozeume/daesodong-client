@@ -1,5 +1,5 @@
 import React from 'react';
-import {HStack, Pressable, Text, View, VStack} from 'native-base';
+import {HStack, Image, Pressable, Text, View, VStack} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {colors} from '~/theme/theme';
@@ -7,10 +7,15 @@ import {APP_WIDTH} from '~/utils/dimension';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import Facility from '~/model/facility';
+import {config} from '~/utils/config';
 
 interface Props {
   facility: Facility;
 }
+
+/**
+ *@description 시설 메인 페이지 > 시설 아이템
+ */
 
 function FacilityItem({facility}: Props) {
   const {navigate} = useNavigation<NativeStackNavigationProp<any>>();
@@ -103,8 +108,17 @@ function FacilityItem({facility}: Props) {
           </HStack>
         </VStack>
 
-        {/* TODO: 병원 이미지 */}
-        <View w="70px" h="70px" bgColor={colors.grayScale[20]} />
+        <Image
+          w={'70px'}
+          h={'70px'}
+          alt={'facility_image'}
+          source={{
+            uri: `${config.IMAGE_BASE_URL}${facility.representativeImage}`,
+          }}
+          fallbackElement={
+            <View w="70px" h="70px" bgColor={colors.grayScale[20]} />
+          }
+        />
       </HStack>
 
       {/* TODO: 내 동물종 */}
