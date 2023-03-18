@@ -10,6 +10,8 @@ import {
   PostAuthSocialLoginData,
   PostAuthResetPasswordData,
   PostAuthMobileVerifyCodeResponse,
+  PostAuthRefreshData,
+  PostAuthRefreshResponse,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
 
@@ -176,4 +178,19 @@ export const usePostAuthResetPassword = () => {
   return useMutation((data: PostAuthResetPasswordData) =>
     postAuthResetPassword(data),
   );
+};
+
+/**
+ *@description 토큰 업데이트
+ */
+const postAuthRefresh = (data: PostAuthRefreshData) => {
+  return apiCall<PostAuthRefreshResponse>({
+    method: 'POST',
+    url: `auth/refresh`,
+    data,
+  });
+};
+
+export const usePostAuthRefresh = () => {
+  return useMutation((data: PostAuthRefreshData) => postAuthRefresh(data));
 };

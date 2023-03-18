@@ -61,3 +61,14 @@ export interface PostAuthResetPasswordData {
   email: string;
   password: string;
 }
+
+/**
+ *@description 토큰 업데이트 api 데이터
+ */
+export interface PostAuthRefreshData {
+  refreshToken: string;
+}
+
+export interface PostAuthRefreshResponse {
+  accessToken: string;
+}
