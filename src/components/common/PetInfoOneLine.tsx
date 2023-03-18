@@ -6,78 +6,33 @@ interface Props {
   fontSize?: string;
   color?: string;
   dividerColor?: string;
-  petName?: string;
-  petType?: string;
-  petGender?: string;
-  petAge?: string;
+  textList: string[];
 }
 
 /**
  *@description 컨텐츠의 펫 한줄 정보
  */
-function PetInfoOneLine({
-  fontSize,
-  color,
-  dividerColor,
-  petName,
-  petType,
-  petGender,
-  petAge,
-}: Props) {
+function PetInfoOneLine({fontSize, color, dividerColor, textList}: Props) {
   return (
-    <HStack alignItems={'center'} space="4px">
-      {petName && (
-        <>
+    <HStack alignItems={'center'}>
+      {textList.map((item, i) => (
+        <HStack alignItems={'center'}>
           <Text
             color={color ?? colors.grayScale[90]}
             fontSize={fontSize ?? '11px'}>
-            닉네임
+            {item}
           </Text>
-          <View
-            backgroundColor={dividerColor ?? colors.grayScale['80']}
-            h="8px"
-            w="1px"
-          />
-        </>
-      )}
 
-      {petType && (
-        <>
-          <Text
-            color={color ?? colors.grayScale[90]}
-            fontSize={fontSize ?? '11px'}>
-            골든햄스터
-          </Text>
-          <View
-            backgroundColor={dividerColor ?? colors.grayScale['80']}
-            h="8px"
-            w="1px"
-          />
-        </>
-      )}
-
-      {petGender && (
-        <>
-          <Text
-            color={color ?? colors.grayScale[90]}
-            fontSize={fontSize ?? '11px'}>
-            남아
-          </Text>
-          <View
-            backgroundColor={dividerColor ?? colors.grayScale['80']}
-            h="8px"
-            w="1px"
-          />
-        </>
-      )}
-
-      {petAge && (
-        <Text
-          color={color ?? colors.grayScale[90]}
-          fontSize={fontSize ?? '11px'}>
-          2개월
-        </Text>
-      )}
+          {textList.length - 1 !== i && (
+            <View
+              mx="4px"
+              backgroundColor={dividerColor ?? colors.grayScale['80']}
+              h="8px"
+              w="1px"
+            />
+          )}
+        </HStack>
+      ))}
     </HStack>
   );
 }

@@ -17,12 +17,18 @@ export interface PatchCommentData {
 export interface PostCommentThankData {
   postId: string;
   commentId: string;
-  isThank: boolean;
+  isOn: boolean;
 }
 
 export interface DeleteCommentQuery {
   postId: string;
   commentId: string;
+}
+
+// 댓글 리스트 조회 쿼리
+export interface GetCommentListQuery {
+  limit: number;
+  cursor?: string;
 }
 
 // 댓글 리스트 조회 응답

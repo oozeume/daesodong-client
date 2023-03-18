@@ -13,6 +13,10 @@ interface Props {
   review: Review;
 }
 
+/**
+ *@description 리뷰 > 고마워요
+ */
+
 function ThanksReview({review}: Props) {
   const [isThanks, setThanks] = useState(review.isMyThanksReview);
   const {refetch} = useGetFacilityReviews({

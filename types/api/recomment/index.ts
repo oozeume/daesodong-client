@@ -9,8 +9,13 @@ export interface PatchRecommentData {
   content: string;
 }
 
+export interface DeleteRecommentQuery {
+  commentId: string;
+  recommentId: string;
+}
+
 export interface PostRecommentThankData {
   commentId: string;
   recommentId: string;
-  isThank: boolean;
+  isOn: boolean;
 }

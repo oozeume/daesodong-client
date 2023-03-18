@@ -37,7 +37,7 @@ function FacilityReviewAllRate({facilityId}: Props) {
               color={'fussOrange.0'}
               fontWeight="700"
               lineHeight={'36px'}>
-              {data?.data.score_total ?? 0}
+              {data?.data.score_total.toFixed(1) ?? 0}
             </Text>
             <HStack mt={'1.5px'}>
               {RATE_NUMBER.map(i => (

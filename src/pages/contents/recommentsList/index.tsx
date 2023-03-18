@@ -8,6 +8,7 @@ import Popup from '~/components/common/popup/Popup';
 import Comment from '~/components/common/comment';
 import {APP_WIDTH} from '~/utils/dimension';
 import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
+import {PostFeature} from '~/../types/common';
 
 /**
  *@description 컨텐츠 답글 리스트
@@ -42,12 +43,13 @@ const ContentsRecommentsList = () => {
         bgColor={colors.grayScale['0']}
         minHeight="100%"
         data={['', '', '', '', '', '', '', '', '', '', '']}
-        ListHeaderComponent={() => <Comment />}
+        ListHeaderComponent={() => (
+          <Comment onClickKekab={(type: PostFeature) => {}} />
+        )}
         keyExtractor={(item, index) => String(index)}
         renderItem={info => (
           <Comment
-            isBest={info.index === 0 || info.index === 10}
-            commentType="reply"
+            onClickKekab={(type: PostFeature) => {}}
             onRegisterRecomment={() => setRecommentWriting(true)}
           />
         )}

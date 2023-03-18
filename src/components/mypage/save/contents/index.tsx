@@ -9,10 +9,10 @@ import {StyleSheet} from 'react-native';
 import {APP_WIDTH} from '~/utils/dimension';
 
 /**
- *@description 내 계정 - 콘텐츠 Tab
+ *@description 내 계정 > 저장 - 콘텐츠 Tab
  */
 
-function Index() {
+function MypageSaveContents() {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   return (
     <FlatList
@@ -99,7 +99,7 @@ function Index() {
   );
 }
 
-export default Index;
+export default MypageSaveContents;
 
 const styles = StyleSheet.create({
   container: {

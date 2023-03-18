@@ -33,7 +33,7 @@ function PartialRate({title, rate}: Props) {
       </Box>
       <StarFillIcon fill={'#C6C8CD'} stroke={'#C6C8CD'} />
       <Text pl={'10px'} color={'#9EA1A8'} fontSize={'12px'}>
-        {rate}
+        {rate.toFixed(1)}
       </Text>
     </HStack>
   );

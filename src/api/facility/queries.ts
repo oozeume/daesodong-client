@@ -1,5 +1,5 @@
 import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
-import _ from 'lodash';
+import queryString from 'query-string';
 import {
   FacilityResponse,
   FacilityReviewsResponse,
@@ -74,12 +74,12 @@ const getFacilityReviews = ({
   limit,
   cursor,
   same,
-}: GetFacilityReviewsQuery | any) => {
+}: GetFacilityReviewsQuery) => {
+  const _query = queryString.stringify({limit, cursor, same});
+
   return apiCall<FacilityReviewsResponse[]>({
     method: 'GET',
-    url: _.isNil(cursor)
-      ? `/hospitals/${facilityId}/reviews?limit=${limit}&same=${same}`
-      : `/hospitals/${facilityId}/reviews?limit=${limit}&cursor=${cursor}&same=${same}`,
+    url: `/hospitals/${facilityId}/reviews?${_query}`,
   });
 };
 

@@ -18,34 +18,41 @@ import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import {Dimensions} from 'react-native';
 import dayjs from 'dayjs';
 import {getProgressTime} from '~/utils/time';
-import Post from '~/model/post';
+import CommunityPost from '~/model/communityPost';
 import _ from 'lodash';
 import {config} from '~/utils/config';
 import ImageSwiper from '~/components/common/swiper/ImageSwiper';
+import ProfileImage from '~/components/common/profileImage/ProfileImage';
 
 interface Props {
-  isVisibleUserInfo?: boolean;
+  isVisibleTopUserInfo?: boolean;
+  isVisibleBottomUserInfo?: boolean;
   isVisibleLike?: boolean;
-  userInfo?: JSX.Element;
   isVisibleTag?: boolean;
   viewAllButton?: JSX.Element;
-  viewMode?: 'default' | 'simple';
+  viewMode?: 'default' | 'simple' | 'list';
   isVisibleTime?: boolean;
-  contentData?: Post;
+  contentData?: CommunityPost;
+  onThank?: () => void;
+  isThank?: boolean;
+  thankCount?: number;
 }
 
 /**
  *@description 커뮤니티 게시글 내용
  */
 const CommunityContent = ({
-  isVisibleUserInfo = false,
+  isVisibleTopUserInfo = false,
+  isVisibleBottomUserInfo = false,
   isVisibleLike = false,
   isVisibleTag = false,
   viewAllButton,
-  userInfo,
   viewMode = 'default',
   isVisibleTime,
   contentData,
+  onThank,
+  isThank,
+  thankCount,
 }: Props) => {
   const imageWidth = Dimensions.get('screen').width - 36;
 
@@ -58,10 +65,12 @@ const CommunityContent = ({
     <Box
       px="18px"
       mb="8px"
-      bgColor={colors.grayScale[0]}
+      bgColor={
+        viewMode === 'simple' ? colors.grayScale[10] : colors.grayScale[0]
+      }
       borderRadius={viewMode === 'simple' ? '16px' : undefined}>
       {/* 글쓴이 정보 */}
-      {isVisibleUserInfo && (
+      {isVisibleTopUserInfo && (
         <HStack
           pt="8px"
           pb="20px"
@@ -70,17 +79,14 @@ const CommunityContent = ({
           {/* 유저 이미지 */}
 
           <HStack w="100%">
-            <AvatarIcon
-              width={44}
-              height={44}
-              fill={colors.grayScale['30']}
-              style={{marginRight: 12}}
+            <ProfileImage
+              imageName={contentData?.writerPetInfo?.pet_picture_url}
             />
 
             <VStack>
               <HStack mr="12px" alignItems={'center'} fontWeight={700}>
                 <Text color={colors.grayScale['80']} fontSize={'14px'} mr="4px">
-                  닉네임
+                  {contentData?.writerNickname}
                 </Text>
 
                 <View
@@ -96,7 +102,7 @@ const CommunityContent = ({
 
               <HStack alignItems={'center'}>
                 <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                  골든햄스터
+                  {contentData?.writerPetInfo?.name}
                 </Text>
 
                 <View
@@ -107,7 +113,7 @@ const CommunityContent = ({
                 />
 
                 <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                  남아
+                  {contentData?.writerPetInfo?.specie.name}
                 </Text>
 
                 <View
@@ -118,7 +124,7 @@ const CommunityContent = ({
                 />
 
                 <Text color={colors.grayScale['60']} fontSize={'13px'}>
-                  2개월
+                  {contentData?.writerPetInfo?.age}개월
                 </Text>
               </HStack>
             </VStack>
@@ -140,9 +146,9 @@ const CommunityContent = ({
           {/* 제목 */}
           <Text
             noOfLines={viewMode === 'simple' ? 1 : undefined}
-            fontSize={'16px'}
+            fontSize={viewMode === 'simple' ? '15px' : '16px'}
             color={colors.grayScale['80']}
-            fontWeight={800}>
+            fontWeight={viewMode === 'simple' ? 500 : 800}>
             {contentData?.title}
           </Text>
 
@@ -164,7 +170,7 @@ const CommunityContent = ({
 
         {viewAllButton}
 
-        {viewMode === 'simple' && mainImageURL && (
+        {viewMode === 'list' && mainImageURL && (
           <Image
             w={imageWidth}
             h={imageWidth}
@@ -216,19 +222,67 @@ const CommunityContent = ({
             ? colors.grayScale['20']
             : colors.grayScale['10']
         }>
-        {userInfo}
-        {isVisibleLike && (
-          <HStack alignItems={'center'}>
-            <HeartFillIcon fill={colors.grayScale['30']} />
+        {isVisibleBottomUserInfo && (
+          <HStack>
+            <ProfileImage
+              width={20}
+              height={20}
+              imageStyle={{marginRight: 4}}
+              imageName={contentData?.writerPetInfo?.pet_picture_url}
+            />
 
-            <Text mx="4px" fontSize="12px" color={colors.grayScale['60']}>
-              고마워요
-            </Text>
+            <HStack alignItems={'center'} space="4px" marginLeft={'8px'}>
+              <Text
+                fontWeight={500}
+                color={colors.grayScale['80']}
+                fontSize={'12px'}>
+                {contentData?.writerNickname}
+              </Text>
 
-            <Text fontSize="12px" color={colors.grayScale['60']}>
-              {contentData?.thanks}
-            </Text>
+              <View backgroundColor={colors.grayScale['30']} h="8px" w="1px" />
+
+              <Text color={colors.grayScale['60']} fontSize={'12px'}>
+                {contentData?.writerPetInfo.name}
+              </Text>
+
+              {viewMode !== 'simple' && (
+                <View
+                  backgroundColor={colors.grayScale['30']}
+                  h="8px"
+                  w="1px"
+                />
+              )}
+
+              {viewMode !== 'simple' && (
+                <Text color={colors.grayScale['60']} fontSize={'12px'}>
+                  {contentData?.writerPetInfo.specie.name}
+                </Text>
+              )}
+
+              <View backgroundColor={colors.grayScale['30']} h="8px" w="1px" />
+
+              <Text color={colors.grayScale['60']} fontSize={'12px'}>
+                {contentData?.writerPetInfo.age}개월
+              </Text>
+            </HStack>
           </HStack>
+        )}
+
+        {isVisibleLike && (
+          <Pressable onPress={onThank}>
+            <HStack alignItems={'center'}>
+              <HeartFillIcon
+                fill={isThank ? colors.fussOrange[0] : colors.grayScale[30]}
+              />
+
+              <Text
+                ml="4px"
+                fontSize="12px"
+                color={isThank ? colors.fussOrange[0] : colors.grayScale[60]}>
+                {`고마워요 ${thankCount}`}
+              </Text>
+            </HStack>
+          </Pressable>
         )}
 
         <HStack>
@@ -247,7 +301,7 @@ const CommunityContent = ({
             <HStack alignItems={'center'}>
               <MessageFillIcon fill={colors.grayScale['30']} />
               <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
-                100
+                {contentData?.commentsCount}
               </Text>
             </HStack>
           </Pressable>

@@ -10,7 +10,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import CommunityContents from '../../components/community/main/CommunityContents';
 import {useGetCommunityPostList} from '~/api/community/queries';
 import {usePostCoummunityPostCount} from '~/api/community/mutation';
-import Post from '~/model/post';
+import CommunityPost from '~/model/communityPost';
 import {Platform, StyleSheet} from 'react-native';
 import FloatingButtonImage from '~/assets/images/floating_button_image.svg';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
@@ -29,7 +29,7 @@ const CommunityMain = () => {
   const postCoummunityPostCount = usePostCoummunityPostCount();
   const [isTooltipOpen, setTooltipOpen] = useState(true);
 
-  const [postList, setPostList] = useState<Post[]>([]);
+  const [postList, setPostList] = useState<CommunityPost[]>([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -66,9 +66,9 @@ const CommunityMain = () => {
   useEffect(() => {
     // 게시글 리스트 state 설정
     if (rawPostList?.pages) {
-      let _postList: Post[] = [];
+      let _postList: CommunityPost[] = [];
       rawPostList?.pages.forEach(item => {
-        const tmpList = item.data.map(_item => new Post(_item));
+        const tmpList = item.data.map(_item => new CommunityPost(_item));
 
         _postList = [..._postList, ...tmpList];
       });
@@ -87,7 +87,7 @@ const CommunityMain = () => {
     getPostTotalCount();
   }, []);
 
-  const data = [
+  const pageComponents = [
     <BestContents />,
     <PetType setPetType={setPetType} petType={petType} />,
     <HStack
@@ -130,13 +130,13 @@ const CommunityMain = () => {
         disableVirtualization={false}
         bounces={false}
         keyExtractor={(item, index) => index.toString()}
-        data={data}
+        data={pageComponents}
         stickyHeaderIndices={[2]}
         onEndReached={onExpandList}
         onEndReachedThreshold={1}
         renderItem={({item}) => {
           return (
-            <Stack position={'relative'}>
+            <Stack>
               <Stack bgColor={colors.grayScale[10]}>{item}</Stack>
             </Stack>
           );

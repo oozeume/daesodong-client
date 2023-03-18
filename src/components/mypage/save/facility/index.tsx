@@ -11,10 +11,10 @@ import {APP_WIDTH} from '~/utils/dimension';
 type FacilityCategory = '전체' | '분양' | '병원' | '장례';
 
 /**
- *@description 내 계정 - 시설 Tab
+ *@description 내 계정 > 저장 - 시설 Tab
  */
 
-function Index() {
+function MypageSaveFacility() {
   const [selectedCategory, setSelectedCategory] =
     useState<FacilityCategory>('전체');
 
@@ -131,4 +131,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MypageSaveFacility;

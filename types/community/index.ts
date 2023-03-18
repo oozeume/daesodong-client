@@ -38,10 +38,20 @@ export type CommentItem = {
   postId: string;
   delete_at: string | null;
   created_at: string;
-  updated_at: string | null;
+  updated_at: string;
   comment1Id?: string;
   comment2?: CommentItem[];
   user: CommentUserInfo;
+  best_score: number;
+  thanks_comment1_join?: {
+    comment1Id: string;
+    userId: string;
+  }[];
+
+  thanks_comment2_join?: {
+    comment2Id: string;
+    userId: string;
+  }[];
 };
 
 /**
