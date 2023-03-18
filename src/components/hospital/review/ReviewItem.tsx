@@ -26,6 +26,7 @@ import Popup from '~/components/common/popup/Popup';
 import {useMutationReviewDelete} from '~/api/facility/mutations';
 import {useUserContext} from '~/store/useUserContext';
 import {useGetFacilityReviews} from '~/api/facility/queries';
+import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -60,7 +61,7 @@ function ReviewItem({
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const {refetch} = useGetFacilityReviews({
     facilityId,
-    limit: 10,
+    limit: REVIEWS_PER_PAGE,
     same: false,
   });
 

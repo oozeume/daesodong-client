@@ -17,3 +17,6 @@ export const INIT_REVIEW_FORM = {
   hospital_review_picture: ['aaa,png', 'bbb.png'],
   tags: [''],
 };
+
+// 페이지별 리뷰 개수
+export const REVIEWS_PER_PAGE = 10;

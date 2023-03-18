@@ -1,4 +1,5 @@
-import {useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
+import queryString from 'query-string';
 import {
   FacilityResponse,
   FacilityReviewsResponse,
@@ -64,17 +65,21 @@ export const useGetVisitedPetsFacility = (facilityId: string) => {
 type GetFacilityReviewsQuery = {
   facilityId: string;
   limit: number;
+  cursor?: string;
   same: boolean;
 };
 
 const getFacilityReviews = ({
   facilityId,
   limit,
+  cursor,
   same,
 }: GetFacilityReviewsQuery) => {
+  const _query = queryString.stringify({limit, cursor, same});
+
   return apiCall<FacilityReviewsResponse[]>({
     method: 'GET',
-    url: `/hospitals/${facilityId}/reviews?limit=${limit}&same=${same}`,
+    url: `/hospitals/${facilityId}/reviews?${_query}`,
   });
 };
 
@@ -83,8 +88,32 @@ export const useGetFacilityReviews = ({
   limit,
   same,
 }: GetFacilityReviewsQuery) => {
-  return useQuery([QueryKeys.facility.reviews], () =>
-    getFacilityReviews({facilityId, limit, same}),
+  return useInfiniteQuery(
+    [QueryKeys.facility.reviews],
+    param => {
+      const cursor = param.pageParam?.cursor ?? undefined;
+
+      return getFacilityReviews({facilityId, limit, cursor, same});
+    },
+    {
+      getNextPageParam: (lastPage, allpages) => {
+        const allPagesDataLength = allpages[0].data.length;
+        const lastDataLength = lastPage.data.length;
+
+        if (allPagesDataLength < limit) {
+          return false;
+        } else {
+          return {
+            limit: limit,
+            cursor:
+              lastDataLength === 0
+                ? undefined
+                : lastPage.data[lastDataLength - 1].id,
+          };
+        }
+      },
+      keepPreviousData: true,
+    },
   );
 };
 
