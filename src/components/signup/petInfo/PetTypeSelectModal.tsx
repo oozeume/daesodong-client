@@ -98,6 +98,13 @@ function PetTypeSelectModal({
     }
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchText('');
+      setSearchList([]);
+    }
+  }, [isOpen]);
+
   return (
     <Actionsheet
       isOpen={isOpen}
@@ -138,6 +145,7 @@ function PetTypeSelectModal({
               backgroundColor={colors.grayScale[10]}>
               <TextInput
                 onChangeText={text => setSearchText(text)}
+                value={searchText}
                 style={{fontSize: 15}}
                 placeholder="검색어를 입력하세요"
               />
