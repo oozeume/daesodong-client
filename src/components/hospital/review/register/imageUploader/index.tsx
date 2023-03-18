@@ -8,12 +8,13 @@ import {Platform} from 'react-native';
 import {config} from '~/utils/config';
 import {colors} from '~/theme/theme';
 import CircleDeleteIcon from '~/assets/icons/circle_delete.svg';
+import {PostFacilityReviewData} from '~/../types/api/facility';
 
 const MAX_IMAGE_COUNT = 5;
 
 interface Props {
-  reviewForm: any;
-  setReviewForm: any;
+  reviewForm: PostFacilityReviewData;
+  setReviewForm: React.Dispatch<React.SetStateAction<PostFacilityReviewData>>;
   images: RegisterImageData[];
   setImages: React.Dispatch<React.SetStateAction<RegisterImageData[]>>;
 }
@@ -65,7 +66,7 @@ function ImageUploader({reviewForm, setReviewForm, images, setImages}: Props) {
   useEffect(() => {
     setReviewForm({
       ...reviewForm,
-      hospital_review_picture: images,
+      hospital_review_picture: images.map(i => i.cloudImageName),
     });
   }, [images]);
 

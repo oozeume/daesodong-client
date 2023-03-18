@@ -18,6 +18,7 @@ import {ReviewType} from '~/../types/facility';
 import {RegisterImageData} from '~/../types/community';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {PostCloudImageData} from '~/../types/utils';
+import useToastShow from '~/hooks/useToast';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
 
@@ -26,6 +27,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
  */
 function FacilityReviewEdit({route}: Props) {
   const {facilityId, reviewId, review, facilityName} = route.params;
+  const {toastShow} = useToastShow();
 
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const toast = useToast();
@@ -91,8 +93,10 @@ function FacilityReviewEdit({route}: Props) {
           render: () => <ToastMessage text={'내 후기를 수정했어요'} />,
         });
       })
-      // TODO: 업로드 실패 알럿 추가
-      .catch(e => console.log('error->', e));
+      .catch(e => {
+        toastShow('후기 수정 실패했습니다.');
+        console.log('error->', e);
+      });
   };
 
   const onClose = () => {
@@ -120,7 +124,6 @@ function FacilityReviewEdit({route}: Props) {
   }, []);
 
   return (
-    // TODO: 수정할때도 이미지업로드 될 수 있게 추가
     <ReviewForm
       facilityName={facilityName ?? ''}
       onClose={onClose}

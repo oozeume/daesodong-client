@@ -15,6 +15,7 @@ import {ReviewType} from '~/../types/facility';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {RegisterImageData} from '~/../types/community';
 import {PostCloudImageData} from '~/../types/utils';
+import useToastShow from '~/hooks/useToast';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -27,6 +28,8 @@ type Props = NativeStackScreenProps<
 function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
   const navigation = useNavigation<NavigationHookProp>();
+
+  const {toastShow} = useToastShow();
 
   const [active, setActive] = useState(false);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -72,8 +75,10 @@ function FacilityReviewRegister({route}: Props) {
           isComplete: true,
         });
       })
-      // TODO: 업로드 실패 알럿 추가
-      .catch(e => console.log('error', e));
+      .catch(e => {
+        toastShow('업로드에 실패했습니다.');
+        console.log('error', e);
+      });
   };
 
   useEffect(() => {
