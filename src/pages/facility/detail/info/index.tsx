@@ -23,7 +23,7 @@ import RecordVisitedExperience from '~/components/hospital/info/RecordVisitedExp
 import ArrowDownIcon from '~/assets/icon/_down.svg';
 import {useGetFacilityInfo} from '~/api/facility/queries';
 import Facility from '~/model/facility';
-import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
+import FacilityInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
 import {imageHeight} from '~/utils/imageHeight';
 import {APP_WIDTH} from '~/utils/dimension';
@@ -61,7 +61,8 @@ function FacilityInfo({id}: Props) {
 
   useEffect(() => {
     if (data) {
-      setFacilityInfo(new Facility(data.data));
+      console.log('썡데이터 확인하기---->', data.data);
+      setFacilityInfo(new Facility(data.data as any));
     }
   }, [data]);
 
@@ -205,10 +206,7 @@ function FacilityInfo({id}: Props) {
             </ScrollView>
           </VStack>
 
-          <HospitalInfoFooter
-            thanksCount={facilityInfo.thanksCount}
-            phoneNumber={facilityInfo.phoneNumber}
-          />
+          <FacilityInfoFooter facility={facilityInfo} />
         </Stack>
       )}
     </>
