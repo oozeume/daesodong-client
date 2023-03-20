@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
-import {FacilityReviewsResponse} from '~/../types/api/facility';
+import {
+  FacilityReviewImage,
+  FacilityReviewsResponse,
+} from '~/../types/api/facility';
 import {config} from '~/utils/config';
 
 class Review {
@@ -89,7 +92,11 @@ class Review {
   }
 
   get images() {
-    return this.review?.hospital_review_picture ?? [];
+    return (
+      this.review?.hospital_review_picture?.map(
+        (i: FacilityReviewImage) => i.picture_url,
+      ) ?? []
+    );
   }
 
   isPetFemale() {
