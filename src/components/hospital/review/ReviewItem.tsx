@@ -16,7 +16,7 @@ import AvatarIcon from '~/assets/icons/avartar.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import ImageContainer from './imageContainer.tsx';
 import {colors} from '~/theme/theme';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {Platform} from 'react-native';
 import _ from 'lodash';
@@ -26,6 +26,8 @@ import Popup from '~/components/common/popup/Popup';
 import {useMutationReviewDelete} from '~/api/facility/mutations';
 import {useUserContext} from '~/store/useUserContext';
 import {useGetFacilityReviews} from '~/api/facility/queries';
+import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
+import ThanksReview from './ThanksReview';
 
 interface Props {
   isInvisibleBorderTop?: boolean;
@@ -60,7 +62,7 @@ function ReviewItem({
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const {refetch} = useGetFacilityReviews({
     facilityId,
-    limit: 10,
+    limit: REVIEWS_PER_PAGE,
     same: false,
   });
 
@@ -282,16 +284,7 @@ function ReviewItem({
           ))}
         </HStack>
 
-        {/* TODO: 리뷰 고마워요 api 요청 필요 */}
-        <HStack
-          alignItems={'center'}
-          space={'10px'}
-          py={'20px'}
-          borderTopWidth={'1'}
-          borderTopColor={'#F6F7F7'}>
-          <HeartFillIcon fill={'#E1E2E4'} stroke={'#E1E2E4'} />
-          <Text color={'grayScale.60'}>23마리의 친구가 고마워했어요!</Text>
-        </HStack>
+        <ThanksReview review={review} />
 
         <ImageModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </Box>

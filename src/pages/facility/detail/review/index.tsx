@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, HStack, ScrollView, Spinner, Stack, Text} from 'native-base';
+import {Button, HStack, Pressable, Spinner, Stack, Text} from 'native-base';
 import FacilityReviewAllRate from '~/components/hospital/review/HospitalReviewRate';
 import CheckIcon from '~/assets/icons/check.svg';
-import ReviewList from '~/components/hospital/review/ReviewList';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import InfoChangeBottomSheet from '~/components/mypage/myInfo/InfoChangeBottomSheet';
@@ -13,12 +12,14 @@ import {
   useReviewRegister,
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import EmptyReviews from '~/components/facility/review/EmptyReviews';
 import _ from 'lodash';
-import {FacilityReviewsResponse} from '~/../types/api/facility';
+import {FlatList} from 'react-native';
+import ReviewItem from '~/components/hospital/review/ReviewItem';
 import {ReviewType} from '~/../types/facility';
+import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
 
 const MARGIN_X = 18;
 
@@ -33,18 +34,18 @@ interface Props {
 
 function FacilityReview({id, facilityName}: Props) {
   const navigation = useNavigation<NavigationHookProp>();
-
   const isFocused = useIsFocused();
+
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
-
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [isSamePetTypeReviews, setSamePetTypeReviews] = useState(false);
 
-  // TODO: 무한스크롤 작업
-  const {data, isLoading, refetch} = useGetFacilityReviews({
-    facilityId: id,
-    limit: 10,
-    same: false,
-  });
+  const {data, isLoading, hasNextPage, refetch, fetchNextPage} =
+    useGetFacilityReviews({
+      facilityId: id,
+      limit: REVIEWS_PER_PAGE,
+      same: isSamePetTypeReviews,
+    });
 
   const onMoveReviewRegisterPage = () => {
     navigation.navigate('FacilityReviewRegister', {
@@ -77,18 +78,31 @@ function FacilityReview({id, facilityName}: Props) {
   }, [isFocused, isRevewRegisterComplete]);
 
   useEffect(() => {
-    if (data) {
-      if (_.isEmpty(data.data)) {
+    if (data?.pages) {
+      if (_.isEmpty(data.pages)) {
         setReviews([]);
       } else {
-        setReviews(
-          data.data.map(
-            (review: FacilityReviewsResponse) => new Review(review),
-          ),
-        );
+        let _reviews: Review[] = [];
+        data?.pages.forEach(item => {
+          const tmpList = item.data.map(_item => new Review(_item));
+
+          _reviews = [..._reviews, ...tmpList];
+        });
+
+        setReviews(_reviews);
       }
     }
   }, [data]);
+
+  const fetchMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [isSamePetTypeReviews]);
 
   if (isLoading) {
     return <Spinner />;
@@ -96,51 +110,74 @@ function FacilityReview({id, facilityName}: Props) {
 
   return (
     <Stack flex={1} backgroundColor={'white'}>
-      {_.isEmpty(reviews) ? (
+      {_.isEmpty(reviews) && !isSamePetTypeReviews ? (
         <EmptyReviews onPress={onMoveReviewRegisterPage} />
       ) : (
-        <ScrollView>
-          <Stack
-            space={'12px'}
-            py={'20px'}
-            px={'18px'}
-            borderBottomColor={'grayScale.20'}
-            borderBottomWidth={1}
-            backgroundColor={'white'}>
-            <FacilityReviewAllRate facilityId={id} />
-            <Button
-              onPress={onMoveReviewRegisterPage}
-              w={'100%'}
-              h={'44px'}
-              borderRadius={'8px'}
-              borderWidth={'1px'}
-              borderColor={'fussOrange.0'}
-              backgroundColor={'fussOrange.-40'}
-              shadow={'0px 3px 4px rgba(0, 0, 0, 0.08)'}>
-              <Text color={'fussOrange.0'}>후기 남기기</Text>
-            </Button>
-          </Stack>
+        <FlatList
+          data={reviews}
+          disableVirtualization={false}
+          onEndReached={fetchMore}
+          onEndReachedThreshold={0.8}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => {
+            if (_.isEmpty(reviews)) {
+              return <EmptyReviews onPress={onMoveReviewRegisterPage} />;
+            } else {
+              return (
+                <Stack space={'8px'} backgroundColor={colors.grayScale[10]}>
+                  <ReviewItem
+                    review={item}
+                    facilityName={facilityName}
+                    facilityId={id}
+                    isInvisibleBorderTop={index === 0}
+                  />
+                </Stack>
+              );
+            }
+          }}
+          ListHeaderComponent={
+            <>
+              <Stack
+                space={'12px'}
+                py={'20px'}
+                px={'18px'}
+                borderBottomColor={'grayScale.20'}
+                borderBottomWidth={1}
+                backgroundColor={'white'}>
+                <FacilityReviewAllRate facilityId={id} />
+                <Button
+                  onPress={onMoveReviewRegisterPage}
+                  w={'100%'}
+                  h={'44px'}
+                  borderRadius={'8px'}
+                  borderWidth={'1px'}
+                  borderColor={'fussOrange.0'}
+                  backgroundColor={'fussOrange.-40'}
+                  shadow={'0px 3px 4px rgba(0, 0, 0, 0.08)'}>
+                  <Text color={'fussOrange.0'}>후기 남기기</Text>
+                </Button>
+              </Stack>
 
-          <HStack
-            backgroundColor={'white'}
-            h={'44px'}
-            justifyContent={'flex-end'}
-            alignItems={'flex-end'}
-            pb={'4px'}
-            px={'18px'}>
-            <HStack space={'8px'}>
-              <CheckIcon fill={'#FF6B00'} />
-              {/* TODO: API 수정 필요 */}
-              <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
-            </HStack>
-          </HStack>
-
-          <ReviewList
-            reviews={reviews}
-            facilityName={facilityName}
-            facilityId={id}
-          />
-        </ScrollView>
+              <Pressable
+                onPress={() => setSamePetTypeReviews(!isSamePetTypeReviews)}>
+                <HStack
+                  backgroundColor={'white'}
+                  h={'44px'}
+                  justifyContent={'flex-end'}
+                  alignItems={'flex-end'}
+                  pb={'4px'}
+                  px={'18px'}>
+                  <HStack space={'8px'}>
+                    <CheckIcon
+                      fill={isSamePetTypeReviews ? '#FF6B00' : '#ECECEE'}
+                    />
+                    <Text fontSize={'14px'}>우리 아이와 같은 동물 후기만</Text>
+                  </HStack>
+                </HStack>
+              </Pressable>
+            </>
+          }
+        />
       )}
 
       {/* TODO: 컴포넌트 네이밍 범용적으로 변경 */}
