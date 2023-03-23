@@ -13,6 +13,10 @@ class Facility {
     return this.facility.name ?? '';
   }
 
+  get bookmarkCount() {
+    return this.facility.bookmarks ?? 0;
+  }
+
   get representativeImage() {
     return this.facility.hospital_picture[0].picture_url ?? '';
   }
@@ -60,6 +64,18 @@ class Facility {
 
   get thanksCount() {
     return this.facility.thanks ?? '';
+  }
+
+  get savedFacilityIds() {
+    return this.facility.save_hospital.map(i => i.hospitalId) ?? [];
+  }
+
+  isMyBookmarkFacility(facilityId: string) {
+    if (this.savedFacilityIds) {
+      return this.savedFacilityIds.includes(facilityId);
+    } else {
+      return false;
+    }
   }
 }
 

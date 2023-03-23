@@ -61,7 +61,6 @@ function FacilityInfo({id}: Props) {
 
   useEffect(() => {
     if (data) {
-      console.log('썡데이터 확인하기---->', data.data);
       setFacilityInfo(new Facility(data.data as any));
     }
   }, [data]);

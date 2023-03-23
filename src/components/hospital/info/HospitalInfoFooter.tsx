@@ -8,7 +8,6 @@ import {
   useMutationFaciltiyBookmark,
   useMutationFaciltiyBookmarkCancel,
 } from '~/api/facility/mutations';
-import _ from 'lodash';
 
 interface Props {
   facility: Facility;
@@ -16,13 +15,13 @@ interface Props {
 
 /**
  * 병원 시설 정보 탭 하단 푸터 컴포넌트
- * TODO : thanksCount api 수정 필요
- * TODO: 본인이 북마크 했는지 안했는지 확인 API 추가 요청 필요
  */
 
 function FacilityInfoFooter({facility}: Props) {
-  const [isBookMark, setIsBookMark] = useState(false);
-  const [bookMarkNumber, setBookMarkNumber] = useState(facility.thanksCount);
+  const [isBookMark, setIsBookMark] = useState(
+    facility.isMyBookmarkFacility(facility.id),
+  );
+  const [bookMarkNumber, setBookMarkNumber] = useState(facility.bookmarkCount);
 
   const {mutateAsync: mutateBookmark} = useMutationFaciltiyBookmark(
     facility.id,

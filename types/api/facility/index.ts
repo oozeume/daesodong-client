@@ -16,6 +16,11 @@ export type FacilityResponse = {
   intro: string;
   url: string;
   info: string;
+  bookmarks: number;
+  save_hospital: {
+    hospitalId: string;
+    userId: string;
+  }[];
   sch_mon: string;
   sch_tue: string;
   sch_wed: string;
