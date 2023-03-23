@@ -9,7 +9,7 @@ function useImageUpload() {
 
   const onImageUpload = async (
     imageInfo: PostCloudImageData[],
-    callback?: () => void,
+    callback: () => void,
   ) => {
     try {
       for (let i = 0; i < imageInfo.length; i++) {
@@ -20,9 +20,7 @@ function useImageUpload() {
       }
 
       // 이미지 클라우드에 업로드 후, 콜백 실행
-      if (callback) {
-        callback();
-      }
+      callback();
     } catch (error) {}
   };
   return {onImageUpload, postImageUpload};

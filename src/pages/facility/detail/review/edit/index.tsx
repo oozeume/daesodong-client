@@ -62,26 +62,11 @@ function FacilityReviewEdit({route}: Props) {
   const {mutateAsync: mutateEdit} = useMutationReviewEdit(facilityId, reviewId);
   const setIsReviewResterComplete = useReviewRegister();
 
-  const uploadImageCloud = () => {
-    onImageUpload(
-      images.reduce<PostCloudImageData[]>((result, item) => {
-        if (item.cloudData) {
-          result.push(item.cloudData);
-        }
-        return result;
-      }, []),
-    );
-  };
-
   const uploadReviewForm = () => {
     mutateEdit({
       ...reviewForm,
       hospital_review_picture: images.map(item => item.cloudImageName),
-    }).catch(e => console.log(e));
-  };
-
-  const onSubmit = () => {
-    Promise.all([uploadReviewForm(), uploadImageCloud()])
+    })
       .then(() => {
         setTags([]);
         setIsReviewResterComplete({
@@ -97,6 +82,18 @@ function FacilityReviewEdit({route}: Props) {
         toastShow('후기 수정 실패했습니다.');
         console.log('error->', e);
       });
+  };
+
+  const onSubmit = () => {
+    onImageUpload(
+      images.reduce<PostCloudImageData[]>((result, item) => {
+        if (item.cloudData) {
+          result.push(item.cloudData);
+        }
+        return result;
+      }, []),
+      uploadReviewForm,
+    );
   };
 
   const onClose = () => {

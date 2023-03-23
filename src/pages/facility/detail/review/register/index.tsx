@@ -46,26 +46,7 @@ function FacilityReviewRegister({route}: Props) {
     mutateRegister({
       ...reviewForm,
       hospital_review_picture: images.map(item => item.cloudImageName),
-    }).catch(e => console.log(e));
-  };
-
-  const {onImageUpload} = useImageUpload();
-
-  const [images, setImages] = useState<RegisterImageData[]>([]);
-
-  const uploadImageCloud = () => {
-    onImageUpload(
-      images.reduce<PostCloudImageData[]>((result, item) => {
-        if (item.cloudData) {
-          result.push(item.cloudData);
-        }
-        return result;
-      }, []),
-    );
-  };
-
-  const onSubmit = () => {
-    Promise.all([uploadReviewForm(), uploadImageCloud()])
+    })
       .then(() => {
         setTagList([]);
         setTags([]);
@@ -79,6 +60,22 @@ function FacilityReviewRegister({route}: Props) {
         toastShow('업로드에 실패했습니다.');
         console.log('error', e);
       });
+  };
+
+  const {onImageUpload} = useImageUpload();
+
+  const [images, setImages] = useState<RegisterImageData[]>([]);
+
+  const onSubmit = () => {
+    onImageUpload(
+      images.reduce<PostCloudImageData[]>((result, item) => {
+        if (item.cloudData) {
+          result.push(item.cloudData);
+        }
+        return result;
+      }, []),
+      uploadReviewForm,
+    );
   };
 
   useEffect(() => {
