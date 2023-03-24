@@ -217,11 +217,7 @@ const CommunityContent = ({
         pb="15px"
         px="3px"
         borderTopWidth={1}
-        borderTopColor={
-          viewMode === 'simple'
-            ? colors.grayScale['20']
-            : colors.grayScale['10']
-        }>
+        borderTopColor={colors.grayScale['10']}>
         {isVisibleBottomUserInfo && (
           <HStack>
             <ProfileImage
@@ -286,16 +282,14 @@ const CommunityContent = ({
         )}
 
         <HStack>
-          {viewMode !== 'simple' && (
-            <Pressable mr="16px">
-              <HStack alignItems={'center'}>
-                <ViewFillIcon fill={colors.grayScale['30']} />
-                <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
-                  {contentData?.views}
-                </Text>
-              </HStack>
-            </Pressable>
-          )}
+          <Pressable mr="16px">
+            <HStack alignItems={'center'}>
+              <ViewFillIcon fill={colors.grayScale['30']} />
+              <Text fontSize="12px" color={colors.grayScale['60']} ml="4px">
+                {contentData?.views}
+              </Text>
+            </HStack>
+          </Pressable>
 
           <Pressable>
             <HStack alignItems={'center'}>

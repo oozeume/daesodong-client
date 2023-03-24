@@ -153,7 +153,10 @@ function MyPage() {
             count={100}
           />
 
-          <MenuButton buttonName={'차단계정 관리'} onPress={() => {}} />
+          <MenuButton
+            buttonName={'차단계정 관리'}
+            onPress={() => navigation.navigate('BlockedAccounts')}
+          />
         </MenuSectionView>
 
         <MenuSectionView title="서비스 문의">
