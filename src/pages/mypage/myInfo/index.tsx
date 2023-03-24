@@ -48,12 +48,14 @@ function MyInfo() {
     address: userData?.address ?? '',
   });
 
-  const [form, setForm] = useState({
+  const initForm = {
     nickname: userData?.nickname ?? '',
     gender: userData?.gender ?? 'Male',
     birthdate: userData?.birthdate ?? dayjs().year(),
     address: userData?.address ?? '',
-  });
+  };
+
+  const [form, setForm] = useState(initForm);
 
   // 닉네임 중복 검증 결과
   const [nicknameDuplicate, setNicknameDuplicate] =
@@ -89,6 +91,11 @@ function MyInfo() {
       }, 50),
     [],
   );
+
+  const onCloseModal = (key: keyof typeof initForm) => {
+    setForm(prev => ({...prev, [key]: initForm[key]}));
+    setModalOpen(prev => ({...prev, [key]: false}));
+  };
 
   useEffect(() => {
     const _isExistBlank = isExistBlank(form.nickname);
@@ -174,7 +181,7 @@ function MyInfo() {
       <InfoChangeBottomSheet
         height="332px"
         isOpen={modalOpen.nickname}
-        onClose={() => setModalOpen(prev => ({...prev, nickname: false}))}
+        onClose={() => onCloseModal('nickname')}
         ElementComponent={
           <NameChange
             subText={
@@ -197,7 +204,7 @@ function MyInfo() {
 
       <InfoChangeBottomSheet
         isOpen={modalOpen.gender}
-        onClose={() => setModalOpen(prev => ({...prev, gender: false}))}
+        onClose={() => onCloseModal('gender')}
         ElementComponent={
           <GenderChange
             gender={form.gender}
@@ -213,7 +220,7 @@ function MyInfo() {
 
       <InfoChangeBottomSheet
         isOpen={modalOpen.birthdate}
-        onClose={() => setModalOpen(prev => ({...prev, birthdate: false}))}
+        onClose={() => onCloseModal('birthdate')}
         ElementComponent={
           <BirthChange
             onClose={() => setModalOpen(prev => ({...prev, birthdate: false}))}
@@ -232,7 +239,7 @@ function MyInfo() {
 
       <AddressChange
         isOpen={modalOpen.address}
-        onClose={() => setModalOpen(prev => ({...prev, address: false}))}
+        onClose={() => onCloseModal('address')}
         onPress={address => {
           setForm(prev => ({...prev, address}));
           onChangeUserInfo('거주', 'address', {

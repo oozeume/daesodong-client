@@ -12,7 +12,7 @@ import {
   useReviewRegister,
   useReviewRegisterContext,
 } from '~/store/useReviewRegisterContext';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 import {useGetFacilityReviews} from '~/api/facility/queries';
 import EmptyReviews from '~/components/facility/review/EmptyReviews';
 import _ from 'lodash';
@@ -40,7 +40,7 @@ function FacilityReview({id, facilityName}: Props) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isSamePetTypeReviews, setSamePetTypeReviews] = useState(false);
 
-  const {data, isLoading, isFetching, hasNextPage, refetch, fetchNextPage} =
+  const {data, isLoading, hasNextPage, refetch, fetchNextPage} =
     useGetFacilityReviews({
       facilityId: id,
       limit: REVIEWS_PER_PAGE,

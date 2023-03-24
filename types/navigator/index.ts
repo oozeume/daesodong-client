@@ -4,7 +4,7 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 import {FacilityReviewParams} from '../facility';
 import {AuthFoundResultParams, PasswordResetPreviousPage} from '../login';
 

@@ -71,6 +71,18 @@ class Review {
     return this.review.thoughts;
   }
 
+  get thanksCount() {
+    return this.review.thanks ?? 0;
+  }
+
+  get isMyThanksReview() {
+    if (this.review?.thanks_review_join[0]?.userId) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   isPetFemale() {
     return this.review.pet.sex === 'Female';
   }

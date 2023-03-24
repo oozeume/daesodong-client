@@ -72,3 +72,33 @@ const deleteReview = (id: string, reviewId: string) => {
 export const useMutationReviewDelete = (id: string, reviewId: string) => {
   return useMutation(() => deleteReview(id, reviewId));
 };
+
+/**
+ *@description 시설 리뷰 고마워요 API
+ */
+
+const postThanksReview = (id: string, reviewId: string) => {
+  return apiCall({
+    method: 'POST',
+    url: `hospitals/${id}/reviews/${reviewId}/thanks`,
+  });
+};
+
+export const usePostThanksReview = (id: string, reviewId: string) => {
+  return useMutation(() => postThanksReview(id, reviewId));
+};
+
+/**
+ *@description 시설 리뷰 고마워요 취소 API
+ */
+
+const postThanksCancelReview = (id: string, reviewId: string) => {
+  return apiCall({
+    method: 'POST',
+    url: `hospitals/${id}/reviews/${reviewId}/thanks/cancel`,
+  });
+};
+
+export const usePostThanksCancelReview = (id: string, reviewId: string) => {
+  return useMutation(() => postThanksCancelReview(id, reviewId));
+};

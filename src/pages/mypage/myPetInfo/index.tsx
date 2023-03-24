@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import {HStack, Image, Pressable, Stack, Text} from 'native-base';
 import React, {useState} from 'react';
 import {SpeciesData} from '~/../types/api/species';
 import {MyPetInfoForm} from '~/../types/mypage';
-import {usePatchUserInfo} from '~/api/user/mutation';
+import {usePatchPet} from '~/api/pets/mutation';
 import {useGetUser} from '~/api/user/queries';
 import CameraIcon from '~/assets/icons/camera.svg';
 import Tag from '~/components/common/Tag';
@@ -23,7 +24,7 @@ import {onImagePicker} from '~/utils/image';
  */
 function MyPetInfo() {
   const {data: userData, refetch: refetchUserData} = useGetUser(true);
-  const patchUserInfo = usePatchUserInfo();
+  const patchPet = usePatchPet();
   const {toastShow} = useToastShow();
   const {onImageUpload} = useImageUpload();
 
@@ -34,17 +35,24 @@ function MyPetInfo() {
     sex: false,
   });
 
-  const [form, setForm] = useState({
+  const initForm = {
     name: userData?.mainPetInfo.name ?? '',
     speciesName: userData?.mainPetInfo.specieName ?? '',
     age: userData?.mainPetInfo.age ?? 1,
     sex: userData?.mainPetInfo.sex ?? 'Male',
     petPictureUrl: userData?.mainPetInfo?.petImageURL,
-  });
+  };
+
+  const [form, setForm] = useState(initForm);
 
   const [selectedPetTypeName, setSelectedPetTypeName] = useState(
     userData?.mainPetInfo.specieName,
   );
+
+  const onCloseModal = (key: keyof typeof initForm) => {
+    setForm(prev => ({...prev, [key]: initForm[key]}));
+    setModalOpen(prev => ({...prev, [key]: false}));
+  };
 
   /**
    *@description 유저 정보 수정 api 요청 함수
@@ -56,14 +64,13 @@ function MyPetInfo() {
     modalKey: string,
     _form: Partial<MyPetInfoForm>,
   ) => {
-    patchUserInfo
+    if (!userData?.mainPetInfo.id)
+      return toastShow(`잠시 후에 다시 시도해주세요.`);
+
+    patchPet
       .mutateAsync({
-        gender: userData?.gender ?? 'Male',
-        birthDate: userData?.birthdate,
-        address: userData?.address ?? '',
-        concern: userData?.mainPetInfo.concern ?? '',
-        // petPictureUrl: userData?.mainPetInfo?.pet_picture_url,
-        ...form,
+        data: form,
+        id: userData?.mainPetInfo.id,
       })
       .then(() => {
         toastShow(`내 ${messageKey}을 변경했어요`);
@@ -138,7 +145,7 @@ function MyPetInfo() {
       <Stack px={'18px'}>
         <Info
           text={'이름'}
-          info={'봉식이'}
+          info={userData?.petInfoList[0].name}
           onPress={() => setModalOpen(prev => ({...prev, name: true}))}
         />
 
@@ -153,7 +160,7 @@ function MyPetInfo() {
                 color={colors.fussOrange[0]}
               />
               <Text color={colors.grayScale[80]} fontSize={'15px'} top="3px">
-                햄스터
+                {userData?.petInfoList[0].specie?.name}
               </Text>
             </HStack>
           }
@@ -162,13 +169,13 @@ function MyPetInfo() {
 
         <Info
           text={'나이'}
-          info={'2개월'}
+          info={`${userData?.petInfoList[0].age}개월`}
           onPress={() => setModalOpen(prev => ({...prev, age: true}))}
         />
 
         <Info
           text={'성별'}
-          info={'남아'}
+          info={userData?.petInfoList[0].sex === 'Male' ? '남아' : '여아'}
           onPress={() => setModalOpen(prev => ({...prev, sex: true}))}
         />
       </Stack>
@@ -180,8 +187,13 @@ function MyPetInfo() {
           <NameChange
             title={'아이 이름'}
             value={form.name}
-            onClose={() => setModalOpen(prev => ({...prev, name: false}))}
+            onClose={() => onCloseModal('name')}
             onPress={() => onChangeUserInfo('이름', 'name', form)}
+            verificationResult={
+              !_.isEmpty(form.name) && form.name !== userData?.mainPetInfo.name
+                ? 'SUCCESS'
+                : 'WARNING'
+            }
             onChangeText={text => setForm(prev => ({...prev, name: text}))}
           />
         }
@@ -196,7 +208,7 @@ function MyPetInfo() {
             speciesName: selectedItem?.name ?? '',
           })
         }
-        onClose={() => setModalOpen(prev => ({...prev, speciesName: false}))}
+        onClose={() => onCloseModal('speciesName')}
         previousPetTypeName={selectedPetTypeName}
       />
 
@@ -207,9 +219,13 @@ function MyPetInfo() {
           <NameChange
             title={'나이'}
             valueUnit={<Text color={colors.grayScale[70]}>개월</Text>}
-            onClose={() => setModalOpen(prev => ({...prev, age: false}))}
+            onClose={() => onCloseModal('age')}
             onPress={() => onChangeUserInfo('나이', 'age', form)}
-            verificationResult={'SUCCESS'}
+            verificationResult={
+              form.age !== undefined && form.age !== userData?.mainPetInfo.age
+                ? 'SUCCESS'
+                : 'WARNING'
+            }
             value={form.age.toString()}
             onChangeText={text =>
               setForm(prev => ({...prev, age: Number(text)}))
@@ -221,7 +237,7 @@ function MyPetInfo() {
       <InfoChangeBottomSheet
         isOpen={modalOpen.sex}
         height={'222px'}
-        onClose={() => setModalOpen(prev => ({...prev, sex: false}))}
+        onClose={() => onCloseModal('sex')}
         ElementComponent={
           <GenderChange
             gender={form.sex}
