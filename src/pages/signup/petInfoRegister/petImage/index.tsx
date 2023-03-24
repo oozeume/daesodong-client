@@ -10,7 +10,7 @@ import _ from 'lodash';
 import {usePostImageUpload} from '~/api/image';
 import {imagePicker} from '~/utils/image';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {usePatchUserInfo} from '~/api/user';
+import {usePatchUserInfo} from '~/api/user/mutation';
 import {removeData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
 import {ImageOrVideo} from 'react-native-image-crop-picker';

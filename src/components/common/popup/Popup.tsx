@@ -70,7 +70,11 @@ function Popup({
           backgroundColor={'white'}
           borderWidth={1}
           borderColor={colors.grayScale['90']}>
-          <Modal.Header py="28px" px="20px" borderBottomWidth={0}>
+          <Modal.Header
+            py="28px"
+            px="20px"
+            borderBottomWidth={0}
+            bgColor={colors.grayScale[0]}>
             <Text fontSize={'16px'} mb={'8px'} color={colors.grayScale['80']}>
               {title}
             </Text>

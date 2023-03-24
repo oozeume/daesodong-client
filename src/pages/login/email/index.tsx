@@ -184,7 +184,9 @@ function EmailLogin() {
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() => navigate('PasswordReset')}
+                  onPress={() =>
+                    navigate('PasswordReset', {type: 'LOGIN_EMAIL'})
+                  }
                   name="비밀번호 재설정"
                 />
 

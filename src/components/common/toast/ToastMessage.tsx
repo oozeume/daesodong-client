@@ -17,12 +17,15 @@ interface Props {
 function ToastMessage({text}: Props) {
   return (
     <Center
-      height={'44px'}
+      minHeight={'44px'}
+      py="12px"
       w={APP_WIDTH - PADDING_X * 2}
       justifyContent={'center'}
       borderRadius={'8px'}
       backgroundColor={'rgba(26, 30, 39, 0.8)'}>
-      <Text color={colors.grayScale[0]}>{text}</Text>
+      <Text textAlign={'center'} color={colors.grayScale[0]}>
+        {text}
+      </Text>
     </Center>
   );
 }

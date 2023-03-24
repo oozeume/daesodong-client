@@ -1,9 +1,11 @@
+import {GenderType} from '../../common';
+import {MyInfoForm} from '../../mypage';
 import {PetInfoForm} from '../../signup';
 
 export interface GetUserResponse {
   id: string;
   nickname: string;
-  gender?: 'Male' | 'Female';
+  gender?: GenderType;
   birthdate?: string | null;
   address?: string | null;
   email?: string | null;
@@ -23,7 +25,7 @@ export type UserPetInfo = {
   id: string;
   name: string;
   pet_picture_url?: string | null;
-  sex: 'Male' | 'Female';
+  sex: GenderType;
   specie?: {name: string} | null;
   specieId?: string;
   updated_at: string;
@@ -32,4 +34,19 @@ export type UserPetInfo = {
 
 export type PatchUserInfoResponse = boolean;
 
-export interface PatchUserInfoBody extends PetInfoForm {}
+/**
+ *@description 유저 정보 수정
+ */
+export interface PatchUserData extends MyInfoForm {}
+
+/**
+ *@description 유저 부가 정보 수정
+ */
+export interface PatchUserInfoData extends PetInfoForm {}
+
+/**
+ *@description 유저 삭제 api 데이터
+ */
+export interface DeleteUserData {
+  reason: string;
+}

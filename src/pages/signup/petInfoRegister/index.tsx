@@ -34,7 +34,7 @@ import ChoicePetGender from '~/components/signup/petInfo/ChoicePetGender';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import {initPetInfoForm} from '~/constants/signup';
 import {NavigationHookProp} from '~/../types/navigator';
-import {usePatchUserInfo} from '~/api/user';
+import {usePatchUserInfo} from '~/api/user/mutation';
 import {SpeciesData} from '~/../types/api/species';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
