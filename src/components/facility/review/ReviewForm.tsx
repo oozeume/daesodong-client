@@ -31,6 +31,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PostFacilityReviewData} from '~/../types/api/facility';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {RegisterImageData} from '~/../types/community';
 
 interface Props {
   facilityName: string;
@@ -40,6 +41,8 @@ interface Props {
   tagList: string[];
   onSubmit: () => void;
   active: boolean;
+  images: RegisterImageData[];
+  setImages: React.Dispatch<React.SetStateAction<RegisterImageData[]>>;
 }
 
 /**
@@ -54,6 +57,8 @@ function ReviewForm({
   tagList,
   onSubmit,
   active,
+  images,
+  setImages,
 }: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -265,8 +270,12 @@ function ReviewForm({
                 <Label text="사진 첨부(최대 5개)" />
               </HStack>
 
-              {/* TODO : 이미지 업로드 */}
-              <ImageUploader />
+              <ImageUploader
+                reviewForm={reviewForm}
+                setReviewForm={setReviewForm}
+                images={images}
+                setImages={setImages}
+              />
 
               <HStack mb="12px">
                 <Label text="이 병원을 다시 방문하시겠어요?" />

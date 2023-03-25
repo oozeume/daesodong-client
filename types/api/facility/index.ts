@@ -85,6 +85,12 @@ export type PostFacilityReviewData = {
 /**
  *@description 병원 리뷰 API 응답
  */
+export type FacilityReviewImage = {
+  hospital_reviewId: string;
+  id: string;
+  picture_url: string;
+};
+
 export type FacilityReviewsResponse = {
   id: string;
   hospitalId: string;
@@ -134,6 +140,7 @@ export type FacilityReviewsResponse = {
     hospitalReviewId: string;
     userId: string;
   }[];
+  hospital_review_picture?: FacilityReviewImage[];
 };
 
 /**

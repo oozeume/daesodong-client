@@ -12,6 +12,10 @@ import {useTagContext, useTagRegister} from '~/store/useTagContext';
 import {INIT_REVIEW_FORM} from '~/constants/facility/detail';
 import ReviewForm from '../../../../../components/facility/review/ReviewForm';
 import {ReviewType} from '~/../types/facility';
+import useImageUpload from '~/hooks/useImagesUpload';
+import {RegisterImageData} from '~/../types/community';
+import {PostCloudImageData} from '~/../types/utils';
+import useToastShow from '~/hooks/useToast';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -25,6 +29,8 @@ function FacilityReviewRegister({route}: Props) {
   const {id, facilityName} = route.params;
   const navigation = useNavigation<NavigationHookProp>();
 
+  const {toastShow} = useToastShow();
+
   const [active, setActive] = useState(false);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [tagList, setTagList] = useState<string[]>([]);
@@ -36,9 +42,11 @@ function FacilityReviewRegister({route}: Props) {
   const setIsReviewRegisterComplete = useReviewRegister();
 
   const {mutateAsync: mutateRegister} = useMutationReviewRegister(id);
-
-  const onSubmit = () => {
-    mutateRegister(reviewForm)
+  const uploadReviewForm = () => {
+    mutateRegister({
+      ...reviewForm,
+      hospital_review_picture: images.map(item => item.cloudImageName),
+    })
       .then(() => {
         setTagList([]);
         setTags([]);
@@ -48,7 +56,26 @@ function FacilityReviewRegister({route}: Props) {
           isComplete: true,
         });
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        toastShow('업로드에 실패했습니다.');
+        console.log('error', e);
+      });
+  };
+
+  const {onImageUpload} = useImageUpload();
+
+  const [images, setImages] = useState<RegisterImageData[]>([]);
+
+  const onSubmit = () => {
+    onImageUpload(
+      images.reduce<PostCloudImageData[]>((result, item) => {
+        if (item.cloudData) {
+          result.push(item.cloudData);
+        }
+        return result;
+      }, []),
+      uploadReviewForm,
+    );
   };
 
   useEffect(() => {
@@ -85,6 +112,8 @@ function FacilityReviewRegister({route}: Props) {
         tagList={tagList}
         onSubmit={onSubmit}
         active={active}
+        images={images}
+        setImages={setImages}
       />
 
       <Popup
