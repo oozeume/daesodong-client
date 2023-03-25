@@ -104,6 +104,7 @@ function MyPetInfo() {
         onChangeUserInfo('이미지', 'petPictureUrl', {
           petPictureUrl: imageData.cloudImageName,
         });
+        setForm(prev => ({...prev, petPictureUrl: imageData.cloudImageName}));
       });
     } catch (error) {
       console.log(error);
