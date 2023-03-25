@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {HStack, Image, Pressable, Stack, Text} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SpeciesData} from '~/../types/api/species';
 import {MyPetInfoForm} from '~/../types/mypage';
 import {usePatchPet} from '~/api/pets/mutation';
@@ -49,6 +49,12 @@ function MyPetInfo() {
     userData?.mainPetInfo.specieName,
   );
 
+  useEffect(() => {
+    if (userData?.mainPetInfo.specieName) {
+      setSelectedPetTypeName(userData?.mainPetInfo.specieName);
+    }
+  }, [userData?.mainPetInfo.specieName]);
+
   const onCloseModal = (key: keyof typeof initForm) => {
     setForm(prev => ({...prev, [key]: initForm[key]}));
     setModalOpen(prev => ({...prev, [key]: false}));
@@ -69,7 +75,7 @@ function MyPetInfo() {
 
     patchPet
       .mutateAsync({
-        data: form,
+        data: _form,
         id: userData?.mainPetInfo.id,
       })
       .then(() => {
@@ -202,12 +208,15 @@ function MyPetInfo() {
       <PetTypeSelectModal
         isOpen={modalOpen.speciesName}
         buttonText={'변경'}
-        onPress={(selectedItem?: SpeciesData) =>
+        onPress={(selectedItem?: SpeciesData) => {
+          if (!selectedItem?.name)
+            return toastShow('변경 과정에서 오류가 발생했습니다.');
+
           onChangeUserInfo('종', 'speciesName', {
             ...form,
             speciesName: selectedItem?.name ?? '',
-          })
-        }
+          });
+        }}
         onClose={() => onCloseModal('speciesName')}
         previousPetTypeName={selectedPetTypeName}
       />
@@ -240,9 +249,11 @@ function MyPetInfo() {
         onClose={() => onCloseModal('sex')}
         ElementComponent={
           <GenderChange
+            isPetGenderChange
             gender={form.sex}
             onChangeGender={sex => {
               if (sex === form.sex) return;
+
               setForm(prev => ({...prev, sex}));
               onChangeUserInfo('성별', 'sex', {...form, sex});
             }}

@@ -7,13 +7,14 @@ import {APP_WIDTH} from '~/utils/dimension';
 interface Props {
   gender: GenderType;
   onChangeGender: (gender: GenderType) => void;
+  isPetGenderChange?: boolean;
 }
 
 /**
  *@description 내 계정 - 내 정보 - 성별 변경 컴포넌트
  */
 
-function GenderChange({onChangeGender, gender}: Props) {
+function GenderChange({onChangeGender, gender, isPetGenderChange}: Props) {
   return (
     <Stack pt={'28px'} flex={1} alignItems={'center'}>
       <Text fontSize={'18px'} pb={'28px'}>
@@ -45,7 +46,7 @@ function GenderChange({onChangeGender, gender}: Props) {
               bgColor={colors.fussOrange[0]}
               fontSize={'16px'}
               color={true ? colors.grayScale[80] : colors.grayScale[60]}>
-              여성
+              {isPetGenderChange ? '여아' : '여성'}
             </Text>
           </HStack>
         </Pressable>
@@ -73,7 +74,7 @@ function GenderChange({onChangeGender, gender}: Props) {
               bgColor={colors.fussOrange[0]}
               fontSize={'16px'}
               color={true ? colors.grayScale[80] : colors.grayScale[60]}>
-              남성
+              {isPetGenderChange ? '남아' : '남성'}
             </Text>
           </HStack>
         </Pressable>
