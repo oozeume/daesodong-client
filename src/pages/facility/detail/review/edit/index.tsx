@@ -15,6 +15,10 @@ import _ from 'lodash';
 import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import dayjs from 'dayjs';
 import {ReviewType} from '~/../types/facility';
+import {RegisterImageData} from '~/../types/community';
+import useImageUpload from '~/hooks/useImagesUpload';
+import {PostCloudImageData} from '~/../types/utils';
+import useToastShow from '~/hooks/useToast';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
 
@@ -23,9 +27,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
  */
 function FacilityReviewEdit({route}: Props) {
   const {facilityId, reviewId, review, facilityName} = route.params;
+  const {toastShow} = useToastShow();
 
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const toast = useToast();
+
+  const [images, setImages] = useState<RegisterImageData[]>(review.images);
+  const {onImageUpload} = useImageUpload();
 
   const _reviewForm = useMemo(() => {
     return {
@@ -39,6 +47,7 @@ function FacilityReviewEdit({route}: Props) {
       expect_revisit: review.hasExpectRevisit,
       already_reviesit: review.isRevisit,
       tags: review.tags,
+      hospital_review_picture: review.images,
     };
   }, [review]);
 
@@ -50,11 +59,14 @@ function FacilityReviewEdit({route}: Props) {
   const setTags = useTagRegister();
   const tags = useTagContext([]);
 
-  const {mutateAsync} = useMutationReviewEdit(facilityId, reviewId);
+  const {mutateAsync: mutateEdit} = useMutationReviewEdit(facilityId, reviewId);
   const setIsReviewResterComplete = useReviewRegister();
 
-  const onSubmit = () => {
-    mutateAsync(reviewForm)
+  const uploadReviewForm = () => {
+    mutateEdit({
+      ...reviewForm,
+      hospital_review_picture: images.map(item => item.cloudImageName),
+    })
       .then(() => {
         setTags([]);
         setIsReviewResterComplete({
@@ -66,7 +78,22 @@ function FacilityReviewEdit({route}: Props) {
           render: () => <ToastMessage text={'내 후기를 수정했어요'} />,
         });
       })
-      .catch(e => console.log('error->', e));
+      .catch(e => {
+        toastShow('후기 수정 실패했습니다.');
+        console.log('error->', e);
+      });
+  };
+
+  const onSubmit = () => {
+    onImageUpload(
+      images.reduce<PostCloudImageData[]>((result, item) => {
+        if (item.cloudData) {
+          result.push(item.cloudData);
+        }
+        return result;
+      }, []),
+      uploadReviewForm,
+    );
   };
 
   const onClose = () => {
@@ -102,6 +129,8 @@ function FacilityReviewEdit({route}: Props) {
       tagList={tagList}
       onSubmit={onSubmit}
       active={active}
+      images={images}
+      setImages={setImages}
     />
   );
 }
