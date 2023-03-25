@@ -31,7 +31,6 @@ function FacilityRecommendation() {
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
   const [isAddReviewPopupOpen, setAddReviewPopupOpen] = useState(false);
 
-  useEffect(() => {}, []);
   const initForm = {
     type: undefined,
     facilityName: '',
@@ -137,7 +136,7 @@ function FacilityRecommendation() {
           </HStack>
 
           {/* TODO : 이미지 업로드 */}
-          <ImageUploader />
+          {/* <ImageUploader /> */}
 
           <RedActiveLargeButton text={'제보'} handlePress={onSubmit} />
         </Box>
