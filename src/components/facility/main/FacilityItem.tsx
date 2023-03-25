@@ -8,6 +8,7 @@ import StarFillIcon from '~/assets/icons/star_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import Facility from '~/model/facility';
 import {config} from '~/utils/config';
+import VisitedPets from './VisitedPet';
 
 interface Props {
   facility: Facility;
@@ -23,6 +24,7 @@ function FacilityItem({facility}: Props) {
   const onPress = () => {
     navigate('FacilityDetail', {
       id: facility.id,
+      facilityName: facility.name,
     });
   };
 
@@ -121,10 +123,7 @@ function FacilityItem({facility}: Props) {
         />
       </HStack>
 
-      {/* TODO: 내 동물종 */}
-      <Text fontSize={'13px'} fontWeight={500} color={colors.grayScale[60]}>
-        24마리의 [내 동물종] 친구들이 방문했어요
-      </Text>
+      <VisitedPets facility={facility} />
     </Pressable>
   );
 }

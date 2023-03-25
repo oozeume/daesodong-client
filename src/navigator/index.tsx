@@ -66,7 +66,7 @@ const AppNavigator = () => {
             headerShown: true,
             header: () => (
               <Header
-                title={route.params?.facilityName ?? '병원이름'}
+                title={route.params?.facilityName ?? ''}
                 leftButton={<BackIcon onPress={() => navigation.goBack()} />}
               />
             ),
