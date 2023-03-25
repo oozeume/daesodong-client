@@ -121,13 +121,12 @@ function InitialLogin() {
           removeSecurityData(config.ACCESS_TOKEN_NAME);
           removeSecurityData(config.REFRESH_TOKEN_NAME);
         }
-
-        setInitialLoading(false);
       }
+
+      setInitialLoading(false);
     });
   }, []);
 
-  // 328 406
   return (
     <SafeAreaView
       style={{

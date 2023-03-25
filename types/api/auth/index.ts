@@ -64,7 +64,6 @@ export interface PostAuthResetPasswordData {
 
 /**
  *@description 토큰 업데이트 api 응답
- *@todo 추후 api 수정으로 refresh token이 응답에서 사라지면 삭제 하기
  */
 
 export interface PostAuthRefreshResponse {
