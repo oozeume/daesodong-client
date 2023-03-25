@@ -8,11 +8,12 @@ import ToastMessage from '~/components/common/toast/ToastMessage';
 function useToastShow() {
   const toast = useToast();
 
-  const toastShow = (text: string) => {
+  const toastShow = (text: string, leftElement?: JSX.Element) => {
     toast.show({
       render: () => {
-        return <ToastMessage text={text} />;
+        return <ToastMessage text={text} leftElement={leftElement} />;
       },
+      duration: 3000,
     });
   };
 

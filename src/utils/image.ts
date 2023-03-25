@@ -1,8 +1,12 @@
+import {Platform} from 'react-native';
 import ImagePicker, {
   Image,
   ImageOrVideo,
   Options,
 } from 'react-native-image-crop-picker';
+
+import uuid from 'react-native-uuid';
+import {PostCloudImageData} from '~/../types/utils';
 
 /**
  * @description 모바일에서 이미지 선택 및 자르기 함수
@@ -40,3 +44,40 @@ export function multipleImagePicker(maxFiles = 1) {
     maxFiles,
   });
 }
+
+/**
+ *@description 이미지 선택 핸들러
+ *@return appLocalImageName: 저장된 이미지 로컬 주소
+ *@return cloudImageName: 클라우드에 저장된 이미지, 서버에 등록 시, 필요
+ *@return cloudData: 클라우드 이미지 등록 시, 전송 데이터
+ *@return {"REGISTERED" | "UNREGISTERED"} type: 이미지가 현재 클라우드에 저장된 상태 기본값 UNREGISTERED 반환
+ */
+export const onImagePicker = (): Promise<{
+  appLocalImageName: string;
+  cloudImageName: string;
+  cloudData: PostCloudImageData;
+  type: 'REGISTERED' | 'UNREGISTERED';
+}> => {
+  return imagePicker()
+    .then(response => {
+      const cloudImageName = uuid.v4() as string;
+      const iosSourceURL = response.sourceURL ?? '';
+      const imageInfoURI =
+        Platform.OS === 'android' ? response.path : iosSourceURL;
+
+      return {
+        appLocalImageName:
+          Platform.OS === 'android' ? response.path : iosSourceURL,
+        cloudImageName,
+        cloudData: {
+          uri: imageInfoURI,
+          type: response.mime,
+          name: cloudImageName,
+        },
+        type: 'UNREGISTERED',
+      };
+    })
+    .catch(error => {
+      return error;
+    });
+};

@@ -1,3 +1,4 @@
+import {GenderType} from '../common';
 import {PostCloudImageData} from '../utils';
 
 // 게시글 등록/수정 폼
@@ -19,7 +20,7 @@ export type CommentUerPetItem = {
   userId: string;
   name: string | null;
   age: number;
-  sex: 'Male' | 'Female';
+  sex: GenderType;
   specieId: string;
   concern: string | null;
   pet_picture_url: string | null;

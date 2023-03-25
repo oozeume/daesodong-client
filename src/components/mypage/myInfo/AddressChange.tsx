@@ -9,7 +9,7 @@ import {hangjungdong} from '~/utils/hangjungdong';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onPress: () => void;
+  onPress: (address: string) => void;
 }
 
 /**
@@ -116,7 +116,9 @@ function AddressChange({isOpen, onClose, onPress}: Props) {
                 onClose();
                 onSigugunClose();
                 onDongClose();
-                onPress();
+                onPress(
+                  `${sidoValue?.name} ${sigugunValue?.name} ${dongValue?.name}`,
+                );
               }}
               variant={dongValue ? 'solidFussOrange' : 'opacityFussOrange'}>
               <Text

@@ -28,7 +28,7 @@ function PetTypeRegister({
 }: PetInfoRegisterProps) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
-  const {data, isSuccess} = useGetSpecies({limit: 10});
+  const {data, isSuccess} = useGetSpecies({limit: 10}, true);
 
   const {isOpen, onOpen, onClose} = useDisclose();
   const [petType, setPetType] = useState<SpeciesData>();

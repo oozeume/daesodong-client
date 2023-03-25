@@ -24,7 +24,7 @@ export const initPetInfoForm = {
   address: '',
   concern: '',
   // 서버 key: pet_picture_url
-  petPictureUrl: '' as string | undefined,
+  petPictureUrl: '' as string | undefined | null,
 };
 
 export const EMAIL_SIGNUP_STAGE_TEXT_LIST = [

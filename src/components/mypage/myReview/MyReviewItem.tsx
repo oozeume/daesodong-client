@@ -28,7 +28,7 @@ function MyReviewItem() {
             alt={''}
           />
           <Stack justifyContent={'space-between'}>
-            <Stack>
+            <Stack space={'2px'}>
               <Text color={colors.grayScale[80]} fontSize={'16px'}>
                 어울림동물병원
               </Text>
@@ -43,7 +43,7 @@ function MyReviewItem() {
           </Stack>
         </HStack>
 
-        <RightIcon stroke={colors.grayScale[40]} />
+        <RightIcon stroke={colors.grayScale[80]} width={20} height={20} />
       </HStack>
     </Pressable>
   );

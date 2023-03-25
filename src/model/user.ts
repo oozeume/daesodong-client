@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import {GetUserResponse} from '~/../types/api/user';
+import {GenderType} from '~/../types/common';
 
 class User {
   constructor(private readonly user: GetUserResponse) {}
@@ -18,7 +19,7 @@ class User {
   }
 
   get birthdate() {
-    return this.user.birthdate ?? '';
+    return Number(this.user.birthdate) ?? dayjs().year();
   }
 
   get address() {
@@ -50,7 +51,7 @@ class User {
         id: '',
         name: '',
         petImageURL: null,
-        sex: 'Male' as 'Male' | 'Female',
+        sex: 'Male' as GenderType,
         specieName: '',
         specieId: '',
         updated_at: '',

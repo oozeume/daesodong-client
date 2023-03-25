@@ -48,6 +48,7 @@ import PetInfoRegisterOutro from '~/pages/signup/petInfoRegister/outro';
 import FacilityDetail from '../pages/facility/detail';
 import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 import FacilityReviewEdit from '~/pages/facility/detail/review/edit';
+import BlockedAccounts from '~/pages/mypage/blockedAccounts';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -331,6 +332,22 @@ const AppNavigator = () => {
             ),
             headerLeft: props => (
               <HeaderLeft {...props} navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="BlockedAccounts"
+          component={BlockedAccounts}
+          options={({navigation}) => ({
+            headerShown: true,
+            header: props => (
+              <Header
+                title={'차단계정 관리'}
+                leftButton={
+                  <BackIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
             ),
           })}
         />

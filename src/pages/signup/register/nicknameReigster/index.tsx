@@ -25,6 +25,11 @@ import {
 } from '~/constants/signup';
 import {colors} from '~/theme/theme';
 import {setSecurityData} from '~/utils/storage';
+import {
+  checkNicknameLength,
+  isExistBlank,
+  isExistSpecialCharacters,
+} from '~/utils/verification';
 
 interface Props {
   signupForm: SignupForm;
@@ -88,21 +93,6 @@ function NicknameRegister({signupForm}: Props) {
 
   const openModal = () => {
     setTermsAgreedModalOpen(true);
-  };
-
-  // 닉네임 글자수 검사
-  const checkNicknameLength = (text: string): VerificationResult => {
-    return text.length > 1 && text.length <= 10 ? 'SUCCESS' : 'FAIL';
-  };
-
-  // 닉네임 공백 검사
-  const isExistBlank = (text: string): VerificationResult => {
-    return text.indexOf(' ') === -1 ? 'SUCCESS' : 'FAIL';
-  };
-
-  // 닉네임 특수문자 검사
-  const isExistSpecialCharacters = (text: string): VerificationResult => {
-    return SPECIAL_CHARACTERS_REGEX.test(text) ? 'FAIL' : 'SUCCESS';
   };
 
   // 도움말 검증 결과 설정

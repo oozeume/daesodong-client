@@ -90,6 +90,12 @@ export type PostFacilityReviewData = {
 /**
  *@description 병원 리뷰 API 응답
  */
+export type FacilityReviewImage = {
+  hospital_reviewId: string;
+  id: string;
+  picture_url: string;
+};
+
 export type FacilityReviewsResponse = {
   id: string;
   hospitalId: string;
@@ -102,8 +108,8 @@ export type FacilityReviewsResponse = {
   score_price: number;
   score_facilities: number;
   score_kindness: number;
-  expect_revisit: false;
-  already_reviesit: false;
+  expect_revisit: boolean;
+  already_reviesit: boolean;
   created_at: string;
   updated_at: string;
   user: {
@@ -139,6 +145,7 @@ export type FacilityReviewsResponse = {
     hospitalReviewId: string;
     userId: string;
   }[];
+  hospital_review_picture?: FacilityReviewImage[];
 };
 
 /**
