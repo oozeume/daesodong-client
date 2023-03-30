@@ -24,6 +24,7 @@ import {
   INIT_SIGNUP_TERM,
 } from '~/constants/signup';
 import {colors} from '~/theme/theme';
+import {config} from '~/utils/config';
 import {setSecurityData} from '~/utils/storage';
 import {
   checkNicknameLength,
@@ -79,8 +80,8 @@ function NicknameRegister({signupForm}: Props) {
       });
 
       if (response?.success === 'SUCCESS') {
-        await setSecurityData('access_token', response.data.access);
-        await setSecurityData('refresh_token', response.data.refresh);
+        await setSecurityData(config.ACCESS_TOKEN_NAME, response.data.access);
+        await setSecurityData(config.REFRESH_TOKEN_NAME, response.data.refresh);
 
         navigate('PetInfoRegister');
       }
