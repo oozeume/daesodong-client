@@ -49,6 +49,7 @@ import FacilityDetail from '../pages/facility/detail';
 import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 import FacilityReviewEdit from '~/pages/facility/detail/review/edit';
 import BlockedAccounts from '~/pages/mypage/blockedAccounts';
+import FacilityRecommendation from '~/pages/mypage/facilityRecommendation';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -407,6 +408,23 @@ const AppNavigator = () => {
             ),
           })}
         />
+
+        <Stack.Screen
+          name="FacilityRecommendation"
+          component={FacilityRecommendation}
+          options={props => ({
+            headerShown: true,
+            header: () => (
+              <Header
+                title={'시설 소개/추천'}
+                rightButton={
+                  <DeleteIcon onPress={() => props.navigation.goBack()} />
+                }
+              />
+            ),
+          })}
+        />
+
         <Stack.Screen
           name="MyReviewDetail"
           component={MyReviewDetail}

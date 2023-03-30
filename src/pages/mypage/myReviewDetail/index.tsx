@@ -2,7 +2,7 @@ import {Box, HStack, Stack, Text, View} from 'native-base';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ReviewItem from '~/components/hospital/review/ReviewItem';
-import Review from '~/model/faciltiyReview';
+import Review from '~/model/facilityReview';
 import {colors} from '~/theme/theme';
 
 /**
@@ -62,6 +62,8 @@ function MyReviewDetail() {
         },
       },
     ],
+    thanks: 0,
+    thanks_review_join: [],
   });
   return (
     <SafeAreaView
