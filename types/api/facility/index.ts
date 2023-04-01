@@ -195,7 +195,7 @@ export type FacilityListResponse = {
   sch_sat: string;
   sch_sun: string;
   sch_holy: string;
-  expose: false;
+  expose: boolean;
   score_total: number;
   created_at: string;
   updated_at: string;
@@ -203,5 +203,5 @@ export type FacilityListResponse = {
     hospitalId: string;
     picture_url: string;
   }[];
-  score_avg: number;
+  score_avg?: number;
 };

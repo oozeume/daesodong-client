@@ -11,13 +11,14 @@ import {
 
 interface Props {
   facility: Facility;
+  refetch: () => void;
 }
 
 /**
  * 병원 시설 정보 탭 하단 푸터 컴포넌트
  */
 
-function FacilityInfoFooter({facility}: Props) {
+function FacilityInfoFooter({facility, refetch}: Props) {
   const [isBookMark, setIsBookMark] = useState(
     facility.isMyBookmarkFacility(facility.id),
   );
@@ -36,6 +37,7 @@ function FacilityInfoFooter({facility}: Props) {
         .then(() => {
           setIsBookMark(false);
           setBookMarkNumber(prev => prev - 1);
+          refetch();
         })
         .catch(e => console.log(e));
     } else {
@@ -43,6 +45,7 @@ function FacilityInfoFooter({facility}: Props) {
         .then(() => {
           setIsBookMark(true);
           setBookMarkNumber(prev => prev + 1);
+          refetch();
         })
         .catch(e => console.log(e));
     }

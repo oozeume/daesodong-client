@@ -39,7 +39,7 @@ function FacilityItem({facility}: Props) {
       <HStack
         pb="12px"
         mb="12px"
-        w={`${APP_WIDTH - 36}px`}
+        flex={1}
         borderBottomWidth={1}
         borderBottomColor={colors.grayScale[10]}
         justifyContent={'space-between'}>
