@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 import DownIcon from '~/assets/icon/down.svg';
@@ -5,10 +6,17 @@ import {colors} from '~/theme/theme';
 
 interface Props {
   onPress: () => void;
-  selectorName: string | undefined;
+  selectorName?: string | undefined;
+  value?: string;
+  placeholder?: string;
 }
 
-function SelectButtonForm({onPress: _onPress, selectorName}: Props) {
+function SelectButtonForm({
+  onPress: _onPress,
+  selectorName,
+  value,
+  placeholder,
+}: Props) {
   return (
     <Pressable
       borderColor={colors.grayScale[30]}
@@ -23,8 +31,10 @@ function SelectButtonForm({onPress: _onPress, selectorName}: Props) {
         alignItems="center">
         <Text
           fontSize={'15px'}
-          color={selectorName ? colors.grayScale[80] : colors.grayScale[40]}>
-          {selectorName ?? '거주지 선택'}
+          color={
+            _.isEmpty(value) ? colors.grayScale[40] : colors.grayScale[80]
+          }>
+          {_.isEmpty(value) ? placeholder : value}
         </Text>
         <DownIcon />
       </HStack>

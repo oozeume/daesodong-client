@@ -13,9 +13,7 @@ function InquiryItem() {
     <>
       <Pressable onPress={() => setOpen(prev => !prev)}>
         <Stack
-          px={'18px'}
-          pt={'18px'}
-          pb={'48px'}
+          p={'18px'}
           borderBottomWidth={1}
           borderBottomColor={colors.grayScale['10']}>
           <HStack space={'8px'}>
@@ -30,33 +28,27 @@ function InquiryItem() {
               backgroundColor={colors.fussOrange['-30']}>
               <Text
                 fontSize={'10px'}
-                lineHeight={'14px'}
+                lineHeight={'16px'}
                 color={colors.fussOrange['0']}>
                 답변대기
               </Text>
             </Stack>
           </HStack>
 
-          <Text mt={'6px'} color={colors.grayScale['70']} noOfLines={2}>
-            1:1 문의 내용이 최대 두 줄 노출됩니다. 두 줄 초과시 말줄임으로
-            표기합니다.
+          <Text mt={'6px'} color={colors.grayScale['70']}>
+            1:1 문의 내용이 전체 노출됩니다. 이름자를 언덕 봄이 아름다운 어머니
+            별들을 이런 봅니다. 패, 흙으로 어머님, 걱정도 쓸쓸함과 새겨지는
+            있습니다.
           </Text>
 
-          <Button
-            padding={0}
-            backgroundColor={'transparent'}
-            position={'absolute'}
-            bottom={18}
-            left={18}
+          <Pressable
+            w="26px"
+            mt={'6px'}
+            pt="6px"
             borderBottomWidth={1}
             borderBottomColor={colors.grayScale['60']}>
-            <Text
-              lineHeight={'18px'}
-              mt={'12px'}
-              color={colors.grayScale['60']}>
-              삭제
-            </Text>
-          </Button>
+            <Text color={colors.grayScale['60']}>삭제</Text>
+          </Pressable>
         </Stack>
       </Pressable>
 
@@ -67,18 +59,10 @@ function InquiryItem() {
           px={'18px'}
           backgroundColor={colors.grayScale[10]}>
           <Stack space={'8px'}>
-            <Text fontSize={'13px'} color={colors.grayScale[80]}>
-              Q. 문의내용
-            </Text>
-            <Text color={colors.grayScale[70]}>
-              이름자를 언덕 봄이 아름다운 어머니 별들을 이런 봅니다. 패, 흙으로
-              어머님, 걱정도 쓸쓸함과 새겨지는 있습니다. 그러나 슬퍼하는 이런
-              애기 까닭입니다.
-            </Text>
-          </Stack>
-
-          <Stack space={'8px'}>
-            <Text fontSize={'13px'} color={colors.grayScale[80]}>
+            <Text
+              fontWeight={500}
+              fontSize={'13px'}
+              color={colors.grayScale[80]}>
               A. 답변
             </Text>
             <Text color={colors.grayScale[70]}>

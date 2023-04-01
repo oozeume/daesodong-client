@@ -1,9 +1,10 @@
-import {Stack} from 'native-base';
+import {Stack, useDisclose} from 'native-base';
 import React from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryHeader from '~/components/mypage/inquiry/InquiryHeader';
 import InquiryItem from '~/components/mypage/inquiry/InquiryItem';
+import InquiryRegisterModal from '~/components/mypage/inquiry/InquiryRegisterModal';
 import {colors} from '~/theme/theme';
 
 /**
@@ -11,16 +12,20 @@ import {colors} from '~/theme/theme';
  */
 
 function Inquiry() {
+  const {isOpen, onOpen, onClose} = useDisclose();
+
   return (
     <SafeAreaView style={{backgroundColor: colors.grayScale[0]}}>
       <Stack backgroundColor={'white'}>
         <FlatList
-          ListHeaderComponent={<InquiryHeader />}
+          ListHeaderComponent={<InquiryHeader onOpenModal={onOpen} />}
           initialNumToRender={8}
           data={['', '', '']}
           renderItem={item => <InquiryItem />}
           keyExtractor={(item, index) => index.toString()}
         />
+
+        <InquiryRegisterModal isOpen={isOpen} onClose={onClose} />
       </Stack>
     </SafeAreaView>
   );

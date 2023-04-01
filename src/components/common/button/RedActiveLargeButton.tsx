@@ -1,3 +1,4 @@
+import {StyleProp, TextStyle} from 'react-native';
 import {ActiveButtonProps} from '~/../types/login';
 import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
@@ -12,6 +13,11 @@ function RedActiveLargeButton({
   textStyle,
   text,
 }: ActiveButtonProps) {
+  const defaultButtonTextStyle = {
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 52,
+  } as unknown as StyleProp<TextStyle>;
   return (
     <Button
       text={text}
@@ -32,7 +38,7 @@ function RedActiveLargeButton({
       large
       shadow
       buttonStyle={buttonStyle}
-      textStyle={[{fontSize: 14, lineHeight: 52}, textStyle]}
+      textStyle={[defaultButtonTextStyle, textStyle]}
     />
   );
 }

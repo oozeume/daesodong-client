@@ -1,9 +1,10 @@
 import {Actionsheet, Modal, ScrollView, Text, VStack} from 'native-base';
 import React from 'react';
-import Header from '~/components/hospital/review/register/Header';
 import {CloseButton} from '~/components/hospital/review/register/button';
 import {APP_HEIGHT} from '~/utils/dimension';
 import {colors} from '~/theme/theme';
+import Header from '../header/Header';
+import DeleteIcon from '~/assets/icons/delete.svg';
 
 interface Props {
   isOpen: boolean;
@@ -22,8 +23,9 @@ function ServicePolicyModal({isOpen, onClose}: Props) {
         height={APP_HEIGHT}
         boxSize={'full'}>
         <Header
+          isRemoveTopPosition
           title="서비스 이용약관"
-          rightButton={<CloseButton onPress={onClose} />}
+          rightButton={<DeleteIcon onPress={onClose} />}
         />
 
         <ScrollView bounces={false}>

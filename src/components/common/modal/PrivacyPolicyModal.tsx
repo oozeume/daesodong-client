@@ -1,10 +1,9 @@
 import {Actionsheet, ScrollView, Text, VStack} from 'native-base';
 import React from 'react';
-import Header from '~/components/hospital/review/register/Header';
-import {CloseButton} from '~/components/hospital/review/register/button';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
-
+import Header from '../header/Header';
+import DeleteIcon from '~/assets/icons/delete.svg';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
@@ -23,7 +22,8 @@ function PrivacyPolicyModal({isOpen, onClose}: Props) {
         boxSize={'full'}>
         <Header
           title="개인정보 처리방침"
-          rightButton={<CloseButton onPress={onClose} />}
+          isRemoveTopPosition
+          rightButton={<DeleteIcon onPress={onClose} />}
         />
 
         <ScrollView bounces={false}>

@@ -3,11 +3,15 @@ import React from 'react';
 import Button from '~/components/common/button';
 import {colors} from '~/theme/theme';
 
+interface Props {
+  onOpenModal: () => void;
+}
+
 /**
  *@description 내 계정 - 1:1 문의 헤더
  */
 
-function InquiryHeader() {
+function InquiryHeader({onOpenModal}: Props) {
   return (
     <>
       <HStack
@@ -16,7 +20,9 @@ function InquiryHeader() {
         pb={'24px'}
         px={'18px'}>
         <Stack space={'8px'}>
-          <Text color={colors.grayScale[70]}>상담시간</Text>
+          <Text fontWeight={'500'} color={colors.grayScale[70]}>
+            상담시간
+          </Text>
           <Text color={colors.grayScale[60]}>
             {'평일(월-금) 14:00 - 18:00 \n' + '토, 일, 공휴일 휴무'}
           </Text>
@@ -26,13 +32,13 @@ function InquiryHeader() {
           <Button
             width={'97px'}
             fontColors={{
-              active: colors.grayScale[90],
+              active: colors.fussOrange[0],
             }}
             buttonColors={{
-              active: colors.fussYellow[0],
+              active: colors.fussOrange[-40],
             }}
             borderColors={{
-              active: colors.grayScale[90],
+              active: colors.fussOrange[0],
             }}
             text={'1:1 문의하기'}
             active
@@ -44,7 +50,7 @@ function InquiryHeader() {
               color: colors.fussOrange[0],
               fontWeight: '500',
             }}
-            handlePress={() => {}}
+            handlePress={onOpenModal}
           />
         </Stack>
       </HStack>

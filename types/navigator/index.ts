@@ -83,6 +83,7 @@ export type RootStackParamList = {
   MyPetInfo: undefined;
   MyLoginInfo: undefined;
   BlockedAccounts: undefined;
+  FacilityRecommendation: undefined;
 
   AppIntroFirst: undefined;
   AppIntroSecond: undefined;
