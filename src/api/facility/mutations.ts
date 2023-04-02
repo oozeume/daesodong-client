@@ -74,6 +74,36 @@ export const useMutationReviewDelete = (id: string, reviewId: string) => {
 };
 
 /**
+ *@description 병원 북마크 API
+ */
+
+const postFacilityBookmark = (id: string) => {
+  return apiCall({
+    method: 'POST',
+    url: `/hospitals/${id}/bookmarks`,
+  });
+};
+
+export const useMutationFaciltiyBookmark = (id: string) => {
+  return useMutation(() => postFacilityBookmark(id));
+};
+
+/**
+ *@description 병원 북마크 취소 API
+ */
+
+const postFacilityBookmarkCancel = (id: string) => {
+  return apiCall({
+    method: 'POST',
+    url: `/hospitals/${id}/bookmarks/cancel`,
+  });
+};
+
+export const useMutationFaciltiyBookmarkCancel = (id: string) => {
+  return useMutation(() => postFacilityBookmarkCancel(id));
+};
+
+/**
  *@description 시설 리뷰 고마워요 API
  */
 

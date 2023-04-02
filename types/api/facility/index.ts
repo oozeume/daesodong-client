@@ -16,6 +16,11 @@ export type FacilityResponse = {
   intro: string;
   url: string;
   info: string;
+  bookmarks: number;
+  save_hospital: {
+    hospitalId: string;
+    userId: string;
+  }[];
   sch_mon: string;
   sch_tue: string;
   sch_wed: string;
@@ -161,4 +166,42 @@ export type FacilityScoreResponse = {
   score_price: number;
   score_treatment: number;
   score_total: number;
+};
+
+/**
+ *@description 병원 리스트 API 응답
+ */
+
+export type FacilityListResponse = {
+  id: string;
+  hospitalCategoryId: string;
+  name: string;
+  phone: string;
+  address1: string;
+  address2: string;
+  latitude: number;
+  longitude: number;
+  thanks: number;
+  visitCount: number;
+  review_count: number;
+  intro: string;
+  url: string;
+  info: string;
+  sch_mon: string;
+  sch_tue: string;
+  sch_wed: string;
+  sch_thu: string;
+  sch_fri: string;
+  sch_sat: string;
+  sch_sun: string;
+  sch_holy: string;
+  expose: boolean;
+  score_total: number;
+  created_at: string;
+  updated_at: string;
+  hospital_picture: {
+    hospitalId: string;
+    picture_url: string;
+  }[];
+  score_avg?: number;
 };

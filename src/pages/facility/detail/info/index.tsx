@@ -23,10 +23,11 @@ import RecordVisitedExperience from '~/components/hospital/info/RecordVisitedExp
 import ArrowDownIcon from '~/assets/icon/_down.svg';
 import {useGetFacilityInfo} from '~/api/facility/queries';
 import Facility from '~/model/facility';
-import HospitalInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
+import FacilityInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
 import {imageHeight} from '~/utils/imageHeight';
 import {APP_WIDTH} from '~/utils/dimension';
+import {FacilityResponse} from '~/../types/api/facility';
 
 interface Props {
   id: string;
@@ -44,7 +45,7 @@ function FacilityInfo({id}: Props) {
 
   const mapRef = useRef<WebView | null>(null);
 
-  const {data, isLoading} = useGetFacilityInfo(id);
+  const {data, isLoading, refetch} = useGetFacilityInfo(id);
 
   const handleIntroOpen = () => setTextOpen(prev => !prev);
 
@@ -61,7 +62,7 @@ function FacilityInfo({id}: Props) {
 
   useEffect(() => {
     if (data) {
-      setFacilityInfo(new Facility(data.data));
+      setFacilityInfo(new Facility(data.data as FacilityResponse));
     }
   }, [data]);
 
@@ -205,10 +206,7 @@ function FacilityInfo({id}: Props) {
             </ScrollView>
           </VStack>
 
-          <HospitalInfoFooter
-            thanksCount={facilityInfo.thanksCount}
-            phoneNumber={facilityInfo.phoneNumber}
-          />
+          <FacilityInfoFooter facility={facilityInfo} refetch={refetch} />
         </Stack>
       )}
     </>

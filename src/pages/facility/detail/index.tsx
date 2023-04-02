@@ -15,7 +15,7 @@ const FaciltiyTab = createMaterialTopTabNavigator();
  */
 
 function FacilityDetail({route}: Props) {
-  const {id} = route.params;
+  const {id, facilityName} = route.params;
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <FaciltiyTab.Navigator
@@ -46,7 +46,9 @@ function FacilityDetail({route}: Props) {
         <FaciltiyTab.Screen
           name={'FacilityReview'}
           initialParams={{id: id}}
-          component={() => <FacilityReview id={id} facilityName={''} />}
+          component={() => (
+            <FacilityReview id={id} facilityName={facilityName ?? ''} />
+          )}
           options={{title: '후기'}}
         />
       </FaciltiyTab.Navigator>

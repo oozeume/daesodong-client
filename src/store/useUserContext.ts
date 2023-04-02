@@ -3,6 +3,7 @@ import StoreQueryKeys from '~/constants/queryKeys/store';
 
 type userData = {
   userId: string;
+  petSpecieName: string;
 };
 
 /**

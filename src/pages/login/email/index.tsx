@@ -86,7 +86,10 @@ function EmailLogin() {
         navigate('SignupPetInfoNavigator');
       } else {
         // 있으면 시설 지도 페이지로 이동
-        setUserInfo({userId: _userData.data?.id ?? ''});
+        setUserInfo({
+          userId: _userData.data?.id ?? '',
+          petSpecieName: _userData.data?.mainPetInfo.specieName ?? '',
+        });
         reset({index: 0, routes: [{name: 'tab'}]});
       }
 
