@@ -172,7 +172,10 @@ export type FacilityScoreResponse = {
  *@description 병원 리스트 API 응답
  */
 
-export type FacilityListResponse = {
+// TODO : 적절한 타입으로 변경
+export type FacilityListResponse = any;
+
+export type FacilityListType = {
   id: string;
   hospitalCategoryId: string;
   name: string;
@@ -182,6 +185,7 @@ export type FacilityListResponse = {
   latitude: number;
   longitude: number;
   thanks: number;
+  bookmarks: number;
   visitCount: number;
   review_count: number;
   intro: string;
@@ -200,8 +204,21 @@ export type FacilityListResponse = {
   created_at: string;
   updated_at: string;
   hospital_picture: {
-    hospitalId: string;
-    picture_url: string;
+    id: string;
+    name: string;
   }[];
+  // TODO: api 수정후 옵셔널 처리 해제
   score_avg?: number;
 };
+
+// 시설 리스트 쿼리
+export interface GetFacilityListQuery {
+  limit: number;
+  expose: boolean;
+  sort: 'latest' | 'visitor';
+  page?: number;
+  search?: number;
+  category?: string;
+  state?: string;
+  city?: string;
+}

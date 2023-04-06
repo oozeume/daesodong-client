@@ -3,6 +3,9 @@ export interface FilterSelectorType {
   disabled?: boolean;
 }
 
+// 시설 메인 > 페이지별 시설 개수
+export const FACILITY_PER_PAGE = 10;
+
 // 시설 메인 지도 필터 > 시설 유형 선택 리스트
 export const FACILITY_TYPE_LIST = [
   {

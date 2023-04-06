@@ -71,7 +71,7 @@ function PositionPopup({
                 borderBottomWidth={1}
                 borderBottomColor={colors.grayScale[30]}
                 onPress={onSidoPress}>
-                <Text>{sidoValue?.name || '서울'}</Text>
+                <Text>{sidoValue?.name}</Text>
                 <DownIcon />
               </Pressable>
 
@@ -83,7 +83,7 @@ function PositionPopup({
                 borderBottomWidth={1}
                 borderBottomColor={colors.grayScale[30]}
                 onPress={onSigunguPress}>
-                <Text>{sigugunValue?.name || '광진구'}</Text>
+                <Text>{sigugunValue?.name}</Text>
                 <DownIcon />
               </Pressable>
             </Box>

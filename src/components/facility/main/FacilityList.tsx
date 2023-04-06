@@ -1,23 +1,15 @@
-import {
-  Box,
-  Center,
-  FlatList,
-  Pressable,
-  Spinner,
-  Text,
-  View,
-} from 'native-base';
+import {Box, Center, FlatList, Pressable, Text, View} from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 import MapIcon from '~/assets/icons/map.svg';
 import ListViewChangeButton from './ListViewChangeButton';
-import {useGetFacilityList} from '~/api/facility/queries';
 import Facility from '~/model/facility';
 import FacilityItem from './FacilityItem';
 
 interface Props {
+  Facilities: Facility[];
   isOpen: boolean;
   onClose: () => void;
   setListExpand: (isListExpand: boolean) => void;
@@ -26,20 +18,17 @@ interface Props {
 
 /**
  *@description 시설 메인 페이지 > 시설 리스트
- * @param itemList - 시설 데이터 리스트
  * @param setListExpand - 시설 리스트 뷰 확장 설정 함수
  */
-function FacilityList({isOpen, onClose, setListExpand, isListExpand}: Props) {
+function FacilityList({
+  Facilities,
+  isOpen,
+  onClose,
+  setListExpand,
+  isListExpand,
+}: Props) {
   // 360 / 812 값은 피그마 페이지 비율
   const actionSheetHeightRatio = isListExpand ? 1 : 360 / 812;
-
-  const {data, isLoading} = useGetFacilityList();
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  const Facilities = data?.data.map(f => new Facility(f)) ?? [];
 
   return (
     <>

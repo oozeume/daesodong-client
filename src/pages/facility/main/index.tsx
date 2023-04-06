@@ -3,13 +3,21 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {WebView} from 'react-native-webview';
 import {APP_HEIGHT} from '~/utils/dimension';
-import {Box, HStack, Pressable, Text, useDisclose, VStack} from 'native-base';
+import {
+  Box,
+  HStack,
+  Pressable,
+  Spinner,
+  Text,
+  useDisclose,
+  VStack,
+} from 'native-base';
 import {colors} from '~/theme/theme';
 import RightIcon from '~/assets/icons/right.svg';
-import LocationFillIcon from '~/assets/icon/location_fill.svg';
 import FilterIcon from '~/assets/icons/filter.svg';
 import MapFilter from '~/components/facility/main/MapFilter';
 import {
+  FACILITY_PER_PAGE,
   FACILITY_SORT_TYPE,
   FACILITY_TYPE_LIST,
 } from '~/constants/facility/main';
@@ -26,9 +34,12 @@ import ListViewChangeButton from '~/components/facility/main/ListViewChangeButto
 import {FormState} from '~/../types/facility';
 import {SpeciesData} from '~/../types/api/species';
 import {useGetUser} from '~/api/user/queries';
+import {useGetFacilityList} from '~/api/facility/queries';
+import Facility from '~/model/facility';
+import LocationSearch from '../../../components/facility/main/LocationSearch';
 
 /**
- *@description 컨텐츠 메인 페이지
+ *@description 시설 메인 페이지
  */
 const FacilityMain = () => {
   const getUser = useGetUser(true);
@@ -36,10 +47,14 @@ const FacilityMain = () => {
   const ref = useRef<WebView | null>(null);
 
   const {sido, sigugun} = hangjungdong;
-  const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>(sido[0]);
-  const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>(
-    sigugun[0],
-  );
+  const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>({
+    name: '',
+    sido: '',
+  });
+  const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>({
+    name: '',
+    sigugun: '',
+  });
   const [sortedSigugun, setSortedSigugun] = useState<
     Partial<Hangjungdong>[] | undefined
   >();
@@ -95,7 +110,11 @@ const FacilityMain = () => {
 
   const onInitMap = () => {
     ref.current?.postMessage(
-      JSON.stringify({success: true, type: 'init', isDebug: true}),
+      JSON.stringify({
+        success: true,
+        type: 'init',
+        isDebug: true,
+      }),
     );
   };
 
@@ -146,11 +165,38 @@ const FacilityMain = () => {
     ref.current?.postMessage(JSON.stringify({success: true, type: 'search'}));
   };
 
+  // TODO: api임시 사용 (api 요청)
+  const {data, isLoading, refetch} = useGetFacilityList({
+    limit: FACILITY_PER_PAGE,
+    expose: false, // TODO: 어드민 생성 후에 true로 변경
+    sort: 'latest',
+    state: sidoValue ? sidoValue.name : '',
+    city: sigugunValue ? sigugunValue.name : '',
+  });
+
+  const Facilities: Facility[] =
+    data?.pages[0].data.data.map((i: any) => new Facility(i)) ?? [];
+
+  const [locationValue, setLocationValue] = useState<{
+    sido: {
+      name: string;
+      sido: string;
+    };
+    sigugun: {
+      name: string;
+      sigugun: string;
+    };
+  }>();
+
   useEffect(() => {
     if (sidoValue) {
       setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
     }
   }, [sidoValue, sigugun]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <Box w="100%" h={APP_HEIGHT}>
@@ -187,30 +233,12 @@ const FacilityMain = () => {
           </Pressable>
         )}
 
-        <Pressable
-          w="100%"
+        <LocationSearch
           onPress={() => setIsModalVisible(true)}
-          mb="8px"
-          style={styles.shadow}>
-          <HStack
-            alignItems={'center'}
-            h="44px"
-            pl="14px"
-            pr="10px"
-            w="100%"
-            borderRadius={8}
-            bgColor={colors.grayScale['0']}>
-            <LocationFillIcon
-              width={18}
-              height={18}
-              fill={colors.fussOrange[0]}
-            />
-
-            <Text ml="4px" fontSize={'14px'} color={colors.grayScale['80']}>
-              {`${sidoValue?.name} ${sigugunValue?.name}`}
-            </Text>
-          </HStack>
-        </Pressable>
+          style={styles.shadow}
+          locationValue={locationValue}
+          setLocationValue={setLocationValue}
+        />
 
         <HStack justifyContent={'space-between'} w="100%" space={3}>
           <MapFilterButton
@@ -274,11 +302,15 @@ const FacilityMain = () => {
       <PositionPopup
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
-        onOK={() => setIsModalVisible(false)}
+        onOK={() => {
+          refetch().then(() => {
+            setIsModalVisible(false);
+          });
+        }}
         onSidoPress={onSidoOpen}
         onSigunguPress={onSigugunOpen}
-        sidoValue={sidoValue}
-        sigugunValue={sigugunValue}
+        sidoValue={locationValue?.sido}
+        sigugunValue={locationValue?.sigugun}
       />
 
       {/* 시 선택 drawer */}
@@ -306,6 +338,7 @@ const FacilityMain = () => {
 
       {/* 이용할 수 있는 시설 리스트 */}
       <FacilityList
+        Facilities={Facilities}
         setListExpand={setFacilityListExpand}
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}

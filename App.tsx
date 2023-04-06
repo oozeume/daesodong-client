@@ -8,6 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Platform} from 'react-native';
 import {config} from '~/utils/config';
+import Geolocation from 'react-native-geolocation-service';
 
 if (__DEV__) {
   import('react-query-native-devtools').then(({addPlugin}) => {
@@ -32,6 +33,10 @@ GoogleSignin.configure({
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
+
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization('always');
+    }
   }, []);
 
   return (

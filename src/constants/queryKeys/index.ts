@@ -1,5 +1,6 @@
 const QueryKeys = {
   facility: {
+    location: 'location',
     facilityList: 'facility list',
     visitedPets: 'facility visited pets',
     visitedUser: 'facility visited user',
