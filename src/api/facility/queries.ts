@@ -156,10 +156,19 @@ const getFacilityList = (query: GetFacilityListQuery) => {
   });
 };
 
-export const useGetFacilityList = (query: GetFacilityListQuery) => {
-  return useInfiniteQuery([QueryKeys.facility.facilityList], () => {
-    return getFacilityList(query);
-  });
+export const useGetFacilityList = (
+  query: GetFacilityListQuery,
+  enabled: boolean,
+) => {
+  return useInfiniteQuery(
+    [QueryKeys.facility.facilityList],
+    () => {
+      return getFacilityList(query);
+    },
+    {
+      enabled: enabled,
+    },
+  );
 };
 
 /**

@@ -22,3 +22,19 @@ export const enum ReviewType {
   Register = 'register',
   Edit = 'edit',
 }
+
+export type LocationInfoType = {
+  sido: {
+    name: string;
+    sido: string;
+  };
+  sigugun: {
+    name: string;
+    sigugun: string;
+  };
+};
+
+export type CoordinateType = {
+  latitude: number;
+  longitude: number;
+};

@@ -3,15 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {WebView} from 'react-native-webview';
 import {APP_HEIGHT} from '~/utils/dimension';
-import {
-  Box,
-  HStack,
-  Pressable,
-  Spinner,
-  Text,
-  useDisclose,
-  VStack,
-} from 'native-base';
+import {Box, HStack, Pressable, Text, useDisclose, VStack} from 'native-base';
 import {colors} from '~/theme/theme';
 import RightIcon from '~/assets/icons/right.svg';
 import FilterIcon from '~/assets/icons/filter.svg';
@@ -31,12 +23,24 @@ import {hangjungdong} from '~/utils/hangjungdong';
 import PositionPopup from '~/components/facility/main/PositionPopup';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import ListViewChangeButton from '~/components/facility/main/ListViewChangeButton';
-import {FormState} from '~/../types/facility';
+import {CoordinateType, FormState, LocationInfoType} from '~/../types/facility';
 import {SpeciesData} from '~/../types/api/species';
 import {useGetUser} from '~/api/user/queries';
 import {useGetFacilityList} from '~/api/facility/queries';
 import Facility from '~/model/facility';
 import LocationSearch from '../../../components/facility/main/LocationSearch';
+import _ from 'lodash';
+
+const LOCATION_INIT = {
+  sido: {
+    name: '',
+    sido: '',
+  },
+  sigugun: {
+    name: '',
+    sigugun: '',
+  },
+};
 
 /**
  *@description 시설 메인 페이지
@@ -47,14 +51,16 @@ const FacilityMain = () => {
   const ref = useRef<WebView | null>(null);
 
   const {sido, sigugun} = hangjungdong;
-  const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>({
-    name: '',
-    sido: '',
+  const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>();
+  const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>();
+
+  const [locationValue, setLocationValue] =
+    useState<LocationInfoType>(LOCATION_INIT);
+  const [coordinate, setCoordinate] = useState<CoordinateType>({
+    latitude: 0,
+    longitude: 0,
   });
-  const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>({
-    name: '',
-    sigugun: '',
-  });
+
   const [sortedSigugun, setSortedSigugun] = useState<
     Partial<Hangjungdong>[] | undefined
   >();
@@ -102,9 +108,7 @@ const FacilityMain = () => {
   };
 
   const [filterForm, setFilterForm] = useState(initFormState);
-
   const [isFacilityListExpand, setFacilityListExpand] = useState(false);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [petType, setPetType] = useState<SpeciesData>();
 
@@ -112,8 +116,9 @@ const FacilityMain = () => {
     ref.current?.postMessage(
       JSON.stringify({
         success: true,
-        type: 'init',
+        type: 'move',
         isDebug: true,
+        data: coordinate,
       }),
     );
   };
@@ -166,37 +171,26 @@ const FacilityMain = () => {
   };
 
   // TODO: api임시 사용 (api 요청)
-  const {data, isLoading, refetch} = useGetFacilityList({
-    limit: FACILITY_PER_PAGE,
-    expose: false, // TODO: 어드민 생성 후에 true로 변경
-    sort: 'latest',
-    state: sidoValue ? sidoValue.name : '',
-    city: sigugunValue ? sigugunValue.name : '',
-  });
+  const {data, refetch} = useGetFacilityList(
+    {
+      limit: FACILITY_PER_PAGE,
+      expose: false, // TODO: 어드민 생성 후에 true로 변경
+      sort: 'latest',
+      state: locationValue ? locationValue.sido.name : '',
+      city: locationValue ? locationValue.sigugun.name : '',
+    },
+    !_.isEmpty(locationValue.sido.name) &&
+      !_.isEmpty(locationValue.sigugun.name),
+  );
 
   const Facilities: Facility[] =
     data?.pages[0].data.data.map((i: any) => new Facility(i)) ?? [];
 
-  const [locationValue, setLocationValue] = useState<{
-    sido: {
-      name: string;
-      sido: string;
-    };
-    sigugun: {
-      name: string;
-      sigugun: string;
-    };
-  }>();
-
   useEffect(() => {
-    if (sidoValue) {
-      setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
+    if (locationValue?.sido) {
+      setSortedSigugun(sigugun.filter(i => i.sido === locationValue.sido.sido));
     }
-  }, [sidoValue, sigugun]);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
+  }, [locationValue?.sido, sigugun]);
 
   return (
     <Box w="100%" h={APP_HEIGHT}>
@@ -213,10 +207,7 @@ const FacilityMain = () => {
             borderRadius={8}
             mb="8px"
             style={styles.shadow}
-            onPress={() => {
-              onMarkerMap();
-              // onMoveMap({latitude: 37.5645, longitude: 126.8505});
-            }}>
+            onPress={() => navigation.navigate('FacilityRecommendation')}>
             <HStack
               justifyContent={'space-between'}
               alignItems={'center'}
@@ -238,6 +229,8 @@ const FacilityMain = () => {
           style={styles.shadow}
           locationValue={locationValue}
           setLocationValue={setLocationValue}
+          coordinate={coordinate}
+          setCoordinate={setCoordinate}
         />
 
         <HStack justifyContent={'space-between'} w="100%" space={3}>
@@ -301,16 +294,29 @@ const FacilityMain = () => {
       {/* 시 군 구 선택 팝업창 */}
       <PositionPopup
         visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
+        onCancel={() => {
+          setIsModalVisible(false);
+          setSidoValue(undefined);
+          setSigugunValue(undefined);
+        }}
         onOK={() => {
-          refetch().then(() => {
-            setIsModalVisible(false);
+          setLocationValue({
+            sido: {
+              name: sidoValue?.name ?? locationValue?.sido.name ?? '',
+              sido: sidoValue?.sido ?? locationValue?.sido.sido ?? '',
+            },
+            sigugun: {
+              name: sigugunValue?.name ?? '',
+              sigugun: sigugunValue?.sigugun ?? '',
+            },
           });
+          setIsModalVisible(false);
+          refetch();
         }}
         onSidoPress={onSidoOpen}
         onSigunguPress={onSigugunOpen}
-        sidoValue={locationValue?.sido}
-        sigugunValue={locationValue?.sigugun}
+        sidoValue={sidoValue ?? locationValue?.sido}
+        sigugunValue={sigugunValue ?? locationValue?.sigugun}
       />
 
       {/* 시 선택 drawer */}
@@ -319,7 +325,7 @@ const FacilityMain = () => {
         onClose={onSidoClose}
         onPress={() => onSigugunOpen()}
         setValue={setSidoValue}
-        sidoValue={sidoValue}
+        sidoValue={locationValue?.sido}
         selectableList={sido}
       />
 
@@ -333,7 +339,7 @@ const FacilityMain = () => {
         }}
         setValue={setSigugunValue}
         selectableList={sortedSigugun}
-        sigugunValue={sigugunValue}
+        sigugunValue={sigugunValue ?? locationValue?.sigugun}
       />
 
       {/* 이용할 수 있는 시설 리스트 */}

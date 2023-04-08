@@ -5,12 +5,15 @@ import {colors} from '~/theme/theme';
 import {useGetLocation} from '~/api/facility/queries';
 import Geolocation from 'react-native-geolocation-service';
 import {hangjungdong} from '~/utils/hangjungdong';
+import {CoordinateType, LocationInfoType} from '~/../types/facility';
 
 interface Props {
   onPress: () => void;
   style: any;
-  locationValue: any;
-  setLocationValue: any;
+  locationValue: LocationInfoType;
+  setLocationValue: React.Dispatch<React.SetStateAction<LocationInfoType>>;
+  coordinate: CoordinateType;
+  setCoordinate: React.Dispatch<React.SetStateAction<CoordinateType>>;
 }
 
 /**
@@ -22,12 +25,10 @@ function LocationSearch({
   style,
   locationValue,
   setLocationValue,
+  coordinate,
+  setCoordinate,
 }: Props) {
   const {sido, sigugun} = hangjungdong;
-  const [coordinate, setLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
 
   const [availableLocation, setAvailableLocation] = useState(false);
   const {data: locationInfo} = useGetLocation(coordinate, availableLocation);
@@ -55,7 +56,7 @@ function LocationSearch({
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        setLocation({
+        setCoordinate({
           latitude,
           longitude,
         });
