@@ -185,7 +185,6 @@ export const getLocation = (location: {
     `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`,
     {
       headers: {
-        // TODO: env정보에 저장으로 변경
         Authorization: `KakaoAK ${config.KAKAO_TOKEN}`,
       },
     },

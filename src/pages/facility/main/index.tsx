@@ -176,8 +176,8 @@ const FacilityMain = () => {
       limit: FACILITY_PER_PAGE,
       expose: false, // TODO: 어드민 생성 후에 true로 변경
       sort: 'latest',
-      state: locationValue ? locationValue.sido.name : '',
-      city: locationValue ? locationValue.sigugun.name : '',
+      state: locationValue.sido.name,
+      city: locationValue.sigugun.name,
     },
     !_.isEmpty(locationValue.sido.name) &&
       !_.isEmpty(locationValue.sigugun.name),
@@ -187,10 +187,10 @@ const FacilityMain = () => {
     data?.pages[0].data.data.map((i: any) => new Facility(i)) ?? [];
 
   useEffect(() => {
-    if (locationValue?.sido) {
+    if (!_.isEmpty(locationValue.sido)) {
       setSortedSigugun(sigugun.filter(i => i.sido === locationValue.sido.sido));
     }
-  }, [locationValue?.sido, sigugun]);
+  }, [locationValue.sido, sigugun]);
 
   return (
     <Box w="100%" h={APP_HEIGHT}>
@@ -302,8 +302,8 @@ const FacilityMain = () => {
         onOK={() => {
           setLocationValue({
             sido: {
-              name: sidoValue?.name ?? locationValue?.sido.name ?? '',
-              sido: sidoValue?.sido ?? locationValue?.sido.sido ?? '',
+              name: sidoValue?.name ?? locationValue.sido.name,
+              sido: sidoValue?.sido ?? locationValue.sido.sido,
             },
             sigugun: {
               name: sigugunValue?.name ?? '',
@@ -315,8 +315,8 @@ const FacilityMain = () => {
         }}
         onSidoPress={onSidoOpen}
         onSigunguPress={onSigugunOpen}
-        sidoValue={sidoValue ?? locationValue?.sido}
-        sigugunValue={sigugunValue ?? locationValue?.sigugun}
+        sidoValue={sidoValue ?? locationValue.sido}
+        sigugunValue={sigugunValue ?? locationValue.sigugun}
       />
 
       {/* 시 선택 drawer */}
@@ -325,7 +325,7 @@ const FacilityMain = () => {
         onClose={onSidoClose}
         onPress={() => onSigugunOpen()}
         setValue={setSidoValue}
-        sidoValue={locationValue?.sido}
+        sidoValue={sidoValue ?? locationValue.sido}
         selectableList={sido}
       />
 
@@ -339,7 +339,7 @@ const FacilityMain = () => {
         }}
         setValue={setSigugunValue}
         selectableList={sortedSigugun}
-        sigugunValue={sigugunValue ?? locationValue?.sigugun}
+        sigugunValue={sigugunValue ?? locationValue.sigugun}
       />
 
       {/* 이용할 수 있는 시설 리스트 */}
