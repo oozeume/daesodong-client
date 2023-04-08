@@ -1,40 +1,39 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Box} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import BackIcon from '~/assets/icon/back_icon.svg';
 import StageBar from '~/components/common/stage/StageBar';
 import {
   NavigationHookProp,
+  RouteHookProp,
   RouteList,
   SignupNavigatorRouteList,
 } from '~/../types/navigator';
 import Header from '~/components/common/header/Header';
 import PhoneVerification from '../register/phoneVerification';
-import PasswordRegister from '../register/passwordRegister';
 import {APP_HEIGHT} from '~/utils/dimension';
-import EmailRegister from '../register/emailRegister';
 import NicknameRegister from '../register/nicknameReigster';
 import {
-  EMAIL_SIGNUP_STAGE_TEXT_LIST,
-  INIT_EMAIL_SIGNUP_FORM,
+  INIT_SOCIAL_SIGNUP_FORM,
+  SOCIAL_SIGNUP_STAGE_TEXT_LIST,
 } from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Keyboard, Platform} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
-import {SignupForm} from '~/../types/signup';
+import _ from 'lodash';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
 /**
- *@description 이메일 회원가입 페이지 네비게이터
+ *@description 소셜 회원가입 페이지 네비게이터
  */
-function SignUpEmailNavigator() {
+function SignupSocialNavigator() {
+  const route = useRoute<RouteHookProp<'SignupSocialNavigator'>>();
   const {navigate} = useNavigation<NavigationHookProp>();
   const [currentStage, setCurrentStage] = useState(1);
-  const [signupForm, setSignupForm] = useState<SignupForm>(
-    INIT_EMAIL_SIGNUP_FORM,
-  );
+  const [signupForm, setSignupForm] = useState(INIT_SOCIAL_SIGNUP_FORM);
+  const {email} = route.params;
 
   // 네비게이터 안에 네비게이터라서 이전 URL를 따로 받아야함
   const [previousURL, setPreviousURL] = useState<SignupNavigatorRouteList[]>([
@@ -55,6 +54,12 @@ function SignUpEmailNavigator() {
     navigate(previousURL[previousURL.length - 1] as any);
   };
 
+  useEffect(() => {
+    if (!_.isEmpty(email)) {
+      setSignupForm(prev => ({...prev, email}));
+    }
+  }, [route.params]);
+
   return (
     <TouchableWithoutView onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={{backgroundColor: '#fff'}}>
@@ -65,7 +70,7 @@ function SignUpEmailNavigator() {
               leftButton={<BackIcon onPress={onBack} />}
             />
 
-            <StageBar totalStage={4} currentStage={currentStage} />
+            <StageBar totalStage={2} currentStage={currentStage} />
           </Box>
 
           <Stack.Navigator>
@@ -81,43 +86,8 @@ function SignUpEmailNavigator() {
                   signupForm={signupForm}
                   setSignupForm={setSignupForm}
                   currentStage={1}
-                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
-                  failNextPage="EmailRegister"
-                />
-              )}
-            </Stack.Screen>
-
-            <Stack.Screen
-              name="EmailRegister"
-              options={{
-                animation: 'slide_from_right',
-                headerShown: false,
-              }}>
-              {() => (
-                <EmailRegister
-                  onChangeStage={onChangeStage}
-                  setPreviousURL={setPreviousURL}
-                  signupForm={signupForm}
-                  setSignupForm={setSignupForm}
-                  currentStage={2}
-                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
-                />
-              )}
-            </Stack.Screen>
-
-            <Stack.Screen
-              name="PasswordRegister"
-              options={{
-                animation: 'slide_from_right',
-                headerShown: false,
-              }}>
-              {() => (
-                <PasswordRegister
-                  onChangeStage={onChangeStage}
-                  setPreviousURL={setPreviousURL}
-                  setSignupForm={setSignupForm}
-                  currentStage={3}
-                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+                  stageTextList={SOCIAL_SIGNUP_STAGE_TEXT_LIST}
+                  failNextPage="NicknameRegister"
                 />
               )}
             </Stack.Screen>
@@ -131,9 +101,9 @@ function SignUpEmailNavigator() {
               {() => (
                 <NicknameRegister
                   signupForm={signupForm}
-                  currentStage={4}
-                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
-                  registerType="EMAIL"
+                  currentStage={2}
+                  stageTextList={SOCIAL_SIGNUP_STAGE_TEXT_LIST}
+                  registerType="SOCIAL"
                 />
               )}
             </Stack.Screen>
@@ -144,4 +114,4 @@ function SignUpEmailNavigator() {
   );
 }
 
-export default SignUpEmailNavigator;
+export default SignupSocialNavigator;

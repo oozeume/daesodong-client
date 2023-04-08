@@ -61,7 +61,9 @@ export type RootStackParamList = {
   AuthFoundResult: AuthFoundResultParams;
   FindEmail: undefined;
 
-  SignupSocial: undefined;
+  SignupSocialNavigator: {
+    email: string;
+  };
   SignUpEmailNavigator: undefined;
   PetInfoRegister: undefined;
 

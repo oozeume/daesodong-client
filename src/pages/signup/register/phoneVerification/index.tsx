@@ -26,6 +26,9 @@ interface Props {
   >;
   signupForm: SignupForm;
   setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
+  stageTextList: string[];
+  currentStage: number;
+  failNextPage?: any;
 }
 
 /**
@@ -38,6 +41,9 @@ function PhoneVerification({
   setPreviousURL,
   signupForm,
   setSignupForm,
+  stageTextList,
+  currentStage,
+  failNextPage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
@@ -67,7 +73,7 @@ function PhoneVerification({
     onChangeStage();
     setSignupForm(prev => ({...prev, mobile: replacePhoneNumber}));
     setPreviousURL(prev => [...prev, 'PhoneVerification']);
-    navigate('EmailRegister');
+    if (failNextPage) navigate(failNextPage);
   };
 
   // 인증 메세지 재전송 핸들러
@@ -107,8 +113,8 @@ function PhoneVerification({
           flex={1}>
           <Center mt={'60px'} px="18px">
             <StageTextBox
-              currentStage={1}
-              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+              currentStage={currentStage}
+              stageTextList={stageTextList}
             />
 
             <VerificationForm

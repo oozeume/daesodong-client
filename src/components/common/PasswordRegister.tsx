@@ -61,7 +61,7 @@ function PasswordRegister({handlePage, signupForm, setSignupForm}: Props) {
     <>
       <VerificationForm
         placeholder={'비밀번호 입력'}
-        value={signupForm.password}
+        value={signupForm?.password ?? ''}
         onChangeText={handlePasswordChange}
         helpList={helpList}
         marginBottom={'20px'}
@@ -76,7 +76,7 @@ function PasswordRegister({handlePage, signupForm, setSignupForm}: Props) {
         successMessage={'비밀번호가 일치합니다'}
         errorMessage={'비밀번호를 확인해주세요'}
         verificationResult={
-          signupForm.password.length > 0
+          !_.isEmpty(signupForm.password)
             ? signupForm.password === passwordConfirm
               ? 'SUCCESS'
               : 'FAIL'

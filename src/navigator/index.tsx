@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
-import SignupSocial from '~/pages/signup/social';
 import FacilityReviewRegister from '~/pages/facility/detail/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/facility/detail/review/register/precaution';
 
@@ -50,6 +49,7 @@ import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 import FacilityReviewEdit from '~/pages/facility/detail/review/edit';
 import BlockedAccounts from '~/pages/mypage/blockedAccounts';
 import FacilityRecommendation from '~/pages/mypage/facilityRecommendation';
+import SignupSocialNavigator from '~/pages/signup/socialNavigator';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -125,7 +125,10 @@ const AppNavigator = () => {
           options={{animation: 'slide_from_right', headerShown: false}}
         />
 
-        <Stack.Screen name="SignupSocial" component={SignupSocial} />
+        <Stack.Screen
+          name="SignupSocialNavigator"
+          component={SignupSocialNavigator}
+        />
         <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
         <Stack.Screen
           name="EmailLogin"

@@ -14,7 +14,11 @@ import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {getSecurityData, setSecurityData} from '~/utils/storage';
+import {
+  getSecurityData,
+  removeSecurityData,
+  setSecurityData,
+} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {EmailLoginForm} from '~/../types/login';
 import {
@@ -57,6 +61,29 @@ function EmailLogin() {
     // 로그인 가능 여부 체크
     // if (__DEV__) checkIsLogin();
   }, []);
+
+  const onLoginComplete = async (tokenData: {
+    access: string;
+    refresh: string;
+  }) => {
+    try {
+      await setSecurityData(config.ACCESS_TOKEN_NAME, tokenData.access);
+      await setSecurityData(config.REFRESH_TOKEN_NAME, tokenData.refresh);
+
+      const _userData = await getUserRefetch();
+      if (_userData.data?.petInfoList.length === 0) {
+        // 집사 정보가 없으면 등록 페이지로 이동
+        navigate('SignupPetInfoNavigator');
+      } else {
+        // 있으면 시설 지도 페이지로 이동
+
+        reset({index: 0, routes: [{name: 'tab'}]});
+      }
+    } catch (error) {
+      removeSecurityData(config.ACCESS_TOKEN_NAME);
+      removeSecurityData(config.REFRESH_TOKEN_NAME);
+    }
+  };
 
   const setUserInfo = useUserRegister();
 
@@ -105,10 +132,27 @@ function EmailLogin() {
       const {idToken: token} = await GoogleSignin.signIn();
 
       if (token) {
-        const res = await postAuthSocialLogin.mutateAsync({
+        const response = await postAuthSocialLogin.mutateAsync({
           social: 'Google',
           token,
         });
+
+        const {access, refresh} = response?.data;
+
+        if (access && refresh) {
+          onLoginComplete({access, refresh});
+        } else {
+          // 회원가입 페이지로 이동
+          reset({
+            index: 0,
+            routes: [
+              {
+                name: 'SignupSocialNavigator',
+                params: {email: response.data?.email},
+              },
+            ],
+          });
+        }
       }
     } catch (_error) {
       const error = _error as any;
@@ -129,10 +173,27 @@ function EmailLogin() {
       const {accessToken: token} = (await login()) as KakaoOAuthToken;
 
       if (token) {
-        const res = await postAuthSocialLogin.mutateAsync({
+        const response = await postAuthSocialLogin.mutateAsync({
           social: 'Kakao',
           token,
         });
+
+        const {access, refresh} = response?.data;
+
+        if (access && refresh) {
+          onLoginComplete({access, refresh});
+        } else {
+          // 회원가입 페이지로 이동
+          reset({
+            index: 0,
+            routes: [
+              {
+                name: 'SignupSocialNavigator',
+                params: {email: response.data?.email},
+              },
+            ],
+          });
+        }
       }
     } catch (error) {}
   };

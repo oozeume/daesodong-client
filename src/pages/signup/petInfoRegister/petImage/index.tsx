@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Alert, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
 import {Circle, HStack, Image, Pressable, Spinner, Text} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
@@ -7,13 +6,13 @@ import {NavigationHookProp} from '~/../types/navigator';
 import {PetInfoImageRegisterProps} from '~/../types/signup';
 import LayoutContainer from '~/components/signup/petInfo/LayoutContainer';
 import _ from 'lodash';
-import {usePostImageUpload} from '~/api/image';
-import {imagePicker} from '~/utils/image';
+import {onImagePicker} from '~/utils/image';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import {usePatchUserInfo} from '~/api/user/mutation';
 import {removeData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
-import {ImageOrVideo} from 'react-native-image-crop-picker';
+import {UnwrapPromise} from '~/../types/utils';
+import useImageUpload from '~/hooks/useImagesUpload';
 
 /**
  *@description 집사정보등록 - 반려동물 사진 등록
@@ -24,77 +23,50 @@ function PetImageRegister({
   currentStage,
 }: PetInfoImageRegisterProps) {
   const {reset} = useNavigation<NavigationHookProp>();
-  const {mutateAsync, isLoading} = usePostImageUpload();
   const patchUserInfo = usePatchUserInfo();
+  const {onImageUpload, postImageUpload} = useImageUpload();
 
-  // 내부 앱 이미지 경로
-  const [imagePath, setImagePath] = useState<string>();
-  const [imageInfo, setImageInfo] = useState<ImageOrVideo>();
-
-  // 이미지명
-  const [fileName, setFilename] = useState<string>();
+  const [petImageInfo, setPetImageInfo] =
+    useState<UnwrapPromise<ReturnType<typeof onImagePicker>>>();
 
   /**
    *@description r2에 이미지 등록 및 서버에 폼 요청
    *@param isSkip - 건너뛰기 여부 파라미터 (true 일 시, 이미지 저장 안함)
    */
   const onMovePage = async (isSkip: boolean) => {
-    if (isLoading) return;
+    if (postImageUpload.isLoading) return;
 
-    const petPictureUrl = isSkip ? undefined : fileName;
+    const petPictureUrl = isSkip ? undefined : petImageInfo?.cloudImageName;
 
     setForm(prev => ({...prev}));
 
     try {
-      if (petPictureUrl) {
-        const imageUploadForm = imageInfo
-          ? {
-              uri:
-                Platform.OS === 'android'
-                  ? imageInfo.path
-                  : imageInfo.sourceURL,
-              type: imageInfo.mime,
-              name: Platform.OS === 'android' ? fileName : imageInfo.filename,
+      if (petImageInfo) {
+        await onImageUpload([petImageInfo.cloudData], () => {});
+      } else if (isSkip) {
+        // 이미지 스킵할 경우
+
+        patchUserInfo
+          .mutateAsync({
+            ...form,
+            petPictureUrl,
+          })
+          .then(response => {
+            if (response.data) {
+              removeData(storageKeys.petInfoRegister.form);
+              removeData(storageKeys.petInfoRegister.state);
+
+              reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'PetInfoRegisterOutro',
+                    params: {petName: form?.name ?? ''},
+                  },
+                ],
+              });
             }
-          : undefined;
-
-        const data = new FormData();
-        data.append('file', imageUploadForm);
-
-        if (fileName) {
-          // 이미지 업로드 api 호출
-          await mutateAsync(
-            {data, fileName},
-            {
-              onError: error => {
-                const errorResponse = error as ErrorResponseTransform;
-
-                if (errorResponse?.message && errorResponse?.message !== '') {
-                  Alert.alert(errorResponse.message);
-                }
-              },
-            },
-          );
-        }
-      }
-
-      const patchUserResponse = await patchUserInfo.mutateAsync({
-        ...form,
-        petPictureUrl,
-      });
-
-      if (patchUserResponse.data) {
-        await removeData(storageKeys.petInfoRegister.form);
-        await removeData(storageKeys.petInfoRegister.state);
-        reset({
-          index: 0,
-          routes: [
-            {
-              name: 'PetInfoRegisterOutro',
-              params: {petName: form?.name ?? ''},
-            },
-          ],
-        });
+          });
       }
     } catch (error) {
       const _error = error as ErrorResponseTransform;
@@ -106,20 +78,12 @@ function PetImageRegister({
   };
 
   // 이미지 선택 핸들러
-  const onImagePicker = async () => {
+  const onChooseImage = async () => {
     // 이미지가 업로드 중이면 핸들러 반환
-    if (isLoading) return;
-
+    if (postImageUpload.isLoading) return;
     try {
-      const imageInfo = await imagePicker();
-      const tmp = imageInfo.path.split('/');
-      const fileName = tmp[tmp.length - 1];
-
-      setImageInfo(imageInfo);
-      setImagePath(
-        Platform.OS === 'android' ? imageInfo.path : imageInfo.sourceURL,
-      );
-      setFilename(fileName);
+      const _petImageInfo = await onImagePicker();
+      setPetImageInfo(_petImageInfo);
     } catch (error) {
       console.log(error);
     }
@@ -132,13 +96,13 @@ function PetImageRegister({
       currentStage={currentStage}
       isSkipPage
       onSkipPage={() => onMovePage(true)}
-      possibleButtonPress={!_.isNil(imagePath) && !_.isNil(imageInfo)}>
+      possibleButtonPress={!_.isNil(petImageInfo)}>
       {patchUserInfo.isLoading && <Spinner size="lg" />}
 
       <HStack w={'100%'} justifyContent={'center'} pt={'24px'}>
-        {imagePath ? (
+        {petImageInfo?.appLocalImageName ? (
           <Image
-            source={{uri: imagePath}}
+            source={{uri: petImageInfo.appLocalImageName}}
             alt="pet_img"
             w={'165px'}
             h={'165px'}
@@ -164,7 +128,7 @@ function PetImageRegister({
         justifyContent={'center'}
         alignItems={'center'}
         backgroundColor={colors.fussYellow[0]}
-        onPress={onImagePicker}>
+        onPress={onChooseImage}>
         <Text>사진 선택</Text>
       </Pressable>
     </LayoutContainer>

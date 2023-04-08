@@ -129,7 +129,11 @@ function AddressRegister({
       currentStage={currentStage}
       possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>
       <Stack w="100%" space={'10px'}>
-        <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />
+        <SelectButtonForm
+          value={sidoValue?.name}
+          selectorName={sidoValue?.name}
+          onPress={onOpen}
+        />
         {sigugunValue && (
           <SelectButtonForm
             value={sigugunValue?.name}
