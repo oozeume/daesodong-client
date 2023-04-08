@@ -71,19 +71,19 @@ function AddressChange({isOpen, onClose, onPress, value}: Props) {
       const _spots = value.split(' ');
 
       if (_spots.length === 3) {
-        sido.forEach((item, i) => {
+        sido.forEach(item => {
           if (value === item.name) {
             setSidoValue(item);
           }
         });
 
-        sigugun.forEach((item, i) => {
+        sigugun.forEach(item => {
           if (value === item.name) {
             setSigugunValue(item);
           }
         });
 
-        dong.forEach((item, i) => {
+        dong.forEach(item => {
           if (value === item.name) {
             setDongValue(item);
           }

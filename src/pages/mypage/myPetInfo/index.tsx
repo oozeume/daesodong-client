@@ -49,12 +49,6 @@ function MyPetInfo() {
     userData?.mainPetInfo.specieName,
   );
 
-  useEffect(() => {
-    if (userData?.mainPetInfo.specieName) {
-      setSelectedPetTypeName(userData?.mainPetInfo.specieName);
-    }
-  }, [userData?.mainPetInfo.specieName]);
-
   const onCloseModal = (key: keyof typeof initForm) => {
     setForm(prev => ({...prev, [key]: initForm[key]}));
     setModalOpen(prev => ({...prev, [key]: false}));
@@ -111,6 +105,12 @@ function MyPetInfo() {
       toastShow('이미지를 불러오는 과정에서 오류가 발생했습니다.');
     }
   };
+
+  useEffect(() => {
+    if (userData?.mainPetInfo.specieName) {
+      setSelectedPetTypeName(userData?.mainPetInfo.specieName);
+    }
+  }, [userData?.mainPetInfo.specieName]);
 
   return (
     <Stack backgroundColor={'white'} flex={1}>
