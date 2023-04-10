@@ -190,7 +190,13 @@ const FacilityMain = () => {
     if (!_.isEmpty(locationValue.sido)) {
       setSortedSigugun(sigugun.filter(i => i.sido === locationValue.sido.sido));
     }
-  }, [locationValue.sido, sigugun]);
+  }, [locationValue.sido]);
+
+  useEffect(() => {
+    if (sidoValue) {
+      setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
+    }
+  }, [sidoValue]);
 
   return (
     <Box w="100%" h={APP_HEIGHT}>
