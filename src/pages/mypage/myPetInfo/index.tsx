@@ -162,7 +162,7 @@ function MyPetInfo() {
             <HStack alignItems={'center'} space={'8px'}>
               <Tag
                 top={3}
-                name="설치류"
+                name={userData?.mainPetInfo.kindName ?? ''}
                 bgColor={colors.fussOrange['-30']}
                 color={colors.fussOrange[0]}
               />
