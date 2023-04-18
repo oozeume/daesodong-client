@@ -189,7 +189,7 @@ function MyInfo() {
                 닉네임은 한 달에 1회 변경할 수 있어요
               </Text>
             }
-            onClose={() => setModalOpen(prev => ({...prev, nickname: false}))}
+            onClose={() => onCloseModal('nickname')}
             onPress={() => onChangeUserInfo('닉네임', 'nickname', form)}
             helpList={nicknameHelpList}
             successMessage={'사용 가능한 닉네임입니다'}
@@ -223,6 +223,7 @@ function MyInfo() {
         onClose={() => onCloseModal('birthdate')}
         ElementComponent={
           <BirthChange
+            value={form.birthdate}
             onClose={() => setModalOpen(prev => ({...prev, birthdate: false}))}
             onPress={birthdate => {
               if (!birthdate) return;
@@ -240,6 +241,7 @@ function MyInfo() {
       <AddressChange
         isOpen={modalOpen.address}
         onClose={() => onCloseModal('address')}
+        value={form.address}
         onPress={address => {
           setForm(prev => ({...prev, address}));
           onChangeUserInfo('거주', 'address', {

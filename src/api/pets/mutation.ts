@@ -12,6 +12,7 @@ const patchPet = (data: Partial<PatchPetData>, id: string) => {
     speciesName: data.speciesName,
     age: data.age,
     sex: data.sex,
+    pet_picture_url: data.petPictureUrl,
   };
   return apiCall<boolean>({
     method: 'PATCH',
