@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {Pressable, Stack, Text, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import AddressDrawer, {
@@ -10,13 +11,14 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onPress: (address: string) => void;
+  value?: string;
 }
 
 /**
  *@description 내 계정 - 내 정보 - 주소 변경 컴포넌트
  */
 
-function AddressChange({isOpen, onClose, onPress}: Props) {
+function AddressChange({isOpen, onClose, onPress, value}: Props) {
   const {sido, sigugun, dong} = hangjungdong;
 
   const {
@@ -31,8 +33,13 @@ function AddressChange({isOpen, onClose, onPress}: Props) {
     onClose: onDongClose,
   } = useDisclose();
 
+  // ex. {"name": "대구광역시", "sido": "27"}
   const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>();
+
+  // ex. {"name": "동구", "sido": "27", "sigugun": "140"}
   const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>();
+
+  // ex. {"dong": "520", "name": "신암2동", "sido": "27", "sigugun": "140"}
   const [dongValue, setDongValue] = useState<Hangjungdong>();
 
   const [sortedSigugun, setSortedSigugun] = useState<
@@ -57,6 +64,33 @@ function AddressChange({isOpen, onClose, onPress}: Props) {
       );
     }
   }, [sigugunValue, dong]);
+
+  useEffect(() => {
+    // 초기 서버 값에 따른 초기값 설정
+    if (value && _.isEmpty(sidoValue)) {
+      const _spots = value.split(' ');
+
+      if (_spots.length === 3) {
+        sido.forEach(item => {
+          if (value === item.name) {
+            setSidoValue(item);
+          }
+        });
+
+        sigugun.forEach(item => {
+          if (value === item.name) {
+            setSigugunValue(item);
+          }
+        });
+
+        dong.forEach(item => {
+          if (value === item.name) {
+            setDongValue(item);
+          }
+        });
+      }
+    }
+  }, [value]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {HStack, Image, Pressable, Stack, Text} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SpeciesData} from '~/../types/api/species';
 import {MyPetInfoForm} from '~/../types/mypage';
 import {usePatchPet} from '~/api/pets/mutation';
@@ -69,7 +69,7 @@ function MyPetInfo() {
 
     patchPet
       .mutateAsync({
-        data: form,
+        data: _form,
         id: userData?.mainPetInfo.id,
       })
       .then(() => {
@@ -98,12 +98,19 @@ function MyPetInfo() {
         onChangeUserInfo('이미지', 'petPictureUrl', {
           petPictureUrl: imageData.cloudImageName,
         });
+        setForm(prev => ({...prev, petPictureUrl: imageData.cloudImageName}));
       });
     } catch (error) {
       console.log(error);
       toastShow('이미지를 불러오는 과정에서 오류가 발생했습니다.');
     }
   };
+
+  useEffect(() => {
+    if (userData?.mainPetInfo.specieName) {
+      setSelectedPetTypeName(userData?.mainPetInfo.specieName);
+    }
+  }, [userData?.mainPetInfo.specieName]);
 
   return (
     <Stack backgroundColor={'white'} flex={1}>
@@ -155,7 +162,7 @@ function MyPetInfo() {
             <HStack alignItems={'center'} space={'8px'}>
               <Tag
                 top={3}
-                name="설치류"
+                name={userData?.mainPetInfo.kindName ?? ''}
                 bgColor={colors.fussOrange['-30']}
                 color={colors.fussOrange[0]}
               />
@@ -202,12 +209,15 @@ function MyPetInfo() {
       <PetTypeSelectModal
         isOpen={modalOpen.speciesName}
         buttonText={'변경'}
-        onPress={(selectedItem?: SpeciesData) =>
+        onPress={(selectedItem?: SpeciesData) => {
+          if (!selectedItem?.name)
+            return toastShow('변경 과정에서 오류가 발생했습니다.');
+
           onChangeUserInfo('종', 'speciesName', {
             ...form,
             speciesName: selectedItem?.name ?? '',
-          })
-        }
+          });
+        }}
         onClose={() => onCloseModal('speciesName')}
         previousPetTypeName={selectedPetTypeName}
       />
@@ -240,9 +250,11 @@ function MyPetInfo() {
         onClose={() => onCloseModal('sex')}
         ElementComponent={
           <GenderChange
+            isPetGenderChange
             gender={form.sex}
             onChangeGender={sex => {
               if (sex === form.sex) return;
+
               setForm(prev => ({...prev, sex}));
               onChangeUserInfo('성별', 'sex', {...form, sex});
             }}

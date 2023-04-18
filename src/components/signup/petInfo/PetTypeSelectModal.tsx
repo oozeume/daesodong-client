@@ -49,6 +49,7 @@ function PetTypeSelectModal({
   const petSearchHeight = 200;
 
   useEffect(() => {
+    // 검색 단어 입력에 따른 동물 목록 변경
     if (!_.isEmpty(searchText)) {
       let _searchList: SpeciesData[] = [];
       let _selectedPetType;
@@ -79,6 +80,7 @@ function PetTypeSelectModal({
 
   useEffect(() => {
     if (previousPetTypeName) {
+      // 모달 오픈 시, 동물리스트 순서 변경 > [내 아이, 다른 동물] 순으로
       let _selectedPetType;
       const filterSpecies = (data?.data ?? []).filter(item => {
         if (item.name === previousPetTypeName) {
@@ -96,10 +98,11 @@ function PetTypeSelectModal({
 
       setDefaultList(_searchList);
     }
-  }, []);
+  }, [previousPetTypeName]);
 
   useEffect(() => {
     if (!isOpen) {
+      // 모달창 닫았을 때, 초기화
       setSearchText('');
       setSearchList([]);
     }
@@ -261,7 +264,7 @@ function PetTypeSelectModal({
                   if (!selectedItem) return;
                   onClose();
                   if (setPetType) setPetType(selectedItem);
-                  if (onPress) onPress();
+                  if (onPress) onPress(selectedItem);
                 }}
                 large
                 active={!_.isUndefined(selectedItem)}
