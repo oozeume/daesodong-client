@@ -6,6 +6,7 @@ import {
   FacilityResponse,
   FacilityReviewsResponse,
   GetFacilityListQuery,
+  LocationType,
   VisitedFacilityResponse,
 } from '~/../types/api/facility';
 import {SpeciesType} from '~/../types/api/species';
@@ -146,6 +147,7 @@ export const useGetFacilityScore = (id: string) => {
 
 /**
  *@description 시설 리스트 API
+ @todo api 변경 예정
  */
 
 const getFacilityList = (query: GetFacilityListQuery) => {
@@ -180,7 +182,7 @@ export const getLocation = (location: {
   longitude: number;
 }) => {
   const {latitude, longitude} = location;
-  return axios.get(
+  return axios.get<LocationType>(
     // NOTE : x : longitude, y : latitude
     `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`,
     {

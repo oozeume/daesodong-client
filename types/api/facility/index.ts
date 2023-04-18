@@ -222,3 +222,40 @@ export interface GetFacilityListQuery {
   state?: string;
   city?: string;
 }
+
+/**
+ *@description 현재 위치 정보 카카오 API 응답
+ */
+
+export type LocationType = {
+  documents: AddressType[];
+  meta: {
+    total_count: number;
+  };
+};
+export interface AddressType {
+  address: Address;
+  road_address: RoadAddress;
+}
+export interface Address {
+  address_name: string;
+  main_address_no: string;
+  mountain_yn: string;
+  region_1depth_name: string;
+  region_2depth_name: string;
+  region_3depth_name: string;
+  sub_address_no: string;
+  zip_code: string;
+}
+export interface RoadAddress {
+  address_name: string;
+  building_name: string;
+  main_building_no: string;
+  region_1depth_name: string;
+  region_2depth_name: string;
+  region_3depth_name: string;
+  road_name: string;
+  sub_building_no: string;
+  underground_yn: string;
+  zone_no: string;
+}

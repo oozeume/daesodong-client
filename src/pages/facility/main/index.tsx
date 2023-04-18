@@ -54,7 +54,7 @@ const FacilityMain = () => {
   const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>();
   const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>();
 
-  const [locationValue, setLocationValue] =
+  const [locationSearchValue, setLocationSearchValue] =
     useState<LocationInfoType>(LOCATION_INIT);
   const [coordinate, setCoordinate] = useState<CoordinateType>({
     latitude: 0,
@@ -176,21 +176,44 @@ const FacilityMain = () => {
       limit: FACILITY_PER_PAGE,
       expose: false, // TODO: 어드민 생성 후에 true로 변경
       sort: 'latest',
-      state: locationValue.sido.name,
-      city: locationValue.sigugun.name,
+      state: locationSearchValue.sido.name,
+      city: locationSearchValue.sigugun.name,
     },
-    !_.isEmpty(locationValue.sido.name) &&
-      !_.isEmpty(locationValue.sigugun.name),
+    !_.isEmpty(locationSearchValue.sido.name) &&
+      !_.isEmpty(locationSearchValue.sigugun.name),
   );
 
-  const Facilities: Facility[] =
+  const facilities: Facility[] =
     data?.pages[0].data.data.map((i: any) => new Facility(i)) ?? [];
 
+  const positionSelectCancel = () => {
+    setIsModalVisible(false);
+    setSidoValue(undefined);
+    setSigugunValue(undefined);
+  };
+
+  const positionSelect = () => {
+    setLocationSearchValue({
+      sido: {
+        name: sidoValue?.name ?? locationSearchValue.sido.name,
+        sido: sidoValue?.sido ?? locationSearchValue.sido.sido,
+      },
+      sigugun: {
+        name: sigugunValue?.name ?? '',
+        sigugun: sigugunValue?.sigugun ?? '',
+      },
+    });
+    setIsModalVisible(false);
+    refetch();
+  };
+
   useEffect(() => {
-    if (!_.isEmpty(locationValue.sido)) {
-      setSortedSigugun(sigugun.filter(i => i.sido === locationValue.sido.sido));
+    if (!_.isEmpty(locationSearchValue.sido)) {
+      setSortedSigugun(
+        sigugun.filter(i => i.sido === locationSearchValue.sido.sido),
+      );
     }
-  }, [locationValue.sido]);
+  }, [locationSearchValue.sido]);
 
   useEffect(() => {
     if (sidoValue) {
@@ -233,8 +256,8 @@ const FacilityMain = () => {
         <LocationSearch
           onPress={() => setIsModalVisible(true)}
           style={styles.shadow}
-          locationValue={locationValue}
-          setLocationValue={setLocationValue}
+          locationValue={locationSearchValue}
+          setLocationValue={setLocationSearchValue}
           coordinate={coordinate}
           setCoordinate={setCoordinate}
         />
@@ -300,29 +323,12 @@ const FacilityMain = () => {
       {/* 시 군 구 선택 팝업창 */}
       <PositionPopup
         visible={isModalVisible}
-        onCancel={() => {
-          setIsModalVisible(false);
-          setSidoValue(undefined);
-          setSigugunValue(undefined);
-        }}
-        onOK={() => {
-          setLocationValue({
-            sido: {
-              name: sidoValue?.name ?? locationValue.sido.name,
-              sido: sidoValue?.sido ?? locationValue.sido.sido,
-            },
-            sigugun: {
-              name: sigugunValue?.name ?? '',
-              sigugun: sigugunValue?.sigugun ?? '',
-            },
-          });
-          setIsModalVisible(false);
-          refetch();
-        }}
+        onCancel={positionSelectCancel}
+        onOK={positionSelect}
         onSidoPress={onSidoOpen}
         onSigunguPress={onSigugunOpen}
-        sidoValue={sidoValue ?? locationValue.sido}
-        sigugunValue={sigugunValue ?? locationValue.sigugun}
+        sidoValue={sidoValue ?? locationSearchValue.sido}
+        sigugunValue={sigugunValue ?? locationSearchValue.sigugun}
       />
 
       {/* 시 선택 drawer */}
@@ -331,7 +337,7 @@ const FacilityMain = () => {
         onClose={onSidoClose}
         onPress={() => onSigugunOpen()}
         setValue={setSidoValue}
-        sidoValue={sidoValue ?? locationValue.sido}
+        sidoValue={sidoValue ?? locationSearchValue.sido}
         selectableList={sido}
       />
 
@@ -345,12 +351,12 @@ const FacilityMain = () => {
         }}
         setValue={setSigugunValue}
         selectableList={sortedSigugun}
-        sigugunValue={sigugunValue ?? locationValue.sigugun}
+        sigugunValue={sigugunValue ?? locationSearchValue.sigugun}
       />
 
       {/* 이용할 수 있는 시설 리스트 */}
       <FacilityList
-        Facilities={Facilities}
+        facilities={facilities}
         setListExpand={setFacilityListExpand}
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}

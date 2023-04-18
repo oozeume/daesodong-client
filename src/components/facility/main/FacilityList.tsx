@@ -9,7 +9,7 @@ import Facility from '~/model/facility';
 import FacilityItem from './FacilityItem';
 
 interface Props {
-  Facilities: Facility[];
+  facilities: Facility[];
   isOpen: boolean;
   onClose: () => void;
   setListExpand: (isListExpand: boolean) => void;
@@ -21,7 +21,7 @@ interface Props {
  * @param setListExpand - 시설 리스트 뷰 확장 설정 함수
  */
 function FacilityList({
-  Facilities,
+  facilities,
   isOpen,
   onClose,
   setListExpand,
@@ -67,13 +67,13 @@ function FacilityList({
                   fontSize="13px"
                   color={colors.fussOrange[0]}
                   fontWeight={500}>
-                  {`${Facilities.length}개의 시설이 있어요`}
+                  {`${facilities.length}개의 시설이 있어요`}
                 </Text>
               </Center>
             </Box>
 
             <FlatList
-              data={Facilities}
+              data={facilities}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => <FacilityItem facility={item} />}
             />
