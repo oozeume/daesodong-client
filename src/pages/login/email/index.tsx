@@ -33,6 +33,8 @@ import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 import {useGetUser} from '~/api/user/queries';
 import {useUserRegister} from '~/store/useUserContext';
 import {config} from '~/utils/config';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import useToastShow from '~/hooks/useToast';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -42,6 +44,7 @@ function EmailLogin() {
   const postAuthSocialLogin = usePostAuthSocialLogin();
   const postAuthEmailLogin = usePostAuthEmailLogin();
   const {data: userData, refetch: getUserRefetch} = useGetUser();
+  const {toastShow} = useToastShow();
 
   const initForm = {
     email: '',
@@ -125,6 +128,37 @@ function EmailLogin() {
       // reset({index: 0, routes: [{name: 'SignupPetInfoNavigator'}]});
     }
   };
+
+  async function onAppleLogin() {
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL],
+      });
+
+      // get current authentication state for user
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user,
+      );
+
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        console.log(appleAuthRequestResponse);
+
+        // 유저 인증됨
+      }
+    } catch (error) {
+      const _error = error as unknown as {code?: string};
+
+      if (_error?.code === appleAuth.Error.CANCELED) {
+        toastShow('Apple 로그인이 취소되었습니다.');
+      } else {
+        toastShow(
+          'Apple 로그인 과정에서 에러가 발생했습니다.\n앱을 다시 실행 후, 로그인해주세요.',
+        );
+        console.error(error);
+      }
+    }
+  }
 
   const onGoogleLogin = async () => {
     try {
@@ -279,7 +313,7 @@ function EmailLogin() {
               </HStack>
 
               <KakaoLoginButton handlePress={onKakaoLogin} />
-              <AppleLoginButton handlePress={() => {}} />
+              <AppleLoginButton handlePress={onAppleLogin} />
               <GoogleLoginButton handlePress={onGoogleLogin} />
             </VStack>
           </VStack>

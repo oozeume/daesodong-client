@@ -31,6 +31,8 @@ import SplashImage from '~/assets/images/splash.svg';
 import {APP_HEIGHT} from '~/utils/dimension';
 import _ from 'lodash';
 import {useGetUser} from '~/api/user/queries';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import useToastShow from '~/hooks/useToast';
 
 /**
  *@description 초기 소셜 로그인 선택 페이지
@@ -38,6 +40,7 @@ import {useGetUser} from '~/api/user/queries';
 function InitialLogin() {
   const {navigate, reset} = useNavigation<NavigationProp<RouteList>>();
   const {height: appHeight} = Dimensions.get('screen');
+  const {toastShow} = useToastShow();
 
   const [isInitialLoading, setInitialLoading] = useState(true);
 
@@ -114,6 +117,37 @@ function InitialLogin() {
       }
     }
   };
+
+  async function onAppleLogin() {
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL],
+      });
+
+      // get current authentication state for user
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user,
+      );
+
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        console.log(appleAuthRequestResponse);
+
+        // 유저 인증됨
+      }
+    } catch (error) {
+      const _error = error as unknown as {code?: string};
+
+      if (_error?.code === appleAuth.Error.CANCELED) {
+        toastShow('Apple 로그인이 취소되었습니다.');
+      } else {
+        toastShow(
+          'Apple 로그인 과정에서 에러가 발생했습니다.\n앱을 다시 실행 후, 로그인해주세요.',
+        );
+        console.error(error);
+      }
+    }
+  }
 
   const onKakaoLogin = async () => {
     try {
@@ -298,7 +332,7 @@ function InitialLogin() {
 
           <VStack>
             <KakaoLoginButton handlePress={onKakaoLogin} />
-            <AppleLoginButton handlePress={() => {}} />
+            <AppleLoginButton handlePress={onAppleLogin} />
             <GoogleLoginButton handlePress={onGoogleLogin} />
             <EmailLoginButton handlePress={onMove} />
           </VStack>
