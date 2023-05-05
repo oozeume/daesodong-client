@@ -41,33 +41,31 @@ function PetImageRegister({
     setForm(prev => ({...prev}));
 
     try {
-      if (petImageInfo) {
+      if (petImageInfo && !isSkip) {
         await onImageUpload([petImageInfo.cloudData], () => {});
-      } else if (isSkip) {
-        // 이미지 스킵할 경우
-
-        patchUserInfo
-          .mutateAsync({
-            ...form,
-            petPictureUrl,
-          })
-          .then(response => {
-            if (response.data) {
-              removeData(storageKeys.petInfoRegister.form);
-              removeData(storageKeys.petInfoRegister.state);
-
-              reset({
-                index: 0,
-                routes: [
-                  {
-                    name: 'PetInfoRegisterOutro',
-                    params: {petName: form?.name ?? ''},
-                  },
-                ],
-              });
-            }
-          });
       }
+
+      patchUserInfo
+        .mutateAsync({
+          ...form,
+          petPictureUrl,
+        })
+        .then(response => {
+          if (response.data) {
+            removeData(storageKeys.petInfoRegister.form);
+            removeData(storageKeys.petInfoRegister.state);
+
+            reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'PetInfoRegisterOutro',
+                  params: {petName: form?.name ?? ''},
+                },
+              ],
+            });
+          }
+        });
     } catch (error) {
       const _error = error as ErrorResponseTransform;
 

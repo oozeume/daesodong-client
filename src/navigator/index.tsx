@@ -8,7 +8,6 @@ import HospitalReviewRegisterPrecaution from '~/pages/facility/detail/review/reg
 
 import EmailLogin from '~/pages/login/email';
 import SignUpEmailNavigator from '~/pages/signup/emailNavigator';
-import PetInfoRegister from '~/pages/signup/petInfoRegister';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
 import CommunityDetail from '~/pages/community/detail';
@@ -129,7 +128,6 @@ const AppNavigator = () => {
           name="SignupSocialNavigator"
           component={SignupSocialNavigator}
         />
-        <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}

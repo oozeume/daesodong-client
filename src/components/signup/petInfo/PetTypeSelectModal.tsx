@@ -9,9 +9,10 @@ import SearchIcon from '~/assets/icons/search.svg';
 import Tag from '~/components/common/Tag';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
-import {useGetSpecies} from '~/api/species';
+import {useGetSpecies} from '~/api/species/queries';
 import {SpeciesData} from '~/../types/api/species';
 import _ from 'lodash';
+import {usePostSpecies} from '~/api/species/mutation';
 
 interface Props {
   isOpen: boolean;
@@ -47,6 +48,31 @@ function PetTypeSelectModal({
     data?.data ?? [],
   );
   const petSearchHeight = 200;
+  const postSpecies = usePostSpecies();
+
+  const onAddSpecies = () => {
+    postSpecies
+      .mutateAsync({
+        kindName: '설치류',
+        name: searchText,
+      })
+      .then(response => {
+        if (response.data && setPetType) {
+          setPetType({
+            created_at: '',
+            id: '',
+            kindId: '',
+            name: searchText,
+            specie: {
+              id: '',
+              name: '',
+            },
+          });
+
+          onClose();
+        }
+      });
+  };
 
   useEffect(() => {
     // 검색 단어 입력에 따른 동물 목록 변경
@@ -182,7 +208,7 @@ function PetTypeSelectModal({
                       active: colors.fussOrange[0],
                       disabled: colors.grayScale[50],
                     }}
-                    handlePress={() => {}}
+                    handlePress={onAddSpecies}
                     active
                     text={'입력한 동물로 등록'}
                   />

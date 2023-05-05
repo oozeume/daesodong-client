@@ -65,7 +65,6 @@ export type RootStackParamList = {
     email: string;
   };
   SignUpEmailNavigator: undefined;
-  PetInfoRegister: undefined;
 
   Community: undefined;
   CommunityDetail: {id: string};
@@ -102,6 +101,7 @@ export type RootStackParamList = {
   Inquiry: undefined;
 
   SignupPetInfoNavigator: undefined;
+  PetInfoRegisterIntro: undefined;
   ChoiceGenderRegister: undefined;
   PetOwnerBirthRegister: undefined;
   PetNameRegister: undefined;
@@ -121,6 +121,7 @@ export type SignupNavigatorRouteList =
   | 'EmailLogin';
 
 export type PetInfoRegisterNavigatorRouteList =
+  | 'PetInfoRegisterIntro'
   | 'ChoiceGenderRegister'
   | 'EmailLogin'
   | 'PetNameRegister'

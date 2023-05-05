@@ -24,15 +24,23 @@ export type SpeciesData = {
  */
 
 export type SpeciesType = {
-  id: string,
-  name: string,
-  kindId: string,
-  created_at: string,
+  id: string;
+  name: string;
+  kindId: string;
+  created_at: string;
   _count?: {
-    pets: number
-  }
+    pets: number;
+  };
   specie?: {
     id: string;
     name: string;
   };
-}
+};
+
+/**
+ *@description species 종 등록 데이터
+ */
+export type PostSpeciesData = {
+  kindName: string;
+  name: string;
+};
