@@ -1,7 +1,6 @@
-import {FlatList, useDisclose} from 'native-base';
+import {Button, FlatList, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import FloatingButtonImage from '~/assets/images/floating_button_image.svg';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
 import {colors} from '~/theme/theme';
 import {Platform, StyleSheet} from 'react-native';
@@ -11,6 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import MainListHeaderView from '~/components/contents/main/ListHeaderView';
 import MainListStickyView from '~/components/contents/main/ListStickyView';
+import FloatingButton from '~/components/common/button/FloatingButton';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -68,11 +68,8 @@ const ContentsMain = () => {
       />
 
       {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
-      <FloatingButtonImage
-        onPress={onOpen}
-        style={styles.floatingButtonImage}
-        fill={colors.fussOrange[0]}
-      />
+
+      <FloatingButton onPress={onOpen} />
     </SafeAreaView>
   );
 };
@@ -80,7 +77,7 @@ const ContentsMain = () => {
 const styles = StyleSheet.create({
   floatingButtonImage: {
     position: 'absolute',
-    bottom: Platform.OS === 'android' ? 20 : 52,
+    bottom: Platform.OS === 'android' ? 20 : 24,
     right: 18,
     zIndex: 99,
   },

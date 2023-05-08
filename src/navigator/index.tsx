@@ -21,7 +21,8 @@ import ContentsCommentsList from '~/pages/contents/commentsList';
 import ContentsRecommentsList from '~/pages/contents/recommentsList';
 import Header from '~/components/common/header/Header';
 
-import BackIcon from '~/assets/icon/back_icon.svg';
+import BackIcon from '~/assets/icons/back.svg';
+import ShareIcon from '~/assets/icons/share_fill.svg';
 import DeleteIcon from '~/assets/icons/delete.svg';
 import MyPageNotice from '~/pages/mypage/notice';
 import HeaderLeft from '~/components/common/header/HeaderLeft';
@@ -69,6 +70,7 @@ const AppNavigator = () => {
               <Header
                 title={route.params?.facilityName ?? ''}
                 leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+                rightButton={<ShareIcon onPress={() => {}} />}
               />
             ),
           })}
