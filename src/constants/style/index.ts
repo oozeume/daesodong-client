@@ -3,3 +3,5 @@
  */
 
 export const MARGIN_X = 18;
+
+export const TAB_HEIGHT = 98;
