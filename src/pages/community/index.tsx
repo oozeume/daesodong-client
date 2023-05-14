@@ -16,6 +16,7 @@ import {NavigationHookProp} from '~/../types/navigator';
 import {useNavigation} from '@react-navigation/native';
 import {APP_HEIGHT} from '~/utils/dimension';
 import {TAB_HEIGHT} from '~/constants/style';
+import {useTagRegister} from '~/store/useTagContext';
 
 /**
  *@description 커뮤니티 메인페이지
@@ -31,11 +32,16 @@ const CommunityMain = () => {
 
   const [postList, setPostList] = useState<CommunityPost[]>([]);
 
+  const setTags = useTagRegister();
+
   useEffect(() => {
     setTimeout(() => {
       // 4초 후, 다음 콘텐츠로 보고 싶은 내용이 있다면 알려주세요 툴팁 지워짐
       setTooltipOpen(false);
     }, 4000);
+
+    // 등록, 수정에 따른 태그 폼 초기화
+    setTags([]);
   }, []);
 
   const {

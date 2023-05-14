@@ -14,7 +14,6 @@ import {CommentInputType} from '~/../types/community';
 import CommentList from '~/components/community/detail/CommentList';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import CommentModel from '~/model/comment';
-import Comment from '~/model/comment';
 import {Platform} from 'react-native';
 import _ from 'lodash';
 import {
@@ -39,8 +38,8 @@ const CommunityDetail = () => {
 
   // 키캡이나 답글달기로 선택된 댓글 state
   const [selectedComment, setSelectedComment] = useState<CommentModel>();
-  const [commentList, setCommentList] = useState<Comment[]>([]);
-  const [bestCommentList, setBestCommentList] = useState<Comment[]>([]);
+  const [commentList, setCommentList] = useState<CommentModel[]>([]);
+  const [bestCommentList, setBestCommentList] = useState<CommentModel[]>([]);
 
   // 답글 등록 여부 state
   const [commentInputType, setCommentInputType] =
@@ -67,6 +66,7 @@ const CommunityDetail = () => {
     getCommunityPost?.data?.thanks ?? 0,
   );
 
+  // 커뮤니티 상세 페이지 헤더 커스텀 훅 호출
   const {navigation, isOpenDeletePopup, setOpenDeletePopup} =
     useSetDetailHeader({
       postId,
@@ -170,7 +170,7 @@ const CommunityDetail = () => {
   useEffect(() => {
     if (getBestCommentList.data) {
       let _commentList = getBestCommentList.data.data.map(
-        item => new Comment(item),
+        item => new CommentModel(item),
       );
 
       setBestCommentList(_commentList);
@@ -180,9 +180,9 @@ const CommunityDetail = () => {
   useEffect(() => {
     // 댓글 리스트 state 설정
     if (getCommentList.data?.pages) {
-      let _commentList: Comment[] = [];
+      let _commentList: CommentModel[] = [];
       getCommentList.data?.pages.forEach(item => {
-        const tmpList = item.data.map(_item => new Comment(_item));
+        const tmpList = item.data.map(_item => new CommentModel(_item));
 
         _commentList = [..._commentList, ...tmpList];
       });
