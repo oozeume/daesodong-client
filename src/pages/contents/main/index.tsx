@@ -1,4 +1,4 @@
-import {FlatList, useDisclose} from 'native-base';
+import {FlatList, Stack, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FloatingButtonImage from '~/assets/images/floating_button_image.svg';
@@ -9,7 +9,7 @@ import ContentItem from '~/components/contents/detail/ContentItem';
 import ReviewPopup from '~/components/contents/detail/ReviewPopup';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
-import MainListHeaderView from '~/components/contents/main/ListHeaderView';
+import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
 import MainListStickyView from '~/components/contents/main/ListStickyView';
 
 /**
@@ -26,6 +26,8 @@ const ContentsMain = () => {
       setTooltipOpen(false);
     }, 4000);
   }, []);
+
+  const dataList = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>
@@ -47,20 +49,18 @@ const ContentsMain = () => {
       {/* 다른 컨텐츠 리스트 뷰 */}
       <FlatList
         bgColor={colors.grayScale[0]}
-        ListHeaderComponent={() => <MainListHeaderView />}
-        stickyHeaderIndices={[1]}
+        ListHeaderComponent={() => <ContentsMainImages />}
         nestedScrollEnabled
-        data={['', '', '', '', '', '', '', '', '', '', '', '', '']}
-        renderItem={info => {
-          if (info.index === 0) {
-            // 리스트 상단 고정 뷰
-            return <MainListStickyView />;
-          }
-
+        data={dataList}
+        renderItem={({item, index}) => {
           return (
             <ContentItem
               onPress={() => navigation.navigate('ContentsDetail')}
-              {...info}
+              item={item}
+              style={{
+                marginBottom: index === dataList.length - 1 ? 20 : 8,
+                marginTop: index === 0 ? 20 : 0,
+              }}
             />
           );
         }}
