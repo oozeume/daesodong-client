@@ -11,10 +11,11 @@ import {useDeleteUser} from '~/api/user/mutation';
 import useToastShow from '~/hooks/useToast';
 import {ErrorResponse} from '~/../types/api/common';
 import _ from 'lodash';
+import {removeSecurityData} from '~/utils/storage';
+import {config} from '~/utils/config';
 
 /**
  *@description 내 계정 - 내 정보 - 로그인 정보 페이지
- *@todo 로그아웃 api 기능 추가되면 추가하기
  */
 
 function LoginInfo() {
@@ -22,6 +23,7 @@ function LoginInfo() {
   const {data: userData} = useGetUser();
   const {mutateAsync: deleteUser} = useDeleteUser();
 
+  // 로그아웃 팝업 출력 state
   const [logout, setLogout] = useState(false);
 
   const [withdrawalReason, setWithdrawalReason] = useState('');
@@ -35,6 +37,9 @@ function LoginInfo() {
   const [loginType, setLoginType] = useState('이메일');
 
   const onLogout = () => {
+    removeSecurityData(config.ACCESS_TOKEN_NAME);
+    removeSecurityData(config.REFRESH_TOKEN_NAME);
+
     navigation.reset({index: 0, routes: [{name: 'InitialLogin'}]});
   };
 
