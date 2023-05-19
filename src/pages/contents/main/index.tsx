@@ -10,7 +10,9 @@ import ReviewPopup from '~/components/contents/detail/ReviewPopup';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
-import MainListStickyView from '~/components/contents/main/ListStickyView';
+import {useGetContents} from '~/api/contents/queries';
+import Content from '~/model/content';
+import _ from 'lodash';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -20,14 +22,23 @@ const ContentsMain = () => {
   const [isTooltipOpen, setTooltipOpen] = useState(true);
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 '무엇이 아쉬웠나요' 리뷰 모달 on/off 훅
 
+  const {data} = useGetContents({skip: 0, take: 10});
+  const [contentsList, setContentsList] = useState<Content[]>([]);
+
+  useEffect(() => {
+    if (data?.pages) {
+      setContentsList(
+        data.pages.flatMap(item => item.data).map(i => new Content(i)),
+      );
+    }
+  }, [data]);
+
   useEffect(() => {
     setTimeout(() => {
       // 4초 후, 다음 콘텐츠로 보고 싶은 내용이 있다면 알려주세요 툴팁 지워짐
       setTooltipOpen(false);
     }, 4000);
   }, []);
-
-  const dataList = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>
@@ -49,16 +60,18 @@ const ContentsMain = () => {
       {/* 다른 컨텐츠 리스트 뷰 */}
       <FlatList
         bgColor={colors.grayScale[0]}
-        ListHeaderComponent={() => <ContentsMainImages />}
+        ListHeaderComponent={() => (
+          <ContentsMainImages contents={contentsList} />
+        )}
         nestedScrollEnabled
-        data={dataList}
+        data={contentsList}
         renderItem={({item, index}) => {
           return (
             <ContentItem
               onPress={() => navigation.navigate('ContentsDetail')}
               item={item}
               style={{
-                marginBottom: index === dataList.length - 1 ? 20 : 8,
+                marginBottom: index === contentsList.length - 1 ? 20 : 8,
                 marginTop: index === 0 ? 20 : 0,
               }}
             />

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Box,
   Center,
@@ -12,6 +12,8 @@ import {colors} from '~/theme/theme';
 import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
 import {Modal} from 'react-native';
 import {APP_HEIGHT} from '~/utils/dimension';
+import {useRequestContents} from '~/api/contents/mutation';
+import _ from 'lodash';
 
 interface Props {
   visible: boolean;
@@ -44,6 +46,16 @@ function ReviewPopup({
   const buttonListPaddingBottom = 20;
 
   const modalBottom = keyobardHeight - buttonListPaddingBottom;
+
+  const [message, setMessage] = useState('');
+  const {mutateAsync} = useRequestContents(message);
+
+  const requestContents = () => {
+    mutateAsync().then(() => {
+      setMessage('');
+      onOK();
+    });
+  };
 
   return (
     <Modal visible={visible} transparent>
@@ -122,6 +134,8 @@ function ReviewPopup({
             placeholder={placeholder}
             placeholderTextColor={colors.grayScale['40']}
             ref={inputRef}
+            value={message}
+            onChangeText={setMessage}
           />
 
           {/* 버튼 리스트 */}
@@ -141,11 +155,12 @@ function ReviewPopup({
 
             <Pressable
               flex={4}
+              disabled={_.isEmpty(message)}
               bgColor={colors.fussOrange[0]}
               borderWidth={1}
               borderColor={colors.grayScale[90]}
               borderRadius={8}
-              onPress={onOK}>
+              onPress={requestContents}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>대소동팀에게 전달</Text>
               </Center>
