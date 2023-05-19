@@ -1,17 +1,17 @@
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
+  Actionsheet,
   Box,
   Center,
   HStack,
   Pressable,
+  Stack,
   Text,
   TextArea,
-  VStack,
 } from 'native-base';
 import {colors} from '~/theme/theme';
 import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
-import {Modal} from 'react-native';
-import {APP_HEIGHT} from '~/utils/dimension';
+import {Keyboard} from 'react-native';
 import {useRequestContents} from '~/api/contents/mutation';
 import _ from 'lodash';
 
@@ -23,6 +23,8 @@ interface Props {
   exampleTextList: string[];
   placeholder: string;
 }
+
+const CONTAINER_HEIGHT = 500;
 
 /**
  *@description 컨텐츠 리뷰 팝업 (ex. 무엇이 아쉬우셨나요?)
@@ -40,12 +42,9 @@ function ReviewPopup({
 }: Props) {
   const keyobardHeight = useGetKeyboardHeight();
 
-  const inputRef = useRef();
-
-  // 대소동팀에게 전달, 취소 버튼
-  const buttonListPaddingBottom = 20;
-
-  const modalBottom = keyobardHeight - buttonListPaddingBottom;
+  const heihgt = useMemo(() => {
+    return CONTAINER_HEIGHT + keyobardHeight;
+  }, [keyobardHeight]);
 
   const [message, setMessage] = useState('');
   const {mutateAsync} = useRequestContents(message);
@@ -58,29 +57,15 @@ function ReviewPopup({
   };
 
   return (
-    <Modal visible={visible} transparent>
-      <Pressable
-        width="100%"
-        height={APP_HEIGHT}
-        bgColor={colors.scrim['60']}
-        onPress={onCancel}
-        position="absolute"
-        zIndex={0}
-      />
-
-      <Center
-        p={0}
-        w={'100%'}
-        borderTopRadius={'20px'}
-        borderBottomRadius={'none'}
-        bgColor={colors.grayScale[0]}
-        mb={0}
-        mt={'auto'}
-        pb={'40px'}
-        bottom={keyobardHeight && modalBottom}>
-        <VStack pt="28px" px={'18px'} w={'100%'}>
-          {/* 모달 헤더 */}
-          <Box px="18px" mb="24px">
+    <Actionsheet
+      isOpen={visible}
+      onClose={() => {
+        onOK;
+      }}
+      hideDragIndicator>
+      <Actionsheet.Content height={heihgt}>
+        <Stack w={'100%'} px={'18px'} pt={'28px'}>
+          <Box mb="24px">
             <Center>
               <Text
                 fontSize={18}
@@ -120,7 +105,7 @@ function ReviewPopup({
           </Box>
 
           <TextArea
-            autoFocus
+            autoFocus={false}
             bgColor={colors.grayScale[0]}
             autoCompleteType={undefined}
             borderRadius={8}
@@ -133,7 +118,6 @@ function ReviewPopup({
             fontSize={'15px'}
             placeholder={placeholder}
             placeholderTextColor={colors.grayScale['40']}
-            ref={inputRef}
             value={message}
             onChangeText={setMessage}
           />
@@ -147,7 +131,10 @@ function ReviewPopup({
               borderColor={colors.grayScale[60]}
               borderRadius={8}
               mr="8px"
-              onPress={onCancel}>
+              onPress={() => {
+                Keyboard.dismiss();
+                onCancel();
+              }}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>닫기</Text>
               </Center>
@@ -160,15 +147,18 @@ function ReviewPopup({
               borderWidth={1}
               borderColor={colors.grayScale[90]}
               borderRadius={8}
-              onPress={requestContents}>
+              onPress={() => {
+                Keyboard.dismiss();
+                requestContents();
+              }}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>대소동팀에게 전달</Text>
               </Center>
             </Pressable>
           </HStack>
-        </VStack>
-      </Center>
-    </Modal>
+        </Stack>
+      </Actionsheet.Content>
+    </Actionsheet>
   );
 }
 

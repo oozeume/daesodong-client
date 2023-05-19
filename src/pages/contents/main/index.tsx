@@ -12,7 +12,6 @@ import {NavigationHookProp} from '~/../types/navigator';
 import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
 import {useGetContents} from '~/api/contents/queries';
 import Content from '~/model/content';
-import _ from 'lodash';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -41,7 +40,7 @@ const ContentsMain = () => {
   }, []);
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={{flex: 1}}>
       {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
       <ReviewPopup
         visible={isOpen}
