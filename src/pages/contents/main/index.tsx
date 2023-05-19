@@ -10,7 +10,6 @@ import ReviewPopup from '~/components/contents/detail/ReviewPopup';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
-import MainListStickyView from '~/components/contents/main/ListStickyView';
 
 /**
  *@description 컨텐츠 메인 페이지
