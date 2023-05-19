@@ -29,7 +29,7 @@ const ContentsMain = () => {
   const dataList = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={{flex: 1}}>
       {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
       <ReviewPopup
         visible={isOpen}
