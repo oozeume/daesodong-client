@@ -49,20 +49,20 @@ export const useReactedContents = (id: string) => {
 };
 
 /**
- *@description 컨텐츠 도움 유무 취소 api
+ *@description 컨텐츠 도움 취소 api
  */
 
-const deleteReactedContents = (id: string) => {
+const deleteReactedContents = (id: string, isHelp: boolean) => {
   return apiCall({
     method: 'DELETE',
-    url: `content/check/help/cancel${id}`,
+    url: `content/check/${isHelp ? 'help' : 'doesnt_help'}/cancel${id}`,
   });
 };
 
 export const useDeleteReactedContents = (id: string) => {
   return useMutation({
-    mutationFn: () => {
-      return deleteReactedContents(id);
+    mutationFn: (isHelp: boolean) => {
+      return deleteReactedContents(id, isHelp);
     },
   });
 };

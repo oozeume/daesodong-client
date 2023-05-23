@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {Box, Center, HStack, Pressable, Text, useDisclose} from 'native-base';
 import React, {useEffect, useMemo, useState} from 'react';
 import {
@@ -39,9 +38,7 @@ const ContentsReivewView = ({content}: Props) => {
 
   const onHelpful = () => {
     if (isHelpful) {
-      cancelReactContents().then(() => {
-        setHelpful(undefined);
-      });
+      onReactCancel(isHelpful);
     } else {
       reactContents({
         isHelp: true,
@@ -50,8 +47,8 @@ const ContentsReivewView = ({content}: Props) => {
     }
   };
 
-  const onReactCancel = () => {
-    cancelReactContents().then(() => {
+  const onReactCancel = (_isHelpful: boolean) => {
+    cancelReactContents(_isHelpful).then(() => {
       setHelpful(undefined);
     });
   };
@@ -68,12 +65,12 @@ const ContentsReivewView = ({content}: Props) => {
 
   const onDisappointClick = () => {
     if (isHelpful) {
-      cancelReactContents().then(() => {
+      cancelReactContents(isHelpful).then(() => {
         onOpen();
       });
     } else {
       if (isHelpful === false) {
-        onReactCancel();
+        onReactCancel(isHelpful);
       } else {
         onOpen();
       }
