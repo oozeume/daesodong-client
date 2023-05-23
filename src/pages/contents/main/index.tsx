@@ -9,7 +9,7 @@ import ContentItem from '~/components/contents/detail/ContentItem';
 import ReviewPopup from '~/components/contents/detail/ReviewPopup';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
-import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
+import ContentsImages from '~/components/contents/main/ContentsImages';
 import {useGetContents} from '~/api/contents/queries';
 import Content from '~/model/content';
 
@@ -60,14 +60,16 @@ const ContentsMain = () => {
       <FlatList
         bgColor={colors.grayScale[0]}
         ListHeaderComponent={() => (
-          <ContentsMainImages contents={contentsList} />
+          <ContentsImages images={contentsList.map(i => i.representiveImage)} />
         )}
         nestedScrollEnabled
         data={contentsList}
         renderItem={({item, index}) => {
           return (
             <ContentItem
-              onPress={() => navigation.navigate('ContentsDetail')}
+              onPress={() =>
+                navigation.navigate('ContentsDetail', {id: item.id})
+              }
               item={item}
               style={{
                 marginBottom: index === contentsList.length - 1 ? 20 : 8,

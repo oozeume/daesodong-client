@@ -1,14 +1,32 @@
+import dayjs from 'dayjs';
+import _ from 'lodash';
 import {ContentsResponse} from '~/../types/api/contents';
 
 class Content {
-  constructor(private readonly content: ContentsResponse) {}
+  constructor(private readonly content?: ContentsResponse) {}
 
   get id() {
-    return this.content.id ?? '';
+    return this.content?.id ?? '';
   }
 
   get representiveImage() {
-    return this.content.content_picture[0].picture_url;
+    return this.content?.content_picture[0].picture_url ?? '';
+  }
+
+  get bookmarksCount() {
+    return this.content?.save_content.length ?? 0;
+  }
+
+  get tags() {
+    return this.content?.tag.map(i => i.content_tag.name) ?? [];
+  }
+
+  get images() {
+    return (
+      this.content?.content_picture
+        .filter((i, index) => index !== 0)
+        .map(i => i.picture_url) ?? []
+    );
   }
 
   get categoryName() {
@@ -16,15 +34,56 @@ class Content {
   }
 
   get title() {
-    return this.content.title ?? '';
+    return this.content?.title ?? '';
   }
 
   get viewCount() {
-    return this.content.views ?? 0;
+    return this.content?.views ?? 0;
   }
 
-  get bookmarkCount() {
-    return this.content.save_content.length ?? 0;
+  get createdAt() {
+    if (this.content) {
+      return dayjs(this.content.created_at).format('YYYY.MM.DD');
+    } else {
+      return '';
+    }
+  }
+
+  get description() {
+    if (this.content) {
+      return this.content?.content;
+    } else {
+      return '';
+    }
+  }
+
+  isBookmark(userId?: string) {
+    if (userId) {
+      return (
+        this.content?.save_content.map(i => i.userId).includes(userId) ?? false
+      );
+    } else {
+      return false;
+    }
+  }
+
+  hasEstimation(userId: string) {
+    if (this.content) {
+      return (
+        this.content.it_doesnt_help.filter(i => i.id === userId).length > 0 ||
+        this.content.it_help.filter(i => i.id === userId).length > 0
+      );
+    } else {
+      return false;
+    }
+  }
+
+  isHelpful(userId: string) {
+    if (this.content) {
+      return this.content?.it_help.filter(i => i.id === userId).length > 0;
+    } else {
+      return false;
+    }
   }
 }
 

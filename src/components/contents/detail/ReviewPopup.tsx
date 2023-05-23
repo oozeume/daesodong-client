@@ -18,7 +18,7 @@ import _ from 'lodash';
 interface Props {
   visible: boolean;
   onCancel: () => void;
-  onOK: () => void;
+  onOK: (text: string) => void;
   title: string;
   exampleTextList: string[];
   placeholder: string;
@@ -42,27 +42,27 @@ function ReviewPopup({
 }: Props) {
   const keyobardHeight = useGetKeyboardHeight();
 
+  const [message, setMessage] = useState('');
+  const {mutateAsync} = useRequestContents(message);
+
   const heihgt = useMemo(() => {
     return CONTAINER_HEIGHT + keyobardHeight;
   }, [keyobardHeight]);
 
-  const [message, setMessage] = useState('');
-  const {mutateAsync} = useRequestContents(message);
-
   const requestContents = () => {
     mutateAsync().then(() => {
+      onOK(message);
       setMessage('');
-      onOK();
     });
   };
 
+  const onClose = () => {
+    Keyboard.dismiss();
+    setMessage('');
+  };
+
   return (
-    <Actionsheet
-      isOpen={visible}
-      onClose={() => {
-        onOK;
-      }}
-      hideDragIndicator>
+    <Actionsheet isOpen={visible} onClose={onClose} hideDragIndicator>
       <Actionsheet.Content height={heihgt}>
         <Stack w={'100%'} px={'18px'} pt={'28px'}>
           <Box mb="24px">
@@ -132,7 +132,7 @@ function ReviewPopup({
               borderRadius={8}
               mr="8px"
               onPress={() => {
-                Keyboard.dismiss();
+                onClose();
                 onCancel();
               }}>
               <Center h="52px">
@@ -148,7 +148,7 @@ function ReviewPopup({
               borderColor={colors.grayScale[90]}
               borderRadius={8}
               onPress={() => {
-                Keyboard.dismiss();
+                onClose();
                 requestContents();
               }}>
               <Center h="52px">
