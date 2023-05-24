@@ -15,6 +15,6 @@ const postRequestContents = (data: string) => {
   });
 };
 
-export const useRequestContents = (data: string) => {
-  return useMutation(() => postRequestContents(data));
+export const useRequestContents = () => {
+  return useMutation((data: string) => postRequestContents(data));
 };

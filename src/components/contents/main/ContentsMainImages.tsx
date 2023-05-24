@@ -4,15 +4,17 @@ import {colors} from '~/theme/theme';
 import Swiper from 'react-native-web-swiper';
 import {APP_WIDTH} from '~/utils/dimension';
 import Content from '~/model/content';
-
-interface Props {
-  contents: Content[];
-}
+import {useGetMainContents} from '~/api/contents/queries';
+import {CONTENTS_PER_PAGE} from '~/constants/contents';
 
 /**
  *@description 컨텐츠 메인 페이지 상단 (이미지)
  */
-function ContentsMainImages({contents}: Props) {
+function ContentsMainImages() {
+  const {data} = useGetMainContents({skip: 0, take: CONTENTS_PER_PAGE});
+
+  const contents = data?.data.map(c => new Content(c)) ?? [];
+
   return (
     <Box>
       <Swiper

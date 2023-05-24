@@ -1,8 +1,10 @@
 import {Button} from 'native-base';
 import React from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import FloatingButtonIcon from '~/assets/icons/edit_fill.svg';
+
+export const FLOAT_BUTTON_HEIGHT = 20;
 
 interface Props {
   onPress: () => void;
@@ -27,7 +29,7 @@ export default FloatingButton;
 const styles = StyleSheet.create({
   floatingButtonImage: {
     position: 'absolute',
-    bottom: Platform.OS === 'android' ? 20 : 24,
+    bottom: 20,
     right: 18,
     zIndex: 99,
   },

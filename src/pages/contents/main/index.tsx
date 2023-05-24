@@ -1,4 +1,4 @@
-import {FlatList, useDisclose} from 'native-base';
+import {Box, FlatList, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
@@ -11,7 +11,10 @@ import {NavigationHookProp} from '~/../types/navigator';
 import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
 import {useGetContents} from '~/api/contents/queries';
 import Content from '~/model/content';
-import FloatingButton from '~/components/common/button/FloatingButton';
+import FloatingButton, {
+  FLOAT_BUTTON_HEIGHT,
+} from '~/components/common/button/FloatingButton';
+import {useRequestContents} from '~/api/contents/mutation';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -21,7 +24,7 @@ const ContentsMain = () => {
   const [isTooltipOpen, setTooltipOpen] = useState(true);
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 '무엇이 아쉬웠나요' 리뷰 모달 on/off 훅
 
-  const {data} = useGetContents({skip: 0, take: 10});
+  const {data, fetchNextPage, hasNextPage} = useGetContents();
   const [contentsList, setContentsList] = useState<Content[]>([]);
 
   useEffect(() => {
@@ -39,12 +42,19 @@ const ContentsMain = () => {
     }, 4000);
   }, []);
 
+  const {mutateAsync: requestContents} = useRequestContents();
+
+  const fetchMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{flex: 1}}>
       {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
       <ReviewPopup
         visible={isOpen}
-        onOK={onClose}
+        onOK={requestContents}
         onCancel={onClose}
         title={'다음 콘텐츠로 보고싶은 내용이 있나요?'}
         exampleTextList={[
@@ -59,11 +69,11 @@ const ContentsMain = () => {
       {/* 다른 컨텐츠 리스트 뷰 */}
       <FlatList
         bgColor={colors.grayScale[0]}
-        ListHeaderComponent={() => (
-          <ContentsMainImages contents={contentsList} />
-        )}
+        ListHeaderComponent={<ContentsMainImages />}
         nestedScrollEnabled
         data={contentsList}
+        onEndReachedThreshold={0.85}
+        onEndReached={fetchMore}
         renderItem={({item, index}) => {
           return (
             <ContentItem
@@ -79,30 +89,21 @@ const ContentsMain = () => {
         keyExtractor={(item, index) => String(index)}
       />
 
-      {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
+      <Box position={'relative'}>
+        {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
 
-      <FloatingButton onPress={onOpen} />
+        <FloatingButton onPress={onOpen} />
+      </Box>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  floatingButtonImage: {
-    position: 'absolute',
-    bottom: Platform.OS === 'android' ? 20 : 24,
-    right: 18,
-    zIndex: 99,
-  },
-
   tooltipImage: {
     position: 'absolute',
-    bottom: Platform.OS === 'android' ? 78 : 110,
+    bottom: Platform.OS === 'android' ? 78 : 58 + FLOAT_BUTTON_HEIGHT,
     right: 24,
     zIndex: 99,
-  },
-
-  searchIcon: {
-    marginLeft: 12,
   },
 });
 
