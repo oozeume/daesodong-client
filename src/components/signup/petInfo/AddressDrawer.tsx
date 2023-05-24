@@ -60,7 +60,7 @@ function AddressDrawer({
   contentsHeight,
 }: Props) {
   return (
-    <Actionsheet isOpen={isOpen} onClose={onClose}>
+    <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
       <Actionsheet.Content bgColor={colors.grayScale[0]} minHeight={'534px'}>
         <Center
           alignItems="center"
@@ -69,7 +69,7 @@ function AddressDrawer({
           margin="24px 0px 36px">
           <BackButton onPress={onClose} buttonStyle={styles.backButton} />
           <Text fontSize="18px" color={colors.grayScale[80]} lineHeight="24px">
-            {titleText ?? '시 / 도'}
+            {titleText ?? '시/도'}
           </Text>
         </Center>
 
@@ -101,9 +101,10 @@ function AddressDrawer({
                           height="14px"
                           borderRadius={14}
                           backgroundColor={
-                            s.sido === sidoValue?.sido &&
-                            s.sigugun === sigugunValue?.sigugun &&
-                            s.dong === dongValue?.dong
+                            (sidoValue && s.sido === sidoValue?.sido) ||
+                            (sigugunValue &&
+                              s.sigugun === sigugunValue?.sigugun) ||
+                            (dongValue && s.dong === dongValue?.dong)
                               ? colors.fussOrange[0]
                               : colors.grayScale[0]
                           }

@@ -129,7 +129,11 @@ function AddressRegister({
       currentStage={currentStage}
       possibleButtonPress={!_.isNil(sidoValue && sigugunValue && dongValue)}>
       <Stack w="100%" space={'10px'}>
-        <SelectButtonForm selectorName={sidoValue?.name} onPress={onOpen} />
+        <SelectButtonForm
+          value={sidoValue?.name}
+          onPress={onOpen}
+          placeholder="거주지 선택"
+        />
         {sigugunValue && (
           <SelectButtonForm
             value={sigugunValue?.name}
@@ -162,6 +166,7 @@ function AddressRegister({
         setValue={setSigugunValue}
         selectableList={sortedSigugun}
         sigugunValue={sigugunValue}
+        titleText="시/군/구"
       />
 
       <AddressDrawer
@@ -175,6 +180,7 @@ function AddressRegister({
         setValue={setDongValue}
         selectableList={sortedDong}
         dongValue={dongValue}
+        titleText="읍/면/동"
       />
     </LayoutContainer>
   );

@@ -12,10 +12,10 @@ import {useGetCommunityPostList} from '~/api/community/queries';
 import {usePostCoummunityPostCount} from '~/api/community/mutation';
 import CommunityPost from '~/model/communityPost';
 import {Platform, StyleSheet} from 'react-native';
-import FloatingButtonImage from '~/assets/images/floating_button_image.svg';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useNavigation} from '@react-navigation/native';
+import FloatingButton from '~/components/common/button/FloatingButton';
 
 /**
  *@description 커뮤니티 메인페이지
@@ -144,11 +144,8 @@ const CommunityMain = () => {
       />
 
       {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
-      <FloatingButtonImage
-        onPress={() => navigate('CommunityRegister')}
-        style={styles.floatingButtonImage}
-        fill={colors.fussOrange[0]}
-      />
+
+      <FloatingButton onPress={() => navigate('CommunityRegister')} />
     </SafeAreaView>
   );
 };

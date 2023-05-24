@@ -51,10 +51,12 @@ function LayoutContainer({
         bgColor={colors.grayScale[0]}
         flex={1}>
         <VStack w="100%">
-          <StageTextBox
-            currentStage={currentStage || 1}
-            stageTextList={PET_INFO_REGISTER_STAGE_TEXT_LIST}
-          />
+          {currentStage !== 0 && (
+            <StageTextBox
+              currentStage={currentStage || 1}
+              stageTextList={PET_INFO_REGISTER_STAGE_TEXT_LIST}
+            />
+          )}
           {children}
         </VStack>
 
