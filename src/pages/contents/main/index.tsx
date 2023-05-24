@@ -11,10 +11,9 @@ import {NavigationHookProp} from '~/../types/navigator';
 import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
 import {useGetContents} from '~/api/contents/queries';
 import Content from '~/model/content';
-import FloatingButton, {
-  FLOAT_BUTTON_HEIGHT,
-} from '~/components/common/button/FloatingButton';
+import FloatingButton from '~/components/common/button/FloatingButton';
 import {useRequestContents} from '~/api/contents/mutation';
+import {FLOAT_BUTTON_HEIGHT} from '~/constants/style';
 
 /**
  *@description 컨텐츠 메인 페이지

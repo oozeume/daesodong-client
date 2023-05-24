@@ -5,14 +5,10 @@
 import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import queryString from 'query-string';
 import {ContentsResponse} from '~/../types/api/contents';
+import {ContetnsQueryType} from '~/../types/contents';
 import {CONTENTS_PER_PAGE} from '~/constants/contents';
 import QueryKeys from '~/constants/queryKeys';
 import {apiCall} from '../common';
-
-interface ContetnsQueryType {
-  skip: number;
-  take: number;
-}
 
 const getContents = (query: ContetnsQueryType) => {
   const qs = queryString.stringifyUrl({

@@ -4,8 +4,6 @@ import {StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import FloatingButtonIcon from '~/assets/icons/edit_fill.svg';
 
-export const FLOAT_BUTTON_HEIGHT = 20;
-
 interface Props {
   onPress: () => void;
 }
