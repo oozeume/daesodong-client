@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Linking} from 'react-native';
 import {Button, HStack, Text} from 'native-base';
 import {colors} from '~/theme/theme';
-import BookMarkFillIcon from '~/assets/icon/bookmark_icon.svg';
+import BookMarkFillIcon from '~/assets/icons/bookmark_fill.svg';
 import Facility from '~/model/facility';
 import {
   useMutationFaciltiyBookmark,
