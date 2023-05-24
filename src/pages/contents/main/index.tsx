@@ -68,7 +68,7 @@ const ContentsMain = () => {
       {/* 다른 컨텐츠 리스트 뷰 */}
       <FlatList
         bgColor={colors.grayScale[0]}
-        ListHeaderComponent={<ContentsMainImages />}
+        ListHeaderComponent={() => <ContentsMainImages />}
         nestedScrollEnabled
         data={contentsList}
         onEndReachedThreshold={0.85}
