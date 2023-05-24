@@ -15,10 +15,14 @@ import PasswordRegister from '../register/passwordRegister';
 import {APP_HEIGHT} from '~/utils/dimension';
 import EmailRegister from '../register/emailRegister';
 import NicknameRegister from '../register/nicknameReigster';
-import {INIT_SIGNUP_FORM} from '~/constants/signup';
+import {
+  EMAIL_SIGNUP_STAGE_TEXT_LIST,
+  INIT_EMAIL_SIGNUP_FORM,
+} from '~/constants/signup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Keyboard, Platform} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
+import {SignupForm} from '~/../types/signup';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -28,7 +32,9 @@ const Stack = createNativeStackNavigator<RouteList>();
 function SignUpEmailNavigator() {
   const {navigate} = useNavigation<NavigationHookProp>();
   const [currentStage, setCurrentStage] = useState(1);
-  const [signupForm, setSignupForm] = useState(INIT_SIGNUP_FORM);
+  const [signupForm, setSignupForm] = useState<SignupForm>(
+    INIT_EMAIL_SIGNUP_FORM,
+  );
 
   // 네비게이터 안에 네비게이터라서 이전 URL를 따로 받아야함
   const [previousURL, setPreviousURL] = useState<SignupNavigatorRouteList[]>([
@@ -74,6 +80,9 @@ function SignUpEmailNavigator() {
                   setPreviousURL={setPreviousURL}
                   signupForm={signupForm}
                   setSignupForm={setSignupForm}
+                  currentStage={1}
+                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+                  failNextPage="EmailRegister"
                 />
               )}
             </Stack.Screen>
@@ -90,6 +99,8 @@ function SignUpEmailNavigator() {
                   setPreviousURL={setPreviousURL}
                   signupForm={signupForm}
                   setSignupForm={setSignupForm}
+                  currentStage={2}
+                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
                 />
               )}
             </Stack.Screen>
@@ -105,6 +116,8 @@ function SignUpEmailNavigator() {
                   onChangeStage={onChangeStage}
                   setPreviousURL={setPreviousURL}
                   setSignupForm={setSignupForm}
+                  currentStage={3}
+                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
                 />
               )}
             </Stack.Screen>
@@ -115,7 +128,14 @@ function SignUpEmailNavigator() {
                 animation: 'slide_from_right',
                 headerShown: false,
               }}>
-              {() => <NicknameRegister signupForm={signupForm} />}
+              {() => (
+                <NicknameRegister
+                  signupForm={signupForm}
+                  currentStage={4}
+                  stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+                  registerType="EMAIL"
+                />
+              )}
             </Stack.Screen>
           </Stack.Navigator>
         </Box>

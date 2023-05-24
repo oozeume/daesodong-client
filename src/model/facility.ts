@@ -18,7 +18,7 @@ class Facility {
   }
 
   get representativeImage() {
-    return this.facility.hospital_picture[0].picture_url ?? '';
+    return this.facility.hospital_picture[0]?.picture_url ?? '';
   }
 
   get averageScore() {

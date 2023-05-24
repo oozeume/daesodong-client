@@ -3,13 +3,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
-import SignupSocial from '~/pages/signup/social';
 import FacilityReviewRegister from '~/pages/facility/detail/review/register';
 import HospitalReviewRegisterPrecaution from '~/pages/facility/detail/review/register/precaution';
 
 import EmailLogin from '~/pages/login/email';
 import SignUpEmailNavigator from '~/pages/signup/emailNavigator';
-import PetInfoRegister from '~/pages/signup/petInfoRegister';
 import InitialLogin from '~/pages/login';
 import PasswordReset from '~/pages/login/passwordReset';
 import CommunityDetail from '~/pages/community/detail';
@@ -21,7 +19,8 @@ import ContentsCommentsList from '~/pages/contents/commentsList';
 import ContentsRecommentsList from '~/pages/contents/recommentsList';
 import Header from '~/components/common/header/Header';
 
-import BackIcon from '~/assets/icon/back_icon.svg';
+import BackIcon from '~/assets/icons/back.svg';
+import ShareIcon from '~/assets/icons/share_fill.svg';
 import DeleteIcon from '~/assets/icons/delete.svg';
 import MyPageNotice from '~/pages/mypage/notice';
 import HeaderLeft from '~/components/common/header/HeaderLeft';
@@ -50,6 +49,7 @@ import TagRegister from '~/pages/facility/detail/review/register/tagRegister';
 import FacilityReviewEdit from '~/pages/facility/detail/review/edit';
 import BlockedAccounts from '~/pages/mypage/blockedAccounts';
 import FacilityRecommendation from '~/pages/mypage/facilityRecommendation';
+import SignupSocialNavigator from '~/pages/signup/socialNavigator';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -69,6 +69,7 @@ const AppNavigator = () => {
               <Header
                 title={route.params?.facilityName ?? ''}
                 leftButton={<BackIcon onPress={() => navigation.goBack()} />}
+                rightButton={<ShareIcon onPress={() => {}} />}
               />
             ),
           })}
@@ -125,8 +126,10 @@ const AppNavigator = () => {
           options={{animation: 'slide_from_right', headerShown: false}}
         />
 
-        <Stack.Screen name="SignupSocial" component={SignupSocial} />
-        <Stack.Screen name="PetInfoRegister" component={PetInfoRegister} />
+        <Stack.Screen
+          name="SignupSocialNavigator"
+          component={SignupSocialNavigator}
+        />
         <Stack.Screen
           name="EmailLogin"
           component={EmailLogin}

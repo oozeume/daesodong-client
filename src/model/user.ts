@@ -65,7 +65,7 @@ class User {
       ...firstUserPet,
       petImageURL: firstUserPet.pet_picture_url,
       specieName: firstUserPet.specie?.name ?? '',
-      kindName: firstUserPet.specie?.specie.name ?? '',
+      kindName: firstUserPet.specie?.specie?.name ?? '',
     };
 
     delete _info['pet_picture_url'];
