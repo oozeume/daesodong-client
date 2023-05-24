@@ -16,7 +16,7 @@ import {colors} from '~/theme/theme';
 import {useRoute} from '@react-navigation/native';
 import TagList from '~/components/contents/detail/TagList';
 import ContentsReivewView from '~/components/contents/detail/ContentsReivewView';
-import {StyleSheet} from 'react-native';
+import {Platform, Share, StyleSheet} from 'react-native';
 import {RouteHookProp} from '~/../types/navigator';
 import {useGetContentDetail} from '~/api/contents/queries';
 import Content from '~/model/content';
@@ -58,6 +58,17 @@ const ContentsDetail = () => {
     } else {
       bookmark().then(() => refetch());
     }
+  };
+
+  const onShare = async () => {
+    await Share.share(
+      Platform.OS === 'android'
+        ? {title: content.title, message: content.title}
+        : {
+            title: content.title,
+            url: '',
+          },
+    );
   };
 
   useEffect(() => {
@@ -201,16 +212,18 @@ const ContentsDetail = () => {
               </HStack>
             </Pressable>
 
-            <HStack>
-              <ShareFillIcon
-                fill={colors.grayScale['70']}
-                style={styles.shareFillIcon}
-              />
+            <Pressable onPress={onShare}>
+              <HStack>
+                <ShareFillIcon
+                  fill={colors.grayScale['70']}
+                  style={styles.shareFillIcon}
+                />
 
-              <Text fontSize={'15px'} color={colors.grayScale['70']}>
-                공유
-              </Text>
-            </HStack>
+                <Text fontSize={'15px'} color={colors.grayScale['70']}>
+                  공유
+                </Text>
+              </HStack>
+            </Pressable>
           </HStack>
         </Box>
       )}
@@ -221,10 +234,6 @@ const ContentsDetail = () => {
 const styles = StyleSheet.create({
   shareFillIcon: {
     marginRight: 4,
-  },
-
-  messageFillIcon: {
-    marginRight: 6,
   },
 });
 
