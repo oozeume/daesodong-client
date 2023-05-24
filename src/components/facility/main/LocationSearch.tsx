@@ -35,10 +35,8 @@ function LocationSearch({
 
   useEffect(() => {
     if (locationInfo) {
-      const userSido =
-        locationInfo.data.documents[0].address.region_1depth_name;
-      const userSigugun =
-        locationInfo.data.documents[0].address.region_2depth_name;
+      const userSido = locationInfo.data.results[0].region.area1.name;
+      const userSigugun = locationInfo.data.results[0].region.area2.name;
 
       const siValue = sido.find(i => i.name.includes(userSido));
       const gunValue = sigugun.find(i => i.name === userSigugun);

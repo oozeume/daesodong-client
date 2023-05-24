@@ -14,10 +14,11 @@ import {colors} from '~/theme/theme';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setValue: (value: any) => void;
+  // setValue: (value: any) => void;
   value: string;
   title: string;
-  itemList: FilterSelectorType[];
+  itemList: any[];
+  onPress: any;
 }
 
 /**
@@ -27,9 +28,18 @@ interface Props {
  * @param setValue - 선택한 항목으로 state 변경 함수
  * @param value - 선택된 state
  */
-function MapFilter({isOpen, onClose, setValue, value, title, itemList}: Props) {
+function MapFilter({
+  isOpen,
+  onClose,
+  // setValue,
+  value,
+  title,
+  itemList,
+  onPress: _onPress,
+}: Props) {
   const onPress = (item: string) => {
-    setValue(item);
+    _onPress();
+    // setValue(item);
     onClose();
   };
 

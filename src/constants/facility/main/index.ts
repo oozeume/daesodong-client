@@ -1,5 +1,5 @@
 export interface FilterSelectorType {
-  text: string;
+  text?: string;
   disabled?: boolean;
 }
 

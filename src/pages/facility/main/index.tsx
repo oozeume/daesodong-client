@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {WebView} from 'react-native-webview';
@@ -25,11 +25,13 @@ import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import ListViewChangeButton from '~/components/facility/main/ListViewChangeButton';
 import {CoordinateType, FormState, LocationInfoType} from '~/../types/facility';
 import {SpeciesData} from '~/../types/api/species';
+
 import {useGetUser} from '~/api/user/queries';
 import {useGetFacilityList} from '~/api/facility/queries';
 import Facility from '~/model/facility';
 import LocationSearch from '../../../components/facility/main/LocationSearch';
 import _ from 'lodash';
+import {FacilitySortType} from '~/../types/api/facility';
 
 const LOCATION_INIT = {
   sido: {
@@ -104,7 +106,7 @@ const FacilityMain = () => {
   const initFormState: FormState = {
     facility: undefined,
     animal: undefined,
-    sortType: undefined,
+    sortType: 'distances',
   };
 
   const [filterForm, setFilterForm] = useState(initFormState);
@@ -170,17 +172,25 @@ const FacilityMain = () => {
     ref.current?.postMessage(JSON.stringify({success: true, type: 'search'}));
   };
 
-  // TODO: api임시 사용 (api 요청)
+  const hasLocationSearchValue = useMemo(() => {
+    return (
+      !_.isEmpty(locationSearchValue.sido.name) &&
+      !_.isEmpty(locationSearchValue.sigugun.name)
+    );
+  }, [locationSearchValue]);
+
   const {data, refetch} = useGetFacilityList(
     {
       limit: FACILITY_PER_PAGE,
       expose: false, // TODO: 어드민 생성 후에 true로 변경
-      sort: 'latest',
+      sort: filterForm.sortType,
       state: locationSearchValue.sido.name,
       city: locationSearchValue.sigugun.name,
+      page: 1,
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
     },
-    !_.isEmpty(locationSearchValue.sido.name) &&
-      !_.isEmpty(locationSearchValue.sigugun.name),
+    hasLocationSearchValue,
   );
 
   const facilities: Facility[] =
@@ -288,27 +298,30 @@ const FacilityMain = () => {
       />
 
       {/* 맵 필터(시설, 동물, 정렬) 액션시트  */}
-      <MapFilter
+      {/* <MapFilter
         isOpen={isFacilityFilterOpen}
         onClose={onFacilityFilterClose}
         setValue={value => setFilterForm(prev => ({...prev, facility: value}))}
         value={filterForm.facility || ''}
         title="시설"
         itemList={FACILITY_TYPE_LIST}
-      />
+      /> */}
 
       {/* 동물 검색 모달 */}
-      <PetTypeSelectModal
+      {/* <PetTypeSelectModal
         isOpen={isPetSearchOpen}
         onClose={onPetSearchClose}
         setPetType={setPetType}
         onPress={() => {}}
-      />
+      /> */}
 
       <MapFilter
         isOpen={isSortTypeFilterOpen}
         onClose={onSortTypeFilterClose}
-        setValue={value => setFilterForm(prev => ({...prev, sortType: value}))}
+        onPress={value => {
+          setFilterForm(prev => ({...prev, sortType: value}));
+        }}
+        // setValue={value => setFilterForm(prev => ({...prev, sortType: value}))}
         value={filterForm.sortType || ''}
         title="정렬"
         itemList={FACILITY_SORT_TYPE}

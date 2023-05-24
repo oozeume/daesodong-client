@@ -6,7 +6,6 @@ import {
   FacilityResponse,
   FacilityReviewsResponse,
   GetFacilityListQuery,
-  LocationType,
   VisitedFacilityResponse,
 } from '~/../types/api/facility';
 import {SpeciesType} from '~/../types/api/species';
@@ -147,14 +146,13 @@ export const useGetFacilityScore = (id: string) => {
 
 /**
  *@description 시설 리스트 API
- @todo api 변경 예정
  */
 
 const getFacilityList = (query: GetFacilityListQuery) => {
   const _query = queryString.stringify(query);
   return apiCall<FacilityListResponse>({
     method: 'GET',
-    url: `admin/hospitals?${_query}`,
+    url: `/hospitals?${_query}`,
   });
 };
 
@@ -174,7 +172,7 @@ export const useGetFacilityList = (
 };
 
 /**
- *@description 카카오 좌표 -> 주소 정보 API
+ *@description 네이버 좌표 -> 주소 API
  */
 
 export const getLocation = (location: {
@@ -182,12 +180,12 @@ export const getLocation = (location: {
   longitude: number;
 }) => {
   const {latitude, longitude} = location;
-  return axios.get<LocationType>(
-    // NOTE : x : longitude, y : latitude
-    `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`,
+  return axios.get(
+    `https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${longitude},${latitude}&output=json`,
     {
       headers: {
-        Authorization: `KakaoAK ${config.KAKAO_TOKEN}`,
+        'X-NCP-APIGW-API-KEY-ID': config.NAVER_CLIENT_KEY,
+        'X-NCP-APIGW-API-KEY': config.NAVER_SECRET_CLIENT_KEY,
       },
     },
   );
