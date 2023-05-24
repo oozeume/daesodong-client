@@ -4,6 +4,13 @@ import {SignupForm} from '../../signup';
 // 이메일 회원가입 api 전송 데이터
 export type PostAuthSignupBody = SignupForm;
 
+// 소셜 회원가입 api 전송 데이터
+export type PostAuthSocialSignupData = {
+  email: SignupForm['email'];
+  nickname: SignupForm['nickname'];
+  mobile: SignupForm['mobile'];
+};
+
 // 이메일 로그인 api 전송 데이터
 export interface PostAuthEmailLoginData {
   email: string;
@@ -20,6 +27,12 @@ export interface PostAuthSocialLoginData {
 export interface PostAuthEmailLoginResponse {
   access: string;
   refresh: string;
+}
+
+// 소셜 로그인 api 응답
+export interface PostAuthSocialLoginResponse
+  extends Partial<PostAuthEmailLoginResponse> {
+  email: string;
 }
 
 export interface PostAuthNicknameCheckData {

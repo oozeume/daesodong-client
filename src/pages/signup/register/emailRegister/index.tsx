@@ -25,6 +25,8 @@ interface Props {
   >;
   signupForm: SignupForm;
   setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
+  stageTextList: string[];
+  currentStage: number;
 }
 
 /**
@@ -38,6 +40,8 @@ function EmailRegister({
   setPreviousURL,
   signupForm,
   setSignupForm,
+  stageTextList,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const [email, setEmail] = useState('');
@@ -79,8 +83,8 @@ function EmailRegister({
           flex={1}>
           <Center mt={'60px'} px="18px">
             <StageTextBox
-              currentStage={2}
-              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+              currentStage={currentStage}
+              stageTextList={stageTextList}
             />
 
             <VerificationForm
