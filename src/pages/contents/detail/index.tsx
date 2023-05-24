@@ -21,12 +21,13 @@ import {RouteHookProp} from '~/../types/navigator';
 import {useGetContentDetail} from '~/api/contents/queries';
 import Content from '~/model/content';
 import {APP_WIDTH} from '~/utils/dimension';
-import ContentsImages from '~/components/contents/main/ContentsImages';
 import {
   useBookmarkContents,
   useCancelBookmarkContents,
 } from '~/api/contents/mutation';
 import {useGetUser} from '~/api/user/queries';
+import _ from 'lodash';
+import FullImageSwiper from '~/components/common/swiper/FullImageSwiper';
 
 /**
  *@description 컨텐츠 상세
@@ -124,9 +125,11 @@ const ContentsDetail = () => {
         </Box>
 
         {/* 콘텐츠 이미지 */}
-        <ContentsImages images={content.images} />
+        {!_.isEmpty(content.images) && (
+          <FullImageSwiper images={content.images} />
+        )}
 
-        <Box mb="80px" px="18px">
+        <Box mt={'52px'} mb="80px" px="18px">
           <Center>
             {/* 콘텐츠 소제목 */}
             <Text
@@ -135,13 +138,13 @@ const ContentsDetail = () => {
               fontSize={'18px'}
               fontWeight={700}
               color={colors.grayScale['80']}>
-              소제목 텍스트가 노출됩니다
+              {content.subTitle}
             </Text>
 
             {/* 콘텐츠 본문 */}
             <Box>
               <Text mb="44px" fontSize={'15px'} color={colors.grayScale['70']}>
-                {content.description}
+                {content.subDescription}
               </Text>
             </Box>
           </Center>

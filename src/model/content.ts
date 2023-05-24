@@ -51,7 +51,35 @@ class Content {
 
   get description() {
     if (this.content) {
-      return this.content?.content;
+      const contentList = this.content.content
+        .split(`'`)
+        .filter(i => i.length > 1);
+
+      return contentList[0];
+    } else {
+      return '';
+    }
+  }
+
+  get subTitle() {
+    if (this.content) {
+      const contentList = this.content.content
+        .split(`'`)
+        .filter(i => i.length > 1);
+
+      return contentList[1] ?? '';
+    } else {
+      return '';
+    }
+  }
+
+  get subDescription() {
+    if (this.content) {
+      const contentList = this.content.content
+        .split(`'`)
+        .filter(i => i.length > 1);
+
+      return contentList[contentList.length - 1] ?? '';
     } else {
       return '';
     }

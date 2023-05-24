@@ -65,6 +65,7 @@ const ContentsReivewView = ({content}: Props) => {
   const onDisappointClick = () => {
     if (isHelpful) {
       cancelReactContents(isHelpful).then(() => {
+        setHelpful(undefined);
         onOpen();
       });
     } else {
@@ -152,6 +153,7 @@ const ContentsReivewView = ({content}: Props) => {
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
+            disabled={isHelpful}
             onPress={onDisappointClick}>
             <Text
               color={
