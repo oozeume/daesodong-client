@@ -1,6 +1,6 @@
 import {Center, Pressable, Text} from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import {APP_WIDTH} from '~/utils/dimension';
 
@@ -24,7 +24,7 @@ function ListViewChangeButton({icon, onPress, name}: Props) {
       px={'16px'}
       py="8px"
       position={'absolute'}
-      bottom={'64px'}
+      bottom={Platform.OS === 'ios' ? '110px' : '64px'}
       style={styles.shadow}
       left={Math.floor(APP_WIDTH * 0.5 - buttonLeftValue)}
       bgColor={colors.grayScale[0]}>

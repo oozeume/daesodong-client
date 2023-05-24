@@ -56,6 +56,7 @@ class User {
         specieId: '',
         updated_at: '',
         userId: '',
+        kindName: '',
       };
 
     const firstUserPet = this.user.pets[0];
@@ -64,6 +65,7 @@ class User {
       ...firstUserPet,
       petImageURL: firstUserPet.pet_picture_url,
       specieName: firstUserPet.specie?.name ?? '',
+      kindName: firstUserPet.specie?.specie?.name ?? '',
     };
 
     delete _info['pet_picture_url'];

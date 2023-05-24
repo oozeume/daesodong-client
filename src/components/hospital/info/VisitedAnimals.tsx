@@ -1,15 +1,22 @@
 import React, {useState} from 'react';
-import {Box, Center, HStack, Pressable, Spinner, Text, VStack} from 'native-base';
+import {
+  Box,
+  Center,
+  HStack,
+  Pressable,
+  Spinner,
+  Text,
+  VStack,
+} from 'native-base';
 import {colors} from '~/theme/theme';
 import VisitedAnimalsAccordion from './VisitedAnimalsAccordion';
 import UpIcon from '~/assets/icon/up.svg';
 import DownIcon from '~/assets/icon/down.svg';
-import { useGetVisitedPetsFacility } from '~/api/facility/queries';
+import {useGetVisitedPetsFacility} from '~/api/facility/queries';
 import Species from '~/model/species';
 import _ from 'lodash';
-import { APP_WIDTH } from '~/utils/dimension';
-import { MARGIN_X } from '~/constants/facility/detail';
-
+import {APP_WIDTH} from '~/utils/dimension';
+import {MARGIN_X} from '~/constants/facility/detail';
 
 interface Props {
   facilityId: string;
@@ -28,18 +35,18 @@ function VisitedAnimals({facilityId}: Props) {
   const handleOpen = () => setIsOpen(prev => !prev);
 
   const sum = () => {
-    const a = speciesList.map((i)=> i.count);
+    const a = speciesList.map(i => i.count);
     return _.sum(a);
-  }
+  };
 
   React.useEffect(() => {
-    if(data) {
-      setSpeciesList(data.data.map(d => new Species(d)))
+    if (data) {
+      setSpeciesList(data.data.map(d => new Species(d)));
     }
-  }, [data])
+  }, [data]);
 
-  if(isLoading) {
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -62,7 +69,7 @@ function VisitedAnimals({facilityId}: Props) {
             </Text>
             <Center>{isOpen ? <UpIcon /> : <DownIcon />}</Center>
           </HStack>
-        
+
           {isOpen && <VisitedAnimalsAccordion visitedAnimals={speciesList} />}
         </VStack>
       </Box>

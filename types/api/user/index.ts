@@ -26,7 +26,16 @@ export type UserPetInfo = {
   name: string;
   pet_picture_url?: string | null;
   sex: GenderType;
-  specie?: {name: string} | null;
+  specie?: {
+    id: string;
+    name: string;
+    confirm: boolean;
+    kindId: string;
+    created_at: string;
+    specie: {
+      name: string;
+    };
+  } | null;
   specieId?: string;
   updated_at: string;
   userId: string;

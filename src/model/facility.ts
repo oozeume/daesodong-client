@@ -16,11 +16,7 @@ class Facility {
   }
 
   get representativeImage() {
-    if (this.facility.hospital_picture) {
-      return this.facility.hospital_picture[0]?.picture_url ?? '';
-    } else {
-      return '';
-    }
+    return this.facility.hospital_picture[0]?.picture_url ?? '';
   }
 
   get averageScore() {

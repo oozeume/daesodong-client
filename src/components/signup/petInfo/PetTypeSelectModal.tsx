@@ -9,9 +9,10 @@ import SearchIcon from '~/assets/icons/search.svg';
 import Tag from '~/components/common/Tag';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import Button from '~/components/common/button';
-import {useGetSpecies} from '~/api/species';
+import {useGetSpecies} from '~/api/species/queries';
 import {SpeciesData} from '~/../types/api/species';
 import _ from 'lodash';
+import {usePostSpecies} from '~/api/species/mutation';
 
 interface Props {
   isOpen: boolean;
@@ -47,8 +48,34 @@ function PetTypeSelectModal({
     data?.data ?? [],
   );
   const petSearchHeight = 200;
+  const postSpecies = usePostSpecies();
+
+  const onAddSpecies = () => {
+    postSpecies
+      .mutateAsync({
+        kindName: '설치류',
+        name: searchText,
+      })
+      .then(response => {
+        if (response.data && setPetType) {
+          setPetType({
+            created_at: '',
+            id: '',
+            kindId: '',
+            name: searchText,
+            specie: {
+              id: '',
+              name: '',
+            },
+          });
+
+          onClose();
+        }
+      });
+  };
 
   useEffect(() => {
+    // 검색 단어 입력에 따른 동물 목록 변경
     if (!_.isEmpty(searchText)) {
       let _searchList: SpeciesData[] = [];
       let _selectedPetType;
@@ -79,6 +106,7 @@ function PetTypeSelectModal({
 
   useEffect(() => {
     if (previousPetTypeName) {
+      // 모달 오픈 시, 동물리스트 순서 변경 > [내 아이, 다른 동물] 순으로
       let _selectedPetType;
       const filterSpecies = (data?.data ?? []).filter(item => {
         if (item.name === previousPetTypeName) {
@@ -96,10 +124,11 @@ function PetTypeSelectModal({
 
       setDefaultList(_searchList);
     }
-  }, []);
+  }, [previousPetTypeName]);
 
   useEffect(() => {
     if (!isOpen) {
+      // 모달창 닫았을 때, 초기화
       setSearchText('');
       setSearchList([]);
     }
@@ -179,7 +208,7 @@ function PetTypeSelectModal({
                       active: colors.fussOrange[0],
                       disabled: colors.grayScale[50],
                     }}
-                    handlePress={() => {}}
+                    handlePress={onAddSpecies}
                     active
                     text={'입력한 동물로 등록'}
                   />
@@ -261,7 +290,7 @@ function PetTypeSelectModal({
                   if (!selectedItem) return;
                   onClose();
                   if (setPetType) setPetType(selectedItem);
-                  if (onPress) onPress();
+                  if (onPress) onPress(selectedItem);
                 }}
                 large
                 active={!_.isUndefined(selectedItem)}

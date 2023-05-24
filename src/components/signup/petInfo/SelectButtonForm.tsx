@@ -6,17 +6,11 @@ import {colors} from '~/theme/theme';
 
 interface Props {
   onPress: () => void;
-  selectorName?: string | undefined;
   value?: string;
   placeholder?: string;
 }
 
-function SelectButtonForm({
-  onPress: _onPress,
-  selectorName,
-  value,
-  placeholder,
-}: Props) {
+function SelectButtonForm({onPress: _onPress, value, placeholder}: Props) {
   return (
     <Pressable
       borderColor={colors.grayScale[30]}

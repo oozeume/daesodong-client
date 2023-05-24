@@ -15,6 +15,8 @@ import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButto
 import ImageUploader from '~/components/hospital/review/register/imageUploader';
 import AddressChange from '~/components/mypage/myInfo/AddressChange';
 import Popup from '~/components/common/popup/Popup';
+import {PostFacilityReviewData} from '~/../types/api/facility';
+import {RegisterImageData} from '~/../types/community';
 
 /**
  * 내 계정 > 시설 소개/추천
@@ -136,7 +138,26 @@ function FacilityRecommendation() {
           </HStack>
 
           {/* TODO : 이미지 업로드 */}
-          {/* <ImageUploader /> */}
+          <ImageUploader
+            reviewForm={{
+              visit_date: '',
+              cost: 0,
+              thoughts: '',
+              score_treatment: 0,
+              score_price: 0,
+              score_facilities: 0,
+              score_kindness: 0,
+              expect_revisit: false,
+              already_reviesit: false,
+              hospital_review_picture: undefined,
+              tags: [],
+            }}
+            setReviewForm={(
+              value: React.SetStateAction<PostFacilityReviewData>,
+            ) => {}}
+            images={[]}
+            setImages={(value: React.SetStateAction<RegisterImageData[]>) => {}}
+          />
 
           <RedActiveLargeButton text={'제보'} handlePress={onSubmit} />
         </Box>

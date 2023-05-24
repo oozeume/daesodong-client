@@ -11,6 +11,8 @@ import {
   PostAuthResetPasswordData,
   PostAuthMobileVerifyCodeResponse,
   PostAuthRefreshResponse,
+  PostAuthSocialLoginResponse,
+  PostAuthSocialSignupData,
 } from '~/../types/api/auth';
 import {apiCall} from '../common';
 import {
@@ -103,6 +105,29 @@ export const usePostAuthEmailSignup = () => {
 };
 
 /**
+ *@description 소셜 회원가입 api
+ *@param {string} email
+ *@param {string} nickname
+ *@param {string} mobile
+ */
+const postAuthSocialSignup = (data: PostAuthSocialSignupData) => {
+  return apiCall<{access: string; refresh: string}>({
+    method: 'POST',
+    url: `auth/social/signup`,
+    data,
+  });
+};
+
+/**
+ *@description 소셜 회원가입 api hook
+ */
+export const usePostAuthSocialSignup = () => {
+  return useMutation((data: PostAuthSocialSignupData) =>
+    postAuthSocialSignup(data),
+  );
+};
+
+/**
  *@description 전화 번호 인증 코드 발송 api
  *@param {string} mobile - 핸드폰 번호
  */
@@ -149,7 +174,7 @@ export const usePostAuthMobileVerifyCode = () => {
  *@description 소셜 로그인 api
  */
 const postAuthSocialLogin = (data: PostAuthSocialLoginData) => {
-  return apiCall<string>({
+  return apiCall<PostAuthSocialLoginResponse>({
     method: 'POST',
     url: `auth/social/login`,
     data,

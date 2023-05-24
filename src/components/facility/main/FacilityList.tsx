@@ -4,6 +4,7 @@ import {StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 import MapIcon from '~/assets/icons/map.svg';
+import MapViewIcon from '~/assets/icons/map_view.svg';
 import ListViewChangeButton from './ListViewChangeButton';
 import Facility from '~/model/facility';
 import FacilityItem from './FacilityItem';
@@ -81,8 +82,8 @@ function FacilityList({
 
           {isListExpand && (
             <ListViewChangeButton
-              icon={<MapIcon />}
-              name="지도보기"
+              icon={isOpen ? <MapViewIcon /> : <MapIcon />}
+              name={isOpen ? '지도보기' : '목록보기'}
               onPress={() => {
                 setListExpand(false);
                 onClose();

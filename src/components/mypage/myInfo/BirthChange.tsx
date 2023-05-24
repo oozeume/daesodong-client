@@ -12,14 +12,15 @@ const PADDING_X = 18;
 interface Props {
   onClose: () => void;
   onPress: (birthdate?: number) => void;
+  value?: number;
 }
 
 /**
  *@description 내 계정 - 내 정보 - 태어난 년도 변경 컴포넌트
  */
 
-function BirthChange({onClose, onPress}: Props) {
-  const [birthDate, setBirthDate] = useState<number>();
+function BirthChange({onClose, onPress, value}: Props) {
+  const [birthDate, setBirthDate] = useState<number | undefined>(value);
   const [yearList, setYearList] = useState<DateList[]>([]);
 
   useEffect(() => {

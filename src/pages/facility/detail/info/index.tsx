@@ -21,6 +21,11 @@ import HospitalInfoContents from '~/components/hospital/info/HospitalInfoContent
 import HospitalOpeningHours from '~/components/hospital/info/HospitalOpeningHours';
 import RecordVisitedExperience from '~/components/hospital/info/RecordVisitedExperience';
 import ArrowDownIcon from '~/assets/icon/_down.svg';
+import ChatFillIcon from '~/assets/icons/chat_fill.svg';
+import ClockFillIcon from '~/assets/icons/clock_fill.svg';
+import ExclamationMarkFillIcon from '~/assets/icons/exclamationMark_fill.svg';
+import CallFillIcon from '~/assets/icons/call_fill.svg';
+import LocationFillIcon from '~/assets/icons/location_fill.svg';
 import {useGetFacilityInfo} from '~/api/facility/queries';
 import Facility from '~/model/facility';
 import FacilityInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
@@ -108,7 +113,7 @@ function FacilityInfo({id}: Props) {
               </Center>
 
               {/* 시설 인사말 */}
-              <HospitalInfoContents iconName="chat_fill">
+              <HospitalInfoContents icon={<ChatFillIcon />}>
                 <VStack flex={1} space={3}>
                   <TextEllipsis
                     text={facilityInfo.intro}
@@ -132,7 +137,7 @@ function FacilityInfo({id}: Props) {
               </HospitalInfoContents>
 
               {/* 시설 영업 시간 */}
-              <HospitalInfoContents iconName="clock_fill">
+              <HospitalInfoContents icon={<ClockFillIcon />}>
                 <VStack space={4} flex={1}>
                   {facilityInfo.openingHours.map(openingHours => (
                     <HospitalOpeningHours
@@ -144,7 +149,7 @@ function FacilityInfo({id}: Props) {
               </HospitalInfoContents>
 
               {/* 시설 전화번호 */}
-              <HospitalInfoContents iconName="call_fill">
+              <HospitalInfoContents icon={<CallFillIcon />}>
                 <Pressable
                   onPress={() => {
                     Linking.openURL('tel:02-305-4242');
@@ -162,7 +167,7 @@ function FacilityInfo({id}: Props) {
               </HospitalInfoContents>
 
               {/* 시설 정보 */}
-              <HospitalInfoContents iconName="info_fill">
+              <HospitalInfoContents icon={<ExclamationMarkFillIcon />}>
                 <Text
                   fontSize={14}
                   fontWeight={'400'}
@@ -173,7 +178,7 @@ function FacilityInfo({id}: Props) {
               </HospitalInfoContents>
 
               {/* 시설 주소 */}
-              <HospitalInfoContents iconName="location_fill">
+              <HospitalInfoContents icon={<LocationFillIcon />}>
                 <VStack flex={1}>
                   <Text
                     fontSize={14}

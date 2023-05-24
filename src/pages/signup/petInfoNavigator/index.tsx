@@ -29,6 +29,7 @@ import {Keyboard} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {getData, removeData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
+import PetInfoRegisterIntro from '../petInfoRegister/intro';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -37,7 +38,7 @@ const Stack = createNativeStackNavigator<RouteList>();
  */
 function SignupPetInfoNavigator() {
   const {navigate} = useNavigation<NavigationHookProp>();
-  const [currentStage, setCurrentStage] = useState(1);
+  const [currentStage, setCurrentStage] = useState(0);
   const [form, setForm] = useState(initPetInfoForm);
   const totalStage = 9;
 
@@ -97,10 +98,26 @@ function SignupPetInfoNavigator() {
               leftButton={<BackIcon onPress={onBack} />}
             />
 
-            <StageBar totalStage={totalStage} currentStage={currentStage} />
+            {currentStage !== 0 && (
+              <StageBar totalStage={totalStage} currentStage={currentStage} />
+            )}
           </Box>
 
           <Stack.Navigator>
+            <Stack.Screen
+              name="PetInfoRegisterIntro"
+              options={{
+                animation: 'slide_from_right',
+                headerShown: false,
+              }}>
+              {() => (
+                <PetInfoRegisterIntro
+                  setPreviousURL={setPreviousURL}
+                  currentStage={0}
+                />
+              )}
+            </Stack.Screen>
+
             <Stack.Screen
               name="ChoiceGenderRegister"
               options={{
