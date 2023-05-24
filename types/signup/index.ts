@@ -1,11 +1,18 @@
 import {
   initPetInfoForm,
-  INIT_SIGNUP_FORM,
+  INIT_EMAIL_SIGNUP_FORM,
   INIT_SIGNUP_TERM,
 } from '~/constants/signup';
 import {PetInfoRegisterNavigatorRouteList} from '../navigator';
 
-type InitSignupForm = typeof INIT_SIGNUP_FORM;
+type InitEmailSignupForm = typeof INIT_EMAIL_SIGNUP_FORM;
+
+type InitSignupForm = {
+  email: InitEmailSignupForm['email'];
+  password?: InitEmailSignupForm['password'];
+  nickname: InitEmailSignupForm['nickname'];
+  mobile: InitEmailSignupForm['mobile'];
+};
 type InitSignupTerm = typeof INIT_SIGNUP_TERM;
 
 // 이메일 회원가입 폼 초기값 타입

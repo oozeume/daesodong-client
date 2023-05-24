@@ -12,13 +12,12 @@ import {
 import {colors} from '~/theme/theme';
 import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
 import {Keyboard} from 'react-native';
-import {useRequestContents} from '~/api/contents/mutation';
 import _ from 'lodash';
 
 interface Props {
   visible: boolean;
   onCancel: () => void;
-  onOK: (text: string) => void;
+  onOK: (text: string) => Promise<any> | void;
   title: string;
   exampleTextList: string[];
   placeholder: string;
@@ -41,29 +40,26 @@ function ReviewPopup({
   placeholder,
 }: Props) {
   const keyobardHeight = useGetKeyboardHeight();
-
   const [message, setMessage] = useState('');
-  const {mutateAsync} = useRequestContents(message);
 
   const heihgt = useMemo(() => {
     return CONTAINER_HEIGHT + keyobardHeight;
   }, [keyobardHeight]);
 
-  const requestContents = () => {
-    mutateAsync().then(() => {
-      onOK(message);
-      setMessage('');
-    });
-  };
-
   const onClose = () => {
     Keyboard.dismiss();
     setMessage('');
+    onCancel();
+  };
+
+  const requestContents = () => {
+    onOK(message);
+    onClose();
   };
 
   return (
-    <Actionsheet isOpen={visible} onClose={onClose} hideDragIndicator>
-      <Actionsheet.Content height={heihgt}>
+    <Actionsheet isOpen={visible} onClose={onCancel} hideDragIndicator>
+      <Actionsheet.Content height={heihgt} backgroundColor={'white'}>
         <Stack w={'100%'} px={'18px'} pt={'28px'}>
           <Box mb="24px">
             <Center>
@@ -131,10 +127,7 @@ function ReviewPopup({
               borderColor={colors.grayScale[60]}
               borderRadius={8}
               mr="8px"
-              onPress={() => {
-                onClose();
-                onCancel();
-              }}>
+              onPress={onClose}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>닫기</Text>
               </Center>
@@ -147,10 +140,7 @@ function ReviewPopup({
               borderWidth={1}
               borderColor={colors.grayScale[90]}
               borderRadius={8}
-              onPress={() => {
-                onClose();
-                requestContents();
-              }}>
+              onPress={requestContents}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>대소동팀에게 전달</Text>
               </Center>

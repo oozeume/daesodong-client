@@ -1,8 +1,15 @@
 // 이메일 회원가입 폼 초기값 상수
-export const INIT_SIGNUP_FORM = {
+export const INIT_EMAIL_SIGNUP_FORM = {
   nickname: '',
   email: '',
   password: '',
+  mobile: '',
+};
+
+// 소셜 회원가입 폼 초기값 상수
+export const INIT_SOCIAL_SIGNUP_FORM = {
+  nickname: '',
+  email: '',
   mobile: '',
 };
 
@@ -31,6 +38,11 @@ export const EMAIL_SIGNUP_STAGE_TEXT_LIST = [
   `회원여부 확인 및 가입을 위해\n휴대폰 인증을 진행할게요`,
   '이메일을 입력해주세요',
   '비밀번호를 입력해주세요',
+  '닉네임을 입력해주세요',
+];
+
+export const SOCIAL_SIGNUP_STAGE_TEXT_LIST = [
+  `회원여부 확인 및 가입을 위해\n휴대폰 인증을 진행할게요`,
   '닉네임을 입력해주세요',
 ];
 

@@ -27,6 +27,8 @@ interface Props {
     React.SetStateAction<SignupNavigatorRouteList[]>
   >;
   setSignupForm: React.Dispatch<React.SetStateAction<SignupForm>>;
+  stageTextList: string[];
+  currentStage: number;
 }
 
 /**
@@ -38,6 +40,8 @@ function PasswordRegister({
   onChangeStage,
   setPreviousURL,
   setSignupForm,
+  stageTextList,
+  currentStage,
 }: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
 
@@ -95,8 +99,8 @@ function PasswordRegister({
           flex={1}>
           <Center mt={'60px'} px="18px">
             <StageTextBox
-              currentStage={3}
-              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+              currentStage={currentStage}
+              stageTextList={stageTextList}
             />
 
             <VerificationForm

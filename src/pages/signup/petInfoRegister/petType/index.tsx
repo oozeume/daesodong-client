@@ -9,7 +9,7 @@ import Tag from '~/components/common/Tag';
 import DownIcon from '~/assets/icons/down.svg';
 import {SpeciesData} from '~/../types/api/species';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
-import {useGetSpecies} from '~/api/species';
+import {useGetSpecies} from '~/api/species/queries';
 import {setData} from '~/utils/storage';
 import storageKeys from '~/constants/storageKeys';
 import {PetInfoRegisterProps} from '~/../types/signup';
@@ -85,13 +85,14 @@ function PetTypeRegister({
           justifyContent="space-between"
           alignItems="center">
           <HStack alignItems={'center'} space={'8px'}>
-            {!_.isEmpty(petType?.name) && (
+            {!_.isEmpty(petType?.specie.name) && (
               <Tag
                 bgColor={colors.fussOrange['-30']}
                 color={colors.fussOrange[0]}
                 name={petType?.specie.name || ''}
               />
             )}
+
             <Text
               fontSize={15}
               color={
@@ -110,6 +111,12 @@ function PetTypeRegister({
           />
         </HStack>
       </Pressable>
+
+      {_.isEmpty(petType?.specie.name) && (
+        <Text mt="8px" color={colors.grayScale[50]} fontSize={'13px'}>
+          {`직접 입력한 종으로 등록을 진행 중이에요\n대소동 팀에서 빠르게 확인 후 동물리스트에 추가할게요!`}
+        </Text>
+      )}
 
       {isOpen && (
         <PetTypeSelectModal

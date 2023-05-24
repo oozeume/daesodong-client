@@ -59,7 +59,6 @@ const ContentsReivewView = ({content}: Props) => {
       reason: text,
     }).then(() => {
       setHelpful(false);
-      onClose();
     });
   };
 

@@ -9,6 +9,7 @@ import {VerificationResult} from '~/../types/verification';
 import {
   usePostAuthEmailSignup,
   usePostAuthNicknameCheck,
+  usePostAuthSocialSignup,
 } from '~/api/auth/mutations';
 
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
@@ -34,12 +35,20 @@ import {
 
 interface Props {
   signupForm: SignupForm;
+  stageTextList: string[];
+  currentStage: number;
+  registerType: 'SOCIAL' | 'EMAIL';
 }
 
 /**
  *@description 회원가입 > 닉네임 입력
  */
-function NicknameRegister({signupForm}: Props) {
+function NicknameRegister({
+  signupForm,
+  stageTextList,
+  currentStage,
+  registerType,
+}: Props) {
   const {navigate} = useNavigation<NavigationHookProp>();
   const helpList = ['공백 미포함', '기호 미포함', '2-10자 이내'];
   const [term, setTerm] = useState(INIT_SIGNUP_TERM);
@@ -59,6 +68,7 @@ function NicknameRegister({signupForm}: Props) {
   ]); // 도움말 검증 결과
 
   const postAuthSignup = usePostAuthEmailSignup();
+  const postAuthSocialSignup = usePostAuthSocialSignup();
   const postAuthNicknameCheck = usePostAuthNicknameCheck();
 
   const isSigunupComplete =
@@ -74,16 +84,23 @@ function NicknameRegister({signupForm}: Props) {
        *@description signupForm state를 nicknameRegister 페이지 내부에서 바꾸면 모달창이 꺼지기 때문에 api 요청할 때,
        * 따로 nickname state를 선언해서 넣어준다.
        */
-      const response = await postAuthSignup.mutateAsync({
-        ...signupForm,
-        nickname,
-      });
+      const response =
+        registerType === 'EMAIL'
+          ? await postAuthSignup.mutateAsync({
+              ...signupForm,
+              nickname,
+            })
+          : await postAuthSocialSignup.mutateAsync({
+              email: signupForm.email,
+              mobile: signupForm.mobile,
+              nickname,
+            });
 
       if (response?.success === 'SUCCESS') {
         await setSecurityData(config.ACCESS_TOKEN_NAME, response.data.access);
         await setSecurityData(config.REFRESH_TOKEN_NAME, response.data.refresh);
 
-        navigate('PetInfoRegister');
+        navigate('SignupPetInfoNavigator');
       }
     } catch (error) {
       console.log(error);
@@ -168,8 +185,8 @@ function NicknameRegister({signupForm}: Props) {
           flex={1}>
           <Center mt={'60px'} px="18px">
             <StageTextBox
-              currentStage={4}
-              stageTextList={EMAIL_SIGNUP_STAGE_TEXT_LIST}
+              currentStage={currentStage}
+              stageTextList={stageTextList}
             />
 
             <VerificationForm

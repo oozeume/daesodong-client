@@ -12,6 +12,7 @@ interface Props {
 
 /**
  *@description 집사정보등록 - 첫 페이지
+ *@todo 추후 제거 components/signup/petInfo 폴더 내에 있는 컴포넌트
  */
 
 function Intro({onPress}: Props) {

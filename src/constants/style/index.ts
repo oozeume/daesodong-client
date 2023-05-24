@@ -3,3 +3,5 @@
  */
 
 export const MARGIN_X = 18;
+
+export const FLOAT_BUTTON_HEIGHT = 20;

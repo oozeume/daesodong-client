@@ -30,6 +30,8 @@ const QueryKeys = {
   },
   contents: {
     content: 'content',
+    mainContents: 'main contents',
+    contents: 'contents',
   },
   auth: {},
 } as const;
