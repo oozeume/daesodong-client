@@ -68,7 +68,7 @@ const ContentItem = ({
                 style={styles.icon}
               />
               <Text fontSize={'12px'} color={colors.grayScale['50']}>
-                {item.bookmarkCount}
+                {item.bookmarksCount}
               </Text>
             </HStack>
           </VStack>
