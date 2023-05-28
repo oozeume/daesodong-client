@@ -3,22 +3,28 @@ import React from 'react';
 import ViewFillIcon from '~/assets/icons/view_fill.svg';
 import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
 import {colors} from '~/theme/theme';
-import {StyleSheet} from 'react-native';
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {ColorType} from 'native-base/lib/typescript/components/types';
 
 interface Props {
   item: any;
   onPress: () => void;
   detailViewBackgroundColor?: ColorType;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
  *@description  컨텐츠 리스트 아이템
  */
-const ContentItem = ({item, onPress, detailViewBackgroundColor}: Props) => {
+const ContentItem = ({
+  item,
+  onPress,
+  detailViewBackgroundColor,
+  style,
+}: Props) => {
   return (
     <Pressable onPress={onPress} px="18px">
-      <Box mb="8px">
+      <Box style={style}>
         <HStack>
           {/* 다른 컨텐츠 이미지 */}
           <View w="92px" h="92px" bgColor={colors.grayScale['20']}></View>
