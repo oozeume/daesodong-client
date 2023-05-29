@@ -14,7 +14,7 @@ import {colors} from '~/theme/theme';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  value: FilterTypes;
+  value: string;
   title: string;
   filters: any;
   onPress: (value: FilterTypes) => void;
@@ -49,11 +49,7 @@ function MapFilter({
         pt="28px"
         pb="40px"
         px="18px">
-        <Center
-          alignItems="center"
-          width="100%"
-          height="26px"
-          margin="24px 0px 36px">
+        <Center alignItems="center" width="100%" mb={'24px'}>
           <Text
             fontSize="18px"
             color={colors.grayScale[80]}

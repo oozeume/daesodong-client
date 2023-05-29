@@ -11,6 +11,7 @@ import {useGetFacilityList} from '~/api/facility/queries';
 import {FACILITY_PER_PAGE} from '~/constants/facility/main';
 import {CoordinateType, FormState, LocationInfoType} from '~/../types/facility';
 import {TAB_BAR_HEIGHT} from '~/navigator/tab/tabNavigator';
+import {Platform} from 'react-native';
 
 interface Props {
   isOpen: boolean;
@@ -60,15 +61,15 @@ function FacilityList({
     }
   };
 
-  useEffect(() => {
-    refetch();
-  }, [filterForm]);
-
   const facilities: Facility[] =
     data?.pages
       .flatMap(i => i.data)
       .flatMap(i => i.data)
       .map(i => new Facility(i)) ?? [];
+
+  useEffect(() => {
+    refetch();
+  }, [filterForm]);
 
   return (
     <>
@@ -78,7 +79,7 @@ function FacilityList({
             borderTopLeftRadius={20}
             borderTopRightRadius={20}
             bgColor={colors.grayScale[0]}
-            pt={isListExpand ? '166px' : 0}
+            pt={isListExpand ? (Platform.OS === 'ios' ? '166px' : '120px') : 0}
             w="100%"
             maxH={`${Math.floor(APP_HEIGHT)}`}
             h={Math.floor(APP_HEIGHT * actionSheetHeightRatio)}>

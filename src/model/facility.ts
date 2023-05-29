@@ -49,11 +49,15 @@ class Facility {
   }
 
   get address() {
-    return this.facility.address1 ?? '' + '\n' + this.facility.address2 ?? '';
+    return this.facility.address1 + ' ' + this.facility.address2 ?? '';
   }
 
   get latitude() {
     return this.facility.latitude ?? '';
+  }
+
+  get categoryName() {
+    return this.facility.hospital_category.name ?? '';
   }
 
   get longitude() {

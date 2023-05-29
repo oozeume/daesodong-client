@@ -69,15 +69,8 @@ function LocationSearch({
 
   return (
     <Pressable w="100%" onPress={onPress} mb="8px" style={style}>
-      <HStack
-        alignItems={'center'}
-        h="44px"
-        pl="14px"
-        pr="10px"
-        w="100%"
-        borderRadius={8}
-        bgColor={colors.grayScale['0']}>
-        <LocationFillIcon width={18} height={18} fill={colors.fussOrange[0]} />
+      <HStack alignItems={'center'} h="44px" pl="14px" pr="10px" w="100%">
+        <LocationFillIcon width={18} height={18} fill={colors.grayScale[80]} />
 
         <Text ml="4px" fontSize={'14px'} color={colors.grayScale['80']}>
           {`${locationValue?.sido.name} ${locationValue?.sigugun.name}`}

@@ -8,7 +8,7 @@ import {colors} from '~/theme/theme';
 import RightIcon from '~/assets/icons/right.svg';
 import FilterIcon from '~/assets/icons/filter.svg';
 import MapFilter from '~/components/facility/main/MapFilter';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import MapFilterButton from '~/components/facility/main/MapFilterButton';
 import FacilityList from '~/components/facility/main/FacilityList';
 import AddressDrawer, {
@@ -106,16 +106,6 @@ const FacilityMain = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [petType, setPetType] = useState<SpeciesData>();
 
-  // const onInitMap = () => {
-  //   ref.current?.postMessage(
-  //     JSON.stringify({
-  //       success: true,
-  //       type: 'move',
-  //       isDebug: true,
-  //       data: coordinate,
-  //     }),
-  //   );
-  // };
   const onInitMap = () => {
     ref.current?.postMessage(
       JSON.stringify({success: true, type: 'init', isDebug: true}),
@@ -222,15 +212,15 @@ const FacilityMain = () => {
         w="100%"
         px="18px"
         position={'absolute'}
-        top={'56px'}
+        top={Platform.OS === 'ios' ? '56px' : '12px'}
         zIndex={100}>
         {!isFacilityListExpand && (
           <Pressable
             w="100%"
-            bgColor={colors.grayScale['90']}
+            backgroundColor={colors.grayScale['90']}
             borderRadius={8}
             mb="8px"
-            style={styles.shadow}
+            style={[styles.shadow, styles.blackBackground]}
             onPress={() => navigation.navigate('FacilityRecommendation')}>
             <HStack
               justifyContent={'space-between'}
@@ -250,7 +240,7 @@ const FacilityMain = () => {
 
         <LocationSearch
           onPress={() => setIsModalVisible(true)}
-          style={styles.shadow}
+          style={isFacilityListExpand ? styles.solidBackground : styles.shadow}
           locationValue={locationSearchValue}
           setLocationValue={setLocationSearchValue}
           coordinate={coordinate}
@@ -261,14 +251,23 @@ const FacilityMain = () => {
           <MapFilterButton
             name={FacilityType[filterForm.facility]}
             onPress={onFacilityFilterOpen}
+            style={
+              isFacilityListExpand ? styles.solidBackground : styles.shadow
+            }
           />
           <MapFilterButton
             name={filterForm.animal || '동물'}
             onPress={onPetSearchOpen}
+            style={
+              isFacilityListExpand ? styles.solidBackground : styles.shadow
+            }
           />
           <MapFilterButton
             name={FacilitySortType[filterForm.sortType]}
             onPress={onSortTypeFilterOpen}
+            style={
+              isFacilityListExpand ? styles.solidBackground : styles.shadow
+            }
           />
         </HStack>
       </VStack>
@@ -289,7 +288,7 @@ const FacilityMain = () => {
         onPress={(value: any) =>
           setFilterForm(prev => ({...prev, facility: value}))
         }
-        value={filterForm.facility || ''}
+        value={FacilityType[filterForm.facility] || ''}
         title="시설"
         filters={FacilityType}
       />
@@ -312,7 +311,7 @@ const FacilityMain = () => {
         onPress={(value: any) => {
           setFilterForm(prev => ({...prev, sortType: value}));
         }}
-        value={filterForm.sortType || ''}
+        value={FacilitySortType[filterForm.sortType] || ''}
         title="정렬"
         filters={FacilitySortType}
       />
@@ -383,6 +382,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowRadius: 3.84, // 안드로이드에서 안됨
     elevation: 3,
+    backgroundColor: colors.grayScale[0],
+    borderRadius: 8,
+  },
+  solidBackground: {
+    backgroundColor: colors.grayScale[10],
+    borderRadius: 8,
+  },
+  blackBackground: {
+    backgroundColor: 'black',
   },
 });
 
