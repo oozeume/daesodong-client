@@ -1,5 +1,3 @@
-import {FACILITY_SORT_TYPE} from '~/constants/facility/main';
-
 /**
  *@description 시설 상세 API 응답
  */
@@ -228,10 +226,18 @@ export interface GetFacilityListQuery {
   lng?: number;
 }
 
-export type FacilitySortBy = 'distances' | 'reviews' | 'stars';
+export const FacilitySortType = {
+  distances: '거리 순',
+  reviews: '리뷰 많은 순',
+  stars: '별점 높은 순',
+} as const;
 
-export enum FacilitySortType {
-  distances = '거리 순',
-  reviews = '리뷰 많은 순',
-  stars = '별점 높은 순',
-}
+export const FacilityType = {
+  all: '모든 시설',
+  hospital: '병원',
+} as const;
+
+type FacilitySortBy = keyof typeof FacilitySortType;
+type FacilityTypeBy = keyof typeof FacilityType;
+
+export type FilterTypes = FacilitySortBy | FacilityTypeBy;

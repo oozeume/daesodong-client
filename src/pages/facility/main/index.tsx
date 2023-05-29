@@ -8,11 +8,6 @@ import {colors} from '~/theme/theme';
 import RightIcon from '~/assets/icons/right.svg';
 import FilterIcon from '~/assets/icons/filter.svg';
 import MapFilter from '~/components/facility/main/MapFilter';
-import {
-  FACILITY_PER_PAGE,
-  FACILITY_SORT_TYPE,
-  FACILITY_TYPE_LIST,
-} from '~/constants/facility/main';
 import {StyleSheet} from 'react-native';
 import MapFilterButton from '~/components/facility/main/MapFilterButton';
 import FacilityList from '~/components/facility/main/FacilityList';
@@ -25,13 +20,10 @@ import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import ListViewChangeButton from '~/components/facility/main/ListViewChangeButton';
 import {CoordinateType, FormState, LocationInfoType} from '~/../types/facility';
 import {SpeciesData} from '~/../types/api/species';
-
 import {useGetUser} from '~/api/user/queries';
-import {useGetFacilityList} from '~/api/facility/queries';
-import Facility from '~/model/facility';
 import LocationSearch from '../../../components/facility/main/LocationSearch';
 import _ from 'lodash';
-import {FacilitySortType} from '~/../types/api/facility';
+import {FacilitySortType, FacilityType} from '~/../types/api/facility';
 
 const LOCATION_INIT = {
   sido: {
@@ -48,7 +40,7 @@ const LOCATION_INIT = {
  *@description 시설 메인 페이지
  */
 const FacilityMain = () => {
-  const getUser = useGetUser(true);
+  const {data: userInfo} = useGetUser(true);
   const navigation = useNavigation<NavigationHookProp>();
   const ref = useRef<WebView | null>(null);
 
@@ -104,9 +96,9 @@ const FacilityMain = () => {
   } = useDisclose(false);
 
   const initFormState: FormState = {
-    facility: undefined,
+    facility: 'all' as keyof typeof FacilityType,
     animal: undefined,
-    sortType: 'distances',
+    sortType: 'distances' as keyof typeof FacilitySortType,
   };
 
   const [filterForm, setFilterForm] = useState(initFormState);
@@ -114,14 +106,19 @@ const FacilityMain = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [petType, setPetType] = useState<SpeciesData>();
 
+  // const onInitMap = () => {
+  //   ref.current?.postMessage(
+  //     JSON.stringify({
+  //       success: true,
+  //       type: 'move',
+  //       isDebug: true,
+  //       data: coordinate,
+  //     }),
+  //   );
+  // };
   const onInitMap = () => {
     ref.current?.postMessage(
-      JSON.stringify({
-        success: true,
-        type: 'move',
-        isDebug: true,
-        data: coordinate,
-      }),
+      JSON.stringify({success: true, type: 'init', isDebug: true}),
     );
   };
 
@@ -135,6 +132,12 @@ const FacilityMain = () => {
       }),
     );
   };
+
+  useEffect(() => {
+    if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
+      onMoveMap(coordinate);
+    }
+  }, [coordinate]);
 
   // 마커 표시 이벤트
   // 추후, api 연결 시, useEffect 쪽 코드로 변경 예정
@@ -179,23 +182,6 @@ const FacilityMain = () => {
     );
   }, [locationSearchValue]);
 
-  const {data, refetch} = useGetFacilityList(
-    {
-      limit: FACILITY_PER_PAGE,
-      expose: false, // TODO: 어드민 생성 후에 true로 변경
-      sort: filterForm.sortType,
-      state: locationSearchValue.sido.name,
-      city: locationSearchValue.sigugun.name,
-      page: 1,
-      lat: coordinate.latitude,
-      lng: coordinate.longitude,
-    },
-    hasLocationSearchValue,
-  );
-
-  const facilities: Facility[] =
-    data?.pages[0].data.data.map((i: any) => new Facility(i)) ?? [];
-
   const positionSelectCancel = () => {
     setIsModalVisible(false);
     setSidoValue(undefined);
@@ -214,7 +200,6 @@ const FacilityMain = () => {
       },
     });
     setIsModalVisible(false);
-    refetch();
   };
 
   useEffect(() => {
@@ -274,7 +259,7 @@ const FacilityMain = () => {
 
         <HStack justifyContent={'space-between'} w="100%" space={3}>
           <MapFilterButton
-            name={filterForm.facility || '시설'}
+            name={FacilityType[filterForm.facility]}
             onPress={onFacilityFilterOpen}
           />
           <MapFilterButton
@@ -282,7 +267,7 @@ const FacilityMain = () => {
             onPress={onPetSearchOpen}
           />
           <MapFilterButton
-            name={filterForm.sortType || '정렬'}
+            name={FacilitySortType[filterForm.sortType]}
             onPress={onSortTypeFilterOpen}
           />
         </HStack>
@@ -294,37 +279,42 @@ const FacilityMain = () => {
         source={{
           uri: 'http://daesodong-map.s3-website.us-east-2.amazonaws.com/',
         }}
-        onLoadEnd={onInitMap}
+        onLoadEnd={() => onMoveMap(coordinate)}
       />
 
       {/* 맵 필터(시설, 동물, 정렬) 액션시트  */}
-      {/* <MapFilter
+      <MapFilter
         isOpen={isFacilityFilterOpen}
         onClose={onFacilityFilterClose}
-        setValue={value => setFilterForm(prev => ({...prev, facility: value}))}
+        onPress={(value: any) =>
+          setFilterForm(prev => ({...prev, facility: value}))
+        }
         value={filterForm.facility || ''}
         title="시설"
-        itemList={FACILITY_TYPE_LIST}
-      /> */}
+        filters={FacilityType}
+      />
 
       {/* 동물 검색 모달 */}
-      {/* <PetTypeSelectModal
+      <PetTypeSelectModal
         isOpen={isPetSearchOpen}
         onClose={onPetSearchClose}
         setPetType={setPetType}
-        onPress={() => {}}
-      /> */}
+        onPress={(value: any) =>
+          setFilterForm(prev => ({...prev, animal: value.name}))
+        }
+        isEnrollPet={false}
+        previousPetTypeName={userInfo?.mainPetInfo.specieName}
+      />
 
       <MapFilter
         isOpen={isSortTypeFilterOpen}
         onClose={onSortTypeFilterClose}
-        onPress={value => {
+        onPress={(value: any) => {
           setFilterForm(prev => ({...prev, sortType: value}));
         }}
-        // setValue={value => setFilterForm(prev => ({...prev, sortType: value}))}
         value={filterForm.sortType || ''}
         title="정렬"
-        itemList={FACILITY_SORT_TYPE}
+        filters={FacilitySortType}
       />
 
       <ListViewChangeButton
@@ -369,11 +359,14 @@ const FacilityMain = () => {
 
       {/* 이용할 수 있는 시설 리스트 */}
       <FacilityList
-        facilities={facilities}
         setListExpand={setFacilityListExpand}
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}
         onClose={onFacilityListClose}
+        filterForm={filterForm}
+        coordinate={coordinate}
+        locationSearchValue={locationSearchValue}
+        hasLocationSearchValue={hasLocationSearchValue}
       />
     </Box>
   );

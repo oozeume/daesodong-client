@@ -1,6 +1,5 @@
 import {Box, Center, FlatList, Pressable, Text, View} from 'native-base';
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 import MapIcon from '~/assets/icons/map.svg';
@@ -8,13 +7,20 @@ import MapViewIcon from '~/assets/icons/map_view.svg';
 import ListViewChangeButton from './ListViewChangeButton';
 import Facility from '~/model/facility';
 import FacilityItem from './FacilityItem';
+import {useGetFacilityList} from '~/api/facility/queries';
+import {FACILITY_PER_PAGE} from '~/constants/facility/main';
+import {CoordinateType, FormState, LocationInfoType} from '~/../types/facility';
+import {TAB_BAR_HEIGHT} from '~/navigator/tab/tabNavigator';
 
 interface Props {
-  facilities: Facility[];
   isOpen: boolean;
   onClose: () => void;
   setListExpand: (isListExpand: boolean) => void;
-  isListExpand: boolean;
+  isListExpand?: boolean;
+  filterForm: FormState;
+  coordinate: CoordinateType;
+  locationSearchValue: LocationInfoType;
+  hasLocationSearchValue: boolean;
 }
 
 /**
@@ -22,14 +28,47 @@ interface Props {
  * @param setListExpand - 시설 리스트 뷰 확장 설정 함수
  */
 function FacilityList({
-  facilities,
   isOpen,
   onClose,
   setListExpand,
   isListExpand,
+  filterForm,
+  coordinate,
+  locationSearchValue,
+  hasLocationSearchValue,
 }: Props) {
   // 360 / 812 값은 피그마 페이지 비율
   const actionSheetHeightRatio = isListExpand ? 1 : 360 / 812;
+
+  const {data, refetch, hasNextPage, fetchNextPage} = useGetFacilityList(
+    {
+      limit: FACILITY_PER_PAGE,
+      expose: false, // TODO: 어드민 생성 후에 true로 변경
+      sort: filterForm.sortType,
+      state: locationSearchValue.sido.name,
+      city: locationSearchValue.sigugun.name,
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
+      species: filterForm.animal,
+    },
+    hasLocationSearchValue,
+  );
+
+  const fetchMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [filterForm]);
+
+  const facilities: Facility[] =
+    data?.pages
+      .flatMap(i => i.data)
+      .flatMap(i => i.data)
+      .map(i => new Facility(i)) ?? [];
 
   return (
     <>
@@ -40,7 +79,6 @@ function FacilityList({
             borderTopRightRadius={20}
             bgColor={colors.grayScale[0]}
             pt={isListExpand ? '166px' : 0}
-            pb={'40px'}
             w="100%"
             maxH={`${Math.floor(APP_HEIGHT)}`}
             h={Math.floor(APP_HEIGHT * actionSheetHeightRatio)}>
@@ -74,6 +112,9 @@ function FacilityList({
             </Box>
 
             <FlatList
+              style={{marginBottom: TAB_BAR_HEIGHT}}
+              onEndReached={fetchMore}
+              onEndReachedThreshold={0.9}
               data={facilities}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => <FacilityItem facility={item} />}
@@ -95,19 +136,5 @@ function FacilityList({
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      // 안드로이드에서 안됨
-      width: 1,
-      height: 2,
-    },
-    shadowOpacity: 0.16,
-    shadowRadius: 3.84, // 안드로이드에서 안됨
-    elevation: 3,
-  },
-});
 
 export default FacilityList;

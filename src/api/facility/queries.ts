@@ -160,15 +160,26 @@ export const useGetFacilityList = (
   query: GetFacilityListQuery,
   enabled: boolean,
 ) => {
-  return useInfiniteQuery(
-    [QueryKeys.facility.facilityList],
-    () => {
-      return getFacilityList(query);
+  return useInfiniteQuery({
+    queryKey: [QueryKeys.facility.facilityList],
+    queryFn: ({pageParam = 0}) => {
+      return getFacilityList({
+        ...query,
+        page: pageParam,
+      });
     },
-    {
-      enabled: enabled,
+    enabled: enabled,
+    getNextPageParam: currentPage => {
+      if (
+        currentPage.data.meta.currentPage < currentPage.data.meta.totalPages
+      ) {
+        return currentPage.data.meta.currentPage + 1;
+      } else {
+        return null;
+      }
     },
-  );
+    keepPreviousData: true,
+  });
 };
 
 /**

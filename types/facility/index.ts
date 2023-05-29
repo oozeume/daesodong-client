@@ -1,9 +1,9 @@
-import {FacilitySortBy} from '../api/facility';
+import {FacilitySortType, FacilityType} from '../api/facility';
 
 export interface FormState {
-  facility?: string;
+  facility: keyof typeof FacilityType;
   animal?: string;
-  sortType: FacilitySortBy;
+  sortType: keyof typeof FacilitySortType;
 }
 
 // 시설 리뷰 페이지 공통 파라미터

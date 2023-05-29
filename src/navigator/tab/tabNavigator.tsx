@@ -17,6 +17,8 @@ import FacilityMain from '~/pages/facility/main';
 import MyPage from '~/pages/mypage';
 import CommunityMain from '~/pages/community';
 
+export const TAB_BAR_HEIGHT = 98;
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -29,7 +31,7 @@ const TabNavigator = () => {
           backgroundColor: '#FFFFFF',
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          height: 98,
+          height: TAB_BAR_HEIGHT,
         },
         tabBarAllowFontScaling: false,
         tabBarActiveTintColor: colors.fussOrange[0],

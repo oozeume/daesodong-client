@@ -25,9 +25,3 @@ export const FACILITY_TYPE_LIST = [
     disabled: true,
   },
 ];
-
-export const FACILITY_SORT_TYPE = [
-  {text: '거리순'},
-  {text: '후기 많은 순'},
-  {text: '별점 높은 순'},
-];

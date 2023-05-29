@@ -3,7 +3,6 @@ import {HStack, Image, Pressable, Text, View, VStack} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {colors} from '~/theme/theme';
-import {APP_WIDTH} from '~/utils/dimension';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import Facility from '~/model/facility';
@@ -57,7 +56,7 @@ function FacilityItem({facility}: Props) {
               color={colors.grayScale[50]}
               fontSize={'12px'}
               fontWeight={400}>
-              시설종류
+              병원
             </Text>
           </HStack>
 
