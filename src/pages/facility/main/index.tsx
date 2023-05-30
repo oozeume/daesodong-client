@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {WebView} from 'react-native-webview';
@@ -24,6 +24,9 @@ import {useGetUser} from '~/api/user/queries';
 import LocationSearch from '../../../components/facility/main/LocationSearch';
 import _ from 'lodash';
 import {FacilitySortType, FacilityType} from '~/../types/api/facility';
+import {FACILITY_PER_PAGE} from '~/constants/facility/main';
+import {useCoordinate, useGetFacilityList} from '~/api/facility/queries';
+import Facility from '~/model/facility';
 
 const LOCATION_INIT = {
   sido: {
@@ -58,6 +61,47 @@ const FacilityMain = () => {
   const [sortedSigugun, setSortedSigugun] = useState<
     Partial<Hangjungdong>[] | undefined
   >();
+
+  const initFormState: FormState = {
+    facility: 'all' as keyof typeof FacilityType,
+    animal: undefined,
+    sortType: 'distances' as keyof typeof FacilitySortType,
+  };
+
+  const [filterForm, setFilterForm] = useState(initFormState);
+  const [isFacilityListExpand, setFacilityListExpand] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [petType, setPetType] = useState<SpeciesData>();
+
+  const hasLocationSearchValue = useMemo(() => {
+    return (
+      !_.isEmpty(locationSearchValue.sido.name) &&
+      !_.isEmpty(locationSearchValue.sigugun.name)
+    );
+  }, [locationSearchValue]);
+
+  const {data, refetch, hasNextPage, fetchNextPage} = useGetFacilityList(
+    {
+      limit: FACILITY_PER_PAGE,
+      expose: false, // TODO: 어드민 생성 후에 true로 변경
+      sort: filterForm.sortType,
+      state: locationSearchValue.sido.name,
+      city: locationSearchValue.sigugun.name,
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
+      species: filterForm.animal,
+    },
+    hasLocationSearchValue,
+  );
+
+  const facilities: Facility[] = useMemo(() => {
+    return (
+      data?.pages
+        .flatMap(i => i.data)
+        .flatMap(i => i.data)
+        .map(i => new Facility(i)) ?? []
+    );
+  }, [data]);
 
   const {
     isOpen: isSidoOpen,
@@ -95,23 +139,6 @@ const FacilityMain = () => {
     onClose: onPetSearchClose,
   } = useDisclose(false);
 
-  const initFormState: FormState = {
-    facility: 'all' as keyof typeof FacilityType,
-    animal: undefined,
-    sortType: 'distances' as keyof typeof FacilitySortType,
-  };
-
-  const [filterForm, setFilterForm] = useState(initFormState);
-  const [isFacilityListExpand, setFacilityListExpand] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [petType, setPetType] = useState<SpeciesData>();
-
-  const onInitMap = () => {
-    ref.current?.postMessage(
-      JSON.stringify({success: true, type: 'init', isDebug: true}),
-    );
-  };
-
   const onMoveMap = (coordinates: {latitude: number; longitude: number}) => {
     ref.current?.postMessage(
       JSON.stringify({
@@ -123,33 +150,13 @@ const FacilityMain = () => {
     );
   };
 
-  useEffect(() => {
-    if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-      onMoveMap(coordinate);
-    }
-  }, [coordinate]);
-
   // 마커 표시 이벤트
   // 추후, api 연결 시, useEffect 쪽 코드로 변경 예정
-  const onMarkerMap = () => {
-    /**
-      * 여의도역
-      * 37.521731 126.924293
-
-      * 여의도역 진주집
-      * 37.5209, 126.9267
-
-      * 진가와 여의도점
-      * 37.5243, 126.9261
-      */
-
-    const markerList = [
-      {latitude: 37.521731, longitude: 126.924293},
-      {latitude: 37.5209, longitude: 126.9267},
-      {latitude: 37.5243, longitude: 126.9261},
-    ];
-
-    onMoveMap(markerList[0]);
+  const onMarkerMap = useCallback(() => {
+    const markerList = facilities.map(i => ({
+      latitude: i.latitude,
+      longitude: i.longitude,
+    }));
 
     ref.current?.postMessage(
       JSON.stringify({
@@ -159,18 +166,7 @@ const FacilityMain = () => {
         data: markerList,
       }),
     );
-  };
-
-  const onSearchMap = () => {
-    ref.current?.postMessage(JSON.stringify({success: true, type: 'search'}));
-  };
-
-  const hasLocationSearchValue = useMemo(() => {
-    return (
-      !_.isEmpty(locationSearchValue.sido.name) &&
-      !_.isEmpty(locationSearchValue.sigugun.name)
-    );
-  }, [locationSearchValue]);
+  }, [facilities]);
 
   const positionSelectCancel = () => {
     setIsModalVisible(false);
@@ -191,6 +187,45 @@ const FacilityMain = () => {
     });
     setIsModalVisible(false);
   };
+
+  const fetchMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const {refetch: locationToCoordinate} = useCoordinate(
+    locationSearchValue.sido.name + ' ' + locationSearchValue.sigugun.name,
+  );
+
+  // TODO: 코드 정리
+
+  useEffect(() => {
+    if (!_.isEmpty(facilities)) {
+      onMarkerMap();
+    }
+  }, [facilities, onMarkerMap]);
+
+  useEffect(() => {
+    if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
+      onMoveMap(coordinate);
+    }
+  }, [coordinate]);
+
+  useEffect(() => {
+    locationToCoordinate().then(d => {
+      onMoveMap({
+        latitude: d.data?.data.addresses[0]?.y,
+        longitude: d.data?.data.addresses[0]?.x,
+      });
+      refetch();
+    });
+  }, [
+    refetch,
+    locationToCoordinate,
+    locationSearchValue.sido.name,
+    locationSearchValue.sigugun.name,
+  ]);
 
   useEffect(() => {
     if (!_.isEmpty(locationSearchValue.sido)) {
@@ -278,7 +313,9 @@ const FacilityMain = () => {
         source={{
           uri: 'http://daesodong-map.s3-website.us-east-2.amazonaws.com/',
         }}
-        onLoadEnd={() => onMoveMap(coordinate)}
+        onLoadEnd={() => {
+          onMoveMap(coordinate);
+        }}
       />
 
       {/* 맵 필터(시설, 동물, 정렬) 액션시트  */}
@@ -358,14 +395,15 @@ const FacilityMain = () => {
 
       {/* 이용할 수 있는 시설 리스트 */}
       <FacilityList
+        facilities={facilities}
+        refetch={refetch}
+        fetchMore={fetchMore}
         setListExpand={setFacilityListExpand}
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}
         onClose={onFacilityListClose}
         filterForm={filterForm}
-        coordinate={coordinate}
         locationSearchValue={locationSearchValue}
-        hasLocationSearchValue={hasLocationSearchValue}
       />
     </Box>
   );

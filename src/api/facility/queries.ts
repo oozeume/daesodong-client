@@ -219,3 +219,28 @@ export const useGetLocation = (
     },
   );
 };
+
+/**
+ *@description 네이버 주소 -> 좌표 API
+ */
+
+export const getCoordinate = (location: string) => {
+  return axios.get(
+    `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${location}`,
+    {
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': config.NAVER_CLIENT_KEY,
+        'X-NCP-APIGW-API-KEY': config.NAVER_SECRET_CLIENT_KEY,
+      },
+    },
+  );
+};
+
+export const useCoordinate = (location: string) => {
+  return useQuery({
+    queryKey: [QueryKeys.facility.coordinate],
+    queryFn: () => {
+      return getCoordinate(location);
+    },
+  });
+};
