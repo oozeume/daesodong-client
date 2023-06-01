@@ -6,6 +6,7 @@ import Species from '~/model/species';
 
 interface Props {
   visitedAnimals: Species[];
+  allSpecies: Species[];
 }
 
 /**
@@ -14,7 +15,15 @@ interface Props {
  * @TODO API 연동 후 타입 및 데이터 변경
  */
 
-function VisitedAnimalsAccordion({visitedAnimals}: Props) {
+function VisitedAnimalsAccordion({visitedAnimals, allSpecies}: Props) {
+  const visitedSpeciesCount = (speciesId: string) => {
+    if (visitedAnimals.map(i => i.id).includes(speciesId)) {
+      return visitedAnimals.filter(i => i.id === speciesId)[0].count;
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <Center>
       <Flex
@@ -23,7 +32,7 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
         flexDirection={'row'}
         flexWrap={'wrap'}
         justifyContent={'space-between'}>
-        {visitedAnimals.map((pet) => (
+        {allSpecies.map(pet => (
           <Flex
             key={pet.id}
             w={'149.5px'}
@@ -47,7 +56,7 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
               fontWeight={'400'}
               color={colors.grayScale[70]}
               textAlign={'center'}>
-              {pet.count}
+              {visitedSpeciesCount(pet.id)}
             </Text>
           </Flex>
         ))}

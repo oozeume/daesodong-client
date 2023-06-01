@@ -17,10 +17,10 @@ function HospitalReviewRegisterPrecaution() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white'}}>
       <ScrollView backgroundColor={'#fff'}>
         <Header
-          title="후기 작성"
+          title="후기 작성시 주의사항"
           rightButton={
             <CloseButton buttonStyle={{right: 18}} onPress={onBack} />
           }

@@ -1,6 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import {
   PostFacilityReviewData,
+  PostReportData,
   PostVisitedFacilityResponse,
 } from '~/../types/api/facility';
 import {apiCall} from '~/api/common';
@@ -131,4 +132,20 @@ const postThanksCancelReview = (id: string, reviewId: string) => {
 
 export const usePostThanksCancelReview = (id: string, reviewId: string) => {
   return useMutation(() => postThanksCancelReview(id, reviewId));
+};
+
+/**
+ *@description 유저 신고
+ */
+
+const postReportUser = (data: PostReportData) => {
+  return apiCall({
+    method: 'POST',
+    url: '/report-user',
+    data,
+  });
+};
+
+export const usePostReportUser = () => {
+  return useMutation((data: PostReportData) => postReportUser(data));
 };

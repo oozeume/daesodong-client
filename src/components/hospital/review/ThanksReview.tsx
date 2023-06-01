@@ -62,7 +62,7 @@ function ThanksReview({review}: Props) {
       borderTopColor={'#F6F7F7'}>
       <HeartFillIcon
         fill={isThanks ? '#FF6B00' : '#E1E2E4'}
-        stroke={'#E1E2E4'}
+        stroke={isThanks ? '#FF6B00' : '#E1E2E4'}
         onPress={onPress}
       />
       <Text color={'grayScale.60'}>

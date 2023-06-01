@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   Box,
   Center,
@@ -17,6 +17,7 @@ import Species from '~/model/species';
 import _ from 'lodash';
 import {APP_WIDTH} from '~/utils/dimension';
 import {MARGIN_X} from '~/constants/facility/detail';
+import {useGetSpecies} from '~/api/species/queries';
 
 interface Props {
   facilityId: string;
@@ -28,22 +29,22 @@ interface Props {
 
 function VisitedAnimals({facilityId}: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [speciesList, setSpeciesList] = React.useState<Species[]>([]);
 
-  const {data, isLoading} = useGetVisitedPetsFacility(facilityId);
+  const {data: visitedSpeciesData, isLoading} =
+    useGetVisitedPetsFacility(facilityId);
+  const {data: speciesData} = useGetSpecies({limit: 10}, true);
 
   const handleOpen = () => setIsOpen(prev => !prev);
 
-  const sum = () => {
-    const a = speciesList.map(i => i.count);
-    return _.sum(a);
-  };
+  const species = speciesData?.data.map(i => new Species(i)) ?? [];
+  const visitedSpecies = useMemo(() => {
+    return visitedSpeciesData?.data.map(d => new Species(d)) ?? [];
+  }, [visitedSpeciesData]);
 
-  React.useEffect(() => {
-    if (data) {
-      setSpeciesList(data.data.map(d => new Species(d)));
-    }
-  }, [data]);
+  const visitedSpeciesCount = useMemo(() => {
+    const a = visitedSpecies.map(i => i.count);
+    return _.sum(a);
+  }, [visitedSpecies]);
 
   if (isLoading) {
     return <Spinner />;
@@ -65,12 +66,17 @@ function VisitedAnimals({facilityId}: Props) {
               fontWeight={'500'}
               color={colors.grayScale[80]}
               textAlign={'center'}>
-              {sum()}마리의 친구들이 방문했어요
+              {visitedSpeciesCount}마리의 친구들이 방문했어요
             </Text>
             <Center>{isOpen ? <UpIcon /> : <DownIcon />}</Center>
           </HStack>
 
-          {isOpen && <VisitedAnimalsAccordion visitedAnimals={speciesList} />}
+          {isOpen && (
+            <VisitedAnimalsAccordion
+              visitedAnimals={visitedSpecies}
+              allSpecies={species}
+            />
+          )}
         </VStack>
       </Box>
     </Pressable>

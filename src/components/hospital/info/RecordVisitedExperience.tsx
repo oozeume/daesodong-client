@@ -31,15 +31,15 @@ function RecordVisitedExperience({facilityId}: Props) {
   const [visited, setIsVisited] = useState(false);
   const [petName, setPetName] = useState('');
 
-  const {data, isLoading} = useGetVisitedFacility(facilityId);
+  const {data, isLoading, refetch} = useGetVisitedFacility(facilityId);
   const {mutateAsync} = useMutationVisitedFacility();
 
   const onPress = () => {
     mutateAsync(facilityId)
       .then(() => {
-        // TODO : response으로 pet name 받아서 petName 업데이트
         setIsVisited(true);
         showToast();
+        refetch();
       })
       .catch(error =>
         // TODO: 에러처리
@@ -120,7 +120,9 @@ function RecordVisitedExperience({facilityId}: Props) {
         </Box>
       ) : (
         <Box
-          w={'339px'}
+          flex={1}
+          w={APP_WIDTH - MARGIN_X * 2}
+          borderRadius={8}
           px={'12px'}
           py={'20px'}
           mt={'24px'}
