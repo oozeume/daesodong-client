@@ -6,6 +6,8 @@ import {useGetLocation} from '~/api/facility/queries';
 import Geolocation from 'react-native-geolocation-service';
 import {hangjungdong} from '~/utils/hangjungdong';
 import {CoordinateType, LocationInfoType} from '~/../types/facility';
+import {PERMISSIONS, RESULTS, check} from 'react-native-permissions';
+import {Alert, Platform, PermissionsAndroid} from 'react-native';
 
 interface Props {
   onPress: () => void;
@@ -53,19 +55,45 @@ function LocationSearch({
   }, [locationInfo]);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCoordinate({
-          latitude,
-          longitude,
-        });
-      },
-      error => {
-        console.log(error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
+    const platformPermissions =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.LOCATION_ALWAYS
+        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+
+    const locationPermission = async () => {
+      try {
+        const result = await check(platformPermissions);
+
+        if (result !== RESULTS.GRANTED) {
+          if (Platform.OS === 'ios') {
+            Geolocation.requestAuthorization('always');
+          } else {
+            PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            );
+          }
+        } else {
+          Geolocation.getCurrentPosition(
+            position => {
+              const {latitude, longitude} = position.coords;
+              setCoordinate({
+                latitude,
+                longitude,
+              });
+            },
+            error => {
+              Alert.alert('앱을 다시 실행해주세요.');
+              console.log(error.code, error.message);
+            },
+            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+          );
+        }
+      } catch {
+        Alert.alert('앱을 다시 실행해주세요.');
+      }
+    };
+
+    locationPermission();
   }, []);
 
   return (
