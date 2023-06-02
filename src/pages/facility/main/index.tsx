@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import {WebView} from 'react-native-webview';
@@ -44,6 +44,7 @@ const LOCATION_INIT = {
  */
 const FacilityMain = () => {
   const {data: userInfo} = useGetUser(true);
+
   const navigation = useNavigation<NavigationHookProp>();
   const ref = useRef<WebView | null>(null);
 
@@ -53,6 +54,7 @@ const FacilityMain = () => {
 
   const [locationSearchValue, setLocationSearchValue] =
     useState<LocationInfoType>(LOCATION_INIT);
+
   const [coordinate, setCoordinate] = useState<CoordinateType>({
     latitude: 0,
     longitude: 0,
@@ -73,14 +75,13 @@ const FacilityMain = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [petType, setPetType] = useState<SpeciesData>();
 
-  const hasLocationSearchValue = useMemo(() => {
-    return (
-      !_.isEmpty(locationSearchValue.sido.name) &&
-      !_.isEmpty(locationSearchValue.sigugun.name)
-    );
-  }, [locationSearchValue]);
+  const [facilities, setFacilities] = useState<Facility[]>([]);
 
-  const {data, refetch, hasNextPage, fetchNextPage} = useGetFacilityList(
+  const {refetch: getCoordinate} = useCoordinate(
+    locationSearchValue.sido.name + ' ' + locationSearchValue.sigugun.name,
+  );
+
+  const {refetch, hasNextPage, fetchNextPage} = useGetFacilityList(
     {
       limit: FACILITY_PER_PAGE,
       expose: false, // TODO: 어드민 생성 후에 true로 변경
@@ -91,17 +92,36 @@ const FacilityMain = () => {
       lng: coordinate.longitude,
       species: filterForm.animal,
     },
-    hasLocationSearchValue,
-  );
+    false,
+    result => {
+      if (result) {
+        const _facilities: Facility[] =
+          result.pages
+            .flatMap(i => {
+              return i.data;
+            })
+            .flatMap(i => i.data)
+            .map(i => new Facility(i)) ?? [];
 
-  const facilities: Facility[] = useMemo(() => {
-    return (
-      data?.pages
-        .flatMap(i => i.data)
-        .flatMap(i => i.data)
-        .map(i => new Facility(i)) ?? []
-    );
-  }, [data]);
+        if (_.isEmpty(_facilities)) {
+          setFacilities([]);
+          getCoordinate().then(d => {
+            onMoveMap({
+              latitude: d.data?.data.addresses[0]?.y,
+              longitude: d.data?.data.addresses[0]?.x,
+            });
+          });
+        } else {
+          onMarkerMap(_facilities);
+          setFacilities(_facilities);
+          onMoveMap({
+            latitude: _facilities[0].latitude,
+            longitude: _facilities[0].longitude,
+          });
+        }
+      }
+    },
+  );
 
   const {
     isOpen: isSidoOpen,
@@ -151,9 +171,8 @@ const FacilityMain = () => {
   };
 
   // 마커 표시 이벤트
-  // 추후, api 연결 시, useEffect 쪽 코드로 변경 예정
-  const onMarkerMap = useCallback(() => {
-    const markerList = facilities.map(i => ({
+  const onMarkerMap = (_facilities: Facility[]) => {
+    const markerList = _facilities.map(i => ({
       latitude: i.latitude,
       longitude: i.longitude,
     }));
@@ -166,7 +185,7 @@ const FacilityMain = () => {
         data: markerList,
       }),
     );
-  }, [facilities]);
+  };
 
   const positionSelectCancel = () => {
     setIsModalVisible(false);
@@ -194,52 +213,23 @@ const FacilityMain = () => {
     }
   };
 
-  const {refetch: locationToCoordinate} = useCoordinate(
-    locationSearchValue.sido.name + ' ' + locationSearchValue.sigugun.name,
-  );
-
-  // TODO: 코드 정리
-
   useEffect(() => {
-    if (!_.isEmpty(facilities)) {
-      onMarkerMap();
-    }
-  }, [facilities, onMarkerMap]);
-
-  useEffect(() => {
-    if (coordinate.latitude !== 0 && coordinate.longitude !== 0) {
-      onMoveMap(coordinate);
-    }
-  }, [coordinate]);
-
-  useEffect(() => {
-    locationToCoordinate().then(d => {
-      onMoveMap({
-        latitude: d.data?.data.addresses[0]?.y,
-        longitude: d.data?.data.addresses[0]?.x,
-      });
-      refetch();
-    });
-  }, [
-    refetch,
-    locationToCoordinate,
-    locationSearchValue.sido.name,
-    locationSearchValue.sigugun.name,
-  ]);
-
-  useEffect(() => {
-    if (!_.isEmpty(locationSearchValue.sido)) {
+    if (isSigugunOpen && !_.isEmpty(locationSearchValue.sido)) {
       setSortedSigugun(
         sigugun.filter(i => i.sido === locationSearchValue.sido.sido),
       );
     }
-  }, [locationSearchValue.sido]);
+  }, [isSigugunOpen]);
 
   useEffect(() => {
     if (sidoValue) {
       setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
     }
   }, [sidoValue]);
+
+  useEffect(() => {
+    refetch();
+  }, [filterForm, locationSearchValue]);
 
   return (
     <Box w="100%" h={APP_HEIGHT}>
@@ -312,9 +302,6 @@ const FacilityMain = () => {
         ref={ref}
         source={{
           uri: 'http://daesodong-map.s3-website.us-east-2.amazonaws.com/',
-        }}
-        onLoadEnd={() => {
-          onMoveMap(coordinate);
         }}
       />
 
@@ -396,14 +383,11 @@ const FacilityMain = () => {
       {/* 이용할 수 있는 시설 리스트 */}
       <FacilityList
         facilities={facilities}
-        refetch={refetch}
         fetchMore={fetchMore}
         setListExpand={setFacilityListExpand}
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}
         onClose={onFacilityListClose}
-        filterForm={filterForm}
-        locationSearchValue={locationSearchValue}
       />
     </Box>
   );

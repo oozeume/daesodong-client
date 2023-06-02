@@ -1,7 +1,7 @@
-import {FacilityListType, FacilityResponse} from '~/../types/api/facility';
+import {FacilityItem, FacilityResponse} from '~/../types/api/facility';
 
 class Facility {
-  constructor(private readonly facility: FacilityResponse & FacilityListType) {}
+  constructor(private readonly facility: FacilityResponse & FacilityItem) {}
 
   get id() {
     return this.facility.id ?? '';
@@ -69,7 +69,7 @@ class Facility {
   }
 
   get savedFacilityIds() {
-    return this.facility.save_hospital.map(i => i.hospitalId) ?? [];
+    return this.facility.save_hospital?.map(i => i.hospitalId) ?? [];
   }
 
   isMyBookmarkFacility(facilityId: string) {

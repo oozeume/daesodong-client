@@ -1,5 +1,5 @@
 import {HStack, Pressable, Text} from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import LocationFillIcon from '~/assets/icon/location_fill.svg';
 import {colors} from '~/theme/theme';
 import {useGetLocation} from '~/api/facility/queries';
@@ -30,8 +30,10 @@ function LocationSearch({
 }: Props) {
   const {sido, sigugun} = hangjungdong;
 
-  const [availableLocation, setAvailableLocation] = useState(false);
-  const {data: locationInfo} = useGetLocation(coordinate, availableLocation);
+  const {data: locationInfo} = useGetLocation(
+    coordinate,
+    coordinate.latitude !== 0 && coordinate.longitude !== 0,
+  );
 
   useEffect(() => {
     if (locationInfo) {
@@ -58,7 +60,6 @@ function LocationSearch({
           latitude,
           longitude,
         });
-        setAvailableLocation(true);
       },
       error => {
         console.log(error.code, error.message);

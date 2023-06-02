@@ -1,7 +1,8 @@
 /**
  *@description 시설 상세 API 응답
  */
-export type FacilityResponse = {
+
+export interface FacilityBaseType {
   id: string;
   hospitalCategoryId: string;
   name: string;
@@ -17,10 +18,6 @@ export type FacilityResponse = {
   url: string;
   info: string;
   bookmarks: number;
-  save_hospital: {
-    hospitalId: string;
-    userId: string;
-  }[];
   sch_mon: string;
   sch_tue: string;
   sch_wed: string;
@@ -33,19 +30,30 @@ export type FacilityResponse = {
   score_total: number;
   created_at: string;
   updated_at: string;
-  hospital_category: {
-    id: string;
-    name: string;
-  };
-  hospital_picture: {
+  hospital_category: HospitalCategory;
+  hospital_picture: HospitalPicture[];
+}
+
+export interface HospitalCategory {
+  id: string;
+  name: string;
+}
+
+export interface HospitalPicture {
+  hospitalId: string;
+  picture_url: string;
+}
+
+export interface FacilityResponse extends FacilityBaseType {
+  save_hospital?: {
     hospitalId: string;
-    picture_url: string;
+    userId: string;
   }[];
-  _count: {
+  _count?: {
     hospital_user_visit: number;
     hospital_review: number;
   };
-};
+}
 
 /**
  *@description 시설 방문 기록 API 응답
@@ -172,8 +180,20 @@ export type FacilityScoreResponse = {
  *@description 병원 리스트 API 응답
  */
 
-// TODO : 적절한 타입으로 변경
-export type FacilityListResponse = any;
+export type FacilityListResponse = {
+  data: [FacilityItem[]];
+  meta: {
+    count: number;
+    currentPage: number;
+    perPage: number;
+    total: number;
+    totalPages: number;
+  };
+};
+
+export interface FacilityItem extends FacilityBaseType {
+  score_avg?: number;
+}
 
 export type FacilityListType = {
   id: string;
