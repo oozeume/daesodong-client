@@ -51,6 +51,8 @@ function LocationSearch({
           sigugun: gunValue,
         });
       }
+    } else {
+      Alert.alert('앱을 다시 실행해주세요.');
     }
   }, [locationInfo]);
 
