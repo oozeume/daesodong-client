@@ -105,6 +105,7 @@ function CommentInput({
           onEnrollCallback();
           setCommentText('');
           setCommentInputType('POST_COMMENT');
+          Keyboard.dismiss();
         }
       })
       .catch((error: any) => console.log(error));

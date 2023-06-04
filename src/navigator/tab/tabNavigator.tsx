@@ -6,10 +6,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {RouteList} from '~/../types/navigator';
 
-import FacilityTabIcon from '~/assets/icons/facility_tab.svg';
-import ContentsTabIcon from '~/assets/icons/contents_tab.svg';
-import CommunityTabIcon from '~/assets/icons/community_tab.svg';
-import MypageTabIcon from '~/assets/icons/mypage_tab.svg';
+import FacilityTabIcon from '~/assets/icons/facility_tab';
+import ContentsTabIcon from '~/assets/icons/contents_tab';
+import CommunityTabIcon from '~/assets/icons/community_tab';
+import MypageTabIcon from '~/assets/icons/mypage_tab';
 
 import ContentsMain from '~/pages/contents/main';
 import {colors} from '~/theme/theme';
@@ -35,7 +35,6 @@ const TabNavigator = () => {
         tabBarAllowFontScaling: false,
         tabBarActiveTintColor: colors.fussOrange[0],
         tabBarInactiveTintColor: colors.grayScale[30],
-
         tabBarLabelStyle: {
           fontStyle: 'normal',
           fontWeight: '500',
@@ -56,7 +55,14 @@ const TabNavigator = () => {
           tabBarLabel: '시설 정보',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => <FacilityTabIcon fill={color} />,
+          tabBarIcon: ({focused}) => {
+            return (
+              <FacilityTabIcon
+                fill={focused ? colors.fussOrange[0] : colors.grayScale[40]}
+                subFill={focused ? colors.fussYellow[0] : colors.grayScale[30]}
+              />
+            );
+          },
         }}
       />
       <Tab.Screen
@@ -66,7 +72,12 @@ const TabNavigator = () => {
           tabBarLabel: '콘텐츠',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => <ContentsTabIcon fill={color} />,
+          tabBarIcon: ({focused}) => (
+            <ContentsTabIcon
+              fill={focused ? colors.fussOrange[0] : colors.grayScale[40]}
+              subFill={focused ? colors.fussYellow[0] : colors.grayScale[30]}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -76,7 +87,12 @@ const TabNavigator = () => {
           tabBarLabel: '커뮤니티',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => <CommunityTabIcon fill={color} />,
+          tabBarIcon: ({focused}) => (
+            <CommunityTabIcon
+              fill={focused ? colors.fussOrange[0] : colors.grayScale[40]}
+              subFill={focused ? colors.fussYellow[0] : colors.grayScale[30]}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -86,7 +102,12 @@ const TabNavigator = () => {
           tabBarLabel: '내 계정',
           headerShown: false,
           unmountOnBlur: true,
-          tabBarIcon: ({color}) => <MypageTabIcon fill={color} />,
+          tabBarIcon: ({focused}) => (
+            <MypageTabIcon
+              fill={focused ? colors.fussOrange[0] : colors.grayScale[40]}
+              subFill={focused ? colors.fussYellow[0] : colors.grayScale[30]}
+            />
+          ),
         }}
       />
     </Tab.Navigator>

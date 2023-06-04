@@ -1,14 +1,12 @@
 import React from 'react';
-import {Center, HStack} from 'native-base';
+import {Box, Center, HStack} from 'native-base';
 
 import {colors} from '~/theme/theme';
-import {IconNameType} from '~/../types/hospital';
-import IconView from './IconView';
-import { APP_WIDTH } from '~/utils/dimension';
-import { MARGIN_X } from '~/constants/facility/detail';
+import {APP_WIDTH} from '~/utils/dimension';
+import {MARGIN_X} from '~/constants/facility/detail';
 
 interface Props {
-  iconName: IconNameType;
+  icon: any;
 }
 
 /**
@@ -18,7 +16,7 @@ interface Props {
  */
 
 function HospitalInfoContents({
-  iconName,
+  icon,
   children,
 }: React.PropsWithChildren<Props>) {
   return (
@@ -28,7 +26,7 @@ function HospitalInfoContents({
         borderBottomWidth={1}
         borderBottomColor={colors.grayScale[10]}
         style={{paddingVertical: 24}}>
-        <IconView iconName={iconName} />
+        <Box marginRight={'20px'}>{icon}</Box>
         {children}
       </HStack>
     </Center>
