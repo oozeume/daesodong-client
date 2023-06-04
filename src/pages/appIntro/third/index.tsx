@@ -24,7 +24,7 @@ function AppIntroThird() {
     <AppIntroLayout
       title="내 경험을 공유해보세요"
       description={`내가 겪은 경험을 공유하고 다른 동물들을 도와\n고마운 마음을 모아보세요`}
-      pageNumber={1}
+      pageNumber={2}
       onMove={onMove}
       imageElement={<IntroImage />}
     />
