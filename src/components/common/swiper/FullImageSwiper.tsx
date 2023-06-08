@@ -8,6 +8,11 @@ interface Props {
   images: string[];
 }
 
+/**
+ *@description 화면 전체 width를 차지하는 이미지 스와이퍼
+ *@param images - (필수)
+ */
+
 function FullImageSwiper({images}: Props) {
   return (
     <Box width={APP_WIDTH}>

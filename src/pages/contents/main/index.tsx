@@ -23,7 +23,8 @@ const ContentsMain = () => {
   const [isTooltipOpen, setTooltipOpen] = useState(true);
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 '무엇이 아쉬웠나요' 리뷰 모달 on/off 훅
 
-  const {data, fetchNextPage, hasNextPage} = useGetContents();
+  const [currentPage, setCurrentPage] = useState(0);
+  const {data, fetchNextPage, hasNextPage} = useGetContents(currentPage);
   const [contentsList, setContentsList] = useState<Content[]>([]);
 
   useEffect(() => {
@@ -44,10 +45,15 @@ const ContentsMain = () => {
   const {mutateAsync: requestContents} = useRequestContents();
 
   const fetchMore = () => {
-    if (hasNextPage) {
+    setCurrentPage(currentPage + 1);
+  };
+
+  useEffect(() => {
+    if (currentPage > 0 && hasNextPage) {
       fetchNextPage();
     }
-  };
+  }, [currentPage]);
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{flex: 1}}>
       {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
@@ -71,7 +77,7 @@ const ContentsMain = () => {
         ListHeaderComponent={() => <ContentsMainImages />}
         nestedScrollEnabled
         data={contentsList}
-        onEndReachedThreshold={0.85}
+        onEndReachedThreshold={0.9}
         onEndReached={fetchMore}
         renderItem={({item, index}) => {
           return (

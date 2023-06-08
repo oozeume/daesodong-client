@@ -1,14 +1,19 @@
-import {ContentsResponse} from '~/../types/api/contents';
+import _ from 'lodash';
+import {GetContentsResponse} from '~/../types/api/contents';
 
 class Content {
-  constructor(private readonly content: ContentsResponse) {}
+  constructor(private readonly content: GetContentsResponse) {}
 
   get id() {
     return this.content.id ?? '';
   }
 
   get representiveImage() {
-    return this.content.content_picture[0].picture_url;
+    if (!_.isEmpty(this.content.content_picture)) {
+      return this.content.content_picture[0].picture_url;
+    } else {
+      return '';
+    }
   }
 
   get categoryName() {

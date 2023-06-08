@@ -4,7 +4,7 @@
 
 import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import queryString from 'query-string';
-import {ContentsResponse} from '~/../types/api/contents';
+import {GetContentsResponse} from '~/../types/api/contents';
 import {ContetnsQueryType} from '~/../types/contents';
 import {CONTENTS_PER_PAGE} from '~/constants/contents';
 import QueryKeys from '~/constants/queryKeys';
@@ -15,23 +15,26 @@ const getContents = (query: ContetnsQueryType) => {
     url: '/content',
     query: {...query},
   });
-  return apiCall<ContentsResponse[]>({
+  return apiCall<GetContentsResponse[]>({
     method: 'GET',
     url: qs,
   });
 };
 
-export const useGetContents = () => {
+export const useGetContents = (currentPage: number) => {
   return useInfiniteQuery({
     queryKey: [QueryKeys.contents.contents],
     queryFn: ({pageParam = 0}) => {
-      return getContents({skip: pageParam, take: CONTENTS_PER_PAGE});
+      return getContents({
+        skip: pageParam * CONTENTS_PER_PAGE,
+        take: CONTENTS_PER_PAGE,
+      });
     },
-    getNextPageParam: (lastPage, allPages) => {
+    getNextPageParam: lastPage => {
       if (lastPage.data.length < CONTENTS_PER_PAGE) {
         return null;
       } else {
-        return allPages[0].data.length;
+        return currentPage;
       }
     },
     keepPreviousData: true,

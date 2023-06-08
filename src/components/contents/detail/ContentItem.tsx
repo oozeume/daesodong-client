@@ -5,10 +5,10 @@ import BookmarkIcon from '~/assets/icons/bookmark_fill.svg';
 import {colors} from '~/theme/theme';
 import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {ColorType} from 'native-base/lib/typescript/components/types';
-import Content from '~/model/content';
+import ContentModel from '~/model/content';
 
 interface Props {
-  item: Content;
+  item: ContentModel;
   onPress: () => void;
   detailViewBackgroundColor?: ColorType;
   style?: StyleProp<ViewStyle>;

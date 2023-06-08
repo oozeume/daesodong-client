@@ -1,4 +1,5 @@
-export interface ContentsResponse {
+// 컨텐츠 리스트 api 응답 리스트
+export interface GetContentsResponse {
   id: string;
   title: string;
   content: string;
