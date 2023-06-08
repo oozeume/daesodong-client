@@ -22,6 +22,7 @@ interface Props {
 /**
  *@description 시설 메인 페이지 > 시설 리스트
  * @param setListExpand - 시설 리스트 뷰 확장 설정 함수
+ * @param fetchMore - 무한스크롤을 위한 쿼리 요청
  */
 function FacilityList({
   facilities,

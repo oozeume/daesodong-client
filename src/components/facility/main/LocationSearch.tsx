@@ -8,14 +8,15 @@ import {hangjungdong} from '~/utils/hangjungdong';
 import {CoordinateType, LocationInfoType} from '~/../types/facility';
 import {PERMISSIONS, RESULTS, check} from 'react-native-permissions';
 import {Alert, Platform, PermissionsAndroid} from 'react-native';
+import {SetState} from '~/../types/common';
 
 interface Props {
   onPress: () => void;
   style: any;
   locationValue: LocationInfoType;
-  setLocationValue: React.Dispatch<React.SetStateAction<LocationInfoType>>;
+  setLocationValue: SetState<LocationInfoType>;
   coordinate: CoordinateType;
-  setCoordinate: React.Dispatch<React.SetStateAction<CoordinateType>>;
+  setCoordinate: SetState<CoordinateType>;
 }
 
 /**
@@ -51,8 +52,6 @@ function LocationSearch({
           sigugun: gunValue,
         });
       }
-    } else {
-      Alert.alert('앱을 다시 실행해주세요.');
     }
   }, [locationInfo]);
 
@@ -97,6 +96,10 @@ function LocationSearch({
 
     locationPermission();
   }, []);
+
+  if (!locationInfo) {
+    return null;
+  }
 
   return (
     <Pressable w="100%" onPress={onPress} mb="8px" style={style}>
