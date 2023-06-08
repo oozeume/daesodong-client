@@ -1,5 +1,5 @@
 import {Box, Center, FlatList, Pressable, Text, View} from 'native-base';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 import MapIcon from '~/assets/icons/map.svg';
@@ -7,43 +7,33 @@ import MapViewIcon from '~/assets/icons/map_view.svg';
 import ListViewChangeButton from './ListViewChangeButton';
 import Facility from '~/model/facility';
 import FacilityItem from './FacilityItem';
-import {FormState, LocationInfoType} from '~/../types/facility';
 import {TAB_BAR_HEIGHT} from '~/navigator/tab/tabNavigator';
 import {Platform} from 'react-native';
 
 interface Props {
   facilities: Facility[];
-  refetch: () => void;
   fetchMore: () => void;
   isOpen: boolean;
   onClose: () => void;
   setListExpand: (isListExpand: boolean) => void;
   isListExpand?: boolean;
-  filterForm: FormState;
-  locationSearchValue: LocationInfoType;
 }
 
 /**
  *@description 시설 메인 페이지 > 시설 리스트
  * @param setListExpand - 시설 리스트 뷰 확장 설정 함수
+ * @param fetchMore - 무한스크롤을 위한 쿼리 요청
  */
 function FacilityList({
   facilities,
-  refetch,
   fetchMore,
   isOpen,
   onClose,
   setListExpand,
   isListExpand,
-  filterForm,
-  locationSearchValue,
 }: Props) {
   // 360 / 812 값은 피그마 페이지 비율
   const actionSheetHeightRatio = isListExpand ? 1 : 360 / 812;
-
-  useEffect(() => {
-    refetch();
-  }, [filterForm, locationSearchValue]);
 
   return (
     <>

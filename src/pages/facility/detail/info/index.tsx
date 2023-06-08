@@ -33,7 +33,6 @@ import FacilityInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
 import {imageHeight} from '~/utils/imageHeight';
 import {APP_WIDTH} from '~/utils/dimension';
-import {FacilityResponse} from '~/../types/api/facility';
 import ImageModal from '~/components/hospital/review/ImageModal';
 
 interface Props {
@@ -78,7 +77,7 @@ function FacilityInfo({id}: Props) {
 
   useEffect(() => {
     if (data) {
-      setFacilityInfo(new Facility(data.data as FacilityResponse));
+      setFacilityInfo(new Facility(data.data));
     }
   }, [data]);
 

@@ -6,7 +6,7 @@ import {theme} from '~/theme/theme';
 import AppNavigator from './src/navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {Platform} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 import {config} from '~/utils/config';
 import Geolocation from 'react-native-geolocation-service';
 
@@ -36,6 +36,10 @@ const App = () => {
 
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization('always');
+    } else {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
     }
   }, []);
 

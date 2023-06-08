@@ -1,4 +1,4 @@
-import {useInfiniteQuery, useQuery} from '@tanstack/react-query';
+import {InfiniteData, useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import axios from 'axios';
 import queryString from 'query-string';
 import {
@@ -8,6 +8,7 @@ import {
   GetFacilityListQuery,
   MyReportResponse,
   VisitedFacilityResponse,
+  FacilityItem,
 } from '~/../types/api/facility';
 import {SpeciesType} from '~/../types/api/species';
 import {apiCall} from '~/api/common';
@@ -160,6 +161,7 @@ const getFacilityList = (query: GetFacilityListQuery) => {
 export const useGetFacilityList = (
   query: GetFacilityListQuery,
   enabled: boolean,
+  onSuccess: (result: InfiniteData<{data: {data: FacilityItem[]}}>) => void,
 ) => {
   return useInfiniteQuery({
     queryKey: [QueryKeys.facility.facilityList],
@@ -180,6 +182,7 @@ export const useGetFacilityList = (
       }
     },
     keepPreviousData: true,
+    onSuccess: onSuccess,
   });
 };
 

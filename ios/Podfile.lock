@@ -1,10 +1,10 @@
 PODS:
-  - Alamofire (5.6.4)
-  - AppAuth (1.6.1):
-    - AppAuth/Core (= 1.6.1)
-    - AppAuth/ExternalUserAgent (= 1.6.1)
-  - AppAuth/Core (1.6.1)
-  - AppAuth/ExternalUserAgent (1.6.1):
+  - Alamofire (5.7.1)
+  - AppAuth (1.6.2):
+    - AppAuth/Core (= 1.6.2)
+    - AppAuth/ExternalUserAgent (= 1.6.2)
+  - AppAuth/Core (1.6.2)
+  - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
@@ -438,6 +438,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNPermissions (3.8.0):
+    - React-Core
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
@@ -522,6 +524,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -648,6 +651,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-google-signin/google-signin"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -656,8 +661,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
-  AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -724,6 +729,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNGoogleSignin: 22e468a9474dbcb8618d8847205ad4f0b2575d13
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
+  RNPermissions: bb15187b1f62d639fa1cd11a09cfd98ff8dfeff3
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
@@ -733,4 +739,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ba3009224a4089a6531eb65d7a52037d16106827
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.11.3

@@ -1,19 +1,22 @@
 import {HStack, Pressable, Text} from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import LocationFillIcon from '~/assets/icon/location_fill.svg';
 import {colors} from '~/theme/theme';
 import {useGetLocation} from '~/api/facility/queries';
 import Geolocation from 'react-native-geolocation-service';
 import {hangjungdong} from '~/utils/hangjungdong';
 import {CoordinateType, LocationInfoType} from '~/../types/facility';
+import {PERMISSIONS, RESULTS, check} from 'react-native-permissions';
+import {Alert, Platform, PermissionsAndroid} from 'react-native';
+import {SetState} from '~/../types/common';
 
 interface Props {
   onPress: () => void;
   style: any;
   locationValue: LocationInfoType;
-  setLocationValue: React.Dispatch<React.SetStateAction<LocationInfoType>>;
+  setLocationValue: SetState<LocationInfoType>;
   coordinate: CoordinateType;
-  setCoordinate: React.Dispatch<React.SetStateAction<CoordinateType>>;
+  setCoordinate: SetState<CoordinateType>;
 }
 
 /**
@@ -30,8 +33,10 @@ function LocationSearch({
 }: Props) {
   const {sido, sigugun} = hangjungdong;
 
-  const [availableLocation, setAvailableLocation] = useState(false);
-  const {data: locationInfo} = useGetLocation(coordinate, availableLocation);
+  const {data: locationInfo} = useGetLocation(
+    coordinate,
+    coordinate.latitude !== 0 && coordinate.longitude !== 0,
+  );
 
   useEffect(() => {
     if (locationInfo) {
@@ -51,21 +56,50 @@ function LocationSearch({
   }, [locationInfo]);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCoordinate({
-          latitude,
-          longitude,
-        });
-        setAvailableLocation(true);
-      },
-      error => {
-        console.log(error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
+    const platformPermissions =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.LOCATION_ALWAYS
+        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+
+    const locationPermission = async () => {
+      try {
+        const result = await check(platformPermissions);
+
+        if (result !== RESULTS.GRANTED) {
+          if (Platform.OS === 'ios') {
+            Geolocation.requestAuthorization('always');
+          } else {
+            PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            );
+          }
+        } else {
+          Geolocation.getCurrentPosition(
+            position => {
+              const {latitude, longitude} = position.coords;
+              setCoordinate({
+                latitude,
+                longitude,
+              });
+            },
+            error => {
+              Alert.alert('앱을 다시 실행해주세요.');
+              console.log(error.code, error.message);
+            },
+            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+          );
+        }
+      } catch {
+        Alert.alert('앱을 다시 실행해주세요.');
+      }
+    };
+
+    locationPermission();
   }, []);
+
+  if (!locationInfo) {
+    return null;
+  }
 
   return (
     <Pressable w="100%" onPress={onPress} mb="8px" style={style}>
