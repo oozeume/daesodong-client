@@ -10,7 +10,7 @@ class Content {
   }
 
   get representiveImage() {
-    if (!_.isEmpty(this.content.content_picture)) {
+    if (!_.isEmpty(this.content?.content_picture)) {
       return this.content.content_picture[0].picture_url;
     } else {
       return '';
@@ -26,7 +26,7 @@ class Content {
   }
 
   get images() {
-    if (!_.isEmpty(this.content.content_picture)) {
+    if (!_.isEmpty(this.content?.content_picture)) {
       return this.content.content_picture
         .filter((i, index) => index !== 0)
         .map(i => i.picture_url);
