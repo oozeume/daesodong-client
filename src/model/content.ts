@@ -1,16 +1,20 @@
 import dayjs from 'dayjs';
 import _ from 'lodash';
-import {ContentsResponse} from '~/../types/api/contents';
+import {GetContentsResponse} from '~/../types/api/contents';
 
 class Content {
-  constructor(private readonly content?: ContentsResponse) {}
+  constructor(private readonly content: GetContentsResponse) {}
 
   get id() {
     return this.content?.id ?? '';
   }
 
   get representiveImage() {
-    return this.content?.content_picture[0].picture_url ?? '';
+    if (!_.isEmpty(this.content.content_picture)) {
+      return this.content.content_picture[0].picture_url;
+    } else {
+      return '';
+    }
   }
 
   get bookmarksCount() {
@@ -22,11 +26,13 @@ class Content {
   }
 
   get images() {
-    return (
-      this.content?.content_picture
+    if (!_.isEmpty(this.content.content_picture)) {
+      return this.content.content_picture
         .filter((i, index) => index !== 0)
-        .map(i => i.picture_url) ?? []
-    );
+        .map(i => i.picture_url);
+    } else {
+      return [];
+    }
   }
 
   get categoryName() {

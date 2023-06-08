@@ -42,7 +42,7 @@ function ReviewPopup({
   const keyobardHeight = useGetKeyboardHeight();
   const [message, setMessage] = useState('');
 
-  const heihgt = useMemo(() => {
+  const height = useMemo(() => {
     return CONTAINER_HEIGHT + keyobardHeight;
   }, [keyobardHeight]);
 
@@ -59,7 +59,7 @@ function ReviewPopup({
 
   return (
     <Actionsheet isOpen={visible} onClose={onCancel} hideDragIndicator>
-      <Actionsheet.Content height={heihgt} backgroundColor={'white'}>
+      <Actionsheet.Content height={height} backgroundColor={'white'}>
         <Stack w={'100%'} px={'18px'} pt={'28px'}>
           <Box mb="24px">
             <Center>
