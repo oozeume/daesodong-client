@@ -108,7 +108,6 @@ function AddressChange({isOpen, onClose, onPress, value}: Props) {
         isOpen={isSigugunOpen}
         onClose={onSigugunClose}
         onPress={() => onDongOpen()}
-        sidoValue={sidoValue}
         setValue={setSigugunValue}
         selectableList={sortedSigugun}
         sigugunValue={sigugunValue}
@@ -120,8 +119,6 @@ function AddressChange({isOpen, onClose, onPress, value}: Props) {
         isOpen={isDongOpen}
         onClose={onDongClose}
         onPress={() => {}}
-        sidoValue={sidoValue}
-        sigugunValue={sigugunValue}
         setValue={setDongValue}
         selectableList={sortedDong}
         dongValue={dongValue}

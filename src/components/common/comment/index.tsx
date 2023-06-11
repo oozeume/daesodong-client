@@ -203,9 +203,10 @@ const Comment = ({
 
           {data?.isBest && !commentType.isDelete && <Text>{`  `}</Text>}
 
+          {/* 답글 대상 유저 닉네임 */}
           {commentType.type === 'reply' && !commentType.isDelete && (
             <Text color={colors.fussOrange['0']} mr="28px">
-              {parentUserNickname ?? ''} <Text>{`  `}</Text>
+              {data?.toUserNickname} <Text>{`  `}</Text>
             </Text>
           )}
 

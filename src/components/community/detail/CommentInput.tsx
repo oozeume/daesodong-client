@@ -39,8 +39,16 @@ function CommentInput({
   const patchComment = usePatchComment();
   const patchRecomment = usePatchRecomment();
 
+  const isRecommenting =
+    commentInputType === 'POST_RECOMMENT_FROM_COMMENT' ||
+    commentInputType === 'POST_RECOMMENT_FROM_RECOMMENT';
+
+  const isEnrolling =
+    'POST_COMMENT' ||
+    'POST_RECOMMENT_FROM_COMMENT' ||
+    'POST_RECOMMENT_FROM_RECOMMENT';
+
   const onSendComment = () => {
-    let isError = false;
     let func: any;
     let data: any = null;
 
@@ -59,16 +67,31 @@ function CommentInput({
         };
         break;
 
-      case 'POST_RECOMMENT':
+      case 'POST_RECOMMENT_FROM_COMMENT':
+      case 'POST_RECOMMENT_FROM_RECOMMENT':
         func = postRecomment;
-        data = {commentId: selectedComment?.id || '', content: commentText};
+
+        data = {
+          commentId: selectedComment?.id || '',
+          content: commentText,
+          toUser:
+            commentInputType === 'POST_RECOMMENT_FROM_COMMENT'
+              ? selectedComment?.userId
+              : selectedRecomment?.userId,
+        };
+
         break;
 
-      case 'PATCH_RECOMMENT':
+      case 'PATCH_RECOMMENT_FROM_COMMENT':
+      case 'PATCH_RECOMMENT_FROM_RECOMMENT':
         func = patchRecomment;
         data = {
           commentId: selectedRecomment?.parentCommentId || '',
           recommentId: selectedRecomment?.id || '',
+          toUser:
+            commentInputType === 'PATCH_RECOMMENT_FROM_COMMENT'
+              ? selectedComment?.userId
+              : selectedRecomment?.userId,
           content: commentText,
         };
 
@@ -82,6 +105,7 @@ function CommentInput({
           onEnrollCallback();
           setCommentText('');
           setCommentInputType('POST_COMMENT');
+          Keyboard.dismiss();
         }
       })
       .catch((error: any) => console.log(error));
@@ -94,15 +118,22 @@ function CommentInput({
   };
 
   useEffect(() => {
-    if (commentInputType.includes('PATCH')) {
-      inputRef.current?.focus();
+    const isPatching =
+      commentInputType === 'PATCH_COMMENT' ||
+      commentInputType === 'PATCH_RECOMMENT_FROM_COMMENT' ||
+      commentInputType === 'PATCH_RECOMMENT_FROM_RECOMMENT';
+
+    if (isPatching) {
       setCommentText(selectedComment?.content || '');
+    } else if (isRecommenting) {
+      setCommentText('');
     }
   }, [commentInputType, selectedComment]);
 
   return (
     <Box>
-      {commentInputType === 'POST_RECOMMENT' && (
+      {(commentInputType === 'POST_RECOMMENT_FROM_COMMENT' ||
+        commentInputType === 'POST_RECOMMENT_FROM_RECOMMENT') && (
         <HStack
           justifyContent={'space-between'}
           alignItems="center"
@@ -111,7 +142,11 @@ function CommentInput({
           px="18px"
           bgColor={colors.grayScale['90']}>
           <Text color={colors.fussOrange['0']} fontSize="13px">
-            {`@${selectedComment?.nickname ?? ''} 님에게 답글을 작성중이에요`}
+            {`@${
+              commentInputType === 'POST_RECOMMENT_FROM_COMMENT'
+                ? selectedComment?.nickname
+                : selectedRecomment?.nickname
+            } 님에게 답글을 작성중이에요`}
           </Text>
 
           <Pressable onPress={onRecommentInputCancel}>
@@ -131,16 +166,14 @@ function CommentInput({
         borderTopColor={colors.grayScale['20']}>
         <VerificationForm
           inputRef={inputRef}
-          placeholder={`${
-            commentInputType === 'POST_RECOMMENT' ? '답글' : '댓글'
-          }을 남겨보세요`}
+          placeholder={`${isRecommenting ? '답글' : '댓글'}을 남겨보세요`}
           value={commentText}
           onChangeText={text => setCommentText(text)}
           noBorderBottom
           inputRightElement={
             <Button
               width="53px"
-              text={commentInputType.includes('POST') ? '등록' : '수정'}
+              text={isEnrolling ? '등록' : '수정'}
               large={false}
               fontColors={{
                 active: colors.grayScale['90'],

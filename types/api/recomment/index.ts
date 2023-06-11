@@ -1,12 +1,14 @@
 export interface PostRecommentData {
   commentId: string;
   content: string;
+  toUser: string;
 }
 
 export interface PatchRecommentData {
   commentId: string;
   recommentId: string;
   content: string;
+  toUser: string;
 }
 
 export interface DeleteRecommentQuery {
