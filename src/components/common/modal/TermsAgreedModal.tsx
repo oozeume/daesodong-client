@@ -49,7 +49,7 @@ function TermsAgreedModal({
         <VStack h={'100%'} px={'18px'}>
           {/* 모달 헤더 */}
           <Box h={'180px'}>
-            <Center py={'28px'}>
+            <Center mt={'28px'}>
               <Pressable position={'absolute'} left={0} onPress={handleModal}>
                 <BackIcon />
               </Pressable>

@@ -8,6 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Platform} from 'react-native';
 import {config} from '~/utils/config';
+import {removeSecurityData, setSecurityData} from '~/utils/storage';
 
 if (__DEV__) {
   import('react-query-native-devtools').then(({addPlugin}) => {
@@ -31,6 +32,8 @@ GoogleSignin.configure({
 
 const App = () => {
   useEffect(() => {
+    // removeSecurityData(config.ACCESS_TOKEN_NAME);
+    // removeSecurityData(config.REFRESH_TOKEN_NAME);
     SplashScreen.hide();
   }, []);
 

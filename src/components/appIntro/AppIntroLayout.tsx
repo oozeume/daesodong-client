@@ -24,7 +24,7 @@ function AppIntroLayout({
   onMove,
 }: Props) {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: colors.grayScale['0']}}>
       <Box
         bg={colors.grayScale['0']}
         h="100%"

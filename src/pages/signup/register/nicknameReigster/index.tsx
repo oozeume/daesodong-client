@@ -19,11 +19,8 @@ import TermsAgreedModal from '~/components/common/modal/TermsAgreedModal';
 import StageTextBox from '~/components/common/stage/StageTextBox';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import VerificationForm from '~/components/common/VerificationForm';
-import {EMOJI_REGEX, SPECIAL_CHARACTERS_REGEX} from '~/constants/regEx';
-import {
-  EMAIL_SIGNUP_STAGE_TEXT_LIST,
-  INIT_SIGNUP_TERM,
-} from '~/constants/signup';
+import {EMOJI_REGEX} from '~/constants/regEx';
+import {INIT_SIGNUP_TERM} from '~/constants/signup';
 import {colors} from '~/theme/theme';
 import {config} from '~/utils/config';
 import {setSecurityData} from '~/utils/storage';
@@ -130,6 +127,7 @@ function NicknameRegister({
   const onChangeNickname = (text: string) => {
     const textWithRemovedEmoji = text.replace(EMOJI_REGEX, '');
     setNickname(text);
+    setResult(undefined);
     setUpHelpResults(textWithRemovedEmoji);
     checkNickname(text);
   };
@@ -224,7 +222,10 @@ function NicknameRegister({
         {/* 이용약관 모달 */}
         <ServicePolicyModal
           isOpen={policyModalOpen.isServicePolicyModalOpen}
-          onClose={() => onPolicyModalOpen('ServicePolicy', false)}
+          onClose={() => {
+            console.log('CLOSE SERVICE');
+            onPolicyModalOpen('ServicePolicy', false);
+          }}
         />
 
         {/* 개인정보 보호 모달 */}

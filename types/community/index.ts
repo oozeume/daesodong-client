@@ -43,6 +43,10 @@ export type CommentItem = {
   comment1Id?: string;
   comment2?: CommentItem[];
   user: CommentUserInfo;
+  to_userId: string;
+  to_user: {
+    nickname: string;
+  };
   best_score: number;
   thanks_comment1_join?: {
     comment1Id: string;
@@ -60,9 +64,11 @@ export type CommentItem = {
  */
 export type CommentInputType =
   | 'POST_COMMENT'
-  | 'POST_RECOMMENT'
+  | 'POST_RECOMMENT_FROM_COMMENT'
+  | 'POST_RECOMMENT_FROM_RECOMMENT'
   | 'PATCH_COMMENT'
-  | 'PATCH_RECOMMENT';
+  | 'PATCH_RECOMMENT_FROM_COMMENT'
+  | 'PATCH_RECOMMENT_FROM_RECOMMENT';
 
 /**
  *@description 삭제 팝업 on/off 여부

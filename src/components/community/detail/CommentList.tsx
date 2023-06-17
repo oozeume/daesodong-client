@@ -29,6 +29,11 @@ function CommentList({
 }: Props) {
   const {data: userData} = useGetUser();
 
+  const onRegisterRecommentFromComment = (item: CommentModel) => {
+    setSelectedComment(item);
+    setCommentInputType('POST_RECOMMENT_FROM_COMMENT');
+  };
+
   return (
     <Box>
       {commentList.map((item, i) => (
@@ -47,10 +52,7 @@ function CommentList({
 
               setSelectedComment(item);
             }}
-            onRegisterRecomment={() => {
-              setSelectedComment(item);
-              setCommentInputType('POST_RECOMMENT');
-            }}
+            onRegisterRecomment={() => onRegisterRecommentFromComment(item)}
           />
 
           {(item?.recomments).map((recomment, k) => (
@@ -69,10 +71,15 @@ function CommentList({
                       recomment: true,
                     }));
                   else if (type === 'MODIFY')
-                    setCommentInputType('PATCH_RECOMMENT');
+                    setCommentInputType('PATCH_RECOMMENT_FROM_RECOMMENT');
 
                   setSelectedComment(item);
                   setSelectedRecomment(recomment);
+                }}
+                onRegisterRecomment={() => {
+                  setSelectedComment(item);
+                  setSelectedRecomment(recomment);
+                  setCommentInputType('POST_RECOMMENT_FROM_RECOMMENT');
                 }}
                 parentUserNickname={item.nickname}
               />
