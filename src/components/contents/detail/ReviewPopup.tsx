@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   Actionsheet,
   Box,
@@ -12,11 +12,12 @@ import {
 import {colors} from '~/theme/theme';
 import useGetKeyboardHeight from '~/hooks/useGetKeyboardHeight';
 import {Keyboard} from 'react-native';
+import _ from 'lodash';
 
 interface Props {
   visible: boolean;
   onCancel: () => void;
-  onOK: () => void;
+  onOK: (text: string) => Promise<any>;
   title: string;
   exampleTextList: string[];
   placeholder: string;
@@ -39,19 +40,27 @@ function ReviewPopup({
   placeholder,
 }: Props) {
   const keyobardHeight = useGetKeyboardHeight();
+  const [message, setMessage] = useState('');
 
-  const heihgt = useMemo(() => {
+  const height = useMemo(() => {
     return CONTAINER_HEIGHT + keyobardHeight;
   }, [keyobardHeight]);
 
+  const onClose = () => {
+    Keyboard.dismiss();
+    setMessage('');
+    onCancel();
+  };
+
+  const requestContents = () => {
+    onOK(message).then(() => {
+      onClose();
+    });
+  };
+
   return (
-    <Actionsheet
-      isOpen={visible}
-      onClose={() => {
-        onOK;
-      }}
-      hideDragIndicator>
-      <Actionsheet.Content height={heihgt}>
+    <Actionsheet isOpen={visible} onClose={onCancel} hideDragIndicator>
+      <Actionsheet.Content height={height} backgroundColor={'white'}>
         <Stack w={'100%'} px={'18px'} pt={'28px'}>
           <Box mb="24px">
             <Center>
@@ -106,6 +115,8 @@ function ReviewPopup({
             fontSize={'15px'}
             placeholder={placeholder}
             placeholderTextColor={colors.grayScale['40']}
+            value={message}
+            onChangeText={setMessage}
           />
 
           {/* 버튼 리스트 */}
@@ -117,10 +128,7 @@ function ReviewPopup({
               borderColor={colors.grayScale[60]}
               borderRadius={8}
               mr="8px"
-              onPress={() => {
-                Keyboard.dismiss();
-                onCancel();
-              }}>
+              onPress={onClose}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>닫기</Text>
               </Center>
@@ -128,14 +136,12 @@ function ReviewPopup({
 
             <Pressable
               flex={4}
+              disabled={_.isEmpty(message)}
               bgColor={colors.fussOrange[0]}
               borderWidth={1}
               borderColor={colors.grayScale[90]}
               borderRadius={8}
-              onPress={() => {
-                Keyboard.dismiss();
-                onOK();
-              }}>
+              onPress={requestContents}>
               <Center h="52px">
                 <Text color={colors.grayScale[90]}>대소동팀에게 전달</Text>
               </Center>

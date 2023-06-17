@@ -1,4 +1,4 @@
-import {FlatList, useDisclose} from 'native-base';
+import {Box, FlatList, useDisclose} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
@@ -9,7 +9,11 @@ import ReviewPopup from '~/components/contents/detail/ReviewPopup';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationHookProp} from '~/../types/navigator';
 import ContentsMainImages from '~/components/contents/main/ContentsMainImages';
+import {useGetContents} from '~/api/contents/queries';
+import Content from '~/model/content';
 import FloatingButton from '~/components/common/button/FloatingButton';
+import {useRequestContents} from '~/api/contents/mutation';
+import {FLOAT_BUTTON_HEIGHT} from '~/constants/style';
 
 /**
  *@description 컨텐츠 메인 페이지
@@ -19,6 +23,18 @@ const ContentsMain = () => {
   const [isTooltipOpen, setTooltipOpen] = useState(true);
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 '무엇이 아쉬웠나요' 리뷰 모달 on/off 훅
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const {data, fetchNextPage, hasNextPage} = useGetContents(currentPage);
+  const [contentsList, setContentsList] = useState<Content[]>([]);
+
+  useEffect(() => {
+    if (data?.pages) {
+      setContentsList(
+        data.pages.flatMap(item => item.data).map(i => new Content(i)),
+      );
+    }
+  }, [data]);
+
   useEffect(() => {
     setTimeout(() => {
       // 4초 후, 다음 콘텐츠로 보고 싶은 내용이 있다면 알려주세요 툴팁 지워짐
@@ -26,14 +42,24 @@ const ContentsMain = () => {
     }, 4000);
   }, []);
 
-  const dataList = ['', '', '', '', '', '', '', '', '', '', '', '', ''];
+  const {mutateAsync: requestContents} = useRequestContents();
+
+  const fetchMore = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  useEffect(() => {
+    if (currentPage > 0 && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [currentPage]);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{flex: 1}}>
       {/* '다음 콘텐츠로 보고싶은 내용이 있나요?' 팝업 */}
       <ReviewPopup
         visible={isOpen}
-        onOK={onClose}
+        onOK={requestContents}
         onCancel={onClose}
         title={'다음 콘텐츠로 보고싶은 내용이 있나요?'}
         exampleTextList={[
@@ -50,14 +76,16 @@ const ContentsMain = () => {
         bgColor={colors.grayScale[0]}
         ListHeaderComponent={() => <ContentsMainImages />}
         nestedScrollEnabled
-        data={dataList}
+        data={contentsList}
+        onEndReachedThreshold={0.9}
+        onEndReached={fetchMore}
         renderItem={({item, index}) => {
           return (
             <ContentItem
               onPress={() => navigation.navigate('ContentsDetail')}
               item={item}
               style={{
-                marginBottom: index === dataList.length - 1 ? 20 : 8,
+                marginBottom: index === contentsList.length - 1 ? 20 : 8,
                 marginTop: index === 0 ? 20 : 0,
               }}
             />
@@ -66,30 +94,21 @@ const ContentsMain = () => {
         keyExtractor={(item, index) => String(index)}
       />
 
-      {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
+      <Box position={'relative'}>
+        {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
 
-      <FloatingButton onPress={onOpen} />
+        <FloatingButton onPress={onOpen} />
+      </Box>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  floatingButtonImage: {
-    position: 'absolute',
-    bottom: Platform.OS === 'android' ? 20 : 24,
-    right: 18,
-    zIndex: 99,
-  },
-
   tooltipImage: {
     position: 'absolute',
-    bottom: Platform.OS === 'android' ? 78 : 110,
+    bottom: Platform.OS === 'android' ? 78 : 58 + FLOAT_BUTTON_HEIGHT,
     right: 24,
     zIndex: 99,
-  },
-
-  searchIcon: {
-    marginLeft: 12,
   },
 });
 

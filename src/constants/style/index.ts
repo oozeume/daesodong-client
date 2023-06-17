@@ -4,4 +4,5 @@
 
 export const MARGIN_X = 18;
 
+export const FLOAT_BUTTON_HEIGHT = 20;
 export const TAB_HEIGHT = 98;

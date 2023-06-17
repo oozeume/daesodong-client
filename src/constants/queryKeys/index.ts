@@ -28,6 +28,10 @@ const QueryKeys = {
     getRecomments: 'get recomments',
     deleteRecomment: 'delete recomment',
   },
+  contents: {
+    mainContents: 'main contents',
+    contents: 'contents',
+  },
   auth: {},
 } as const;
 
