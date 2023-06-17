@@ -43,6 +43,10 @@ class Comment {
     return this.comment.delete_at ?? null;
   }
 
+  get toUserNickname() {
+    return this.comment.to_user.nickname ?? '';
+  }
+
   get nickname() {
     return this.comment.user?.nickname ?? '';
   }

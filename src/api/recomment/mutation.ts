@@ -11,12 +11,17 @@ import {
 /**
  *@description 답글 등록 api 요청
  */
-const postRecomment = async ({commentId, content}: PostRecommentData) => {
+const postRecomment = async ({
+  commentId,
+  content,
+  toUser,
+}: PostRecommentData) => {
   return apiCall<boolean>({
     method: 'POST',
     url: `comments/${commentId}`,
     data: {
       content,
+      toUser,
     },
   });
 };
@@ -37,12 +42,14 @@ const patchRecomment = async ({
   commentId,
   recommentId,
   content,
+  toUser,
 }: PatchRecommentData) => {
   return apiCall<boolean>({
     method: 'PATCH',
     url: `comments/${commentId}/${recommentId}`,
     data: {
       content,
+      toUser,
     },
   });
 };

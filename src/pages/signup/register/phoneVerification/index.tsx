@@ -87,6 +87,7 @@ function PhoneVerification({
    *@description 인증 번호 발송 및 인증 모달창 오픈
    */
   const onSendVerification = async () => {
+    // onVerificationFail();
     let replacePhoneNumber = deleteHypen(phoneNumber);
 
     await postAuthMobileVerify.mutateAsync({

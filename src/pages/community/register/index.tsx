@@ -39,6 +39,7 @@ import useImageUpload from '~/hooks/useImagesUpload';
 import {useGetCommunityPost} from '~/api/community/queries';
 import {config} from '~/utils/config';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import {useTagContext, useTagRegister} from '~/store/useTagContext';
 
 /**
  *@description 커뮤니티 등록/수정
@@ -67,13 +68,14 @@ const CommunityRegister = () => {
     kind: '',
     title: '',
     content: '',
-    tags: [],
+    // tags: [],
     pictures: [],
   };
 
-  const [tag, setTag] = useState('');
   const {isOpen, onOpen, onClose} = useDisclose(); // 커뮤니티 셀랙터 on/off 훅
   const [form, setForm] = useState(initFormState);
+  const tags = useTagContext([]);
+  const setTags = useTagRegister();
 
   // 앱에서 이미지 로드 중인 여부 state
   const [isImageLoad, setImageLoad] = useState(false);
@@ -153,6 +155,7 @@ const CommunityRegister = () => {
   const registerForm = () => {
     communityPostRegister({
       ...form,
+      tags,
       pictures: imageDatas.map(item => item.cloudImageName),
     })
       .then(response => {
@@ -222,9 +225,10 @@ const CommunityRegister = () => {
         kind: kind?.name ?? '',
         title: title ?? '',
         content: content ?? '',
-        tags: tagNameList ?? [],
         pictures: imageNameList ?? [],
       });
+
+      setTags(tagNameList);
 
       setImageDatas(
         (imageNameList ?? []).map(item => ({
@@ -293,15 +297,40 @@ const CommunityRegister = () => {
 
             <InputTopLabel text="태그" />
 
-            <VerificationForm
-              placeholder={`# 햄스터  # 케이지추천   # 꿀팁  # 나이트엔젤`}
-              marginBottom={'36px'}
-              onChangeText={text => {
-                setTag(text);
-                setForm(prev => ({...prev, tags: [text]}));
-              }}
-              value={tag}
-            />
+            <Pressable
+              onPress={() => {
+                navigation.navigate('TagRegister');
+              }}>
+              <HStack
+                height={'52px'}
+                flex={1}
+                space={'10px'}
+                borderBottomWidth={1}
+                py={'15px'}
+                mb={'8px'}
+                borderBottomColor={colors.grayScale[30]}>
+                {_.isEmpty(tags) ? (
+                  <>
+                    {['햄스터', '케이지추천', '꿀팁', '나이트엔젤'].map(tag => (
+                      <Text
+                        key={tag}
+                        fontSize={'15px'}
+                        color={colors.grayScale[40]}>
+                        #{tag}
+                      </Text>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {tags.map(tag => (
+                      <Text key={tag} fontSize={'15px'}>
+                        {tag}
+                      </Text>
+                    ))}
+                  </>
+                )}
+              </HStack>
+            </Pressable>
 
             <InputTopLabel text="내용" isNecessary />
 

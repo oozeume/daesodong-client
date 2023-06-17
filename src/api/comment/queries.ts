@@ -25,8 +25,7 @@ export const useGetCommentList = (
   query: GetCommentListQuery,
 ) => {
   return useInfiniteQuery(
-    [QueryKeys.comment.getComments],
-    // [QueryKeys.comment.getComments, query],
+    [QueryKeys.comment.getComments, postId, query.cursor],
     param => {
       return getCommentList(postId, param.pageParam ?? query);
     },

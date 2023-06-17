@@ -4,8 +4,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BestContents from '~/components/community/main/BestContents';
 import PetType from '~/components/community/main/PetType';
 import {colors} from '~/theme/theme';
-import DownIcon from '~/assets/icons/down.svg';
-import KekabMenu from '~/components/common/kekab/KekabMenu';
 import {FlatList} from 'react-native-gesture-handler';
 import CommunityContents from '../../components/community/main/CommunityContents';
 import {useGetCommunityPostList} from '~/api/community/queries';
@@ -15,6 +13,9 @@ import {Platform, StyleSheet} from 'react-native';
 import TooltipImage from '~/assets/images/tooltip_image.svg';
 import {NavigationHookProp} from '~/../types/navigator';
 import {useNavigation} from '@react-navigation/native';
+import {APP_HEIGHT} from '~/utils/dimension';
+import {TAB_HEIGHT} from '~/constants/style';
+import {useTagRegister} from '~/store/useTagContext';
 import FloatingButton from '~/components/common/button/FloatingButton';
 
 /**
@@ -31,11 +32,16 @@ const CommunityMain = () => {
 
   const [postList, setPostList] = useState<CommunityPost[]>([]);
 
+  const setTags = useTagRegister();
+
   useEffect(() => {
     setTimeout(() => {
       // 4초 후, 다음 콘텐츠로 보고 싶은 내용이 있다면 알려주세요 툴팁 지워짐
       setTooltipOpen(false);
     }, 4000);
+
+    // 등록, 수정에 따른 태그 폼 초기화
+    setTags([]);
   }, []);
 
   const {
@@ -89,43 +95,17 @@ const CommunityMain = () => {
 
   const pageComponents = [
     <BestContents />,
-    <PetType setPetType={setPetType} petType={petType} />,
-    <HStack
-      zIndex={1}
-      mb={'8px'}
-      height={'50px'}
-      bgColor={colors.grayScale[0]}
-      px={'18px'}
-      py={'16px'}
-      justifyContent={'space-between'}
-      alignItems={'center'}>
-      <Text color={colors.grayScale[70]}>
-        총{' '}
-        <Text color={colors.grayScale[70]} fontWeight={'700'}>
-          {totalPostsCount}
-        </Text>
-        개의 이야기
-      </Text>
-
-      <KekabMenu
-        pressableIcon={
-          <HStack space={'2px'} alignItems={'center'}>
-            <Text>최신순</Text>
-            <DownIcon />
-          </HStack>
-        }
-        left={'-18px'}
-        top={'16px'}
-        firstButtonName={'최신순'}
-        secondButtonName={'인기순'}
-        handleFirstButton={() => setSort('latest')}
-        handleSecondButton={() => setSort('view')}
-      />
-    </HStack>,
+    // <PetType setPetType={setPetType} petType={petType} />,
+    // <MainFilter totalPostsCount={0} setSort={setSort} />,
     <CommunityContents contentsList={postList} />,
   ];
   return (
-    <SafeAreaView edges={['top', 'left', 'right']}>
+    <SafeAreaView
+      edges={['top', 'left', 'right']}
+      style={{
+        height: APP_HEIGHT - TAB_HEIGHT,
+        backgroundColor: colors.grayScale[0],
+      }}>
       <FlatList
         disableVirtualization={false}
         bounces={false}
@@ -153,8 +133,8 @@ const CommunityMain = () => {
 const styles = StyleSheet.create({
   floatingButtonImage: {
     position: 'absolute',
-    bottom: Platform.OS === 'android' ? 20 : 52,
-    right: 18,
+    bottom: Math.floor((APP_HEIGHT - TAB_HEIGHT) * 0.05),
+    right: 22,
     zIndex: 99,
   },
 

@@ -16,6 +16,7 @@ import {colors} from '~/theme/theme';
 import FacilityMain from '~/pages/facility/main';
 import MyPage from '~/pages/mypage';
 import CommunityMain from '~/pages/community';
+import {TAB_HEIGHT} from '~/constants/style';
 
 export const TAB_BAR_HEIGHT = 98;
 
@@ -31,7 +32,7 @@ const TabNavigator = () => {
           backgroundColor: '#FFFFFF',
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          height: TAB_BAR_HEIGHT,
+          height: TAB_HEIGHT,
         },
         tabBarAllowFontScaling: false,
         tabBarActiveTintColor: colors.fussOrange[0],
