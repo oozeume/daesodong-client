@@ -55,7 +55,7 @@ export const useGetMainContents = (query: ContetnsQueryType) => {
  */
 
 const getContentDetail = (id: string) => {
-  return apiCall<ContentsResponse>({
+  return apiCall<GetContentsResponse>({
     method: 'GET',
     url: `/content/search/one?contentId=${id}`,
   });

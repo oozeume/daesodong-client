@@ -36,24 +36,24 @@ const ContentsReivewView = ({content}: Props) => {
     content.id,
   );
 
+  const reactHelpful = () => {
+    reactContents({
+      isHelp: true,
+      reason: '',
+    }).then(() => setHelpful(true));
+  };
+
   const onHelpful = () => {
-    if (isHelpful) {
-      onReactCancel(isHelpful);
+    if (isHelpful === false) {
+      cancelReactContents(isHelpful).then(() => {
+        reactHelpful();
+      });
     } else {
-      reactContents({
-        isHelp: true,
-        reason: '',
-      }).then(() => setHelpful(true));
+      reactHelpful();
     }
   };
 
-  const onReactCancel = (_isHelpful: boolean) => {
-    cancelReactContents(_isHelpful).then(() => {
-      setHelpful(undefined);
-    });
-  };
-
-  const onDisappoint = (text: string) => {
+  const reactDisappoint = (text: string) => {
     reactContents({
       isHelp: false,
       reason: text,
@@ -62,18 +62,13 @@ const ContentsReivewView = ({content}: Props) => {
     });
   };
 
-  const onDisappointClick = () => {
+  const onDisappoint = (text: string) => {
     if (isHelpful) {
       cancelReactContents(isHelpful).then(() => {
-        setHelpful(undefined);
-        onOpen();
+        reactDisappoint(text);
       });
     } else {
-      if (isHelpful === false) {
-        onReactCancel(isHelpful);
-      } else {
-        onOpen();
-      }
+      reactDisappoint(text);
     }
   };
 
@@ -126,7 +121,7 @@ const ContentsReivewView = ({content}: Props) => {
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            disabled={isHelpful === false}
+            disabled={isHelpful}
             onPress={onHelpful}>
             <Text
               color={
@@ -153,8 +148,8 @@ const ContentsReivewView = ({content}: Props) => {
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            disabled={isHelpful}
-            onPress={onDisappointClick}>
+            disabled={isHelpful === false}
+            onPress={onOpen}>
             <Text
               color={
                 isHelpful === false
