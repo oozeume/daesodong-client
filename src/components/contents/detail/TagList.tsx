@@ -17,11 +17,11 @@ const TagList = ({list}: Props) => {
         <Center
           key={i.toString()}
           mr="6px"
-          bgColor={colors.grayScale['60']}
+          bgColor={colors.grayScale['20']}
           px="6px"
           py="1px"
           borderRadius={4}>
-          <Text fontSize={'12px'} color={colors.grayScale['0']}>
+          <Text fontSize={'12px'} color={colors.grayScale['70']}>
             {item}
           </Text>
         </Center>

@@ -82,7 +82,9 @@ const ContentsMain = () => {
         renderItem={({item, index}) => {
           return (
             <ContentItem
-              onPress={() => navigation.navigate('ContentsDetail')}
+              onPress={() =>
+                navigation.navigate('ContentsDetail', {id: item.id})
+              }
               item={item}
               style={{
                 marginBottom: index === contentsList.length - 1 ? 20 : 8,

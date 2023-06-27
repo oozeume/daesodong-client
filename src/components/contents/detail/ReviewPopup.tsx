@@ -17,7 +17,7 @@ import _ from 'lodash';
 interface Props {
   visible: boolean;
   onCancel: () => void;
-  onOK: (text: string) => Promise<any>;
+  onOK: (text: string) => Promise<any> | void;
   title: string;
   exampleTextList: string[];
   placeholder: string;
@@ -53,9 +53,8 @@ function ReviewPopup({
   };
 
   const requestContents = () => {
-    onOK(message).then(() => {
-      onClose();
-    });
+    onOK(message);
+    onClose();
   };
 
   return (

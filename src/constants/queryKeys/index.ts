@@ -29,6 +29,7 @@ const QueryKeys = {
     deleteRecomment: 'delete recomment',
   },
   contents: {
+    content: 'content',
     mainContents: 'main contents',
     contents: 'contents',
   },

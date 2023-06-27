@@ -49,3 +49,24 @@ export const useGetMainContents = (query: ContetnsQueryType) => {
     },
   });
 };
+
+/**
+ *@description 컨텐츠 상세 API
+ */
+
+const getContentDetail = (id: string) => {
+  return apiCall<GetContentsResponse>({
+    method: 'GET',
+    url: `/content/search/one?contentId=${id}`,
+  });
+};
+
+export const useGetContentDetail = (id: string) => {
+  return useQuery({
+    queryKey: [QueryKeys.contents.content],
+    queryFn: () => {
+      return getContentDetail(id);
+    },
+    onError: e => console.log(e),
+  });
+};
