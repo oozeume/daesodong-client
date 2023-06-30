@@ -6,9 +6,9 @@ import {useGetLocation} from '~/api/facility/queries';
 import Geolocation from 'react-native-geolocation-service';
 import {hangjungdong} from '~/utils/hangjungdong';
 import {CoordinateType, LocationInfoType} from '~/../types/facility';
-import {PERMISSIONS, RESULTS, check} from 'react-native-permissions';
 import {Alert, Platform, PermissionsAndroid} from 'react-native';
 import {SetState} from '~/../types/common';
+import usePermissions from '~/hooks/usePermissions';
 
 interface Props {
   onPress: () => void;
@@ -37,6 +37,8 @@ function LocationSearch({
     coordinate,
     coordinate.latitude !== 0 && coordinate.longitude !== 0,
   );
+
+  const isGranted = usePermissions();
 
   useEffect(() => {
     if (locationInfo) {
@@ -73,36 +75,21 @@ function LocationSearch({
   };
 
   useEffect(() => {
-    const platformPermissions =
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.LOCATION_ALWAYS
-        : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-
-    const locationPermission = async () => {
-      try {
-        const result = await check(platformPermissions);
-
-        if (result !== RESULTS.GRANTED) {
-          if (Platform.OS === 'ios') {
-            Geolocation.requestAuthorization('always').then(() => {
-              getCurrentLocation();
-            });
-          } else {
-            PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            ).then(() => {
-              getCurrentLocation();
-            });
-          }
-        } else {
+    if (isGranted) {
+      getCurrentLocation();
+    } else {
+      if (Platform.OS === 'ios') {
+        Geolocation.requestAuthorization('always').then(() => {
           getCurrentLocation();
-        }
-      } catch {
-        Alert.alert('앱을 다시 실행해주세요.');
+        });
+      } else {
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        ).then(() => {
+          getCurrentLocation();
+        });
       }
-    };
-
-    locationPermission();
+    }
   }, []);
 
   if (!locationInfo) {

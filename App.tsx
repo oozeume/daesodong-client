@@ -10,6 +10,7 @@ import {PermissionsAndroid, Platform} from 'react-native';
 import {config} from '~/utils/config';
 import Geolocation from 'react-native-geolocation-service';
 import {removeSecurityData, setSecurityData} from '~/utils/storage';
+import usePermissions from '~/hooks/usePermissions';
 
 if (__DEV__) {
   import('react-query-native-devtools').then(({addPlugin}) => {
@@ -32,17 +33,21 @@ GoogleSignin.configure({
 });
 
 const App = () => {
+  const isGranted = usePermissions();
+
   useEffect(() => {
     // removeSecurityData(config.ACCESS_TOKEN_NAME);
     // removeSecurityData(config.REFRESH_TOKEN_NAME);
     SplashScreen.hide();
 
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization('always');
-    } else {
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
+    if (!isGranted) {
+      if (Platform.OS === 'ios') {
+        Geolocation.requestAuthorization('always');
+      } else {
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+      }
     }
   }, []);
 
