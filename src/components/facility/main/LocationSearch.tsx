@@ -55,6 +55,23 @@ function LocationSearch({
     }
   }, [locationInfo]);
 
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCoordinate({
+          latitude,
+          longitude,
+        });
+      },
+      error => {
+        Alert.alert('앱을 다시 실행해주세요.');
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+
   useEffect(() => {
     const platformPermissions =
       Platform.OS === 'ios'
@@ -67,27 +84,18 @@ function LocationSearch({
 
         if (result !== RESULTS.GRANTED) {
           if (Platform.OS === 'ios') {
-            Geolocation.requestAuthorization('always');
+            Geolocation.requestAuthorization('always').then(() => {
+              getCurrentLocation();
+            });
           } else {
             PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            );
+            ).then(() => {
+              getCurrentLocation();
+            });
           }
         } else {
-          Geolocation.getCurrentPosition(
-            position => {
-              const {latitude, longitude} = position.coords;
-              setCoordinate({
-                latitude,
-                longitude,
-              });
-            },
-            error => {
-              Alert.alert('앱을 다시 실행해주세요.');
-              console.log(error.code, error.message);
-            },
-            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-          );
+          getCurrentLocation();
         }
       } catch {
         Alert.alert('앱을 다시 실행해주세요.');
