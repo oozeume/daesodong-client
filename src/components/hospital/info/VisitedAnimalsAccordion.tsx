@@ -3,6 +3,7 @@ import {Center, Flex, Text} from 'native-base';
 
 import {colors} from '~/theme/theme';
 import Species from '~/model/species';
+import _ from 'lodash';
 
 interface Props {
   visitedAnimals: Species[];
@@ -17,11 +18,8 @@ interface Props {
 
 function VisitedAnimalsAccordion({visitedAnimals, allSpecies}: Props) {
   const visitedSpeciesCount = (speciesId: string) => {
-    if (visitedAnimals.map(i => i.id).includes(speciesId)) {
-      return visitedAnimals.filter(i => i.id === speciesId)[0].count;
-    } else {
-      return 0;
-    }
+    const visitedspecies = visitedAnimals.filter(i => i.id === speciesId);
+    return _.isEmpty(visitedspecies) ? 0 : visitedspecies[0].count;
   };
 
   return (
