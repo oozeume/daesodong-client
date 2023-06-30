@@ -1,6 +1,5 @@
 import {Box, HStack, Stack, Text, View} from 'native-base';
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import CommunityContent from '~/components/community/detail/Content';
 import AvatarIcon from '~/assets/icons/avartar.svg';
 import {colors} from '~/theme/theme';
@@ -8,6 +7,7 @@ import ListFilterHeader from '~/components/common/ListFilterHeader';
 import ListCategoryHeader from '~/components/common/ListCategoryHeader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CommunityPost from '~/model/communityPost';
+import FlatList from '~/components/common/flatList/FlatList';
 
 /**
  *@description 내 계정 - 내가 작성한 게시글
