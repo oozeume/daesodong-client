@@ -103,6 +103,8 @@ function EmailLogin() {
         password: '비밀번호를 확인해주세요.',
       }));
 
+    if (postAuthEmailLogin.isLoading) return;
+
     const response = await postAuthEmailLogin.mutateAsync(loginForm, {
       onError: error => {
         const data = error as unknown as ErrorResponseTransform;
