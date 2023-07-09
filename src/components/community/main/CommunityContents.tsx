@@ -4,8 +4,8 @@ import React from 'react';
 import {RouteList} from '~/../types/navigator';
 import CommunityContent from '~/components/community/detail/Content';
 import {colors} from '~/theme/theme';
-import {FlatList} from 'react-native-gesture-handler';
 import CommunityPost from '~/model/communityPost';
+import FlatList from '~/components/common/flatList/FlatList';
 
 interface Props {
   contentsList?: CommunityPost[];

@@ -4,7 +4,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BestContents from '~/components/community/main/BestContents';
 import PetType from '~/components/community/main/PetType';
 import {colors} from '~/theme/theme';
-import {FlatList} from 'react-native-gesture-handler';
 import CommunityContents from '../../components/community/main/CommunityContents';
 import {useGetCommunityPostList} from '~/api/community/queries';
 import {usePostCoummunityPostCount} from '~/api/community/mutation';
@@ -17,6 +16,7 @@ import {APP_HEIGHT} from '~/utils/dimension';
 import {TAB_HEIGHT} from '~/constants/style';
 import {useTagRegister} from '~/store/useTagContext';
 import FloatingButton from '~/components/common/button/FloatingButton';
+import FlatList from '~/components/common/flatList/FlatList';
 
 /**
  *@description 커뮤니티 메인페이지
@@ -122,7 +122,6 @@ const CommunityMain = () => {
           );
         }}
       />
-
       {isTooltipOpen && <TooltipImage style={styles.tooltipImage} />}
 
       <FloatingButton onPress={() => navigate('CommunityRegister')} />

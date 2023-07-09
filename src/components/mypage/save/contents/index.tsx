@@ -1,12 +1,13 @@
 import {HStack, Square, Stack, Text, View} from 'native-base';
 import React, {useState} from 'react';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import FilterButton from '~/components/contents/main/FilterButton';
 import {colors} from '~/theme/theme';
 import ViewFillICon from '~/assets/icons/view_fill.svg';
 import BookmarkFillIcon from '~/assets/icons/bookmark_fill_14.svg';
 import {StyleSheet} from 'react-native';
 import {APP_WIDTH} from '~/utils/dimension';
+import FlatList from '~/components/common/flatList/FlatList';
 
 /**
  *@description 내 계정 > 저장 - 콘텐츠 Tab

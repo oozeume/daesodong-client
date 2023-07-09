@@ -1,7 +1,7 @@
 import {Stack, useDisclose} from 'native-base';
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import FlatList from '~/components/common/flatList/FlatList';
 import InquiryHeader from '~/components/mypage/inquiry/InquiryHeader';
 import InquiryItem from '~/components/mypage/inquiry/InquiryItem';
 import InquiryRegisterModal from '~/components/mypage/inquiry/InquiryRegisterModal';
