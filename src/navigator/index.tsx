@@ -51,7 +51,8 @@ import BlockedAccounts from '~/pages/mypage/blockedAccounts';
 import FacilityRecommendation from '~/pages/mypage/facilityRecommendation';
 import SignupSocialNavigator from '~/pages/signup/socialNavigator';
 import useToastShow from '~/hooks/useToast';
-import {BackHandler} from 'react-native';
+import {BackHandler, TextInput} from 'react-native';
+import useFixFontSize from '~/hooks/useFixFontSize';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -59,6 +60,7 @@ const AppNavigator = () => {
   const doubleClickTimeoutCheckRef = useRef<number | null>(null);
   const doubleClickRef = useRef(false);
   const {toastShow} = useToastShow();
+  useFixFontSize(); // 글자 크기 고정
 
   // 뒤로가기 두 번시, 앱 종료 이벤트
   const onDoubleClickBackButton = () => {
