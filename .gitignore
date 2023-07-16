@@ -70,3 +70,6 @@ buck-out/
 .vscode/settings.json
 
 .vscode
+
+android-release-key-enroll.png
+/android/gradle.properties
