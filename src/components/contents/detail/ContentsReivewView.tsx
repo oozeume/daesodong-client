@@ -1,24 +1,101 @@
-import {Box, Center, HStack, Pressable, Text} from 'native-base';
-import React, {useState} from 'react';
+import {Box, Center, HStack, Pressable, Text, useDisclose} from 'native-base';
+import React, {useEffect, useMemo, useState} from 'react';
+import {
+  useDeleteReactedContents,
+  useReactedContents,
+} from '~/api/contents/mutation';
+import {useGetUser} from '~/api/user/queries';
 import ContentDetailReviewImage from '~/assets/images/content_detail_review_image.svg';
+import Content from '~/model/content';
 import {colors} from '~/theme/theme';
+import ReviewPopup from './ReviewPopup';
 
 interface Props {
-  onOpenModal: () => void;
+  content: Content;
 }
 
 /**
  *@description 컨텐츠 리뷰 뷰
  */
-const ContentsReivewView = ({onOpenModal}: Props) => {
-  // 도움이 되었어요 버튼 on/off state
-  const [isHelpfulContent, setHelpfulContent] = useState(false);
+const ContentsReivewView = ({content}: Props) => {
+  const {data: userData} = useGetUser();
+  const {isOpen, onOpen, onClose} = useDisclose();
 
-  // 쪼금 아쉬워요 버튼 on/off state
-  const [isDisappointContent, setDisappointContent] = useState(false);
+  const [isHelpful, setHelpful] = useState<boolean | undefined>(undefined);
+
+  const userId = useMemo(() => {
+    if (userData) {
+      return userData.id;
+    } else {
+      return '';
+    }
+  }, [userData]);
+
+  const {mutateAsync: reactContents} = useReactedContents(content.id);
+  const {mutateAsync: cancelReactContents} = useDeleteReactedContents(
+    content.id,
+  );
+
+  const reactHelpful = () => {
+    reactContents({
+      isHelp: true,
+      reason: '',
+    }).then(() => setHelpful(true));
+  };
+
+  const onHelpful = () => {
+    if (isHelpful === false) {
+      cancelReactContents(isHelpful).then(() => {
+        reactHelpful();
+      });
+    } else {
+      reactHelpful();
+    }
+  };
+
+  const reactDisappoint = (text: string) => {
+    reactContents({
+      isHelp: false,
+      reason: text,
+    }).then(() => {
+      setHelpful(false);
+    });
+  };
+
+  const onDisappoint = (text: string) => {
+    if (isHelpful) {
+      cancelReactContents(isHelpful).then(() => {
+        reactDisappoint(text);
+      });
+    } else {
+      reactDisappoint(text);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      content.hasEstimation(userId)
+        ? setHelpful(content.isHelpful(userId))
+        : setHelpful(undefined);
+    }
+  }, [userId, content]);
 
   return (
     <Box mb="120px" px="18px">
+      <ReviewPopup
+        visible={isOpen}
+        onOK={onDisappoint}
+        onCancel={onClose}
+        title={'무엇이 아쉬우셨나요?🥲'}
+        exampleTextList={[
+          '소개한 내용의 예시를 더 자세히 알고 싶어요!',
+          '다른 동물에 관련된 정보고 알고 싶어요!',
+        ]}
+        placeholder={
+          '콘텐츠를 읽으면서 궁금했던 점을 알려주시면 대소동팀이 더 열심히 공부해서 알려드릴게요.'
+        }
+      />
+
       <Center>
         <ContentDetailReviewImage />
 
@@ -37,24 +114,18 @@ const ContentsReivewView = ({onOpenModal}: Props) => {
             h={'50px'}
             mr="8px"
             bgColor={
-              isHelpfulContent
-                ? colors.fussOrange['-40']
-                : colors.grayScale['0']
+              isHelpful ? colors.fussOrange['-40'] : colors.grayScale['0']
             }
             borderColor={
-              isHelpfulContent ? colors.fussOrange['0'] : colors.grayScale['30']
+              isHelpful ? colors.fussOrange['0'] : colors.grayScale['30']
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            onPress={() => {
-              setHelpfulContent(true);
-              setDisappointContent(false);
-            }}>
+            disabled={isHelpful}
+            onPress={onHelpful}>
             <Text
               color={
-                isHelpfulContent
-                  ? colors.fussOrange['0']
-                  : colors.grayScale['50']
+                isHelpful ? colors.fussOrange['0'] : colors.grayScale['50']
               }
               lineHeight={'52px'}
               textAlign={'center'}>
@@ -66,25 +137,22 @@ const ContentsReivewView = ({onOpenModal}: Props) => {
             flex={1}
             h={'50px'}
             bgColor={
-              isDisappointContent
+              isHelpful === false
                 ? colors.fussOrange['-40']
                 : colors.grayScale['0']
             }
             borderColor={
-              isDisappointContent
+              isHelpful === false
                 ? colors.fussOrange['0']
                 : colors.grayScale['30']
             }
             borderWidth={'1px'}
             borderRadius={'8px'}
-            onPress={() => {
-              setDisappointContent(true);
-              setHelpfulContent(false);
-              onOpenModal();
-            }}>
+            disabled={isHelpful === false}
+            onPress={onOpen}>
             <Text
               color={
-                isDisappointContent
+                isHelpful === false
                   ? colors.fussOrange['0']
                   : colors.grayScale['50']
               }
