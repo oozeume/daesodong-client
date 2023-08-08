@@ -14,15 +14,16 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   images: string[];
+  currentIndex: number;
 }
 
 /**
  *@description 시설 리뷰 > 이미지 모달
  */
 
-function ImageModal({images, isOpen, onClose}: Props) {
-  const ref = useRef<Swiper | null>(null);
-  const [index, setIndex] = useState(1);
+function ImageModal({images, isOpen, onClose, currentIndex}: Props) {
+  const ref = useRef<any>();
+  const [index, setIndex] = useState(currentIndex + 1);
   const [imageWidth, setImageWidth] = useState(0);
 
   const onPrev = () => {
@@ -55,17 +56,18 @@ function ImageModal({images, isOpen, onClose}: Props) {
           <Swiper
             ref={ref}
             onIndexChanged={i => setIndex(i + 1)}
+            from={currentIndex}
             controlsEnabled={false}
             containerStyle={{
               width: APP_WIDTH - MARGIN_X * 2,
               height: APP_WIDTH - MARGIN_X * 2,
             }}>
-            {images?.map(i => (
+            {images.map((i, _index) => (
               <Image
                 width={APP_WIDTH - MARGIN_X * 2}
                 height={APP_WIDTH - MARGIN_X * 2}
                 key={i}
-                alt={'review_image'}
+                alt={i}
                 source={{
                   uri: `${config.IMAGE_BASE_URL}${i}`,
                 }}

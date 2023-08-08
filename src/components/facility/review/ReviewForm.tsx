@@ -79,8 +79,8 @@ function ReviewForm({
     navigation.navigate('HospitalReviewRegisterPrecaution');
   };
   return (
-    <KeyboardAwareScrollView bounces={false}>
-      <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white'}}>
+      <KeyboardAwareScrollView bounces={false}>
         <ScrollView backgroundColor={colors.grayScale['0']}>
           <HospitalName text={facilityName ?? ''} onPress={onClose} />
 
@@ -297,8 +297,8 @@ function ReviewForm({
             </FormControl>
           </VStack>
         </ScrollView>
-      </SafeAreaView>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 

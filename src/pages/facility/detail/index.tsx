@@ -40,13 +40,13 @@ function FacilityDetail({route}: Props) {
         initialRouteName="Facility">
         <FaciltiyTab.Screen
           name={'FacilityInfo'}
-          component={() => <FacilityInfo id={id} />}
+          children={() => <FacilityInfo id={id} />}
           options={{title: '시설 정보'}}
         />
         <FaciltiyTab.Screen
           name={'FacilityReview'}
           initialParams={{id: id}}
-          component={() => (
+          children={() => (
             <FacilityReview id={id} facilityName={facilityName ?? ''} />
           )}
           options={{title: '후기'}}

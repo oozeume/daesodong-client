@@ -4,7 +4,7 @@
 
 export interface FacilityBaseType {
   id: string;
-  hospitalCategoryId: string;
+  hospitalCategoryId?: string;
   name: string;
   phone: string;
   address1: string;
@@ -197,7 +197,7 @@ export interface FacilityItem extends FacilityBaseType {
 
 export type FacilityListType = {
   id: string;
-  hospitalCategoryId: string;
+  hospitalCategoryId?: string;
   name: string;
   phone: string;
   address1: string;
@@ -223,11 +223,10 @@ export type FacilityListType = {
   score_total: number;
   created_at: string;
   updated_at: string;
-  hospital_picture: {
-    id: string;
-    name: string;
+  hospital_picture?: {
+    id?: string;
+    name?: string;
   }[];
-  // TODO: api 수정후 옵셔널 처리 해제
   score_avg?: number;
 };
 
@@ -261,3 +260,19 @@ type FacilitySortBy = keyof typeof FacilitySortType;
 type FacilityTypeBy = keyof typeof FacilityType;
 
 export type FilterTypes = FacilitySortBy | FacilityTypeBy;
+
+export interface MyReportResponse {
+  whoIRepoert: MyReport[];
+}
+
+export interface MyReport {
+  check_admin: boolean;
+  created_at: string;
+  id: number;
+  reason: string;
+  reportUserId: string;
+  suspectUserId: string;
+  updated_at: string;
+}
+
+export type PostReportData = {suspectUserId: string; reason: string};

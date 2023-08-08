@@ -16,7 +16,11 @@ class Facility {
   }
 
   get representativeImage() {
-    return this.facility.hospital_picture[0]?.picture_url ?? '';
+    if (this.facility.hospital_picture) {
+      return this.facility.hospital_picture[0]?.picture_url ?? '';
+    } else {
+      return '';
+    }
   }
 
   get averageScore() {
@@ -41,7 +45,7 @@ class Facility {
 
   get openingHours() {
     return [
-      {date: '월 - 금', time: this.facility.sch_mon ?? ''},
+      {date: '월-금', time: this.facility.sch_mon ?? ''},
       {date: '토', time: this.facility.sch_sat ?? ''},
       {date: '일', time: this.facility.sch_sun ?? ''},
       {date: '공휴일', time: this.facility.sch_holy ?? ''},

@@ -8,6 +8,7 @@ import {useGetFacilityReviews} from '~/api/facility/queries';
 import HeartFillIcon from '~/assets/icons/heart_fill.svg';
 import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
 import Review from '~/model/facilityReview';
+import {colors} from '~/theme/theme';
 
 interface Props {
   review: Review;
@@ -61,8 +62,8 @@ function ThanksReview({review}: Props) {
       borderTopWidth={'1'}
       borderTopColor={'#F6F7F7'}>
       <HeartFillIcon
-        fill={isThanks ? '#FF6B00' : '#E1E2E4'}
-        stroke={'#E1E2E4'}
+        fill={isThanks ? colors.fussOrange[0] : colors.grayScale[30]}
+        stroke={isThanks ? colors.fussOrange[0] : colors.grayScale[30]}
         onPress={onPress}
       />
       <Text color={'grayScale.60'}>

@@ -6,6 +6,7 @@ import {
   FacilityResponse,
   FacilityReviewsResponse,
   GetFacilityListQuery,
+  MyReportResponse,
   VisitedFacilityResponse,
   FacilityItem,
 } from '~/../types/api/facility';
@@ -245,5 +246,23 @@ export const useCoordinate = (location: string) => {
     queryFn: () => {
       return getCoordinate(location);
     },
+  });
+};
+
+/**
+ *@description 신고당한 이력 확인
+ */
+
+const getMyReports = () => {
+  return apiCall<MyReportResponse>({
+    method: 'GET',
+    url: '/report-user/my_report',
+  });
+};
+
+export const useGetMyReports = () => {
+  return useQuery({
+    queryKey: ['my report'],
+    queryFn: () => getMyReports(),
   });
 };

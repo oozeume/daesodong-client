@@ -29,7 +29,7 @@ function TagRegister() {
     if (tags === tagList) {
       navigation.goBack();
     } else {
-      setTags(tagList.map(tag => (tag.includes('#') ? tag : `#${tag}`)));
+      setTags(tagList.map(tag => (tag.includes('#') ? tag : `# ${tag}`)));
       navigation.goBack();
     }
   };

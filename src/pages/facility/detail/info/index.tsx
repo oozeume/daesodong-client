@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Linking, Pressable} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Pressable} from 'react-native';
 import {
   AspectRatio,
   Box,
@@ -11,6 +11,7 @@ import {
   Spinner,
   Stack,
   Text,
+  useDisclose,
   VStack,
 } from 'native-base';
 import Swiper from 'react-native-swiper';
@@ -32,6 +33,7 @@ import FacilityInfoFooter from '~/components/hospital/info/HospitalInfoFooter';
 import WebView from 'react-native-webview';
 import {imageHeight} from '~/utils/imageHeight';
 import {APP_WIDTH} from '~/utils/dimension';
+import ImageModal from '~/components/hospital/review/ImageModal';
 
 interface Props {
   id: string;
@@ -48,21 +50,30 @@ function FacilityInfo({id}: Props) {
   const [facilityInfo, setFacilityInfo] = useState<Facility>();
 
   const mapRef = useRef<WebView | null>(null);
+  const swiperRef = useRef<any>(null);
 
   const {data, isLoading, refetch} = useGetFacilityInfo(id);
+  const {
+    isOpen: isImageModalOpen,
+    onOpen: imageModalOpen,
+    onClose: onImageModalClose,
+  } = useDisclose();
 
   const handleIntroOpen = () => setTextOpen(prev => !prev);
 
-  const onMoveMap = (coordinates: {latitude: number; longitude: number}) => {
-    mapRef.current?.postMessage(
-      JSON.stringify({
-        success: true,
-        type: 'move',
-        isDebug: true,
-        data: coordinates,
-      }),
-    );
-  };
+  const onMoveMap = useCallback(
+    (coordinates: {latitude: number; longitude: number}) => {
+      mapRef.current?.postMessage(
+        JSON.stringify({
+          success: true,
+          type: 'move',
+          isDebug: true,
+          data: coordinates,
+        }),
+      );
+    },
+    [mapRef],
+  );
 
   useEffect(() => {
     if (data) {
@@ -76,27 +87,39 @@ function FacilityInfo({id}: Props) {
 
   return (
     <>
+      {isImageModalOpen && (
+        <ImageModal
+          images={facilityInfo?.images ?? []}
+          isOpen={isImageModalOpen}
+          onClose={onImageModalClose}
+          currentIndex={swiperRef.current?.state.index ?? 0}
+        />
+      )}
+
       {facilityInfo && (
         <Stack flex={1}>
           <VStack alignItems="center" flex={1} backgroundColor={'white'}>
             <ScrollView>
-              <Center backgroundColor={colors.grayScale[20]}>
-                <Swiper
-                  height={imageHeight(IMAGE_RATIO, APP_WIDTH)}
-                  dotColor={colors.scrim[60]}
-                  activeDotColor={colors.fussOrange[0]}
-                  loop={false}>
-                  {facilityInfo.images.map(image => (
-                    <AspectRatio key={image} ratio={IMAGE_RATIO}>
+              {/* TODO: 이미지 스와이퍼 공통 모듈로 리팩토링 */}
+              <Swiper
+                ref={swiperRef}
+                style={{backgroundColor: colors.grayScale[20]}}
+                height={imageHeight(IMAGE_RATIO, APP_WIDTH)}
+                dotColor={colors.scrim[60]}
+                activeDotColor={colors.fussOrange[0]}
+                loop={false}>
+                {facilityInfo.images.map(image => (
+                  <AspectRatio key={image} ratio={IMAGE_RATIO}>
+                    <Pressable onPress={imageModalOpen}>
                       <Image
                         source={{uri: image}}
                         height={imageHeight(IMAGE_RATIO, APP_WIDTH)}
                         alt={image}
                       />
-                    </AspectRatio>
-                  ))}
-                </Swiper>
-              </Center>
+                    </Pressable>
+                  </AspectRatio>
+                ))}
+              </Swiper>
 
               {/* 시설 방문 기록 */}
               <Center flex={1}>
@@ -149,20 +172,13 @@ function FacilityInfo({id}: Props) {
 
               {/* 시설 전화번호 */}
               <HospitalInfoContents icon={<CallFillIcon />}>
-                <Pressable
-                  onPress={() => {
-                    Linking.openURL('tel:02-305-4242');
-                  }}>
-                  <Text
-                    fontSize={13}
-                    textAlign={'left'}
-                    color={colors.positive[0]}
-                    textDecoration={'solid'}
-                    textDecorationLine={'underline'}
-                    textDecorationColor={colors.positive[0]}>
-                    {facilityInfo.phoneNumber}
-                  </Text>
-                </Pressable>
+                <Text
+                  fontSize={14}
+                  textAlign={'left'}
+                  color={colors.grayScale[70]}
+                  textDecoration={'solid'}>
+                  {facilityInfo.phoneNumber}
+                </Text>
               </HospitalInfoContents>
 
               {/* 시설 정보 */}

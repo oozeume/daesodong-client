@@ -3,9 +3,11 @@ import {Center, Flex, Text} from 'native-base';
 
 import {colors} from '~/theme/theme';
 import Species from '~/model/species';
+import _ from 'lodash';
 
 interface Props {
   visitedAnimals: Species[];
+  allSpecies: Species[];
 }
 
 /**
@@ -14,7 +16,12 @@ interface Props {
  * @TODO API 연동 후 타입 및 데이터 변경
  */
 
-function VisitedAnimalsAccordion({visitedAnimals}: Props) {
+function VisitedAnimalsAccordion({visitedAnimals, allSpecies}: Props) {
+  const visitedSpeciesCount = (speciesId: string) => {
+    const visitedspecies = visitedAnimals.filter(i => i.id === speciesId);
+    return _.isEmpty(visitedspecies) ? 0 : visitedspecies[0].count;
+  };
+
   return (
     <Center>
       <Flex
@@ -23,7 +30,7 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
         flexDirection={'row'}
         flexWrap={'wrap'}
         justifyContent={'space-between'}>
-        {visitedAnimals.map((pet) => (
+        {allSpecies.map(pet => (
           <Flex
             key={pet.id}
             w={'149.5px'}
@@ -47,7 +54,7 @@ function VisitedAnimalsAccordion({visitedAnimals}: Props) {
               fontWeight={'400'}
               color={colors.grayScale[70]}
               textAlign={'center'}>
-              {pet.count}
+              {visitedSpeciesCount(pet.id)}
             </Text>
           </Flex>
         ))}
