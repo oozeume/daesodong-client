@@ -1,6 +1,7 @@
 import {Center, Pressable, Text} from 'native-base';
 import React from 'react';
 import {Platform, StyleSheet} from 'react-native';
+import {TAB_BAR_HEIGHT} from '~/navigator/tab/tabNavigator';
 import {colors} from '~/theme/theme';
 import {APP_WIDTH} from '~/utils/dimension';
 
@@ -24,7 +25,7 @@ function ListViewChangeButton({icon, onPress, name}: Props) {
       px={'16px'}
       py="8px"
       position={'absolute'}
-      bottom={Platform.OS === 'ios' ? '110px' : '64px'}
+      bottom={Platform.OS === 'ios' ? TAB_BAR_HEIGHT + 16 : TAB_BAR_HEIGHT + 36}
       style={styles.shadow}
       left={Math.floor(APP_WIDTH * 0.5 - buttonLeftValue)}
       bgColor={colors.grayScale[0]}>

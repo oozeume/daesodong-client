@@ -63,6 +63,8 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-daesodong-daesodongTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-daesodong-daesodongTests.release.xcconfig"; path = "Target Support Files/Pods-daesodong-daesodongTests/Pods-daesodong-daesodongTests.release.xcconfig"; sourceTree = "<group>"; };
 		8CB9A814AB6CDE71EAC026F0 /* libPods-daesodong.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-daesodong.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F16FEE6629D81B8C008B2D86 /* daesodong-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "daesodong-Bridging-Header.h"; sourceTree = "<group>"; };
+		F16FEE6729D81B8D008B2D86 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				134160CA296FA778000E1F54 /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				F16FEE6729D81B8D008B2D86 /* File.swift */,
+				F16FEE6629D81B8C008B2D86 /* daesodong-Bridging-Header.h */,
 			);
 			name = daesodong;
 			sourceTree = "<group>";
@@ -252,7 +256,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1400;
 					};
 				};
 			};
@@ -459,6 +463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				F16FEE6829D81B8D008B2D86 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,6 +483,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-daesodong-daesodongTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -505,6 +511,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-daesodong-daesodongTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = daesodongTests/Info.plist;
@@ -548,6 +555,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.daesodong;
 				PRODUCT_NAME = daesodong;
+				SWIFT_OBJC_BRIDGING_HEADER = "daesodong-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -576,6 +584,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.daesodong;
 				PRODUCT_NAME = daesodong;
+				SWIFT_OBJC_BRIDGING_HEADER = "daesodong-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

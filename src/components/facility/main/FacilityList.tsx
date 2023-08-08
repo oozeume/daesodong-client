@@ -1,46 +1,39 @@
-import {
-  Box,
-  Center,
-  FlatList,
-  Pressable,
-  Spinner,
-  Text,
-  View,
-} from 'native-base';
+import {Box, Center, FlatList, Pressable, Text, View} from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {colors} from '~/theme/theme';
 import {APP_HEIGHT} from '~/utils/dimension';
 import MapIcon from '~/assets/icons/map.svg';
 import MapViewIcon from '~/assets/icons/map_view.svg';
 import ListViewChangeButton from './ListViewChangeButton';
-import {useGetFacilityList} from '~/api/facility/queries';
 import Facility from '~/model/facility';
 import FacilityItem from './FacilityItem';
+import {TAB_BAR_HEIGHT} from '~/navigator/tab/tabNavigator';
+import {Platform} from 'react-native';
 
 interface Props {
+  facilities: Facility[];
+  fetchMore: () => void;
   isOpen: boolean;
   onClose: () => void;
   setListExpand: (isListExpand: boolean) => void;
-  isListExpand: boolean;
+  isListExpand?: boolean;
 }
 
 /**
  *@description 시설 메인 페이지 > 시설 리스트
- * @param itemList - 시설 데이터 리스트
  * @param setListExpand - 시설 리스트 뷰 확장 설정 함수
+ * @param fetchMore - 무한스크롤을 위한 쿼리 요청
  */
-function FacilityList({isOpen, onClose, setListExpand, isListExpand}: Props) {
+function FacilityList({
+  facilities,
+  fetchMore,
+  isOpen,
+  onClose,
+  setListExpand,
+  isListExpand,
+}: Props) {
   // 360 / 812 값은 피그마 페이지 비율
   const actionSheetHeightRatio = isListExpand ? 1 : 360 / 812;
-
-  const {data, isLoading} = useGetFacilityList();
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  const Facilities = data?.data.map(f => new Facility(f)) ?? [];
 
   return (
     <>
@@ -50,8 +43,7 @@ function FacilityList({isOpen, onClose, setListExpand, isListExpand}: Props) {
             borderTopLeftRadius={20}
             borderTopRightRadius={20}
             bgColor={colors.grayScale[0]}
-            pt={isListExpand ? '166px' : 0}
-            pb={'40px'}
+            pt={isListExpand ? (Platform.OS === 'ios' ? '166px' : '120px') : 0}
             w="100%"
             maxH={`${Math.floor(APP_HEIGHT)}`}
             h={Math.floor(APP_HEIGHT * actionSheetHeightRatio)}>
@@ -79,13 +71,16 @@ function FacilityList({isOpen, onClose, setListExpand, isListExpand}: Props) {
                   fontSize="13px"
                   color={colors.fussOrange[0]}
                   fontWeight={500}>
-                  {`${Facilities.length}개의 시설이 있어요`}
+                  {`${facilities.length}개의 시설이 있어요`}
                 </Text>
               </Center>
             </Box>
 
             <FlatList
-              data={Facilities}
+              style={{marginBottom: TAB_BAR_HEIGHT}}
+              onEndReached={fetchMore}
+              onEndReachedThreshold={0.9}
+              data={facilities}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => <FacilityItem facility={item} />}
             />
@@ -106,19 +101,5 @@ function FacilityList({isOpen, onClose, setListExpand, isListExpand}: Props) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      // 안드로이드에서 안됨
-      width: 1,
-      height: 2,
-    },
-    shadowOpacity: 0.16,
-    shadowRadius: 3.84, // 안드로이드에서 안됨
-    elevation: 3,
-  },
-});
 
 export default FacilityList;

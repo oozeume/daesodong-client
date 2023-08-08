@@ -6,14 +6,9 @@ import {APP_HEIGHT} from '~/utils/dimension';
 import {Box, HStack, Pressable, Text, useDisclose, VStack} from 'native-base';
 import {colors} from '~/theme/theme';
 import RightIcon from '~/assets/icons/right.svg';
-import LocationFillIcon from '~/assets/icon/location_fill.svg';
 import FilterIcon from '~/assets/icons/filter.svg';
 import MapFilter from '~/components/facility/main/MapFilter';
-import {
-  FACILITY_SORT_TYPE,
-  FACILITY_TYPE_LIST,
-} from '~/constants/facility/main';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import MapFilterButton from '~/components/facility/main/MapFilterButton';
 import FacilityList from '~/components/facility/main/FacilityList';
 import AddressDrawer, {
@@ -23,26 +18,110 @@ import {hangjungdong} from '~/utils/hangjungdong';
 import PositionPopup from '~/components/facility/main/PositionPopup';
 import PetTypeSelectModal from '~/components/signup/petInfo/PetTypeSelectModal';
 import ListViewChangeButton from '~/components/facility/main/ListViewChangeButton';
-import {FormState} from '~/../types/facility';
+import {CoordinateType, FormState, LocationInfoType} from '~/../types/facility';
 import {SpeciesData} from '~/../types/api/species';
 import {useGetUser} from '~/api/user/queries';
+import LocationSearch from '../../../components/facility/main/LocationSearch';
+import _ from 'lodash';
+import {FacilitySortType, FacilityType} from '~/../types/api/facility';
+import {FACILITY_PER_PAGE} from '~/constants/facility/main';
+import {useCoordinate, useGetFacilityList} from '~/api/facility/queries';
+import Facility from '~/model/facility';
+
+const LOCATION_INIT = {
+  sido: {
+    name: '',
+    sido: '',
+  },
+  sigugun: {
+    name: '',
+    sigugun: '',
+  },
+};
 
 /**
- *@description 컨텐츠 메인 페이지
+ *@description 시설 메인 페이지
  */
 const FacilityMain = () => {
-  const getUser = useGetUser(true);
+  const {data: userInfo} = useGetUser(true);
+
   const navigation = useNavigation<NavigationHookProp>();
   const ref = useRef<WebView | null>(null);
 
   const {sido, sigugun} = hangjungdong;
-  const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>(sido[0]);
-  const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>(
-    sigugun[0],
-  );
+  const [sidoValue, setSidoValue] = useState<Partial<Hangjungdong>>();
+  const [sigugunValue, setSigugunValue] = useState<Partial<Hangjungdong>>();
+
+  const [locationSearchValue, setLocationSearchValue] =
+    useState<LocationInfoType>(LOCATION_INIT);
+
+  const [coordinate, setCoordinate] = useState<CoordinateType>({
+    latitude: 0,
+    longitude: 0,
+  });
+
   const [sortedSigugun, setSortedSigugun] = useState<
     Partial<Hangjungdong>[] | undefined
   >();
+
+  const initFormState: FormState = {
+    facility: 'all' as keyof typeof FacilityType,
+    animal: undefined,
+    sortType: 'distances' as keyof typeof FacilitySortType,
+  };
+
+  const [filterForm, setFilterForm] = useState(initFormState);
+  const [isFacilityListExpand, setFacilityListExpand] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [petType, setPetType] = useState<SpeciesData>();
+
+  const [facilities, setFacilities] = useState<Facility[]>([]);
+
+  const {refetch: getCoordinate} = useCoordinate(
+    locationSearchValue.sido.name + ' ' + locationSearchValue.sigugun.name,
+  );
+
+  const {refetch, hasNextPage, fetchNextPage} = useGetFacilityList(
+    {
+      limit: FACILITY_PER_PAGE,
+      expose: false, // TODO: 어드민 생성 후에 true로 변경
+      sort: filterForm.sortType,
+      state: locationSearchValue.sido.name,
+      city: locationSearchValue.sigugun.name,
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
+      species: filterForm.animal,
+    },
+    false,
+    result => {
+      if (result) {
+        const _facilities: Facility[] =
+          result.pages
+            .flatMap(i => {
+              return i.data;
+            })
+            .flatMap(i => i.data)
+            .map(i => new Facility(i)) ?? [];
+
+        if (_.isEmpty(_facilities)) {
+          setFacilities([]);
+          getCoordinate().then(d => {
+            onMoveMap({
+              latitude: d.data?.data.addresses[0]?.y,
+              longitude: d.data?.data.addresses[0]?.x,
+            });
+          });
+        } else {
+          onMarkerMap(_facilities);
+          setFacilities(_facilities);
+          onMoveMap({
+            latitude: _facilities[0].latitude,
+            longitude: _facilities[0].longitude,
+          });
+        }
+      }
+    },
+  );
 
   const {
     isOpen: isSidoOpen,
@@ -80,25 +159,6 @@ const FacilityMain = () => {
     onClose: onPetSearchClose,
   } = useDisclose(false);
 
-  const initFormState: FormState = {
-    facility: undefined,
-    animal: undefined,
-    sortType: undefined,
-  };
-
-  const [filterForm, setFilterForm] = useState(initFormState);
-
-  const [isFacilityListExpand, setFacilityListExpand] = useState(false);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [petType, setPetType] = useState<SpeciesData>();
-
-  const onInitMap = () => {
-    ref.current?.postMessage(
-      JSON.stringify({success: true, type: 'init', isDebug: true}),
-    );
-  };
-
   const onMoveMap = (coordinates: {latitude: number; longitude: number}) => {
     ref.current?.postMessage(
       JSON.stringify({
@@ -111,26 +171,11 @@ const FacilityMain = () => {
   };
 
   // 마커 표시 이벤트
-  // 추후, api 연결 시, useEffect 쪽 코드로 변경 예정
-  const onMarkerMap = () => {
-    /**
-      * 여의도역
-      * 37.521731 126.924293
-
-      * 여의도역 진주집
-      * 37.5209, 126.9267
-
-      * 진가와 여의도점
-      * 37.5243, 126.9261
-      */
-
-    const markerList = [
-      {latitude: 37.521731, longitude: 126.924293},
-      {latitude: 37.5209, longitude: 126.9267},
-      {latitude: 37.5243, longitude: 126.9261},
-    ];
-
-    onMoveMap(markerList[0]);
+  const onMarkerMap = (_facilities: Facility[]) => {
+    const markerList = _facilities.map(i => ({
+      latitude: i.latitude,
+      longitude: i.longitude,
+    }));
 
     ref.current?.postMessage(
       JSON.stringify({
@@ -142,15 +187,49 @@ const FacilityMain = () => {
     );
   };
 
-  const onSearchMap = () => {
-    ref.current?.postMessage(JSON.stringify({success: true, type: 'search'}));
+  const positionSelectCancel = () => {
+    setIsModalVisible(false);
+    setSidoValue(undefined);
+    setSigugunValue(undefined);
   };
+
+  const positionSelect = () => {
+    setLocationSearchValue({
+      sido: {
+        name: sidoValue?.name ?? locationSearchValue.sido.name,
+        sido: sidoValue?.sido ?? locationSearchValue.sido.sido,
+      },
+      sigugun: {
+        name: sigugunValue?.name ?? '',
+        sigugun: sigugunValue?.sigugun ?? '',
+      },
+    });
+    setIsModalVisible(false);
+  };
+
+  const fetchMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    if (isSigugunOpen && !_.isEmpty(locationSearchValue.sido)) {
+      setSortedSigugun(
+        sigugun.filter(i => i.sido === locationSearchValue.sido.sido),
+      );
+    }
+  }, [isSigugunOpen]);
 
   useEffect(() => {
     if (sidoValue) {
       setSortedSigugun(sigugun.filter(i => i.sido === sidoValue.sido));
     }
-  }, [sidoValue, sigugun]);
+  }, [sidoValue]);
+
+  useEffect(() => {
+    refetch();
+  }, [filterForm, locationSearchValue]);
 
   return (
     <Box w="100%" h={APP_HEIGHT}>
@@ -158,19 +237,16 @@ const FacilityMain = () => {
         w="100%"
         px="18px"
         position={'absolute'}
-        top={'56px'}
+        top={Platform.OS === 'ios' ? '56px' : '12px'}
         zIndex={100}>
         {!isFacilityListExpand && (
           <Pressable
             w="100%"
-            bgColor={colors.grayScale['90']}
+            backgroundColor={colors.grayScale['90']}
             borderRadius={8}
             mb="8px"
-            style={styles.shadow}
-            onPress={() => {
-              onMarkerMap();
-              // onMoveMap({latitude: 37.5645, longitude: 126.8505});
-            }}>
+            style={[styles.shadow, styles.blackBackground]}
+            onPress={() => navigation.navigate('FacilityRecommendation')}>
             <HStack
               justifyContent={'space-between'}
               alignItems={'center'}
@@ -187,43 +263,36 @@ const FacilityMain = () => {
           </Pressable>
         )}
 
-        <Pressable
-          w="100%"
+        <LocationSearch
           onPress={() => setIsModalVisible(true)}
-          mb="8px"
-          style={styles.shadow}>
-          <HStack
-            alignItems={'center'}
-            h="44px"
-            pl="14px"
-            pr="10px"
-            w="100%"
-            borderRadius={8}
-            bgColor={colors.grayScale['0']}>
-            <LocationFillIcon
-              width={18}
-              height={18}
-              fill={colors.fussOrange[0]}
-            />
-
-            <Text ml="4px" fontSize={'14px'} color={colors.grayScale['80']}>
-              {`${sidoValue?.name} ${sigugunValue?.name}`}
-            </Text>
-          </HStack>
-        </Pressable>
+          style={isFacilityListExpand ? styles.solidBackground : styles.shadow}
+          locationValue={locationSearchValue}
+          setLocationValue={setLocationSearchValue}
+          coordinate={coordinate}
+          setCoordinate={setCoordinate}
+        />
 
         <HStack justifyContent={'space-between'} w="100%" space={3}>
           <MapFilterButton
-            name={filterForm.facility || '시설'}
+            name={FacilityType[filterForm.facility]}
             onPress={onFacilityFilterOpen}
+            style={
+              isFacilityListExpand ? styles.solidBackground : styles.shadow
+            }
           />
           <MapFilterButton
             name={filterForm.animal || '동물'}
             onPress={onPetSearchOpen}
+            style={
+              isFacilityListExpand ? styles.solidBackground : styles.shadow
+            }
           />
           <MapFilterButton
-            name={filterForm.sortType || '정렬'}
+            name={FacilitySortType[filterForm.sortType]}
             onPress={onSortTypeFilterOpen}
+            style={
+              isFacilityListExpand ? styles.solidBackground : styles.shadow
+            }
           />
         </HStack>
       </VStack>
@@ -234,17 +303,18 @@ const FacilityMain = () => {
         source={{
           uri: 'http://daesodong-map.s3-website.us-east-2.amazonaws.com/',
         }}
-        onLoadEnd={onInitMap}
       />
 
       {/* 맵 필터(시설, 동물, 정렬) 액션시트  */}
       <MapFilter
         isOpen={isFacilityFilterOpen}
         onClose={onFacilityFilterClose}
-        setValue={value => setFilterForm(prev => ({...prev, facility: value}))}
-        value={filterForm.facility || ''}
+        onPress={(value: any) =>
+          setFilterForm(prev => ({...prev, facility: value}))
+        }
+        value={FacilityType[filterForm.facility] || ''}
         title="시설"
-        itemList={FACILITY_TYPE_LIST}
+        filters={FacilityType}
       />
 
       {/* 동물 검색 모달 */}
@@ -252,16 +322,22 @@ const FacilityMain = () => {
         isOpen={isPetSearchOpen}
         onClose={onPetSearchClose}
         setPetType={setPetType}
-        onPress={() => {}}
+        onPress={(value: any) =>
+          setFilterForm(prev => ({...prev, animal: value.name}))
+        }
+        isEnrollPet={false}
+        previousPetTypeName={userInfo?.mainPetInfo.specieName}
       />
 
       <MapFilter
         isOpen={isSortTypeFilterOpen}
         onClose={onSortTypeFilterClose}
-        setValue={value => setFilterForm(prev => ({...prev, sortType: value}))}
-        value={filterForm.sortType || ''}
+        onPress={(value: any) => {
+          setFilterForm(prev => ({...prev, sortType: value}));
+        }}
+        value={FacilitySortType[filterForm.sortType] || ''}
         title="정렬"
-        itemList={FACILITY_SORT_TYPE}
+        filters={FacilitySortType}
       />
 
       <ListViewChangeButton
@@ -273,12 +349,12 @@ const FacilityMain = () => {
       {/* 시 군 구 선택 팝업창 */}
       <PositionPopup
         visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        onOK={() => setIsModalVisible(false)}
+        onCancel={positionSelectCancel}
+        onOK={positionSelect}
         onSidoPress={onSidoOpen}
         onSigunguPress={onSigugunOpen}
-        sidoValue={sidoValue}
-        sigugunValue={sigugunValue}
+        sidoValue={sidoValue ?? locationSearchValue.sido}
+        sigugunValue={sigugunValue ?? locationSearchValue.sigugun}
       />
 
       {/* 시 선택 drawer */}
@@ -287,7 +363,7 @@ const FacilityMain = () => {
         onClose={onSidoClose}
         onPress={() => onSigugunOpen()}
         setValue={setSidoValue}
-        sidoValue={sidoValue}
+        sidoValue={sidoValue ?? locationSearchValue.sido}
         selectableList={sido}
       />
 
@@ -301,11 +377,13 @@ const FacilityMain = () => {
         }}
         setValue={setSigugunValue}
         selectableList={sortedSigugun}
-        sigugunValue={sigugunValue}
+        sigugunValue={sigugunValue ?? locationSearchValue.sigugun}
       />
 
       {/* 이용할 수 있는 시설 리스트 */}
       <FacilityList
+        facilities={facilities}
+        fetchMore={fetchMore}
         setListExpand={setFacilityListExpand}
         isListExpand={isFacilityListExpand}
         isOpen={isFacilityListOpen}
@@ -326,6 +404,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowRadius: 3.84, // 안드로이드에서 안됨
     elevation: 3,
+    backgroundColor: colors.grayScale[0],
+    borderRadius: 8,
+  },
+  solidBackground: {
+    backgroundColor: colors.grayScale[10],
+    borderRadius: 8,
+  },
+  blackBackground: {
+    backgroundColor: 'black',
   },
 });
 

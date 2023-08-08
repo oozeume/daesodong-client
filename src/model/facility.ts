@@ -1,9 +1,7 @@
-import {FacilityListResponse, FacilityResponse} from '~/../types/api/facility';
+import {FacilityItem, FacilityResponse} from '~/../types/api/facility';
 
 class Facility {
-  constructor(
-    private readonly facility: FacilityResponse & FacilityListResponse,
-  ) {}
+  constructor(private readonly facility: FacilityResponse & FacilityItem) {}
 
   get id() {
     return this.facility.id ?? '';
@@ -51,11 +49,15 @@ class Facility {
   }
 
   get address() {
-    return this.facility.address1 ?? '' + '\n' + this.facility.address2 ?? '';
+    return this.facility.address1 + ' ' + this.facility.address2 ?? '';
   }
 
   get latitude() {
     return this.facility.latitude ?? '';
+  }
+
+  get categoryName() {
+    return this.facility.hospital_category.name ?? '';
   }
 
   get longitude() {
@@ -67,7 +69,7 @@ class Facility {
   }
 
   get savedFacilityIds() {
-    return this.facility.save_hospital.map(i => i.hospitalId) ?? [];
+    return this.facility.save_hospital?.map(i => i.hospitalId) ?? [];
   }
 
   isMyBookmarkFacility(facilityId: string) {

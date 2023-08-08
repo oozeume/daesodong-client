@@ -24,6 +24,8 @@ interface Props {
   previousPetTypeName?: string;
 }
 
+const SEARCH_BOX_HEIGHT = 200;
+
 /**
  *@description 집사정보등록 - 반려동물 종 선택 모달
  *@param isEnrollPet - 새로 팻을 등록할 지 여부
@@ -41,14 +43,19 @@ function PetTypeSelectModal({
   const statusbarHeight = getStatusBarHeight();
   const [isPetTypeEmpty, setPetTypeEmpty] = useState(false);
   const [selectedItem, setSelectedItem] = useState<SpeciesData>();
-  const {data, isSuccess} = useGetSpecies({limit: 10});
   const [searchText, setSearchText] = useState('');
   const [searchList, setSearchList] = useState<SpeciesData[]>([]);
-  const [defaultList, setDefaultList] = useState<SpeciesData[]>(
-    data?.data ?? [],
-  );
-  const petSearchHeight = 200;
+
+  const {data, isSuccess} = useGetSpecies({limit: 10});
+
+  const [petTypes, setPetTypes] = useState<SpeciesData[]>([]);
   const postSpecies = usePostSpecies();
+
+  useEffect(() => {
+    if (data) {
+      setPetTypes(data.data);
+    }
+  }, [data]);
 
   const onAddSpecies = () => {
     postSpecies
@@ -122,7 +129,7 @@ function PetTypeSelectModal({
         ? [_selectedPetType, ...filterSpecies]
         : [...filterSpecies];
 
-      setDefaultList(_searchList);
+      setPetTypes(_searchList);
     }
   }, [previousPetTypeName]);
 
@@ -141,13 +148,13 @@ function PetTypeSelectModal({
       paddingBottom={0}
       hideDragIndicator>
       <Actionsheet.Content
-        maxHeight={APP_HEIGHT}
-        height={APP_HEIGHT}
+        maxHeight={'100%'}
+        height={'100%'}
         w={APP_WIDTH}
         px={'18px'}
         backgroundColor={colors.grayScale[0]}>
         <SafeAreaView style={{width: '100%'}}>
-          <Stack h={APP_HEIGHT - statusbarHeight}>
+          <>
             <HStack
               h={'60px'}
               justifyContent={'center'}
@@ -217,11 +224,9 @@ function PetTypeSelectModal({
             ) : (
               <FlatList
                 style={{
-                  height: APP_HEIGHT - statusbarHeight - petSearchHeight,
+                  height: APP_HEIGHT - statusbarHeight - SEARCH_BOX_HEIGHT,
                 }}
-                data={
-                  !searchList.length && isSuccess ? defaultList : searchList
-                }
+                data={!searchList.length && isSuccess ? petTypes : searchList}
                 keyExtractor={(_, index) => index.toString()}
                 scrollEnabled
                 renderItem={({item, index}) => (
@@ -310,7 +315,7 @@ function PetTypeSelectModal({
                 }}
               />
             </Stack>
-          </Stack>
+          </>
         </SafeAreaView>
       </Actionsheet.Content>
     </Actionsheet>

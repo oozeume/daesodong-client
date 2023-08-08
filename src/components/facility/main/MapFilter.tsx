@@ -8,16 +8,16 @@ import {
   Text,
 } from 'native-base';
 import React from 'react';
-import {FilterSelectorType} from '~/constants/facility/main';
+import {FilterTypes} from '~/../types/api/facility';
 import {colors} from '~/theme/theme';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setValue: (value: any) => void;
   value: string;
   title: string;
-  itemList: FilterSelectorType[];
+  filters: any;
+  onPress: (value: FilterTypes) => void;
 }
 
 /**
@@ -27,11 +27,20 @@ interface Props {
  * @param setValue - 선택한 항목으로 state 변경 함수
  * @param value - 선택된 state
  */
-function MapFilter({isOpen, onClose, setValue, value, title, itemList}: Props) {
-  const onPress = (item: string) => {
-    setValue(item);
+function MapFilter({
+  isOpen,
+  onClose,
+  value,
+  title,
+  filters,
+  onPress: _onPress,
+}: Props) {
+  const onPress = (item: FilterTypes) => {
+    _onPress(item);
     onClose();
   };
+
+  const list = (Object.keys(filters) as FilterTypes[]) ?? [];
 
   return (
     <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
@@ -40,11 +49,7 @@ function MapFilter({isOpen, onClose, setValue, value, title, itemList}: Props) {
         pt="28px"
         pb="40px"
         px="18px">
-        <Center
-          alignItems="center"
-          width="100%"
-          height="26px"
-          margin="24px 0px 36px">
+        <Center alignItems="center" width="100%" mb={'24px'}>
           <Text
             fontSize="18px"
             color={colors.grayScale[80]}
@@ -56,49 +61,50 @@ function MapFilter({isOpen, onClose, setValue, value, title, itemList}: Props) {
 
         <Stack w={'100%'}>
           <ScrollView>
-            {itemList?.map((item, index) => {
+            {list.map((item: FilterTypes, index: number) => {
               return (
-                <Actionsheet.Item
-                  px={0}
-                  backgroundColor={colors.grayScale[0]}
-                  key={`${index}`}
-                  isDisabled={item.disabled}
-                  onPress={() => onPress(item.text)}>
-                  <HStack alignItems={'center'}>
-                    <Center
-                      width="22px"
-                      height="22px"
-                      marginRight="10px"
-                      borderWidth={value === item.text ? 0 : 2}
-                      borderColor={colors.grayScale[30]}
-                      bgColor={
-                        value === item.text
-                          ? colors.fussOrange[0]
-                          : colors.grayScale[0]
-                      }
-                      borderRadius={22}>
-                      {value === item.text && (
-                        <Box
-                          width="9px"
-                          height="9px"
-                          borderRadius={9}
-                          backgroundColor={colors.grayScale[0]}
-                        />
-                      )}
-                    </Center>
+                <React.Fragment key={index.toString()}>
+                  <Actionsheet.Item
+                    px={0}
+                    backgroundColor={colors.grayScale[0]}
+                    key={`${index}`}
+                    onPress={() => onPress(item)}>
+                    <HStack alignItems={'center'}>
+                      <Center
+                        width="22px"
+                        height="22px"
+                        marginRight="10px"
+                        borderWidth={value === filters[item] ? 0 : 2}
+                        borderColor={colors.grayScale[30]}
+                        bgColor={
+                          value === filters[item]
+                            ? colors.fussOrange[0]
+                            : colors.grayScale[0]
+                        }
+                        borderRadius={22}>
+                        {value === filters[item] && (
+                          <Box
+                            width="9px"
+                            height="9px"
+                            borderRadius={9}
+                            backgroundColor={colors.grayScale[0]}
+                          />
+                        )}
+                      </Center>
 
-                    <Text
-                      bgColor={colors.fussOrange[0]}
-                      fontSize={'16px'}
-                      color={
-                        value === item.text
-                          ? colors.grayScale[80]
-                          : colors.grayScale[60]
-                      }>
-                      {item.text}
-                    </Text>
-                  </HStack>
-                </Actionsheet.Item>
+                      <Text
+                        bgColor={colors.fussOrange[0]}
+                        fontSize={'16px'}
+                        color={
+                          value === filters[item]
+                            ? colors.grayScale[80]
+                            : colors.grayScale[60]
+                        }>
+                        {filters[item]}
+                      </Text>
+                    </HStack>
+                  </Actionsheet.Item>
+                </React.Fragment>
               );
             })}
           </ScrollView>
