@@ -1,10 +1,10 @@
 import {Stack} from 'native-base';
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import MyReviewItem from '~/components/mypage/myReview/MyReviewItem';
 import ListFilterHeader from '~/components/common/ListFilterHeader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';
+import FlatList from '~/components/common/flatList/FlatList';
 
 /**
  *@description 내 계정 - 내가 작성한 리뷰

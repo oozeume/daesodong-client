@@ -35,6 +35,7 @@ import {useUserRegister} from '~/store/useUserContext';
 import {config} from '~/utils/config';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import useToastShow from '~/hooks/useToast';
+import {EMAIL_REGREX, PASSWORD_REGREX} from '~/constants/regEx';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -91,17 +92,27 @@ function EmailLogin() {
   const setUserInfo = useUserRegister();
 
   const onLogin = async () => {
-    if (!loginForm.email) return;
-    if (!loginForm.password) return;
+    if (!loginForm.email || !EMAIL_REGREX.test(loginForm.email))
+      return setErrorForm(prev => ({
+        email: '이메일을 양식을 확인해주세요.',
+        password: '',
+      }));
+    else if (!loginForm.password || !PASSWORD_REGREX.test(loginForm.password))
+      return setErrorForm(prev => ({
+        email: '',
+        password: '비밀번호를 확인해주세요.',
+      }));
+
+    if (postAuthEmailLogin.isLoading) return;
 
     const response = await postAuthEmailLogin.mutateAsync(loginForm, {
       onError: error => {
         const data = error as unknown as ErrorResponseTransform;
 
         if (data.message === '존재하지 않는 이메일입니다')
-          setErrorForm(prev => ({...prev, email: data.message}));
-        else if (data.message === '비밀번호가 틀렸습니다')
-          setErrorForm(prev => ({...prev, password: data.message}));
+          setErrorForm(prev => ({email: data.message, password: ''}));
+        else if (data.message === '비밀번호를 확인해주세요')
+          setErrorForm(prev => ({email: '', password: data.message}));
       },
     });
 

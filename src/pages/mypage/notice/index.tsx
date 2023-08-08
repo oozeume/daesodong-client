@@ -2,8 +2,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Pressable} from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
 import {NavigationHookProp} from '~/../types/navigator';
+import FlatList from '~/components/common/flatList/FlatList';
 import Notice from '~/components/mypage/Notice';
 import {colors} from '~/theme/theme';
 

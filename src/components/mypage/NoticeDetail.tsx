@@ -1,7 +1,7 @@
 import {Stack, Text} from 'native-base';
 import React from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import {colors} from '~/theme/theme';
+import ScrollView from '../common/scrollView/ScrollView';
 
 /**
  *@description 내 계정 - 알림 detail 페이지

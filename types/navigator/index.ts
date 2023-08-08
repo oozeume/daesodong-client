@@ -70,7 +70,7 @@ export type RootStackParamList = {
   CommunityDetail: {id: string};
   CommunityRegister?: {postId?: string};
 
-  ContentsDetail: undefined;
+  ContentsDetail: {id: string};
   OtherContents: undefined;
   ContentsCommentsList: undefined;
   ContentsRecommentsList: undefined;

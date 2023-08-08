@@ -5,7 +5,7 @@ import {DateList} from '~/components/signup/petInfo/PetOwnerBirth';
 import {colors} from '~/theme/theme';
 import {APP_WIDTH} from '~/utils/dimension';
 import CheckIcon from '~/assets/icons/check-20.svg';
-import {FlatList} from 'react-native-gesture-handler';
+import FlatList from '~/components/common/flatList/FlatList';
 
 const PADDING_X = 18;
 

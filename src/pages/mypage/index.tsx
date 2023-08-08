@@ -6,7 +6,6 @@ import {APP_WIDTH} from '~/utils/dimension';
 import NoticeDashboard from '~/components/mypage/NoticeDashboard';
 import BookMarkFillIcon from '~/assets/icons/bookmark_fill_30.svg';
 import HeartFillIcon from '~/assets/icons/heart_fill_30.svg';
-import {ScrollView} from 'react-native-gesture-handler';
 import Tag from '~/components/common/Tag';
 import {StyleSheet} from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
@@ -18,6 +17,7 @@ import MenuButton from '~/components/mypage/myInfo/main/MenuButton';
 import MenuSectionView from '~/components/mypage/myInfo/main/MenuSectionView';
 import ServicePolicyModal from '~/components/common/modal/ServicePolicyModal';
 import PrivacyPolicyModal from '~/components/common/modal/PrivacyPolicyModal';
+import ScrollView from '~/components/common/scrollView/ScrollView';
 
 /**
  *@description 내 계정 - 메인

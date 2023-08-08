@@ -1,12 +1,13 @@
 import {HStack, Stack} from 'native-base';
 import React, {useState} from 'react';
 import {colors} from '~/theme/theme';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import FilterButton from '~/components/contents/main/FilterButton';
 import {APP_WIDTH} from '~/utils/dimension';
 import CommunityContent from '~/components/community/detail/Content';
 import CommunityPost from '~/model/communityPost';
 import dayjs from 'dayjs';
+import FlatList from '~/components/common/flatList/FlatList';
+import {ScrollView} from 'react-native-gesture-handler';
 
 /**
  *@description 내 계정 > 저장 - 커뮤니티 Tab
