@@ -5,6 +5,9 @@ export interface NativeConfig {
   IMAGE_BASE_URL: string;
   ACCESS_TOKEN_NAME: string;
   REFRESH_TOKEN_NAME: string;
+  KAKAO_TOKEN: string;
+  NAVER_CLIENT_KEY: string;
+  NAVER_SECRET_CLIENT_KEY: string;
 }
 
 export interface PostCloudImageData {

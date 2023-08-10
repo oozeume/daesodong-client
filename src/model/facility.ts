@@ -1,9 +1,7 @@
-import {FacilityListResponse, FacilityResponse} from '~/../types/api/facility';
+import {FacilityItem, FacilityResponse} from '~/../types/api/facility';
 
 class Facility {
-  constructor(
-    private readonly facility: FacilityResponse & FacilityListResponse,
-  ) {}
+  constructor(private readonly facility: FacilityResponse & FacilityItem) {}
 
   get id() {
     return this.facility.id ?? '';
@@ -18,7 +16,11 @@ class Facility {
   }
 
   get representativeImage() {
-    return this.facility.hospital_picture[0]?.picture_url ?? '';
+    if (this.facility.hospital_picture) {
+      return this.facility.hospital_picture[0]?.picture_url ?? '';
+    } else {
+      return '';
+    }
   }
 
   get averageScore() {
@@ -43,7 +45,7 @@ class Facility {
 
   get openingHours() {
     return [
-      {date: '월 - 금', time: this.facility.sch_mon ?? ''},
+      {date: '월-금', time: this.facility.sch_mon ?? ''},
       {date: '토', time: this.facility.sch_sat ?? ''},
       {date: '일', time: this.facility.sch_sun ?? ''},
       {date: '공휴일', time: this.facility.sch_holy ?? ''},
@@ -51,11 +53,15 @@ class Facility {
   }
 
   get address() {
-    return this.facility.address1 ?? '' + '\n' + this.facility.address2 ?? '';
+    return this.facility.address1 + ' ' + this.facility.address2 ?? '';
   }
 
   get latitude() {
     return this.facility.latitude ?? '';
+  }
+
+  get categoryName() {
+    return this.facility.hospital_category.name ?? '';
   }
 
   get longitude() {
@@ -67,7 +73,7 @@ class Facility {
   }
 
   get savedFacilityIds() {
-    return this.facility.save_hospital.map(i => i.hospitalId) ?? [];
+    return this.facility.save_hospital?.map(i => i.hospitalId) ?? [];
   }
 
   isMyBookmarkFacility(facilityId: string) {

@@ -119,7 +119,7 @@ const RevisitCheckButton = ({
         textAlign={'center'}
         color={isRevisit ? colors.fussOrange['0'] : colors.grayScale['50']}
         fontSize="14px">
-        네, 방문할래요!
+        네, 방문할래요
       </Text>
     </Pressable>
   );

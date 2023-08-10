@@ -3,7 +3,6 @@ import {HStack, Image, Pressable, Text, View, VStack} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {colors} from '~/theme/theme';
-import {APP_WIDTH} from '~/utils/dimension';
 import StarFillIcon from '~/assets/icons/star_fill.svg';
 import MessageFillIcon from '~/assets/icons/message_fill.svg';
 import Facility from '~/model/facility';
@@ -57,7 +56,7 @@ function FacilityItem({facility}: Props) {
               color={colors.grayScale[50]}
               fontSize={'12px'}
               fontWeight={400}>
-              시설종류
+              {facility.categoryName}
             </Text>
           </HStack>
 
@@ -66,14 +65,14 @@ function FacilityItem({facility}: Props) {
             color={colors.grayScale[50]}
             fontSize={'13px'}
             fontWeight={400}>
-            {facility.intro}
+            {facility.address}
           </Text>
 
           <HStack alignItems={'center'}>
             <HStack alignItems={'center'} mr="8px">
               <StarFillIcon
-                width={12}
-                height={12}
+                width={14}
+                height={14}
                 fill={colors.fussOrange[0]}
               />
               <Text
@@ -88,7 +87,11 @@ function FacilityItem({facility}: Props) {
             <View w="1px" h="8px" bgColor={colors.grayScale[40]} />
 
             <HStack alignItems={'center'} px="8px">
-              <MessageFillIcon width={10} height={10} fill={'#D9D9D9'} />
+              <MessageFillIcon
+                width={14}
+                height={14}
+                fill={colors.grayScale[50]}
+              />
               <Text
                 ml="4px"
                 fontSize={'13px'}

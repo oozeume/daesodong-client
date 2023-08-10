@@ -35,7 +35,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KAKAO_APP_KEY</key>
-		<string>2a7634a1e70b4a8e73d01db5e753aac6</string>
+	<string>2a7634a1e70b4a8e73d01db5e753aac6</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>
@@ -59,8 +59,12 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>카메라를 사용합니다.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>위치정보 권한이 필요합니다.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>위치정보 권한이 필요합니다.(항상 위치정보를 수신합니다.)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>위치정보 권한이 필요합니다. (앱을 사용하는 동안에만 위치정보를 수신합니다.)</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>갤러리를 사용합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -83,6 +87,10 @@
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>

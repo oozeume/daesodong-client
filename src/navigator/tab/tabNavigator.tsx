@@ -18,6 +18,8 @@ import MyPage from '~/pages/mypage';
 import CommunityMain from '~/pages/community';
 import {TAB_HEIGHT} from '~/constants/style';
 
+export const TAB_BAR_HEIGHT = 98;
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RouteList>();
 

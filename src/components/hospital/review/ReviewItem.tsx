@@ -23,11 +23,14 @@ import _ from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Popup from '~/components/common/popup/Popup';
-import {useMutationReviewDelete} from '~/api/facility/mutations';
-import {useUserContext} from '~/store/useUserContext';
-import {useGetFacilityReviews} from '~/api/facility/queries';
+import {
+  useMutationReviewDelete,
+  usePostReportUser,
+} from '~/api/facility/mutations';
+import {useGetFacilityReviews, useGetMyReports} from '~/api/facility/queries';
 import {REVIEWS_PER_PAGE} from '~/constants/facility/detail';
 import ThanksReview from './ThanksReview';
+import {useGetUser} from '~/api/user/queries';
 
 const IMAGE_PER_ROW = 3;
 const IMAGE_SPACE = 2;
@@ -69,22 +72,36 @@ function ReviewItem({
     same: false,
   });
 
-  const userInfo = useUserContext({userId: ''});
+  const {data: userData} = useGetUser();
+  const {data: myReportData} = useGetMyReports();
+
+  const isReportedUser = useMemo(() => {
+    if (myReportData) {
+      const reportedReview = myReportData?.data.whoIRepoert.filter(
+        r => r.suspectUserId === review.userId,
+      );
+      return reportedReview.length > 0;
+    } else {
+      return false;
+    }
+  }, [myReportData, review.userId]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false);
   const [isBlockPopupOpen, setBlockPopupOpen] = useState(false);
   const [isAccusePopupOpen, setAccusePopupOpen] = useState(false);
-  const [accuseContents, setAccuseContents] = useState('');
+  const [reportContents, setReportContents] = useState('');
   const [imageSize, setImageSize] = useState(0);
 
   const onDeleteButtonPress = () => setDeletePopupOpen(true);
   const onAccuseButtonPress = () => setAccusePopupOpen(true);
   const onBlockButtonPress = () => setBlockPopupOpen(true);
 
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
   const isMyReview = useMemo(() => {
-    return review.userId === userInfo.userId;
-  }, [review, userInfo.userId]);
+    return review.userId === userData?.id;
+  }, [review, userData]);
 
   const {mutateAsync} = useMutationReviewDelete(
     review.facilityId,
@@ -106,9 +123,14 @@ function ReviewItem({
       .catch(e => console.log('error->', e));
   };
 
-  // TODO: 리뷰 신고 API 적용
+  const {mutateAsync: reportUser} = usePostReportUser();
+
   const onAccuse = () => {
-    onAccuseClose();
+    if (!_.isEmpty(reportContents)) {
+      reportUser({suspectUserId: review.userId, reason: reportContents}).catch(
+        e => console.log('error', e),
+      );
+    }
   };
 
   // TODO: 리뷰 차단 API 적용
@@ -116,7 +138,7 @@ function ReviewItem({
 
   const onAccuseClose = () => {
     setAccusePopupOpen(false);
-    setAccuseContents('');
+    setReportContents('');
   };
 
   return (
@@ -187,7 +209,7 @@ function ReviewItem({
             </Stack>
           </HStack>
 
-          {!isInvisibleKebabMenu && (
+          {!isInvisibleKebabMenu && !isReportedUser && (
             <KekabMenu
               handleFirstButton={isMyReview ? onEdit : onAccuseButtonPress}
               handleSecondButton={
@@ -284,11 +306,14 @@ function ReviewItem({
               <React.Fragment key={index.toString()}>
                 {index <= 2 && (
                   <ImageContainer
-                    onPress={() => setModalOpen(true)}
+                    onPress={() => {
+                      setSelectedImageIndex(index);
+                      setModalOpen(true);
+                    }}
                     imageUrl={image}
                     imageSize={imageSize}
                     visibleMoreImage={index === IMAGE_PER_ROW - 1}
-                    imagesCount={index > 1 && review.images.length}
+                    imagesCount={index > 1 ? review.images.length : 0}
                   />
                 )}
               </React.Fragment>
@@ -314,11 +339,12 @@ function ReviewItem({
 
         <ThanksReview review={review} />
 
-        {!_.isEmpty(review.images) && (
+        {!_.isEmpty(review.images) && modalOpen && (
           <ImageModal
             images={review.images}
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
+            currentIndex={selectedImageIndex}
           />
         )}
       </Box>
@@ -359,7 +385,7 @@ function ReviewItem({
 
       {isAccusePopupOpen && (
         <Popup
-          title={'[닉네임]님을 신고하시겠어요?'}
+          title={`${review.nickname}님을 신고하시겠어요?`}
           subText={'이유를 알려주시면 더 적합한 조취를 취할 수 있어요.'}
           isVisible={isAccusePopupOpen}
           setIsVisible={setAccusePopupOpen}
@@ -372,8 +398,8 @@ function ReviewItem({
             <Box height={'160px'}>
               <TextArea
                 flex={1}
-                value={accuseContents}
-                onChangeText={setAccuseContents}
+                value={reportContents}
+                onChangeText={setReportContents}
                 autoCompleteType={false}
                 placeholder={'입력'}
                 backgroundColor={'white'}

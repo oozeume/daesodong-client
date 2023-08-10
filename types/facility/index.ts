@@ -1,7 +1,9 @@
+import {FacilitySortType, FacilityType} from '../api/facility';
+
 export interface FormState {
-  facility?: string;
+  facility: keyof typeof FacilityType;
   animal?: string;
-  sortType?: string;
+  sortType: keyof typeof FacilitySortType;
 }
 
 // 시설 리뷰 페이지 공통 파라미터
@@ -22,3 +24,19 @@ export const enum ReviewType {
   Register = 'register',
   Edit = 'edit',
 }
+
+export type LocationInfoType = {
+  sido: {
+    name: string;
+    sido: string;
+  };
+  sigugun: {
+    name: string;
+    sigugun: string;
+  };
+};
+
+export type CoordinateType = {
+  latitude: number;
+  longitude: number;
+};

@@ -11,6 +11,7 @@ import {
 import {colors} from '~/theme/theme';
 import DownIcon from '~/assets/icons/down.svg';
 import {Hangjungdong} from '~/components/signup/petInfo/AddressDrawer';
+import {APP_WIDTH} from '~/utils/dimension';
 
 interface Props {
   visible: boolean;
@@ -38,16 +39,11 @@ function PositionPopup({
 }: Props) {
   return (
     <Actionsheet isOpen={visible} hideDragIndicator>
-      <Actionsheet.Content>
+      <Actionsheet.Content bgColor={colors.grayScale[0]} pb={'40px'}>
         <Center
-          p={0}
-          w={'100%'}
+          w={APP_WIDTH}
           borderTopRadius={'20px'}
-          borderBottomRadius={'none'}
-          bgColor={colors.grayScale[0]}
-          mb={0}
-          mt={'auto'}
-          pb={'40px'}>
+          borderBottomRadius={'none'}>
           <VStack pt="28px" px={'18px'} w={'100%'}>
             {/* 모달 헤더 */}
             <Box mb="24px">
@@ -71,7 +67,7 @@ function PositionPopup({
                 borderBottomWidth={1}
                 borderBottomColor={colors.grayScale[30]}
                 onPress={onSidoPress}>
-                <Text>{sidoValue?.name || '서울'}</Text>
+                <Text>{sidoValue?.name}</Text>
                 <DownIcon />
               </Pressable>
 
@@ -83,7 +79,7 @@ function PositionPopup({
                 borderBottomWidth={1}
                 borderBottomColor={colors.grayScale[30]}
                 onPress={onSigunguPress}>
-                <Text>{sigugunValue?.name || '광진구'}</Text>
+                <Text>{sigugunValue?.name}</Text>
                 <DownIcon />
               </Pressable>
             </Box>
