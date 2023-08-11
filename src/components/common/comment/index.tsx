@@ -84,6 +84,15 @@ const Comment = ({
     toastShow('삭제된 댓글에는 답글을 남길 수 없어요!');
   };
 
+  useEffect(() => {
+    if (!_.isUndefined(data?.isThank)) {
+      setThank(data?.isThank);
+    }
+    if (!_.isUndefined(data?.thanks)) {
+      setThankCount(data?.thanks ?? 0);
+    }
+  }, [data?.isThank, data?.thanks]);
+
   return (
     <Box
       px="18px"

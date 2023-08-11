@@ -139,6 +139,7 @@ const CommunityDetail = () => {
 
   /**
    *@description 스크롤이 하단에 도달하면 다음 스크롤 내용 조회 핸들러
+   *@TODO api 이슈 수정되면 로직 수정하기
    */
   const onExpandList = () => {
     // 다음 페이지 조회 중이 아니고 전체 포스트 카운트보다 현재 포스트 카운트가 적을 때만 패치.
