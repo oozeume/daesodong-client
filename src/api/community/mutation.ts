@@ -62,7 +62,7 @@ export const useDeleteCommunityPost = (id: string) => {
 const postCoummunityPostCount = () => {
   return apiCall<number>({
     method: 'POST',
-    url: `posts/conut`,
+    url: `posts/count`,
   });
 };
 
