@@ -27,7 +27,7 @@ export default FloatingButton;
 const styles = StyleSheet.create({
   floatingButtonImage: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 40,
     right: 18,
     zIndex: 99,
   },
