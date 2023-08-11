@@ -60,9 +60,10 @@ const CommunityDetail = () => {
   });
 
   // 컨텐츠 고마워요 여부 state
-  const [isContentThank, setContnetThank] = useState(
+  const [isContentThank, setContentThank] = useState(
     getCommunityPost?.data?.isThank,
   );
+
   const [thankContentCount, setThankContentCount] = useState(
     getCommunityPost?.data?.thanks ?? 0,
   );
@@ -154,7 +155,7 @@ const CommunityDetail = () => {
   const onContentThank = () => {
     if (!getCommunityPost.data) return;
 
-    setContnetThank(!isContentThank);
+    setContentThank(!isContentThank);
 
     setThankContentCount(prev => {
       if (isContentThank && prev === 0) return 0;
@@ -167,6 +168,15 @@ const CommunityDetail = () => {
       isOn: !getCommunityPost.data?.isThank,
     });
   };
+
+  useEffect(() => {
+    if (!_.isUndefined(getCommunityPost?.data?.isThank)) {
+      setContentThank(getCommunityPost?.data?.isThank);
+    }
+    if (!_.isUndefined(getCommunityPost?.data?.thanks)) {
+      setThankContentCount(getCommunityPost?.data?.thanks ?? 0);
+    }
+  }, [getCommunityPost?.data?.isThank, getCommunityPost?.data?.thanks]);
 
   useEffect(() => {
     if (getBestCommentList.data) {
