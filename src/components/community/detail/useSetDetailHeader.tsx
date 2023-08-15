@@ -10,6 +10,7 @@ import BookmarFillIcon from '~/assets/icons/bookmark_fill.svg';
 import {colors} from '~/theme/theme';
 import {Platform} from 'react-native';
 import {usePostCummunityPostBookmark} from '~/api/community/mutation';
+import _ from 'lodash';
 
 interface Props {
   postId: string;
@@ -53,6 +54,12 @@ function useSetDetailHeader({
   const onReport = () => {};
   const onDelete = () => setOpenDeletePopup(prev => ({...prev, post: true}));
   const onBlock = () => {};
+
+  useEffect(() => {
+    if (!_.isUndefined(isBookmarkServerState)) {
+      setBookmark(isBookmarkServerState);
+    }
+  }, [isBookmarkServerState]);
 
   useEffect(() => {
     navigation.setOptions({

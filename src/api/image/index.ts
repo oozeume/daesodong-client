@@ -13,7 +13,7 @@ const postImageUpload = async ({
   bucketName = 'daesodong',
 }: PostImageUploadBody) => {
   return imageApiCall<{status: number}>({
-    url: `r2-crud?uploadFileName=${fileName}&BucketName=${bucketName}`,
+    url: `aws/aws/upload/client/file?uploadFileName=${fileName}`,
     data,
   });
 };

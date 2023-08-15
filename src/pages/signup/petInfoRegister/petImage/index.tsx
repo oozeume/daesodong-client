@@ -36,13 +36,23 @@ function PetImageRegister({
   const onMovePage = async (isSkip: boolean) => {
     if (postImageUpload.isLoading) return;
 
-    const petPictureUrl = isSkip ? undefined : petImageInfo?.cloudImageName;
+    let petPictureUrl = undefined;
+
+    if (!isSkip && petImageInfo) {
+      // 이미지 이름에 확장자 추가
+      const uriSplitDot = petImageInfo.cloudData.uri.split('.');
+      const ext = uriSplitDot[uriSplitDot.length - 1];
+      petPictureUrl = `${petImageInfo?.cloudImageName}.${ext}`;
+    }
 
     setForm(prev => ({...prev}));
 
     try {
-      if (petImageInfo && !isSkip) {
-        await onImageUpload([petImageInfo.cloudData], () => {});
+      if (petImageInfo && !isSkip && petPictureUrl) {
+        await onImageUpload(
+          [{...petImageInfo.cloudData, name: petPictureUrl}],
+          () => {},
+        );
       }
 
       patchUserInfo

@@ -105,20 +105,26 @@ const CommunityRegister = () => {
         const _registerPageImageNames: RegisterImageData[] = [];
 
         response.forEach(item => {
-          const cloudImageName = uuid.v4() as string;
+          const cloudImageNameUUID = uuid.v4() as string;
           const iosSourceURL = item.sourceURL ?? '';
-          const imageInfoURI =
+          let imageInfoURI =
             Platform.OS === 'android' ? item.path : iosSourceURL;
+
+          // 이미지 이름에 확장자 추가
+          const uriSplitDot = imageInfoURI.split('.');
+          const ext = uriSplitDot[uriSplitDot.length - 1];
+
+          const cloudImageName = `${cloudImageNameUUID}.${ext}`;
 
           _registerPageImageNames.push({
             registerPageImageName:
               Platform.OS === 'android' ? item.path : iosSourceURL,
-            cloudImageName,
+            cloudImageName, // 서버 db에 등록될 이미지 이름
             cloudData: {
               uri: imageInfoURI,
               type: item.mime,
               name: cloudImageName,
-            },
+            }, // cloud s3에 등록될 파일 내용
             type: 'UNREGISTERED',
           });
         });
@@ -217,6 +223,7 @@ const CommunityRegister = () => {
   }, [isSubmitLoading]);
 
   useEffect(() => {
+    // 수정하기로 내용을 조회하는 로직
     if (params?.postId && getCommunityPost.data) {
       const {kind, title, content, tagNameList, imageNameList} =
         getCommunityPost.data;

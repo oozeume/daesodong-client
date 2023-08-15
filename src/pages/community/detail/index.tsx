@@ -1,4 +1,4 @@
-import {Box, KeyboardAvoidingView, Stack} from 'native-base';
+import {Box, Stack} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';
@@ -25,6 +25,7 @@ import {useDeleteRecomment} from '~/api/recomment/mutation';
 import {ErrorResponseTransform} from '~/../types/api/common';
 import useToastShow from '~/hooks/useToast';
 import {useGetUser} from '~/api/user/queries';
+import PageContainer from '~/components/community/detail/PageContainer';
 
 /**
  *@description 커뮤니티 상세 + 댓글 페이지
@@ -34,7 +35,7 @@ const CommunityDetail = () => {
   const {toastShow} = useToastShow();
   const postId = params.id;
 
-  const COMMENT_INPUT_VIEW_HEIGHT = 60;
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // 키캡이나 답글달기로 선택된 댓글 state
   const [selectedComment, setSelectedComment] = useState<CommentModel>();
@@ -59,9 +60,10 @@ const CommunityDetail = () => {
   });
 
   // 컨텐츠 고마워요 여부 state
-  const [isContentThank, setContnetThank] = useState(
+  const [isContentThank, setContentThank] = useState(
     getCommunityPost?.data?.isThank,
   );
+
   const [thankContentCount, setThankContentCount] = useState(
     getCommunityPost?.data?.thanks ?? 0,
   );
@@ -137,6 +139,7 @@ const CommunityDetail = () => {
 
   /**
    *@description 스크롤이 하단에 도달하면 다음 스크롤 내용 조회 핸들러
+   *@TODO api 이슈 수정되면 로직 수정하기
    */
   const onExpandList = () => {
     // 다음 페이지 조회 중이 아니고 전체 포스트 카운트보다 현재 포스트 카운트가 적을 때만 패치.
@@ -153,7 +156,7 @@ const CommunityDetail = () => {
   const onContentThank = () => {
     if (!getCommunityPost.data) return;
 
-    setContnetThank(!isContentThank);
+    setContentThank(!isContentThank);
 
     setThankContentCount(prev => {
       if (isContentThank && prev === 0) return 0;
@@ -166,6 +169,15 @@ const CommunityDetail = () => {
       isOn: !getCommunityPost.data?.isThank,
     });
   };
+
+  useEffect(() => {
+    if (!_.isUndefined(getCommunityPost?.data?.isThank)) {
+      setContentThank(getCommunityPost?.data?.isThank);
+    }
+    if (!_.isUndefined(getCommunityPost?.data?.thanks)) {
+      setThankContentCount(getCommunityPost?.data?.thanks ?? 0);
+    }
+  }, [getCommunityPost?.data?.isThank, getCommunityPost?.data?.thanks]);
 
   useEffect(() => {
     if (getBestCommentList.data) {
@@ -223,18 +235,24 @@ const CommunityDetail = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{flex: 1}}>
-      <KeyboardAvoidingView
-        flex={1}
-        keyboardVerticalOffset={COMMENT_INPUT_VIEW_HEIGHT}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+      <PageContainer>
         <Box flex={1}>
           <KeyboardAwareFlatList
-            // disableVirtualization={false}
             bounces={false}
             keyExtractor={(item, index) => index.toString()}
             data={pageComponents}
             onEndReached={onExpandList}
             onEndReachedThreshold={1}
+            onKeyboardDidShow={frames => {
+              if (Platform.OS === 'android') {
+                setKeyboardHeight(10);
+              }
+            }}
+            onKeyboardDidHide={frames => {
+              if (Platform.OS === 'android') {
+                setKeyboardHeight(0);
+              }
+            }}
             renderItem={({item}) => {
               return (
                 <Stack>
@@ -245,7 +263,7 @@ const CommunityDetail = () => {
           />
         </Box>
 
-        <Box flex={0}>
+        <Box flex={0} bottom={keyboardHeight}>
           <CommentInput
             postId={postId}
             selectedComment={selectedComment}
@@ -255,7 +273,7 @@ const CommunityDetail = () => {
             onEnrollCallback={() => getCommentList.refetch()}
           />
         </Box>
-      </KeyboardAvoidingView>
+      </PageContainer>
 
       <Popup
         title={'게시글을 삭제할까요?'}

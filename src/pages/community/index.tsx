@@ -60,11 +60,7 @@ const CommunityMain = () => {
    */
   const onExpandList = () => {
     // 다음 페이지 조회 중이 아니고 전체 포스트 카운트보다 현재 포스트 카운트가 적을 때만 패치.
-    if (
-      hasNextPage &&
-      !isFetchingNextPage &&
-      totalPostsCount > postList.length
-    ) {
+    if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   };
@@ -87,6 +83,7 @@ const CommunityMain = () => {
     // 전체 게시글 숫자 조회
     const getPostTotalCount = async () => {
       const {data: _totalCount} = await postCoummunityPostCount.mutateAsync();
+
       setTotalPostsCount(_totalCount);
     };
 
@@ -105,6 +102,7 @@ const CommunityMain = () => {
       style={{
         height: APP_HEIGHT - TAB_HEIGHT,
         backgroundColor: colors.grayScale[0],
+        paddingBottom: 20,
       }}>
       <FlatList
         disableVirtualization={false}
@@ -113,7 +111,7 @@ const CommunityMain = () => {
         data={pageComponents}
         stickyHeaderIndices={[2]}
         onEndReached={onExpandList}
-        onEndReachedThreshold={1}
+        onEndReachedThreshold={0.7}
         renderItem={({item}) => {
           return (
             <Stack>

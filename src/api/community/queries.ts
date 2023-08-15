@@ -32,14 +32,19 @@ export const useGetCommunityPostList = (query: GetCommunityPostListQuery) => {
     {
       getNextPageParam: (lastPage, allPages) => {
         const lastDataLength = lastPage.data.length;
-        return {
-          limit: 10,
-          sort: 'latest',
-          cursor:
-            lastDataLength === 0
-              ? undefined
-              : lastPage.data[lastDataLength - 1].id,
-        };
+
+        if (lastPage.data.length < 10) {
+          return null;
+        } else {
+          return {
+            limit: 10,
+            sort: 'latest',
+            cursor:
+              lastDataLength === 0
+                ? undefined
+                : lastPage.data[lastDataLength - 1].id,
+          };
+        }
       },
       keepPreviousData: true,
     },
