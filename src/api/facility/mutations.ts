@@ -1,6 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import {
   PostFacilityReviewData,
+  PostRecommandFacilityType,
   PostReportData,
   PostVisitedFacilityResponse,
 } from '~/../types/api/facility';
@@ -148,4 +149,30 @@ const postReportUser = (data: PostReportData) => {
 
 export const usePostReportUser = () => {
   return useMutation((data: PostReportData) => postReportUser(data));
+};
+
+/**
+ *@description 시설 추천
+ */
+
+const postRecommandFacility = (data: any) => {
+  return apiCall({
+    method: 'POST',
+    url: 'hospitals',
+    data,
+  });
+};
+
+export const usePostRecommandFacility = () => {
+  return useMutation((data: PostRecommandFacilityType) =>
+    postRecommandFacility({
+      hospitalCategoryName: data.type,
+      name: data.facilityName,
+      address1: data.address,
+      address2: data.address,
+      intro: data.reason,
+      url: data.site,
+      hospital_picture: data.images,
+    }),
+  );
 };
