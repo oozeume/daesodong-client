@@ -10,7 +10,6 @@ import {
   VStack,
 } from 'native-base';
 import StarReviewLine from '~/components/hospital/review/register/starReviewLine';
-import ImageUploader from '~/components/hospital/review/register/imageUploader';
 import {
   MoreVisitCheckButton,
   ReviewPrecautionButton,
@@ -31,7 +30,8 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PostFacilityReviewData} from '~/../types/api/facility';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {RegisterImageData} from '~/../types/community';
+import ImageUploader from '~/components/common/ImageUploader';
+import {PostImageData} from '~/../types/api/common';
 
 interface Props {
   facilityName: string;
@@ -41,8 +41,8 @@ interface Props {
   tagList: string[];
   onSubmit: () => void;
   active: boolean;
-  images: RegisterImageData[];
-  setImages: React.Dispatch<React.SetStateAction<RegisterImageData[]>>;
+  images: PostImageData;
+  setImages: React.Dispatch<React.SetStateAction<PostImageData>>;
 }
 
 /**
@@ -78,6 +78,7 @@ function ReviewForm({
   const onMovePrecaution = () => {
     navigation.navigate('HospitalReviewRegisterPrecaution');
   };
+
   return (
     <SafeAreaView style={{backgroundColor: 'white'}}>
       <KeyboardAwareScrollView bounces={false}>
@@ -270,12 +271,7 @@ function ReviewForm({
                 <Label text="사진 첨부(최대 5개)" />
               </HStack>
 
-              <ImageUploader
-                reviewForm={reviewForm}
-                setReviewForm={setReviewForm}
-                images={images}
-                setImages={setImages}
-              />
+              <ImageUploader images={images} setImages={setImages} />
 
               <HStack mb="12px">
                 <Label text="이 병원을 다시 방문하시겠어요?" />
