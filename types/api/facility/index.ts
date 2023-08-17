@@ -2,9 +2,6 @@
  *@description 시설 상세 API 응답
  */
 
-import {RegisterImageData} from '../../community';
-import {PostImageData} from '../common';
-
 export interface FacilityBaseType {
   id: string;
   hospitalCategoryId?: string;
@@ -93,7 +90,7 @@ export type PostFacilityReviewData = {
   score_kindness: number;
   expect_revisit: boolean;
   already_reviesit: boolean;
-  hospital_review_picture?: PostImageData;
+  hospital_review_picture?: string[];
   tags: string[];
 };
 

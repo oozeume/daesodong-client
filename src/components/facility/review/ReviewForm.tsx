@@ -31,18 +31,19 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PostFacilityReviewData} from '~/../types/api/facility';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ImageUploader from '~/components/common/ImageUploader';
-import {PostImageData} from '~/../types/api/common';
+import {SetState} from '~/../types/common';
+import {RegisterImageData} from '~/../types/community';
 
 interface Props {
   facilityName: string;
   onClose: () => void;
   reviewForm: PostFacilityReviewData;
-  setReviewForm: React.Dispatch<React.SetStateAction<PostFacilityReviewData>>;
+  setReviewForm: SetState<PostFacilityReviewData>;
   tagList: string[];
   onSubmit: () => void;
   active: boolean;
-  images: PostImageData;
-  setImages: React.Dispatch<React.SetStateAction<PostImageData>>;
+  images: RegisterImageData[];
+  setImages: SetState<RegisterImageData[]>;
 }
 
 /**

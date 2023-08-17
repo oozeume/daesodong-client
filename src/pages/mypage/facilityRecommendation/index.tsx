@@ -14,13 +14,12 @@ import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButto
 import AddressChange from '~/components/mypage/myInfo/AddressChange';
 import Popup from '~/components/common/popup/Popup';
 import ImageUploader from '~/components/common/ImageUploader';
-import {FacilityType} from '~/../types/api/facility';
 import {usePostRecommandFacility} from '~/api/facility/mutations';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {PostCloudImageData} from '~/../types/utils';
-import {PostImageData} from '~/../types/api/common';
 import useToastShow from '~/hooks/useToast';
 import {FACILITY_TYPE_LIST} from '~/constants/myinfo/facilityRecommendation';
+import {RegisterImageData} from '~/../types/community';
 
 /**
  * 내 계정 > 시설 소개/추천
@@ -34,7 +33,7 @@ function FacilityRecommendation() {
     onClose: onFacilityTypeClose,
   } = useDisclose();
 
-  const [images, setImages] = useState<PostImageData>([]);
+  const [images, setImages] = useState<RegisterImageData[]>([]);
 
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
   const [isAddReviewPopupOpen, setAddReviewPopupOpen] = useState(false);
@@ -55,7 +54,7 @@ function FacilityRecommendation() {
 
   const {onImageUpload} = useImageUpload();
   const [isSubmitLoading, setSubmitLoading] = useState(false);
-  const successImageUpload = () => {
+  const afterUploadImage = () => {
     setSubmitLoading(false);
     navigation.reset({index: 0, routes: [{name: 'tab'}]});
   };
@@ -68,7 +67,7 @@ function FacilityRecommendation() {
     })
       .then()
       .catch(() => toastShow('시설 추천 작성에 실패했습니다'))
-      .finally(successImageUpload);
+      .finally(afterUploadImage);
   };
 
   useEffect(() => {
@@ -83,7 +82,7 @@ function FacilityRecommendation() {
         onRecommand,
       ).catch(() => {
         toastShow('이미지 등록에 실패했습니다');
-        successImageUpload();
+        afterUploadImage();
       });
     }
   }, [isSubmitLoading]);

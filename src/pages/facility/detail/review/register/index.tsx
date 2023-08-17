@@ -15,7 +15,7 @@ import {ReviewType} from '~/../types/facility';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {PostCloudImageData} from '~/../types/utils';
 import useToastShow from '~/hooks/useToast';
-import {PostImageData} from '~/../types/api/common';
+import {RegisterImageData} from '~/../types/community';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -64,7 +64,7 @@ function FacilityReviewRegister({route}: Props) {
 
   const {onImageUpload} = useImageUpload();
 
-  const [images, setImages] = useState<PostImageData>([]);
+  const [images, setImages] = useState<RegisterImageData[]>([]);
 
   const onSubmit = () => {
     onImageUpload(

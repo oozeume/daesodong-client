@@ -8,7 +8,7 @@ import {Platform} from 'react-native';
 import {config} from '~/utils/config';
 import {colors} from '~/theme/theme';
 import CircleDeleteIcon from '~/assets/icons/circle_delete.svg';
-import {PostImageData} from '~/../types/api/common';
+import {SetState} from '~/../types/common';
 
 const MAX_IMAGE_COUNT = 5;
 
@@ -17,8 +17,8 @@ const MAX_IMAGE_COUNT = 5;
  */
 
 interface Props {
-  images: PostImageData;
-  setImages: React.Dispatch<React.SetStateAction<PostImageData>>;
+  images: RegisterImageData[];
+  setImages: SetState<RegisterImageData[]>;
 }
 
 function ImageUploader({images, setImages}: Props) {
@@ -84,7 +84,7 @@ function ImageUploader({images, setImages}: Props) {
                   uri:
                     item.type === 'UNREGISTERED'
                       ? `${item.registerPageImageName}`
-                      : `${config.IMAGE_BASE_URL}${item}`,
+                      : `${config.IMAGE_BASE_URL}${item.cloudImageName}`,
                 }}
                 alt={'image'}
               />

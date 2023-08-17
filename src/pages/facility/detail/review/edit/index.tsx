@@ -18,7 +18,7 @@ import {ReviewType} from '~/../types/facility';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {PostCloudImageData} from '~/../types/utils';
 import useToastShow from '~/hooks/useToast';
-import {PostImageData} from '~/../types/api/common';
+import {RegisterImageData} from '~/../types/community';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
 
@@ -32,9 +32,7 @@ function FacilityReviewEdit({route}: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const toast = useToast();
 
-  const [images, setImages] = useState<PostImageData>(
-    review.images as PostImageData,
-  );
+  const [images, setImages] = useState<RegisterImageData[]>([]);
 
   const {onImageUpload} = useImageUpload();
 
@@ -50,7 +48,7 @@ function FacilityReviewEdit({route}: Props) {
       expect_revisit: review.hasExpectRevisit,
       already_reviesit: review.isRevisit,
       tags: review.tags,
-      hospital_review_picture: images,
+      hospital_review_picture: images as unknown as string[],
     };
   }, [review, images]);
 
@@ -68,7 +66,7 @@ function FacilityReviewEdit({route}: Props) {
   const uploadReviewForm = () => {
     mutateEdit({
       ...reviewForm,
-      hospital_review_picture: images.map(item => item?.cloudImageName ?? item),
+      hospital_review_picture: images.map(item => item.cloudImageName),
     })
       .then(() => {
         setTags([]);
@@ -122,6 +120,19 @@ function FacilityReviewEdit({route}: Props) {
       setTagList(tagList);
     }
   }, []);
+
+  useEffect(() => {
+    if (!_.isEmpty(review.images)) {
+      setImages(
+        review.images.map(item => ({
+          type: 'REGISTERED',
+          registerPageImageName: item,
+          cloudImageName: item,
+          cloudData: undefined,
+        })),
+      );
+    }
+  }, [review]);
 
   return (
     <ReviewForm
