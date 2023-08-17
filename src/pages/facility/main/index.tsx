@@ -27,6 +27,7 @@ import {FacilitySortType, FacilityType} from '~/../types/api/facility';
 import {FACILITY_PER_PAGE} from '~/constants/facility/main';
 import {useCoordinate, useGetFacilityList} from '~/api/facility/queries';
 import Facility from '~/model/facility';
+import useBackHandler from '~/hooks/useBackHandler';
 
 const LOCATION_INIT = {
   sido: {
@@ -76,6 +77,8 @@ const FacilityMain = () => {
   const [petType, setPetType] = useState<SpeciesData>();
 
   const [facilities, setFacilities] = useState<Facility[]>([]);
+
+  useBackHandler();
 
   const {refetch: getCoordinate} = useCoordinate(
     locationSearchValue.sido.name + ' ' + locationSearchValue.sigugun.name,

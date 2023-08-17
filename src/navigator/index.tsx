@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -50,51 +50,12 @@ import FacilityReviewEdit from '~/pages/facility/detail/review/edit';
 import BlockedAccounts from '~/pages/mypage/blockedAccounts';
 import FacilityRecommendation from '~/pages/mypage/facilityRecommendation';
 import SignupSocialNavigator from '~/pages/signup/socialNavigator';
-import useToastShow from '~/hooks/useToast';
-import {BackHandler, TextInput} from 'react-native';
 import useFixFontSize from '~/hooks/useFixFontSize';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
 const AppNavigator = () => {
-  const doubleClickTimeoutCheckRef = useRef<number | null>(null);
-  const doubleClickRef = useRef(false);
-  const {toastShow} = useToastShow();
   useFixFontSize(); // 글자 크기 고정
-
-  // 뒤로가기 두 번시, 앱 종료 이벤트
-  const onDoubleClickBackButton = () => {
-    // 2000(2초) 안에 back 버튼을 한번 더 클릭 할 경우 앱 종료
-
-    if (!doubleClickRef.current) {
-      toastShow('한번 더 누르시면 종료됩니다.');
-      doubleClickRef.current = true;
-
-      doubleClickTimeoutCheckRef.current = setTimeout(
-        () => {
-          doubleClickRef.current = false;
-        },
-        2000, // 2초
-      );
-    } else {
-      if (doubleClickTimeoutCheckRef.current)
-        clearTimeout(doubleClickTimeoutCheckRef.current);
-
-      BackHandler.exitApp(); // 앱 종료
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', onDoubleClickBackButton);
-
-    return () => {
-      BackHandler.removeEventListener(
-        'hardwareBackPress',
-        onDoubleClickBackButton,
-      );
-    };
-  }, []);
 
   return (
     <NavigationContainer>
