@@ -236,6 +236,9 @@ const CommunityRegister = () => {
           cloudData: undefined,
         })),
       );
+    } else {
+      // 글 새로 등록 할때 > 이전에 수정 내용 global state 초기화
+      setTags([]);
     }
   }, []);
 
