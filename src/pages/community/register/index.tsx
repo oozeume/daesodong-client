@@ -209,16 +209,7 @@ const CommunityRegister = () => {
           return result;
         }, []),
         registerForm,
-      ).catch(error => {
-        // 이미지 클라우드 등록 실패 시, 에러
-        toast.show({
-          render: () => (
-            <ToastMessage
-              text={`이미지 업로드하는 과정에서 오류가 발생했습니다.`}
-            />
-          ),
-        });
-      });
+      );
     }
   }, [isSubmitLoading]);
 
