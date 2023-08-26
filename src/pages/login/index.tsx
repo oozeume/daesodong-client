@@ -304,44 +304,38 @@ function InitialLogin() {
           ? colors.fussOrange[0]
           : colors.grayScale[0],
       }}>
-      {isInitialLoading ? (
-        <Center w="100%" h={APP_HEIGHT} bgColor={colors.fussOrange[0]}>
-          <SplashImage />
-        </Center>
-      ) : (
-        <VStack
-          bg={colors.grayScale['0']}
-          w="100%"
-          h="100%"
-          pt={containerPaddingTop}
-          pb={'40px'}
-          px="18px"
-          justifyContent={'space-between'}>
-          <VStack>
-            <Text
-              fontSize="28px"
-              color={colors.fussOrange['0']}
-              fontWeight="700"
-              textAlign="center">
-              우당탕탕
-            </Text>
-            <Text fontSize="28px" textAlign="center" mb="48px" fontWeight="700">
-              대소동에 어서오세요!
-            </Text>
+      <VStack
+        bg={colors.grayScale['0']}
+        w="100%"
+        h="100%"
+        pt={containerPaddingTop}
+        pb={'40px'}
+        px="18px"
+        justifyContent={'space-between'}>
+        <VStack>
+          <Text
+            fontSize="28px"
+            color={colors.fussOrange['0']}
+            fontWeight="700"
+            textAlign="center">
+            우당탕탕
+          </Text>
+          <Text fontSize="28px" textAlign="center" mb="48px" fontWeight="700">
+            대소동에 어서오세요!
+          </Text>
 
-            <Center>
-              <TmpInitialLogin />
-            </Center>
-          </VStack>
-
-          <VStack>
-            <KakaoLoginButton handlePress={onKakaoLogin} />
-            <AppleLoginButton handlePress={onAppleLogin} />
-            <GoogleLoginButton handlePress={onGoogleLogin} />
-            <EmailLoginButton handlePress={onMove} />
-          </VStack>
+          <Center>
+            <TmpInitialLogin />
+          </Center>
         </VStack>
-      )}
+
+        <VStack>
+          <KakaoLoginButton handlePress={onKakaoLogin} />
+          <AppleLoginButton handlePress={onAppleLogin} />
+          <GoogleLoginButton handlePress={onGoogleLogin} />
+          <EmailLoginButton handlePress={onMove} />
+        </VStack>
+      </VStack>
     </SafeAreaView>
   );
 }
