@@ -13,7 +13,7 @@ function KakaoLoginButton({handlePress}: LoginButtonProps) {
       handlePress={handlePress}
       buttonColors={{active: '#FEEB00'}}
       fontColors={{active: colors.grayScale['90']}}
-      borderColors={{active: '#ffffffff'}}
+      borderColors={{active: '#ffffff00'}}
       active
       large
       shadow
@@ -32,7 +32,7 @@ function AppleLoginButton({handlePress}: LoginButtonProps) {
       handlePress={handlePress}
       buttonColors={{active: colors.grayScale['90']}}
       fontColors={{active: colors.grayScale['0']}}
-      borderColors={{active: '#ffffffff'}}
+      borderColors={{active: '#ffffff00'}}
       active
       large
       shadow

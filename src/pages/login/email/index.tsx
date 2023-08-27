@@ -36,6 +36,7 @@ import {config} from '~/utils/config';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import useToastShow from '~/hooks/useToast';
 import {EMAIL_REGREX, PASSWORD_REGREX} from '~/constants/regEx';
+import _ from 'lodash';
 
 /**
  *@description 이메일로 로그인 페이지
@@ -90,6 +91,9 @@ function EmailLogin() {
   };
 
   const setUserInfo = useUserRegister();
+
+  const isLoginButtonActive =
+    !_.isEmpty(loginForm.email) && !_.isEmpty(loginForm.password);
 
   const onLogin = async () => {
     if (!loginForm.email || !EMAIL_REGREX.test(loginForm.email))
@@ -247,10 +251,15 @@ function EmailLogin() {
     <TouchableWithoutView onPress={Keyboard.dismiss}>
       <SafeAreaView style={{backgroundColor: colors.grayScale['0']}}>
         <VStack bg={colors.grayScale['0']} w="100%" h="100%">
-          <VStack flex={1} justifyContent={'space-between'} px="18px" mb="40px">
+          <VStack
+            flex={1}
+            justifyContent={'space-between'}
+            px="18px"
+            mb="40px"
+            pt="24px">
             <VStack>
               <VerificationForm
-                placeholder={'아이디(이메일)'}
+                placeholder={'이메일'}
                 marginBottom={'12px'}
                 errorMessage={errorForm.email}
                 verificationResult={
@@ -279,7 +288,7 @@ function EmailLogin() {
               />
 
               <RedActiveLargeButton
-                active={true}
+                active={isLoginButtonActive}
                 handlePress={onLogin}
                 buttonStyle={{marginBottom: 20}}
                 text={'로그인'}
