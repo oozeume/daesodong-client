@@ -10,16 +10,18 @@ import {Box, Circle, Text, VStack} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '~/theme/theme';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
+import {setData} from '~/utils/storage';
 
 /**
  *@description 초기 앱 인트로 설명 페이지
  */
 function AppIntro() {
-  const {navigate} = useNavigation<NavigationHookProp>();
+  const {reset} = useNavigation<NavigationHookProp>();
   const swiperRef = useRef<Swiper | null>(null);
 
-  const onMove = () => {
-    navigate('InitialLogin');
+  const onMove = async () => {
+    setData('firstOpen', 'firstOpen');
+    reset({index: 0, routes: [{name: 'InitialLogin'}]});
   };
 
   const images = [
