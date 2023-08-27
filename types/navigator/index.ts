@@ -86,9 +86,7 @@ export type RootStackParamList = {
   BlockedAccounts: undefined;
   FacilityRecommendation: undefined;
 
-  AppIntroFirst: undefined;
-  AppIntroSecond: undefined;
-  AppIntroThird: undefined;
+  AppIntro: undefined;
 
   PhoneVerification: undefined;
   EmailRegister: undefined;

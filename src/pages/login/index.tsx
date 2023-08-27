@@ -288,7 +288,7 @@ function InitialLogin() {
         setInitialLoading(false);
 
         // 저장된 데이터가 없으면 처음으로 앱을 킨 상태를 가리킴
-        reset({index: 0, routes: [{name: 'AppIntroFirst'}]});
+        reset({index: 0, routes: [{name: 'AppIntro'}]});
       }
     }
 
