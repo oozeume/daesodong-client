@@ -10,43 +10,33 @@ import {
 import EmailLoginHelperButton from '~/components/login/email/button';
 import {colors} from '~/theme/theme';
 import VerificationForm from '~/components/common/VerificationForm';
-import {Keyboard} from 'react-native';
+import {Keyboard, Platform} from 'react-native';
 import TouchableWithoutView from '~/components/common/TouchableWithoutView';
 import {NavigationHookProp} from '~/../types/navigator';
 import {ErrorResponseTransform} from '~/../types/api/common';
-import {
-  getSecurityData,
-  removeSecurityData,
-  setSecurityData,
-} from '~/utils/storage';
+import {setSecurityData} from '~/utils/storage';
 import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButton';
 import {EmailLoginForm} from '~/../types/login';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {
-  usePostAuthEmailLogin,
-  usePostAuthSocialLogin,
-} from '~/api/auth/mutations';
-import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
+import {usePostAuthEmailLogin} from '~/api/auth/mutations';
 import {useGetUser} from '~/api/user/queries';
 import {useUserRegister} from '~/store/useUserContext';
 import {config} from '~/utils/config';
-import {appleAuth} from '@invertase/react-native-apple-authentication';
-import useToastShow from '~/hooks/useToast';
 import {EMAIL_REGREX, PASSWORD_REGREX} from '~/constants/regEx';
 import _ from 'lodash';
+import useSocialLoginHandler from '~/hooks/useSocialLoginHandler';
 
 /**
  *@description 이메일로 로그인 페이지
  */
 function EmailLogin() {
   const {navigate, reset} = useNavigation<NavigationHookProp>();
-  const postAuthSocialLogin = usePostAuthSocialLogin();
   const postAuthEmailLogin = usePostAuthEmailLogin();
   const {data: userData, refetch: getUserRefetch} = useGetUser();
-  const {toastShow} = useToastShow();
+
+  const {onGoogleLogin, onKakaoLogin, onAppleLoginAndroid, onAppleLoginIOS} =
+    useSocialLoginHandler();
+
+  const setUserInfo = useUserRegister();
 
   const initForm = {
     email: '',
@@ -55,42 +45,6 @@ function EmailLogin() {
 
   const [loginForm, setLoginForm] = useState<EmailLoginForm>(initForm);
   const [errorForm, setErrorForm] = useState<EmailLoginForm>(initForm);
-
-  useEffect(() => {
-    async function checkIsLogin() {
-      const accessToken = await getSecurityData(config.ACCESS_TOKEN_NAME);
-
-      if (accessToken) reset({index: 0, routes: [{name: 'tab'}]});
-    }
-
-    // 로그인 가능 여부 체크
-    // if (__DEV__) checkIsLogin();
-  }, []);
-
-  const onLoginComplete = async (tokenData: {
-    access: string;
-    refresh: string;
-  }) => {
-    try {
-      await setSecurityData(config.ACCESS_TOKEN_NAME, tokenData.access);
-      await setSecurityData(config.REFRESH_TOKEN_NAME, tokenData.refresh);
-
-      const _userData = await getUserRefetch();
-      if (_userData.data?.petInfoList.length === 0) {
-        // 집사 정보가 없으면 등록 페이지로 이동
-        navigate('SignupPetInfoNavigator');
-      } else {
-        // 있으면 시설 지도 페이지로 이동
-
-        reset({index: 0, routes: [{name: 'tab'}]});
-      }
-    } catch (error) {
-      removeSecurityData(config.ACCESS_TOKEN_NAME);
-      removeSecurityData(config.REFRESH_TOKEN_NAME);
-    }
-  };
-
-  const setUserInfo = useUserRegister();
 
   const isLoginButtonActive =
     !_.isEmpty(loginForm.email) && !_.isEmpty(loginForm.password);
@@ -144,107 +98,10 @@ function EmailLogin() {
     }
   };
 
-  async function onAppleLogin() {
-    try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL],
-      });
-
-      // get current authentication state for user
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
-      );
-
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        console.log(appleAuthRequestResponse);
-
-        // 유저 인증됨
-      }
-    } catch (error) {
-      const _error = error as unknown as {code?: string};
-
-      if (_error?.code === appleAuth.Error.CANCELED) {
-        toastShow('Apple 로그인이 취소되었습니다.');
-      } else {
-        toastShow(
-          'Apple 로그인 과정에서 에러가 발생했습니다.\n앱을 다시 실행 후, 로그인해주세요.',
-        );
-        console.error(error);
-      }
-    }
-  }
-
-  const onGoogleLogin = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const {idToken: token} = await GoogleSignin.signIn();
-
-      if (token) {
-        const response = await postAuthSocialLogin.mutateAsync({
-          social: 'Google',
-          token,
-        });
-
-        const {access, refresh} = response?.data;
-
-        if (access && refresh) {
-          onLoginComplete({access, refresh});
-        } else {
-          // 회원가입 페이지로 이동
-          reset({
-            index: 0,
-            routes: [
-              {
-                name: 'SignupSocialNavigator',
-                params: {email: response.data?.email},
-              },
-            ],
-          });
-        }
-      }
-    } catch (_error) {
-      const error = _error as any;
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
-  };
-
-  const onKakaoLogin = async () => {
-    try {
-      const {accessToken: token} = (await login()) as KakaoOAuthToken;
-
-      if (token) {
-        const response = await postAuthSocialLogin.mutateAsync({
-          social: 'Kakao',
-          token,
-        });
-
-        const {access, refresh} = response?.data;
-
-        if (access && refresh) {
-          onLoginComplete({access, refresh});
-        } else {
-          // 회원가입 페이지로 이동
-          reset({
-            index: 0,
-            routes: [
-              {
-                name: 'SignupSocialNavigator',
-                params: {email: response.data?.email},
-              },
-            ],
-          });
-        }
-      }
-    } catch (error) {}
+  const onMovePasswordResetPage = () => {
+    setLoginForm(prev => ({...prev, password: ''}));
+    setErrorForm(initForm);
+    navigate('PasswordReset', {type: 'LOGIN_EMAIL'});
   };
 
   return (
@@ -303,9 +160,7 @@ function EmailLogin() {
                 <View w="1px" h="10px" bg={colors.grayScale['40']} />
 
                 <EmailLoginHelperButton
-                  onPress={() =>
-                    navigate('PasswordReset', {type: 'LOGIN_EMAIL'})
-                  }
+                  onPress={onMovePasswordResetPage}
                   name="비밀번호 재설정"
                 />
 
@@ -333,7 +188,13 @@ function EmailLogin() {
               </HStack>
 
               <KakaoLoginButton handlePress={onKakaoLogin} />
-              <AppleLoginButton handlePress={onAppleLogin} />
+              <AppleLoginButton
+                handlePress={
+                  Platform.OS === 'android'
+                    ? onAppleLoginAndroid
+                    : onAppleLoginIOS
+                }
+              />
               <GoogleLoginButton handlePress={onGoogleLogin} />
             </VStack>
           </VStack>
