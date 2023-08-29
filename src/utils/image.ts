@@ -31,6 +31,9 @@ const option: Options = {
   height: 400,
   cropping: true,
   mediaType: 'photo',
+  compressImageMaxHeight: 300,
+  compressImageMaxWidth: 400,
+  compressImageQuality: 0.7,
 };
 
 export function imagePicker() {

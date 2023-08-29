@@ -33,6 +33,7 @@ import _ from 'lodash';
 import {useGetUser} from '~/api/user/queries';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import useToastShow from '~/hooks/useToast';
+import useBackHandler from '~/hooks/useBackHandler';
 
 /**
  *@description 초기 소셜 로그인 선택 페이지
@@ -47,6 +48,7 @@ function InitialLogin() {
   const postAuthRefresh = usePostAuthRefresh();
   const postAuthSocialLogin = usePostAuthSocialLogin();
   const getUser = useGetUser(false);
+  useBackHandler();
 
   // 디바이스 높이에 따른 페이지 padding top, bottom 설정
   const containerPaddingTop = `${Math.floor((78 * appHeight) / 812)}px`;
@@ -271,9 +273,11 @@ function InitialLogin() {
           }
         }
       }
+    } catch (error) {
+      console.log(error);
+    }
 
-      setInitialLoading(false);
-    } catch (error) {}
+    setInitialLoading(false);
   }
 
   useEffect(() => {

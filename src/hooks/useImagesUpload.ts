@@ -1,11 +1,14 @@
 import {PostCloudImageData} from '~/../types/utils';
 import {usePostImageUpload} from '~/api/image';
+import {ErrorResponseTransform} from '../../types/api/common';
+import useToastShow from './useToast';
 
 /**
  *@description 이미지 업로드 api 훅 및 요청 핸들러 반환 커스텀 훅
  */
 function useImageUpload() {
   const postImageUpload = usePostImageUpload();
+  const {toastShow} = useToastShow();
 
   const onImageUpload = async (
     imageInfo: PostCloudImageData[],
@@ -21,7 +24,11 @@ function useImageUpload() {
 
       // 이미지 클라우드에 업로드 후, 콜백 실행
       callback();
-    } catch (error) {}
+    } catch (error) {
+      const _error = error as ErrorResponseTransform;
+
+      toastShow(_error.message);
+    }
   };
   return {onImageUpload, postImageUpload};
 }

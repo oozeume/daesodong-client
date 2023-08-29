@@ -209,16 +209,7 @@ const CommunityRegister = () => {
           return result;
         }, []),
         registerForm,
-      ).catch(error => {
-        // 이미지 클라우드 등록 실패 시, 에러
-        toast.show({
-          render: () => (
-            <ToastMessage
-              text={`이미지 업로드하는 과정에서 오류가 발생했습니다.`}
-            />
-          ),
-        });
-      });
+      );
     }
   }, [isSubmitLoading]);
 
@@ -245,6 +236,9 @@ const CommunityRegister = () => {
           cloudData: undefined,
         })),
       );
+    } else {
+      // 글 새로 등록 할때 > 이전에 수정 내용 global state 초기화
+      setTags([]);
     }
   }, []);
 

@@ -1,4 +1,5 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios';
+import _ from 'lodash';
 import {ErrorResponse} from '~/../types/api/common';
 import {config} from '~/utils/config';
 import {getSecurityData} from '~/utils/storage';
@@ -110,37 +111,53 @@ export const imageApiCall = async <ResponseType = any>(props: {
     signal: apiTimeout(props.timeout ?? 3),
   })
     .then(async response => {
-      const data = (await response.json()) as ResponseType;
-      if (__DEV__) {
-        console.log('@ API SUCCESS RESPONSE @');
-        console.log(data);
-      }
-
-      return {
-        data,
-        statusCode: response.status,
-        success: 'SUCCESS' as const,
-      };
-    })
-    .catch((error: AxiosError) => {
-      if (error.response?.data) {
-        const data = error.response?.data as ErrorResponse;
-
+      if (response.ok) {
+        const data = (await response.json()) as ResponseType;
         if (__DEV__) {
-          console.log('@ API ERROR RESPONSE @');
+          console.log('@ API SUCCESS RESPONSE @');
           console.log(data);
         }
 
-        throw {
-          message: data?.message || '',
-          statusCode: data?.statusCode || 500,
-          success: 'FAIL' as const,
+        return {
+          data: {},
+          statusCode: response.status,
+          success: 'SUCCESS' as const,
         };
-      } else
+      } else {
+        const errorMessage = await response.text();
         throw {
-          data: undefined,
-          statusCode: error.response?.status,
-          success: false,
+          message: errorMessage,
+          statusCode: response.status,
         };
+      }
+    })
+    .catch((error: {message: string; statusCode: number}) => {
+      if (_.isUndefined(error.statusCode)) {
+        // 단순 코드 오류
+        throw {
+          message: '문제가 발생했습니다. 계속 안된다면 관리자에게 문의하세요.',
+          statusCode: 400,
+          success: 'FAIL',
+        };
+      } else if (error.statusCode === 413) {
+        throw {
+          message: '업로드하는 파일 용량이 너무 큽니다.',
+          statusCode: 413,
+          success: 'FAIL',
+        };
+      } else if (Math.floor(error.statusCode / 400) === 1) {
+        // body 문제
+        throw {
+          message: '잘못된 요청입니다. 다시 시도해주세요.',
+          statusCode: error.statusCode,
+          success: 'FAIL',
+        };
+      } else {
+        throw {
+          message: '사진을 업로드하는 과정에서 문제가 발생했습니다.',
+          statusCode: error.statusCode,
+          success: 'FAIL',
+        };
+      }
     });
 };
