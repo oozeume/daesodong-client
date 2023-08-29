@@ -14,7 +14,7 @@ import RedActiveLargeButton from '~/components/common/button/RedActiveLargeButto
 import AddressChange from '~/components/mypage/myInfo/AddressChange';
 import Popup from '~/components/common/popup/Popup';
 import ImageUploader from '~/components/common/ImageUploader';
-import {usePostRecommandFacility} from '~/api/facility/mutations';
+import {usePostRecommendFacility} from '~/api/facility/mutations';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {PostCloudImageData} from '~/../types/utils';
 import useToastShow from '~/hooks/useToast';
@@ -48,7 +48,7 @@ function FacilityRecommendation() {
   const {toastShow} = useToastShow();
 
   const [form, setForm] = useState(initForm);
-  const {mutateAsync: recommandFacility} = usePostRecommandFacility();
+  const {mutateAsync: recommendFacility} = usePostRecommendFacility();
 
   const reasonPlaceholderText = `이 시설을 추천/제보하시는 이유를 알려주세요\n\n#너무 친절했어요\n#진료가 꼼꼼하고 사려깊어요`;
 
@@ -60,8 +60,8 @@ function FacilityRecommendation() {
   };
 
   const onSubmit = () => setSubmitLoading(true);
-  const onRecommand = () => {
-    recommandFacility({
+  const onRecommend = () => {
+    recommendFacility({
       ...form,
       images: images.map(item => item.cloudImageName),
     })
@@ -79,7 +79,7 @@ function FacilityRecommendation() {
           }
           return result;
         }, []),
-        onRecommand,
+        onRecommend,
       ).catch(() => {
         toastShow('이미지 등록에 실패했습니다');
         afterUploadImage();
