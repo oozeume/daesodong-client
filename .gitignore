@@ -73,3 +73,6 @@ buck-out/
 
 android-release-key-enroll.png
 /android/gradle.properties
+
+# react-native-config codegen
+ios/tmp.xcconfig
