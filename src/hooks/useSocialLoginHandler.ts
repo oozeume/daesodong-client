@@ -97,7 +97,7 @@ function useSocialLoginHandler() {
       const error = _error as any;
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        toastShow('구글 소셜 로그인 과정에서 오류가 발생했습니다.');
+        toastShow('구글 소셜 로그인이 취소되었습니다.');
       } else if (error.code === statusCodes.IN_PROGRESS) {
         toastShow('구글 소셜 로그인이 진행 중입니다.');
         // operation (e.g. sign in) is in progress already
