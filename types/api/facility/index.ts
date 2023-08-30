@@ -276,3 +276,12 @@ export interface MyReport {
 }
 
 export type PostReportData = {suspectUserId: string; reason: string};
+
+export type PostRecommendFacilityType = {
+  type: string;
+  facilityName: string;
+  address: string;
+  reason: string;
+  site: string;
+  images: string[];
+};

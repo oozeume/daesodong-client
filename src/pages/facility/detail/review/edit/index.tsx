@@ -15,10 +15,10 @@ import _ from 'lodash';
 import {useReviewRegister} from '~/store/useReviewRegisterContext';
 import dayjs from 'dayjs';
 import {ReviewType} from '~/../types/facility';
-import {RegisterImageData} from '~/../types/community';
 import useImageUpload from '~/hooks/useImagesUpload';
 import {PostCloudImageData} from '~/../types/utils';
 import useToastShow from '~/hooks/useToast';
+import {RegisterImageData} from '~/../types/community';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FacilityReviewEdit'>;
 
@@ -32,7 +32,8 @@ function FacilityReviewEdit({route}: Props) {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const toast = useToast();
 
-  const [images, setImages] = useState<RegisterImageData[]>(review.images);
+  const [images, setImages] = useState<RegisterImageData[]>([]);
+
   const {onImageUpload} = useImageUpload();
 
   const _reviewForm = useMemo(() => {
@@ -47,9 +48,9 @@ function FacilityReviewEdit({route}: Props) {
       expect_revisit: review.hasExpectRevisit,
       already_reviesit: review.isRevisit,
       tags: review.tags,
-      hospital_review_picture: review.images,
+      hospital_review_picture: images as unknown as string[], // TODO: 이미지 객체 타입으로 변경
     };
-  }, [review]);
+  }, [review, images]);
 
   const [active, setActive] = useState(false);
   const [reviewForm, setReviewForm] =
@@ -119,6 +120,19 @@ function FacilityReviewEdit({route}: Props) {
       setTagList(tagList);
     }
   }, []);
+
+  useEffect(() => {
+    if (!_.isEmpty(review.images)) {
+      setImages(
+        review.images.map(item => ({
+          type: 'REGISTERED',
+          registerPageImageName: item,
+          cloudImageName: item,
+          cloudData: undefined,
+        })),
+      );
+    }
+  }, [review]);
 
   return (
     <ReviewForm

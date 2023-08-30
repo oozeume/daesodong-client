@@ -13,9 +13,9 @@ import {INIT_REVIEW_FORM} from '~/constants/facility/detail';
 import ReviewForm from '../../../../../components/facility/review/ReviewForm';
 import {ReviewType} from '~/../types/facility';
 import useImageUpload from '~/hooks/useImagesUpload';
-import {RegisterImageData} from '~/../types/community';
 import {PostCloudImageData} from '~/../types/utils';
 import useToastShow from '~/hooks/useToast';
+import {RegisterImageData} from '~/../types/community';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
