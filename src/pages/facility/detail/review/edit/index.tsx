@@ -48,7 +48,7 @@ function FacilityReviewEdit({route}: Props) {
       expect_revisit: review.hasExpectRevisit,
       already_reviesit: review.isRevisit,
       tags: review.tags,
-      hospital_review_picture: images as unknown as string[],
+      hospital_review_picture: images as unknown as string[], // TODO: 이미지 객체 타입으로 변경
     };
   }, [review, images]);
 
