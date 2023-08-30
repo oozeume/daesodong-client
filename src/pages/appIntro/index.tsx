@@ -44,7 +44,7 @@ function AppIntro() {
     },
   ];
 
-  const SWIPER_HEIGHT = 108;
+  const SWIPER_HEIGHT = 148;
 
   useEffect(() => {
     const swiperTimeout = setInterval(() => {
