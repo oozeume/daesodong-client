@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>895583511596-4ruesc2deufa07jsr5raat557aq80g34.apps.googleusercontent.com</string>
+	<string>895583511596-41prnjgs1qii31sbsq6eokagf0830p2c.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.895583511596-4ruesc2deufa07jsr5raat557aq80g34</string>
+	<string>com.googleusercontent.apps.895583511596-41prnjgs1qii31sbsq6eokagf0830p2c</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>895583511596-ksaji1i9bmhgv4mmjk62uvs0s87p9lv7.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDJu3AVuD8IwcYpQ6glWTup5AFUhtLTBYw</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.daesodong</string>
+	<string>com.daesodong</string>
 	<key>PROJECT_ID</key>
 	<string>daesodong-36d09</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:895583511596:ios:d370c18e4846428e191d89</string>
+	<string>1:895583511596:ios:a686e5d830d48738191d89</string>
 </dict>
 </plist>

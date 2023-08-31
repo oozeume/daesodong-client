@@ -15,7 +15,7 @@ function useBackHandler() {
     // 2000(2초) 안에 back 버튼을 한번 더 클릭 할 경우 앱 종료
 
     if (!doubleClickRef.current) {
-      toastShow('한번 더 누르시면 종료됩니다.');
+      toastShow('한 번 더 뒤로 스와이프 하면 앱이 종료돼요.');
       doubleClickRef.current = true;
 
       doubleClickTimeoutCheckRef.current = setTimeout(

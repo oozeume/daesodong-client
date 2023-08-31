@@ -86,6 +86,7 @@ function VerificationForm({
         <View w={'100%'}>
           <TextInput
             value={value}
+            placeholderTextColor={colors.grayScale[40]}
             placeholder={placeholder}
             onChangeText={onChangeText}
             autoFocus={autoFocus}

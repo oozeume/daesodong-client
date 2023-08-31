@@ -96,7 +96,7 @@ function PasswordResetChange({handlePage, emailForm}: Props) {
           successMessage={'비밀번호가 일치합니다'}
           errorMessage={'비밀번호를 확인해주세요'}
           verificationResult={
-            password.length > 0
+            password.length > 0 && passwordConfirm.length > 0
               ? password === passwordConfirm
                 ? 'SUCCESS'
                 : 'FAIL'

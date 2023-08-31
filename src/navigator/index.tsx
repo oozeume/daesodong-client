@@ -34,9 +34,6 @@ import MyPageHeart from '~/pages/mypage/heart';
 import MyInfo from '~/pages/mypage/myInfo';
 import LoginInfo from '~/components/mypage/myInfo/LoginInfo';
 import MyPetInfo from '~/pages/mypage/myPetInfo';
-import AppIntroFirst from '~/pages/appIntro/first';
-import AppIntroSecond from '~/pages/appIntro/second';
-import AppIntroThird from '~/pages/appIntro/third';
 import MyReview from '~/pages/mypage/myReview';
 import MyReviewDetail from '~/pages/mypage/myReviewDetail';
 import MyCommunityContent from '~/pages/mypage/myCommunityContent';
@@ -51,6 +48,7 @@ import BlockedAccounts from '~/pages/mypage/blockedAccounts';
 import FacilityRecommendation from '~/pages/mypage/facilityRecommendation';
 import SignupSocialNavigator from '~/pages/signup/socialNavigator';
 import useFixFontSize from '~/hooks/useFixFontSize';
+import AppIntro from '~/pages/appIntro';
 
 const Stack = createNativeStackNavigator<RouteList>();
 
@@ -498,28 +496,10 @@ const AppNavigator = () => {
         />
 
         <Stack.Screen
-          name="AppIntroFirst"
-          component={AppIntroFirst}
+          name="AppIntro"
+          component={AppIntro}
           options={() => ({
             headerShown: false,
-          })}
-        />
-
-        <Stack.Screen
-          name="AppIntroSecond"
-          component={AppIntroSecond}
-          options={() => ({
-            headerShown: false,
-            animation: 'slide_from_right',
-          })}
-        />
-
-        <Stack.Screen
-          name="AppIntroThird"
-          component={AppIntroThird}
-          options={() => ({
-            headerShown: false,
-            animation: 'slide_from_right',
           })}
         />
       </Stack.Navigator>

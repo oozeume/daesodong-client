@@ -74,7 +74,7 @@ function FindEmail() {
         <KeyboardAvoidingView
           flex={1}
           behavior={'padding'}
-          keyboardVerticalOffset={40}>
+          keyboardVerticalOffset={92}>
           <VStack
             pt={'60px'}
             justifyContent="space-between"

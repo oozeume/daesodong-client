@@ -12,28 +12,15 @@ import {
 } from '~/components/login/button';
 import {Dimensions, Platform} from 'react-native';
 import {colors} from '~/theme/theme';
-import {
-  getData,
-  getSecurityData,
-  removeSecurityData,
-  setSecurityData,
-} from '~/utils/storage';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {usePostAuthRefresh, usePostAuthSocialLogin} from '~/api/auth/mutations';
-import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
+import {getData, getSecurityData, removeSecurityData} from '~/utils/storage';
+import {usePostAuthRefresh} from '~/api/auth/mutations';
 import {decodeAuthToken} from '~/utils/decode';
 import dayjs from 'dayjs';
 import {config} from '~/utils/config';
-import SplashImage from '~/assets/images/splash.svg';
-import {APP_HEIGHT} from '~/utils/dimension';
 import _ from 'lodash';
 import {useGetUser} from '~/api/user/queries';
-import {appleAuth} from '@invertase/react-native-apple-authentication';
-import useToastShow from '~/hooks/useToast';
 import useBackHandler from '~/hooks/useBackHandler';
+import useSocialLoginHandler from '~/hooks/useSocialLoginHandler';
 
 /**
  *@description 초기 소셜 로그인 선택 페이지
@@ -41,12 +28,10 @@ import useBackHandler from '~/hooks/useBackHandler';
 function InitialLogin() {
   const {navigate, reset} = useNavigation<NavigationProp<RouteList>>();
   const {height: appHeight} = Dimensions.get('screen');
-  const {toastShow} = useToastShow();
 
   const [isInitialLoading, setInitialLoading] = useState(true);
 
   const postAuthRefresh = usePostAuthRefresh();
-  const postAuthSocialLogin = usePostAuthSocialLogin();
   const getUser = useGetUser(false);
   useBackHandler();
 
@@ -55,131 +40,8 @@ function InitialLogin() {
 
   const onMove = () => navigate('EmailLogin');
 
-  const onLoginComplete = async (tokenData: {
-    access: string;
-    refresh: string;
-  }) => {
-    try {
-      await setSecurityData(config.ACCESS_TOKEN_NAME, tokenData.access);
-      await setSecurityData(config.REFRESH_TOKEN_NAME, tokenData.refresh);
-
-      const _userData = await getUser.refetch();
-      if (_userData.data?.petInfoList.length === 0) {
-        // 집사 정보가 없으면 등록 페이지로 이동
-        navigate('SignupPetInfoNavigator');
-      } else {
-        // 있으면 시설 지도 페이지로 이동
-
-        reset({index: 0, routes: [{name: 'tab'}]});
-      }
-    } catch (error) {
-      removeSecurityData(config.ACCESS_TOKEN_NAME);
-      removeSecurityData(config.REFRESH_TOKEN_NAME);
-    }
-  };
-
-  const onGoogleLogin = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const {idToken: token} = await GoogleSignin.signIn();
-
-      if (!_.isEmpty(token) && token) {
-        const response = await postAuthSocialLogin.mutateAsync({
-          social: 'Google',
-          token,
-        });
-
-        const {access, refresh} = response?.data;
-
-        if (access && refresh) {
-          onLoginComplete({access, refresh});
-        } else {
-          // 회원가입 페이지로 이동
-          reset({
-            index: 0,
-            routes: [
-              {
-                name: 'SignupSocialNavigator',
-                params: {email: response.data?.email},
-              },
-            ],
-          });
-        }
-      }
-    } catch (_error) {
-      const error = _error as any;
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
-  };
-
-  async function onAppleLogin() {
-    try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL],
-      });
-
-      // get current authentication state for user
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
-      );
-
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        console.log(appleAuthRequestResponse);
-
-        // 유저 인증됨
-      }
-    } catch (error) {
-      const _error = error as unknown as {code?: string};
-
-      if (_error?.code === appleAuth.Error.CANCELED) {
-        toastShow('Apple 로그인이 취소되었습니다.');
-      } else {
-        toastShow(
-          'Apple 로그인 과정에서 에러가 발생했습니다.\n앱을 다시 실행 후, 로그인해주세요.',
-        );
-        console.error(error);
-      }
-    }
-  }
-
-  const onKakaoLogin = async () => {
-    try {
-      const {accessToken: token} = (await login()) as KakaoOAuthToken;
-
-      if (!_.isEmpty(token)) {
-        const response = await postAuthSocialLogin.mutateAsync({
-          social: 'Kakao',
-          token,
-        });
-
-        const {access, refresh} = response?.data;
-
-        if (access && refresh) {
-          onLoginComplete({access, refresh});
-        } else {
-          // 회원가입 페이지로 이동
-          reset({
-            index: 0,
-            routes: [
-              {
-                name: 'SignupSocialNavigator',
-                params: {email: response.data?.email},
-              },
-            ],
-          });
-        }
-      }
-    } catch (error) {}
-  };
+  const {onGoogleLogin, onKakaoLogin, onAppleLoginAndroid, onAppleLoginIOS} =
+    useSocialLoginHandler();
 
   /**
    *@description 토큰 확인 및 유저 데이터 확인을 통한 자동 로그인 로직
@@ -288,7 +150,7 @@ function InitialLogin() {
         setInitialLoading(false);
 
         // 저장된 데이터가 없으면 처음으로 앱을 킨 상태를 가리킴
-        reset({index: 0, routes: [{name: 'AppIntroFirst'}]});
+        reset({index: 0, routes: [{name: 'AppIntro'}]});
       }
     }
 
@@ -304,44 +166,42 @@ function InitialLogin() {
           ? colors.fussOrange[0]
           : colors.grayScale[0],
       }}>
-      {isInitialLoading ? (
-        <Center w="100%" h={APP_HEIGHT} bgColor={colors.fussOrange[0]}>
-          <SplashImage />
-        </Center>
-      ) : (
-        <VStack
-          bg={colors.grayScale['0']}
-          w="100%"
-          h="100%"
-          pt={containerPaddingTop}
-          pb={'40px'}
-          px="18px"
-          justifyContent={'space-between'}>
-          <VStack>
-            <Text
-              fontSize="28px"
-              color={colors.fussOrange['0']}
-              fontWeight="700"
-              textAlign="center">
-              우당탕탕
-            </Text>
-            <Text fontSize="28px" textAlign="center" mb="48px" fontWeight="700">
-              대소동에 어서오세요!
-            </Text>
+      <VStack
+        bg={colors.grayScale['0']}
+        w="100%"
+        h="100%"
+        pt={containerPaddingTop}
+        pb={'40px'}
+        px="18px"
+        justifyContent={'space-between'}>
+        <VStack>
+          <Text
+            fontSize="28px"
+            color={colors.fussOrange['0']}
+            fontWeight="700"
+            textAlign="center">
+            우당탕탕
+          </Text>
+          <Text fontSize="28px" textAlign="center" mb="48px" fontWeight="700">
+            대소동에 어서오세요!
+          </Text>
 
-            <Center>
-              <TmpInitialLogin />
-            </Center>
-          </VStack>
-
-          <VStack>
-            <KakaoLoginButton handlePress={onKakaoLogin} />
-            <AppleLoginButton handlePress={onAppleLogin} />
-            <GoogleLoginButton handlePress={onGoogleLogin} />
-            <EmailLoginButton handlePress={onMove} />
-          </VStack>
+          <Center>
+            <TmpInitialLogin />
+          </Center>
         </VStack>
-      )}
+
+        <VStack>
+          <KakaoLoginButton handlePress={onKakaoLogin} />
+          <AppleLoginButton
+            handlePress={
+              Platform.OS === 'android' ? onAppleLoginAndroid : onAppleLoginIOS
+            }
+          />
+          <GoogleLoginButton handlePress={onGoogleLogin} />
+          <EmailLoginButton handlePress={onMove} />
+        </VStack>
+      </VStack>
     </SafeAreaView>
   );
 }

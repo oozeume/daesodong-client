@@ -1,5 +1,0 @@
-BASE_URL=https:/$()/server.main.daesodong.org:3000/
-ACCESS_TOKEN_NAME=accessTokenName
-REFRESH_TOKEN_NAME=refreshTokenName
-GOOGLE_OAUTH_IOS_CLIENT_ID=895583511596-4ruesc2deufa07jsr5raat557aq80g34.apps.googleusercontent.com
-GOOGLE_OAUTH_ANDROID_CLIENT_ID=895583511596-h28k4d6cl4g5srs0c0o3ege5jeo840qg.apps.googleusercontent.com

@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "895583511596-ksaji1i9bmhgv4mmjk62uvs0s87p9lv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daesodong",
+            "certificate_hash": "668e4a04c3e8afa3c029e3b3ff2a2c3f27e54d81"
+          }
+        },
+        {
+          "client_id": "895583511596-msh0etr0vj8gr0f9h0m0sniauhbb6sa0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daesodong",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "895583511596-uplsg03tplj6l3a8bdhun913vp4dlo02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daesodong",
+            "certificate_hash": "9e9d4f15ab501e0de262237099f483f648ce0ca0"
+          }
+        },
+        {
           "client_id": "895583511596-h28k4d6cl4g5srs0c0o3ege5jeo840qg.apps.googleusercontent.com",
           "client_type": 3
         }
